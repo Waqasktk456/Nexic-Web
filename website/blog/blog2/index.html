@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA | Premium Editorial</title>
+    <!-- Premium Fonts: Playfair Display & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="cursor-glow"></div>
+
+    <!-- Sticky Glassmorphism Navbar -->
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">farera.</a>
+            <div class="search-bar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" placeholder="Search editorial...">
+            </div>
+            <nav class="nav-links">
+                <a href="#" class="active">Discover</a>
+                <a href="#">Articles</a>
+                <a href="#">Podcasts</a>
+                <a href="#">Members</a>
+            </nav>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+                <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Category Cards -->
+        <section class="categories reveal">
+            <div class="category-card">
+                <span class="cat-icon">✧</span>
+                <span class="cat-name">Beauty</span>
+            </div>
+            <div class="category-card">
+                <span class="cat-icon">✦</span>
+                <span class="cat-name">Fashion & Style</span>
+            </div>
+            <div class="category-card">
+                <span class="cat-icon">❈</span>
+                <span class="cat-name">Food & Wellness</span>
+            </div>
+            <div class="category-card">
+                <span class="cat-icon">☼</span>
+                <span class="cat-name">Lifestyle</span>
+            </div>
+        </section>
+
+        <div class="content-grid">
+            <!-- Left/Main Content Area -->
+            <div class="main-column">
+                
+                <!-- Hero Section -->
+                <section class="hero reveal">
+                    <div class="hero-left">
+                        <span class="badge">Trending Now</span>
+                        <h1 class="hero-title" id="hero-title">The Art of Minimalist Living.</h1>
+                        <p class="hero-desc">Discover how simplifying your space can elevate your mindset and bring clarity to your daily routine.</p>
+                        <button class="cta-button">Read Full Story <span>→</span></button>
+                        <div class="slider-dots">
+                            <div class="dot active"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                    </div>
+                    <div class="hero-right">
+                        <div class="hero-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1492446845049-9c50cc313f00?auto=format&fit=crop&q=80&w=1200" alt="Minimalist fashion" id="hero-image" class="lazy">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Editor's Pick Section -->
+                <section class="editors-pick reveal">
+                    <h2 class="section-title">Editor's Pick</h2>
+                    <div class="grid-cards">
+                        <!-- Card 1 -->
+                        <article class="article-card">
+                            <div class="card-img-wrapper">
+                                <img src="https://t3.ftcdn.net/jpg/01/68/93/20/360_F_168932076_l8nTWYp05U3OAhbQfBsP6VA8EykGIyyu.jpg" alt="Wellness" class="lazy">
+                                <span class="card-tag">Wellness</span>
+                            </div>
+                            <div class="card-content">
+                                <h3>Morning Rituals for Success</h3>
+                                <p>Start your day with intention and mindful practices that set the tone.</p>
+                                <div class="card-meta">
+                                    <div class="author">
+                                        <img src="https://t3.ftcdn.net/jpg/01/68/93/20/360_F_168932076_l8nTWYp05U3OAhbQfBsP6VA8EykGIyyu.jpg" alt="Author">
+                                        <span>Elena Rostova</span>
+                                    </div>
+                                    <span class="read-time">5 min read</span>
+                                </div>
+                            </div>
+                        </article>
+                        <!-- Card 2 -->
+                        <article class="article-card">
+                            <div class="card-img-wrapper">
+                                <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?auto=format&fit=crop&q=80&w=800" alt="Fashion" class="lazy">
+                                <span class="card-tag">Fashion</span>
+                            </div>
+                            <div class="card-content">
+                                <h3>Autumn Silhouette Trends</h3>
+                                <p>A deep dive into the structured yet fluid shapes defining this season.</p>
+                                <div class="card-meta">
+                                    <div class="author">
+                                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="Author">
+                                        <span>Julian Beck</span>
+                                    </div>
+                                    <span class="read-time">7 min read</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Sidebar -->
+            <aside class="sidebar">
+                <!-- Top Picks -->
+                <div class="sidebar-widget reveal">
+                    <h3 class="widget-title">Top Picks of the Month</h3>
+                    <div class="mini-card image-overlay">
+                        <img src="https://images.unsplash.com/photo-1549439602-43ebca2327af?auto=format&fit=crop&q=80&w=600" alt="Skin" class="lazy">
+                        <div class="overlay-content">
+                            <span class="tag">Beauty</span>
+                            <h4>The Serum Revolution</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fashion & Style -->
+                <div class="sidebar-widget reveal">
+                    <h3 class="widget-title">Fashion & Style</h3>
+                    <div class="list-card">
+                        <img src="https://images.pexels.com/photos/15627935/pexels-photo-15627935/free-photo-of-a-portrait-of-a-man-taking-a-photo.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Vintage" class="lazy">
+                        <div class="list-info">
+                            <h4>Vintage Revival</h4>
+                            <span>Oct 12 • 4 min</span>
+                        </div>
+                    </div>
+                    <div class="list-card">
+                        <img src="https://www.hostgator.com/blog/wp-content/uploads/2018/10/Best-Website-Builder-for-Blogging.png" alt="Shoes" class="lazy">
+                        <div class="list-info">
+                            <h4>Sustainable Footwear</h4>
+                            <span>Oct 10 • 6 min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trending Now -->
+                <div class="sidebar-widget reveal">
+                    <h3 class="widget-title">Trending Now</h3>
+                    <ul class="trending-list">
+                        <li>
+                            <span class="trend-number">01</span>
+                            <div class="trend-text">
+                                <h4>The New Paris Fashion Week Rules</h4>
+                                <span>Fashion</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="trend-number">02</span>
+                            <div class="trend-text">
+                                <h4>Gut Health & Glowing Skin</h4>
+                                <span>Wellness</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="trend-number">03</span>
+                            <div class="trend-text">
+                                <h4>Architectural Heels</h4>
+                                <span>Style</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Newsletter Section -->
+        <section class="newsletter reveal">
+            <div class="newsletter-glass">
+                <h2>Join the Inner Circle</h2>
+                <p>Curated editorial content delivered straight to your inbox weekly.</p>
+                <form class="newsletter-form" onsubmit="event.preventDefault()">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Premium Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h2>AURA.</h2>
+                <p>Elevating the standard of modern luxury editorial.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Categories</h3>
+                <a href="#">Beauty & Care</a>
+                <a href="#">Fashion</a>
+                <a href="#">Wellness</a>
+                <a href="#">Culture</a>
+            </div>
+            <div class="footer-links">
+                <h3>Company</h3>
+                <a href="#">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Advertise</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-social">
+                <h3>Connect</h3>
+                <div class="social-icons">
+                    <a href="#">Ig</a>
+                    <a href="#">Tw</a>
+                    <a href="#">In</a>
+                    <a href="#">Pt</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span id="year"></span> AURA Editorial. All rights reserved.</p>
+            <div class="legal-links">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="style.js"></script>
+</body>
+</html>

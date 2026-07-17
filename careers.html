@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers | Nexic Web</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables - Unified Nexic Web Design System */
+        :root {
+            --bg-base: #05050A;
+            --text-primary: #F3F4F6;
+            --text-secondary: #9CA3AF;
+            --accent-cyan: #00F0FF;
+            --accent-purple: #8A2BE2;
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Gradients */
+        .bg-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: -1;
+            animation: float 20s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
+
+        .glow-cyan {
+            background: var(--accent-cyan);
+            top: -10%;
+            left: -10%;
+        }
+
+        .glow-purple {
+            background: var(--accent-purple);
+            bottom: -10%;
+            right: -10%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100px, 100px) scale(1.2); }
+        }
+
+        /* Layout & Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 14px 32px;
+            background: rgba(0, 240, 255, 0.05);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 30px;
+            color: var(--accent-cyan);
+            font-weight: 500;
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1) inset;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-base);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Content Sections & Glassmorphism */
+        .content-section {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            padding-bottom: 100px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: var(--glass-hover);
+            border-color: rgba(138, 43, 226, 0.2);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5),
+                        0 0 20px rgba(138, 43, 226, 0.05);
+        }
+
+        .glass-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .glass-card:hover h2 {
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card h2::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-purple);
+            box-shadow: 0 0 10px var(--accent-purple);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover h2::before {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        .glass-card p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .glass-card ul {
+            list-style-type: none;
+            margin-top: 16px;
+        }
+
+        .glass-card ul li {
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .glass-card ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+            font-size: 0.9rem;
+        }
+
+        /* Jobs Grid Layout */
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .job-card {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .job-card:hover {
+            background: rgba(0, 240, 255, 0.02);
+            border-color: rgba(0, 240, 255, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .job-title {
+            font-size: 1.25rem;
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .job-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            flex-grow: 1;
+        }
+
+        .btn-outline {
+            display: inline-block;
+            padding: 10px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.875rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .job-card:hover .btn-outline {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            background: rgba(0, 240, 255, 0.05);
+        }
+
+        .link-text {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .link-text:hover {
+            border-bottom-color: var(--accent-cyan);
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--glass-border);
+            padding: 40px 0;
+            text-align: center;
+            background: rgba(5, 5, 10, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .copyright {
+            color: #6B7280;
+            font-size: 0.875rem;
+        }
+
+        /* Scroll Animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .glass-card { padding: 30px 24px; }
+            .hero { padding: 80px 0 40px; }
+            .jobs-grid { grid-template-columns: 1fr; }
+            .footer-links { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow glow-cyan"></div>
+    <div class="bg-glow glow-purple"></div>
+
+    <div class="container">
+        <header class="hero fade-up">
+            <h1>Careers at Nexic Web</h1>
+            <p>Join an elite team of creators, engineers, and visionaries building the future of premium digital experiences globally.</p>
+            <a href="#open-positions" class="btn-primary">View Open Positions</a>
+        </header>
+
+        <main class="content-section">
+            
+            <section class="glass-card fade-up">
+                <h2>Why Work With Us</h2>
+                <p>Nexic Web is more than just an agency; it’s a standard of excellence. We empower our team with the resources, autonomy, and environment to produce career-defining work.</p>
+                <ul>
+                    <li><strong>Remote-First Environment:</strong> Work seamlessly from anywhere in the world.</li>
+                    <li><strong>Creative Freedom:</strong> We hire experts and trust them to lead, innovate, and execute without micromanagement.</li>
+                    <li><strong>Global Client Exposure:</strong> Build products that are utilized by top-tier SaaS companies and international brands.</li>
+                    <li><strong>High-Quality Design Culture:</strong> Surround yourself with professionals who obsess over pixel-perfect execution and flawless UX.</li>
+                </ul>
+            </section>
+
+            <section id="open-positions" class="fade-up" style="padding-top: 20px;">
+                <h2 style="font-size: 1.5rem; color: #fff; margin-bottom: 8px;">Open Positions</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">Find your next career-defining role.</p>
+                
+                <div class="jobs-grid">
+                    <div class="job-card">
+                        <div class="job-title">Frontend Developer</div>
+                        <div class="job-desc">Architect performant, interactive, and visually stunning web interfaces using React, Next.js, and advanced CSS animations.</div>
+                        <a href="#" class="btn-outline">Apply Now</a>
+                    </div>
+                    
+                    <div class="job-card">
+                        <div class="job-title">UI/UX Designer</div>
+                        <div class="job-desc">Design premium SaaS templates and agency websites. Mastery of Figma, dark-mode aesthetics, and modern typography required.</div>
+                        <a href="#" class="btn-outline">Apply Now</a>
+                    </div>
+
+                    <div class="job-card">
+                        <div class="job-title">Full Stack Developer</div>
+                        <div class="job-desc">Build scalable backend systems and seamless API integrations to power our premium template marketplace.</div>
+                        <a href="#" class="btn-outline">Apply Now</a>
+                    </div>
+
+                    <div class="job-card">
+                        <div class="job-title">Digital Marketer</div>
+                        <div class="job-desc">Drive global acquisition strategies, manage high-end B2B campaigns, and expand our agency's international footprint.</div>
+                        <a href="#" class="btn-outline">Apply Now</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glass-card fade-up">
+                <h2>Our Culture</h2>
+                <p>We believe that exceptional digital products are born from a culture of collaboration, continuous learning, and an unwavering commitment to quality.</p>
+                <ul>
+                    <li><strong>Innovation Focused:</strong> We don't follow trends; we set them. Experimentation is encouraged and rewarded.</li>
+                    <li><strong>Premium Mindset:</strong> Every pixel, line of code, and piece of copy must meet a world-class standard before it ships.</li>
+                    <li><strong>Radical Transparency:</strong> Open communication, constructive feedback, and a unified vision drive our team forward.</li>
+                </ul>
+            </section>
+
+            <section class="glass-card fade-up">
+                <h2>How to Apply</h2>
+                <p>We are always on the lookout for exceptional talent. Even if you don't see a perfect role listed above, we'd love to hear from you.</p>
+                <p>To apply, send your resume and a link to your portfolio to <a href="mailto:careers@nexicweb.com" class="link-text">careers@nexicweb.com</a>. Please include the job title in the subject line. For design and frontend roles, a strong, live portfolio is required.</p>
+            </section>
+
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Refund Policy</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <div class="copyright">
+            &copy; 2026 Nexic Web. All rights reserved. Premium Digital Agency.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const fadeElements = document.querySelectorAll('.fade-up');
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            fadeElements.forEach(element => observer.observe(element));
+        });
+    </script>
+</body>
+</html>

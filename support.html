@@ -1,0 +1,1365 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Center | NexicWeb</title>
+    <meta name="description" content="Official enterprise-level Support Center for NexicWeb. Access support channels, consult specialists, and explore documentation resources.">
+    
+    <!-- Premium Typography System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS Custom Properties / System Tokens */
+        :root {
+            --bg-color: #050814;
+            --card-bg: rgba(14, 21, 37, 0.7);
+            --primary-accent: #8B5CF6;
+            --primary-accent-glow: rgba(139, 92, 246, 0.15);
+            --text-main: #FFFFFF;
+            --text-muted: #94A3B8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.16);
+            --font-heading: 'Plus Jakarta Sans', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --max-width: 1200px;
+            --easing: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Reset & Global Architecture */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        section {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 7rem 2rem;
+        }
+
+        /* Typography Hierarchies */
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 0.975rem;
+        }
+
+        /* Global Layout Components (Buttons, Badges) */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            color: #C084FC;
+            padding: 0.4rem 0.9rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.75rem;
+            border-radius: 6px;
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s var(--easing);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-accent);
+            color: #FFFFFF;
+            border: 1px solid transparent;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+        }
+
+        .btn-primary:hover {
+            background-color: #7C3AED;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.35);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.04);
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-card {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.02);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        .btn-card:hover {
+            background-color: rgba(139, 92, 246, 0.08);
+            border-color: var(--primary-accent);
+            transform: translateY(-1px);
+        }
+
+        /* Sticky Glassmorphic Navigation Bar */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(5, 8, 20, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .navbar {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 1.25rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-logo {
+            font-family: var(--font-heading);
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-main);
+            text-decoration: none;
+            letter-spacing: -0.03em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .brand-logo span {
+            color: var(--primary-accent);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2.25rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.925rem;
+            font-weight: 500;
+            transition: color 0.2s var(--easing);
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-main);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .cart-icon {
+            color: var(--text-muted);
+            text-decoration: none;
+            position: relative;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s var(--easing);
+        }
+
+        .cart-icon:hover {
+            color: var(--text-main);
+        }
+
+        /* Hero Layout Module */
+        .hero-section {
+            padding-top: 12rem;
+            padding-bottom: 5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-section h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-desc {
+            font-size: 1.15rem;
+            max-width: 720px;
+            margin: 0 auto 4rem auto;
+            line-height: 1.65;
+        }
+
+        /* Identity Verification Indicators */
+        .indicators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 4rem;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        .indicator-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            font-weight: 500;
+            font-size: 0.925rem;
+            color: var(--text-main);
+        }
+
+        .indicator-item svg {
+            color: var(--primary-accent);
+            flex-shrink: 0;
+        }
+
+        /* Main Structured Support Matrix Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2.5rem 2.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: border-color 0.3s var(--easing), transform 0.3s var(--easing), box-shadow 0.3s var(--easing);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(255,255,255,0.04), transparent 40%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .glass-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.75rem;
+            color: var(--primary-accent);
+            z-index: 2;
+        }
+
+        .glass-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.85rem;
+            z-index: 2;
+        }
+
+        .glass-card p {
+            font-size: 0.95rem;
+            line-height: 1.55;
+            margin-bottom: 2rem;
+            z-index: 2;
+        }
+
+        .glass-card .btn-card {
+            z-index: 2;
+        }
+
+        /* Clean Unified Global Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 4.5rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.85rem;
+        }
+
+        .section-header p {
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Human Operations (Team Modules) */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .team-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 3rem 2.25rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: border-color 0.3s var(--easing), transform 0.3s var(--easing);
+        }
+
+        .team-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1.5rem;
+        }
+
+        .avatar-placeholder {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+
+        .status-dot {
+            position: absolute;
+            bottom: 3px;
+            right: 3px;
+            width: 12px;
+            height: 12px;
+            background-color: #10B981;
+            border: 2px solid #0B111E;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10B981;
+        }
+
+        .team-card h4 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .team-role {
+            color: var(--primary-accent);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            letter-spacing: 0.02em;
+        }
+
+        .team-card p {
+            font-size: 0.925rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        /* Communications Core (Form Framework) */
+        .form-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.35fr;
+            gap: 5rem;
+            align-items: start;
+        }
+
+        .form-info h2 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-info p {
+            line-height: 1.65;
+            margin-bottom: 1.75rem;
+        }
+
+        .form-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.last {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            letter-spacing: 0.01em;
+        }
+
+        .form-group input, .form-group textarea {
+            background-color: rgba(5, 8, 20, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.85rem 1.1rem;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s var(--easing), box-shadow 0.2s var(--easing);
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 1px var(--primary-accent);
+        }
+
+        .form-group textarea {
+            height: 140px;
+            resize: none;
+        }
+
+        .btn-submit {
+            width: 100%;
+            margin-top: 2rem;
+            padding: 0.95rem;
+        }
+
+        /* Documentation & Frequently Asked Metrics Modules (Accordion) */
+        .accordion-wrapper {
+            max-width: 850px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .accordion-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: border-color 0.25s var(--easing);
+        }
+
+        .accordion-header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 2rem;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .accordion-header:hover {
+            color: var(--primary-accent);
+        }
+
+        .accordion-icon {
+            color: var(--text-muted);
+            transition: transform 0.3s var(--easing);
+            font-size: 1.25rem;
+            font-weight: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s var(--easing);
+        }
+
+        .accordion-body {
+            padding: 0 2rem 1.5rem 2rem;
+            color: var(--text-muted);
+            font-size: 0.975rem;
+            line-height: 1.65;
+        }
+
+        .accordion-item.open {
+            border-color: var(--border-hover);
+            background: rgba(14, 21, 37, 0.85);
+        }
+
+        .accordion-item.open .accordion-icon {
+            transform: rotate(45deg);
+            color: var(--text-main);
+        }
+
+        /* Validation & Statistics Displays */
+        .trust-metrics {
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 5rem 2rem;
+            background: linear-gradient(180deg, transparent, rgba(14, 21, 37, 0.2) 50%, transparent);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .metric-number {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.35rem;
+            color: var(--text-main);
+        }
+
+        .metric-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* Corporate Blueprint Verification Section */
+        .commitment-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .commitment-left h2 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .commitment-left p {
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .commitment-right {
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+        }
+
+        .commitment-row {
+            display: flex;
+            gap: 1.25rem;
+        }
+
+        .commitment-icon {
+            width: 22px;
+            height: 22px;
+            background-color: rgba(139, 92, 246, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-accent);
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+        }
+
+        .commitment-text h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .commitment-text p {
+            font-size: 0.925rem;
+            line-height: 1.55;
+        }
+
+        /* System Action Conversion CTA */
+        .closing-cta {
+            padding-bottom: 9rem;
+        }
+
+        .cta-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 5rem 3rem;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+        }
+
+        .cta-box h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.85rem;
+        }
+
+        .cta-box p {
+            max-width: 550px;
+            margin: 0 auto 2.5rem auto;
+            font-size: 1.05rem;
+        }
+
+        .cta-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1.25rem;
+        }
+
+        /* Complete Verified Corporate Identity Footer */
+        footer {
+            background-color: #03050a;
+            border-top: 1px solid var(--border-color);
+            padding: 5rem 2rem 3rem 2rem;
+        }
+
+        .footer-grid {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.75fr repeat(3, 1fr);
+            gap: 5rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.925rem;
+            line-height: 1.6;
+            margin-top: 1.25rem;
+            max-width: 280px;
+        }
+
+        .footer-column h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .footer-column ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .footer-column a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.925rem;
+            transition: color 0.2s var(--easing);
+        }
+
+        .footer-column a:hover {
+            color: var(--text-main);
+        }
+
+        .footer-meta {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1.25rem;
+        }
+
+        .footer-socials a {
+            color: var(--text-muted);
+            transition: color 0.2s var(--easing);
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-socials a:hover {
+            color: var(--text-main);
+        }
+
+        /* Animation Keyframe Standards */
+        .fade-slide-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.7s var(--easing), transform 0.7s var(--easing);
+        }
+
+        .fade-slide-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Architectural Responsiveness Modifiers */
+        @media (max-width: 1024px) {
+            .form-layout, .commitment-layout {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+            .footer-grid {
+                grid-template-columns: 1.5fr repeat(2, 1fr);
+                gap: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            section {
+                padding: 4.5rem 1.5rem;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .form-container {
+                padding: 2rem;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            .cta-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .footer-meta {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Transparent Sticky Navigation Bar -->
+    <header>
+        <div class="navbar">
+            <a href="index.html" class="brand-logo">NexicWeb<span>.</span></a>
+            <ul class="nav-menu">
+                <li><a href="index.html#home" class="nav-link">Home</a></li>
+                <li><a href="index.html#websites" class="nav-link">Websites</a></li>
+                <li><a href="index.html#membership" class="nav-link">Membership</a></li>
+                <li><a href="index.html#experts" class="nav-link">Experts</a></li>
+                <li><a href="support.html" class="nav-link active">Support Center</a></li>
+            </ul>
+            <div class="nav-right">
+                
+                </a>
+            <a href="index.html?openLogin=true" class="nav-link btn-login">
+  Login
+</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Information Section -->
+        <section class="hero-section fade-slide-in">
+            <span class="badge">Global Support Center</span>
+            <h1>How Can We Help You Today?</h1>
+            <p class="hero-desc">Whether you need assistance with a website purchase, membership access, custom development, or a business inquiry, our team is here to provide professional guidance and reliable support.</p>
+            
+            <div class="indicators-grid">
+                <div class="indicator-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>Fast Response Time</span>
+                </div>
+                <div class="indicator-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14 9 11"></polyline></svg>
+                    <span>Professional Assistance</span>
+                </div>
+                <div class="indicator-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    <span>Worldwide Client Support</span>
+                </div>
+                <div class="indicator-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span>Trusted By Businesses Worldwide</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Support Routing Segments -->
+        <section class="fade-slide-in">
+            <div class="card-grid">
+                <div class="glass-card">
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                    </div>
+                    <h3>Website Support</h3>
+                    <p>Need comprehensive assistance configuring setup modules or running design framework adjustments?</p>
+                    <a href="#message-routing" class="btn btn-card">Get Support</a>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                    <h3>Membership Assistance</h3>
+                    <p>Encountering profile verification bottlenecks or require systematic tier subscription mapping?</p>
+                    <a href="#message-routing" class="btn btn-card">Contact Team</a>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                    </div>
+                    <h3>Custom Project Consultation</h3>
+                    <p>Ready to deploy tailored custom platform infrastructure metrics or enterprise ecosystems?</p>
+                    <a href="#message-routing" class="btn btn-card">Discuss Project</a>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </div>
+                    <h3>Business & Partnerships</h3>
+                    <p>Seeking corporate collaboration arrangements or strategic integration paths?</p>
+                    <a href="#message-routing" class="btn btn-card">Contact Us</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Managed Support Specialists Module -->
+        <section class="fade-slide-in">
+            <div class="section-header">
+                <h2>Meet Our Support Team</h2>
+                <p>Connect directly with our dedicated managers for targeted framework tracking.</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="avatar-container">
+                        <div class="avatar-placeholder">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        </div>
+                        <div class="status-dot"></div>
+                    </div>
+                    <h4>Toki tahmid</h4>
+                    <div class="team-role">Head of Client Success</div>
+                    <p>Handles all client communication & project management..</p>
+                    <a href="https://wa.me/1234567890?text=Hello%20Alex,%20I%20am%20seeking%20support%20regarding%20my%20NexicWeb%20deployment." target="_blank" rel="noopener" class="btn btn-card">Message on WhatsApp</a>
+                </div>
+                <div class="team-card">
+                    <div class="avatar-container">
+                        <div class="avatar-placeholder">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        </div>
+                        <div class="status-dot"></div>
+                    </div>
+                    <h4>Surovi Rahman</h4>
+                    <div class="team-role">Support Operator</div>
+                    <p>Provides customer support & solves technical issues.</p>
+                    <a href="https://wa.me/1234567891?text=Hello%20Sophia,%20I%20need%20assistance%20with%20my%20NexicWeb%20account%20membership." target="_blank" rel="noopener" class="btn btn-card">Message on WhatsApp</a>
+                </div>
+                <div class="team-card">
+                    <div class="avatar-container">
+                        <div class="avatar-placeholder">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        </div>
+                        <div class="status-dot"></div>
+                    </div>
+                    <h4>Foysal mahmud</h4>
+                    <div class="team-role">Technical Specialist </div>
+                    <p>Handles website setup, deployment & plan-related problems.  <br>
+                    <a href="https://wa.me/8801992689997?text=Hello%20 Im Foysal Mahmud,%20I%20require%20technical%20consultation%20for%20a%20NexicWeb%20integration." target="_blank" rel="noopener" class="btn btn-card">Message on WhatsApp</a><br>
+                </div>
+            </div>
+        </section>
+
+        <!-- Direct Form Communications Block -->
+       <!-- Direct Form Communications Block -->
+<section class="fade-slide-in" id="message-routing">
+    <div class="form-layout">
+
+        <div class="form-info">
+            <h2>Send Us A Message</h2>
+            <p>Need help with a website purchase, membership, technical issue, or custom project? Send us a message and our team will get back to you as soon as possible.</p>
+            <p style="color: var(--text-muted); font-size: 0.875rem;">
+                All messages are delivered directly to our support inbox.
+            </p>
+        </div>
+
+        <div class="form-container">
+
+          <form id="supportForm"
+      action="https://formsubmit.co/teamnexic@gmail.com"
+      method="POST">
+
+    <input type="hidden" name="_captcha" value="false">
+
+    <input type="hidden" name="_subject"
+           value="New Support Message - NexicWeb">
+
+    <input type="hidden" name="_template"
+           value="table">
+
+    <input type="hidden" name="_autoresponse"
+           value="Thank you for contacting NexicWeb. We have received your message and will reply soon.">
+
+
+           
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clientName">Name</label>
+                        <input type="text"
+                               id="clientName"
+                               name="name"
+                               placeholder="E.g., Marcus Vance"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clientEmail">Email</label>
+                        <input type="email"
+                               id="clientEmail"
+                               name="email"
+                               placeholder="name@example.com"
+                               required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clientCompany">Company</label>
+                        <input type="text"
+                               id="clientCompany"
+                               name="company"
+                               placeholder="Enterprise Systems Inc.">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clientSubject">Subject</label>
+                        <input type="text"
+                               id="clientSubject"
+                               name="subject"
+                               placeholder="Infrastructure Deployment Setup"
+                               required>
+                    </div>
+                </div>
+
+                <div class="form-group last">
+                    <label for="clientMessage">Message</label>
+                    <textarea id="clientMessage"
+                              name="message"
+                              placeholder="Please describe your issue or request..."
+                              required></textarea>
+                </div>
+
+                <button type="submit"
+                        class="btn btn-primary btn-submit">
+                    Send Message
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+</section>
+
+        <!-- Modern Accordion FAQs Block -->
+        <section class="fade-slide-in">
+            <div class="section-header">
+                <h2>Popular Support Topics</h2>
+            </div>
+            <div class="accordion-wrapper">
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        <span>How quickly do you respond?</span>
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            Our corporate architecture targets a response window below 60 minutes for priority routing tiers. Standard global tracking inquiries undergo immediate review within 2 to 4 business hours.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        <span>Do you offer custom websites?</span>
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            Yes. Through our specialized engineering division, we architect completely bespoke multi-tiered web environments, performance dashboards, and highly complex tailored digital systems according to your exact product requirements.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        <span>Can I modify purchased websites?</span>
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            Absolutely. Every platform structural source bundle contains clean, beautifully unminified, well-commented files ensuring developer teams can scale, refactor, or style configurations seamlessly.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        <span>How memberships work?</span>
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            NexicWeb memberships grant enterprise access locks across our premium source ecosystems. Subscriptions seamlessly sync update packages, cloud resource assets, and advanced plugin layers into your portal panel natively.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        <span>Do you support international clients?</span>
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            Yes. We provide continuous support tracks for multi-national brands globally across all active timezone configurations with complete cross-border localized scaling parameters.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- High-Performance Animated Metrics Section -->
+        <section class="trust-metrics fade-slide-in">
+            <div class="metrics-grid">
+                <div>
+                    <div class="metric-label">Global-ready scalable projects</div>
+                </div>
+                <div>
+                    
+                    <div class="metric-label">High-quality web solutions</div>
+                </div>
+                <div>
+                    <div class="metric-label">Client-focused development approach</div>
+                </div>
+                <div>
+                    
+                    <div class="metric-label">Strong satisfaction-driven delivery</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Managed Operational Commitments Section -->
+        <section class="commitment-layout fade-slide-in">
+            <div class="commitment-left">
+                <h2>Our Commitment To Every Client</h2>
+                <p>We approach our global service delivery protocols with complete operational fidelity. Our technical ecosystems are engineered to safeguard corporate continuity, provide definitive resolution pathways, and maintain premium design integrity.</p>
+            </div>
+            <div class="commitment-right">
+                <div class="commitment-row">
+                    <div class="commitment-icon">✓</div>
+                    <div class="commitment-text">
+                        <h4>Professional Communication</h4>
+                        <p>Direct architectural alignment with zero ambiguities and complete technical clarity.</p>
+                    </div>
+                </div>
+                <div class="commitment-row">
+                    <div class="commitment-icon">✓</div>
+                    <div class="commitment-text">
+                        <h4>Reliable Support Pipelines</h4>
+                        <p>Engineering responses engineered to map effectively to system requirements.</p>
+                    </div>
+                </div>
+                <div class="commitment-row">
+                    <div class="commitment-icon">✓</div>
+                    <div class="commitment-text">
+                        <h4>Transparent Guidance Parameters</h4>
+                        <p>No artificial inflation of operational scope, ensuring absolute project value tracking.</p>
+                    </div>
+                </div>
+                <div class="commitment-row">
+                    <div class="commitment-icon">✓</div>
+                    <div class="commitment-text">
+                        <h4>Long-Term Partnership Formulations</h4>
+                        <p>Structuring continuous code ecosystem reviews to optimize continuous scaling paths.</p>
+                    </div>
+                </div>
+                <div class="commitment-row">
+                    <div class="commitment-icon">✓</div>
+                    <div class="commitment-text">
+                        <h4>Global Quality Standards</h4>
+                        <p>Deploying responsive, highly accessible products verified against strict enterprise metrics.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Action System Final CTA -->
+        <section class="closing-cta fade-slide-in">
+            <div class="cta-box">
+                <h2>Need Personal Assistance?</h2>
+                <p>Connect with our specialists and receive professional guidance tailored to your needs.</p>
+                <div class="cta-actions">
+                    <a href="https://wa.me/1234567890?text=Hello,%20I%20need%20to%20speak%20with%20a%20NexicWeb%20support%20specialist." target="_blank" rel="noopener" class="btn btn-primary">Contact Support</a>
+                    <a href="#message-routing" class="btn btn-secondary">Send Message</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Original Verified Corporate Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="index.html" class="brand-logo">NexicWeb<span>.</span></a>
+                <p>Premium digital marketplace operations delivering world-class custom systems and premium enterprise digital products globally.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="index.html#websites">Websites</a></li>
+                    <li><a href="index.html#membership">Membership</a></li>
+                    <li><a href="index.html#experts">Expert Directory</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Support System</h4>
+                <ul>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="support.html">Support Center</a></li>
+                    <li><a href="#">System Status</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Legal Matrices</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Security Protocols</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-meta">
+            <div>&copy; 2026 NexicWeb. All corporate platform parameters reserved.</div>
+            <div class="footer-socials">
+                <a href="#" aria-label="LinkedIn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                </a>
+                <a href="#" aria-label="Twitter">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Clean Embedded Interactions Engine -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // 1. Premium Intersection Observer Framework for On-Scroll Fade and Slide Up
+            const animationOptions = {
+                threshold: 0.05,
+                rootMargin: "0px 0px -40px 0px"
+            };
+
+            const elementObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, animationOptions);
+
+            document.querySelectorAll(".fade-slide-in").forEach(element => {
+                elementObserver.observe(element);
+            });
+
+            // 2. High-Performance Structural Accordion Logic Engine
+            const accordionHeaders = document.querySelectorAll(".accordion-header");
+            accordionHeaders.forEach(header => {
+                header.addEventListener("click", () => {
+                    const item = header.parentElement;
+                    const content = header.nextElementSibling;
+                    const isCurrentlyOpen = item.classList.contains("open");
+
+                    // Close any other open panels to keep layout clean
+                    document.querySelectorAll(".accordion-item").forEach(el => {
+                        if (el !== item && el.classList.contains("open")) {
+                            el.classList.remove("open");
+                            el.querySelector(".accordion-content").style.maxHeight = null;
+                            el.querySelector(".accordion-header").setAttribute("aria-expanded", "false");
+                        }
+                    });
+
+                    if (isCurrentlyOpen) {
+                        item.classList.remove("open");
+                        content.style.maxHeight = null;
+                        header.setAttribute("aria-expanded", "false");
+                    } else {
+                        item.classList.add("open");
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        header.setAttribute("aria-expanded", "true");
+                    }
+                });
+            });
+
+            // 3. Fluid Mouse-Follow Lighting System for Glass Cards
+            const glassCards = document.querySelectorAll(".glass-card");
+            glassCards.forEach(card => {
+                card.addEventListener("mousemove", (e) => {
+                    const cardBounds = card.getBoundingClientRect();
+                    const xCoordinate = e.clientX - cardBounds.left;
+                    const yCoordinate = e.clientY - cardBounds.top;
+                    card.style.setProperty("--mouse-x", `${xCoordinate}px`);
+                    card.style.setProperty("--mouse-y", `${yCoordinate}px`);
+                });
+            });
+
+            // 4. Smooth requestAnimationFrame-driven Numeric Counter Metrics
+            const metricsContainer = document.querySelector(".trust-metrics");
+            const counters = document.querySelectorAll(".metric-number");
+            let countersExecuted = false;
+
+            const executeCounters = () => {
+                counters.forEach(counter => {
+                    const finalTarget = +counter.getAttribute("data-target");
+                    const runtimeDuration = 2000; 
+                    const initialTimestamp = performance.now();
+
+                    const stepValue = (currentTimestamp) => {
+                        const calculatedProgress = Math.min((currentTimestamp - initialTimestamp) / runtimeDuration, 1);
+                        const continuousCount = Math.floor(calculatedProgress * finalTarget);
+                        
+                        if (finalTarget === 10000 || finalTarget === 200 || finalTarget === 50) {
+                            counter.textContent = continuousCount.toLocaleString() + "+";
+                        } else if (finalTarget === 99) {
+                            counter.textContent = continuousCount + "%";
+                        } else {
+                            counter.textContent = continuousCount.toLocaleString();
+                        }
+
+                        if (calculatedProgress < 1) {
+                            requestAnimationFrame(stepValue);
+                        } else {
+                            // Enforce perfect accurate terminal text format parameters
+                            if (finalTarget === 10000 || finalTarget === 200 || finalTarget === 50) {
+                                counter.textContent = finalTarget.toLocaleString() + "+";
+                            } else if (finalTarget === 99) {
+                                counter.textContent = finalTarget + "%";
+                            }
+                        }
+                    };
+                    requestAnimationFrame(stepValue);
+                });
+            };
+
+            const metricsObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !countersExecuted) {
+                        executeCounters();
+                        countersExecuted = true;
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.25 });
+
+            if (metricsContainer) {
+                metricsObserver.observe(metricsContainer);
+            }
+        });
+    </script>
+</body>
+</html>

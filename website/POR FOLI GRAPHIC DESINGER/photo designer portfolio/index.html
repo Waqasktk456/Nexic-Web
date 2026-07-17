@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Designer Portfolio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --green-neon: #39ff14;
+            --green-light: #6df88f;
+            --green-bg-light: #e6f7eb;
+            --green-dark: #003b1e;
+            --green-darker: #021f11;
+            --text-main: #111111;
+            --text-light: #f5f5f5;
+            
+            --font-heading: 'Syne', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Space Grotesk', sans-serif;
+
+            --easing: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scrollbar-width: none;
+        }
+        html::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            background-color: #ffffff;
+            font-family: var(--font-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            cursor: none;
+        }
+
+        a, button, input {
+            cursor: none;
+        }
+
+        /* ================= UTILS & EFFECTS ================= */
+
+        .noise {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+        }
+
+        .cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: 10px; height: 10px;
+            background: var(--green-neon);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            top: 0; left: 0;
+            width: 40px; height: 40px;
+            border: 1px solid rgba(57, 255, 20, 0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.3s, height 0.3s, background 0.3s;
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: 0;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        /* ================= HERO SECTION ================= */
+
+        .hero {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            padding: 2rem;
+            overflow: hidden;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-bg-grid {
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            transform: perspective(500px) rotateX(45deg) scale(1.5);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .orb-1 { width: 50vw; height: 50vw; background: rgba(109, 248, 143, 0.3); top: -20%; left: -10%; }
+        .orb-2 { width: 40vw; height: 40vw; background: rgba(57, 255, 20, 0.15); bottom: 10%; right: -10%; }
+
+        .hero-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .hero-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 3rem;
+            width: 100%;
+        }
+
+        .profile-col {
+            flex-shrink: 0;
+        }
+
+        .profile-img-wrap {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            padding: 10px;
+            background: transparent;
+            border: 2px dashed rgba(0,0,0,0.2);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            will-change: transform;
+        }
+
+        .title-col {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .portfolio-box {
+            background-color: var(--green-dark);
+            padding: 1.5rem 2rem;
+            border-radius: 4px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .portfolio-box h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(4rem, 10vw, 9rem);
+            line-height: 0.85;
+            color: #ffffff;
+            margin: 0;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .ui-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .search-box {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 30px;
+            padding: 0.8rem 1.5rem;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            width: 100%;
+            background: transparent;
+            color: #888;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .icon-btn, .menu-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #111;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            border: none;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: background 0.3s ease;
+        }
+
+        .icon-btn:hover, .menu-btn:hover {
+            background: var(--green-dark);
+        }
+
+        .hero-bottom {
+            display: flex;
+            padding-left: 20px;
+            max-width: 900px;
+        }
+
+        .about-section {
+            position: relative;
+        }
+
+        .about-title {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        /* ================= SOFTWARE SECTION ================= */
+
+        .software {
+            background: linear-gradient(180deg, var(--green-darker) 0%, #011209 100%);
+            color: var(--text-light);
+            padding: 8rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .orb-3 { width: 60vw; height: 60vw; background: rgba(0, 255, 100, 0.08); top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+        .software-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .software-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .section-title {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .software-desc {
+            font-size: 1.2rem;
+            line-height: 1.5;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .arrow-icon {
+            font-size: 2rem;
+            color: var(--green-light);
+            margin-top: 1rem;
+        }
+
+        .software-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .app-card {
+            width: 100%;
+            aspect-ratio: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            transition: transform 0.4s var(--easing), box-shadow 0.4s var(--easing), border-color 0.4s;
+            will-change: transform;
+        }
+
+        .app-card:hover {
+            border-color: rgba(57, 255, 20, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(57, 255, 20, 0.1);
+        }
+
+        .app-icon {
+            width: 65%;
+            height: 65%;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .app-icon img {
+            width: 60%;
+            height: 60%;
+            object-fit: contain;
+        }
+
+        /* ================= DESIGN SHOWCASE ================= */
+
+        .designs {
+            background: linear-gradient(180deg, var(--green-bg-light) 0%, #ffffff 100%);
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .orb-4 { width: 40vw; height: 40vw; background: rgba(57, 255, 20, 0.1); top: 0; right: 0; }
+
+        .designs-header {
+            max-width: 1400px;
+            margin: 0 auto 3rem auto;
+        }
+
+        .text-dark {
+            color: var(--text-main);
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: rgba(0,0,0,0.1);
+            margin-top: 1rem;
+        }
+
+        .gallery-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+        }
+
+        .gallery-col {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .col-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .masonry-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .stories-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .gallery-item {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+            aspect-ratio: 4/5;
+            transform-style: preserve-3d;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .gallery-item.tall {
+            aspect-ratio: 9/16;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), filter 0.5s;
+            will-change: transform;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+            filter: brightness(0.8);
+        }
+
+        .logo-area {
+            margin-top: auto;
+            padding: 3rem 0 1rem 0;
+            text-align: center;
+        }
+
+        .brand-logo {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+
+        /* ================= PREMIUM FOOTER ================= */
+
+        .premium-footer {
+            background: #010c05;
+            color: var(--text-light);
+            padding: 6rem 2rem 3rem 2rem;
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid rgba(57, 255, 20, 0.2);
+        }
+
+        .footer-orb {
+            width: 45vw;
+            height: 45vw;
+            background: rgba(57, 255, 20, 0.08);
+            bottom: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .footer-marquee {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .marquee-track {
+            display: inline-block;
+            white-space: nowrap;
+            will-change: transform;
+        }
+
+        .marquee-track h2 {
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 8vw, 7rem);
+            text-transform: uppercase;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            padding-right: 2rem;
+        }
+
+        .marquee-track h2 span {
+            color: var(--green-neon);
+            -webkit-text-stroke: none;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .footer-main-col {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .footer-logo {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .footer-logo span {
+            color: var(--green-neon);
+        }
+
+        .footer-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            background: rgba(255,255,255,0.03);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            width: fit-content;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .status-pulse {
+            width: 8px;
+            height: 8px;
+            background: var(--green-neon);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--green-neon);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        .footer-links-col {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .footer-links-col h4 {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .footer-link {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s, transform 0.3s;
+            display: inline-block;
+            width: fit-content;
+        }
+
+        .footer-link:hover {
+            color: var(--green-light);
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.4);
+            font-family: var(--font-mono);
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1024px) {
+            .software-container { grid-template-columns: 1fr; }
+            .gallery-container { grid-template-columns: 1fr; }
+            .stories-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-top { flex-direction: column; align-items: center; text-align: center; }
+            .ui-bar { justify-content: center; }
+            .footer-grid { grid-template-columns: 1fr; gap: 3rem; }
+        }
+
+        @media (max-width: 768px) {
+            .portfolio-box h1 { font-size: 3.5rem; }
+            .software-grid { grid-template-columns: repeat(2, 1fr); }
+            .masonry-grid { grid-template-columns: 1fr; }
+            .profile-img-wrap { width: 160px; height: 160px; }
+            .hero { padding: 4rem 1rem; }
+            .cursor, .cursor-follower { display: none; }
+            body { cursor: auto; }
+            a, button, input { cursor: pointer; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="noise"></div>
+    
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <div id="smooth-wrapper">
+        <div id="smooth-content">
+
+            <section class="hero" id="home">
+                <div class="hero-bg-grid"></div>
+                <div class="glow-orb orb-1"></div>
+                <div class="glow-orb orb-2"></div>
+                
+                <div class="hero-container">
+                    <div class="hero-top">
+                        <div class="profile-col" data-speed="0.9">
+                            <div class="profile-img-wrap magnetic-wrap">
+                                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1000&auto=format&fit=crop" alt="Profile" class="profile-img magnetic">
+                            </div>
+                        </div>
+                        
+                        <div class="title-col">
+                            <div class="portfolio-box" data-speed="1.1">
+                                <h1 class="split-text">PORTFOLIO</h1>
+                            </div>
+                            
+                            <div class="ui-bar">
+                                <div class="search-box">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    <input type="text" placeholder="Hello there!" readonly>
+                                </div>
+                                <div class="nav-icons">
+                                    <a href="#home" class="icon-btn magnetic-wrap"><i class="fa-solid fa-house magnetic"></i></a>
+                                    <a href="#software" class="icon-btn magnetic-wrap"><i class="fa-solid fa-sun magnetic"></i></a>
+                                    <button class="menu-btn magnetic-wrap"><i class="fa-solid fa-bars magnetic"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hero-bottom">
+                        <div class="about-section">
+                            <h2 class="about-title"><i class="fa-solid fa-user-check"></i> About Me</h2>
+                            <p class="about-text">
+                                Assalamualaikum wr wb, perkenalkan saya <strong>Prisma Adi Setiono</strong>. Punya banyak nama tapi sering dipanggil <strong>Prisma</strong>. Lahir dan tinggal di Kendal. Kegiatan saat ini saya aktif menjadi seorang Santri Dan Mahasantri di Ponpes Askhabul Kahfi Semarang. Sekaligus menjadi bagian dari media pondok di bidang desain grafis.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="software" id="software">
+                <div class="glow-orb orb-3"></div>
+                
+                <div class="software-container">
+                    <div class="software-info" data-speed="0.9">
+                        <h2 class="section-title"><i class="fa-solid fa-gear"></i> My Software</h2>
+                        <p class="software-desc">Berikut ini beberapa Software yang saya gunakan untuk mengedit gambar dan juga video.</p>
+                        <i class="fa-solid fa-arrow-up-right-from-square arrow-icon magnetic"></i>
+                    </div>
+
+                    <div class="software-grid">
+                        <div class="app-card magnetic-wrap" style="--delay: 0.1s">
+                            <div class="app-icon magnetic" style="background: #00C4CC;">
+                                <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: white; font-size: 1.5rem;">Canva</span>
+                            </div>
+                        </div>
+                        <div class="app-card magnetic-wrap" style="--delay: 0.2s">
+                            <div class="app-icon magnetic" style="background: #232227;">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="PS">
+                            </div>
+                        </div>
+                        <div class="app-card magnetic-wrap" style="--delay: 0.3s">
+                            <div class="app-icon magnetic" style="background: #E83232;">
+                                <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: white; font-size: 2rem;">P</span>
+                            </div>
+                        </div>
+                        <div class="app-card magnetic-wrap" style="--delay: 0.4s">
+                            <div class="app-icon magnetic" style="background: #000000;">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg" alt="Figma">
+                            </div>
+                        </div>
+                        <div class="app-card magnetic-wrap" style="--delay: 0.5s">
+                            <div class="app-icon magnetic" style="background: linear-gradient(45deg, #a43cb6, #f22e6b)">
+                                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="PS">
+                            </div>
+                        </div>
+                        <div class="app-card magnetic-wrap" style="--delay: 0.6s">
+                            <div class="app-icon magnetic" style="background: #4688F1;">
+                              <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="PS">
+                            </div>
+                        </div>
+                        <div class="app-card magnetic-wrap" style="--delay: 0.7s">
+                            <div class="app-icon magnetic" style="background: #232227;">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Adobe_Photoshop_Lightroom_CC_logo.svg" alt="LR">
+                            </div>
+                        </div>
+                        <div class="app-card magnetic-wrap" style="--delay: 0.8s">
+                            <div class="app-icon magnetic" style="background: #a50d0d10;">
+                                <img src="https://cdn.dribbble.com/userupload/45850456/file/77efe1003863ea816a1dbee40142adb4.png?resize=400x0" alt="CapCut">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="designs" id="designs">
+                <div class="glow-orb orb-4"></div>
+                <div class="designs-header">
+                    <h2 class="section-title text-dark"><i class="fa-regular fa-file-lines"></i> My Design</h2>
+                    <div class="divider"></div>
+                </div>
+
+                <div class="gallery-container">
+                    <div class="gallery-col feeds-col">
+                        <h3 class="col-title">Feeds</h3>
+                        <div class="masonry-grid feeds-grid">
+                            <div class="gallery-item tilt-card"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop" alt="Feed 1"></div>
+                            <div class="gallery-item tilt-card"><img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=800&auto=format&fit=crop" alt="Feed 2"></div>
+                            <div class="gallery-item tilt-card"><img src="https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?q=80&w=800&auto=format&fit=crop" alt="Feed 3"></div>
+                            <div class="gallery-item tilt-card"><img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=800&auto=format&fit=crop" alt="Feed 4"></div>
+                            <div class="gallery-item tilt-card"><img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=800&auto=format&fit=crop" alt="Feed 5"></div>
+                            <div class="gallery-item tilt-card"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=800&auto=format&fit=crop" alt="Feed 6"></div>
+                        </div>
+                        <div class="logo-area">
+                            <h1 class="brand-logo"><span style="color: #e91e63;">S</span><span style="color: #9c27b0;">O</span><span style="color: #2196f3;">L</span><span style="color: #00bcd4;">I</span><span style="color: #4caf50;">G</span><span style="color: #ffeb3b;">R</span><span style="color: #ff9800;">A</span><span style="color: #ff5722;">F</span><span style="color: #795548;">I</span><span style="color: #607d8b;">T</span><span style="color: #e91e63;">A</span><span style="color: #9c27b0;">S</span></h1>
+                        </div>
+                    </div>
+
+                    <div class="gallery-col stories-col">
+                        <h3 class="col-title">Stories</h3>
+                        <div class="masonry-grid stories-grid">
+                            <div class="gallery-item tall tilt-card"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=800&auto=format&fit=crop" alt="Story 1"></div>
+                            <div class="gallery-item tall tilt-card"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop" alt="Story 2"></div>
+                            <div class="gallery-item tall tilt-card"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop" alt="Story 3"></div>
+                            <div class="gallery-item tall tilt-card"><img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=800&auto=format&fit=crop" alt="Story 4"></div>
+                            <div class="gallery-item tall tilt-card"><img src="https://images.unsplash.com/photo-1551218808-94e220e084d1?q=80&w=800&auto=format&fit=crop" alt="Story 5"></div>
+                            <div class="gallery-item tall tilt-card"><img src="https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?q=80&w=800&auto=format&fit=crop" alt="Story 6"></div>
+                            <div class="gallery-item tall tilt-card"><img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=800&auto=format&fit=crop" alt="Story 7"></div>
+                            <div class="gallery-item tall tilt-card"><img src="https://images.unsplash.com/photo-1604871000636-074fa5117945?q=80&w=800&auto=format&fit=crop" alt="Story 8"></div>
+                            <div class="gallery-item tall tilt-card"><img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=800&auto=format&fit=crop" alt="Story 9"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="premium-footer">
+                <div class="glow-orb footer-orb"></div>
+                
+                <div class="footer-container">
+                    <div class="footer-marquee">
+                        <div class="marquee-track">
+                            <h2>LET'S CREATE SOMETHING <span>GOAT LEVEL</span> • LET'S CREATE SOMETHING <span>GOAT LEVEL</span> • </h2>
+                        </div>
+                    </div>
+
+                    <div class="footer-grid">
+                        <div class="footer-main-col">
+                            <div class="footer-logo">PRISMA<span>.</span></div>
+                            <p style="color: rgba(255,255,255,0.6); line-height: 1.6; max-width: 400px;">
+                                High-end graphic designer and photo editor crafting future-proof digital identities.
+                            </p>
+                            <div class="footer-status">
+                                <span class="status-pulse"></span>
+                                Available for Premium Projects
+                            </div>
+                        </div>
+
+                        <div class="footer-links-col">
+                            <h4>Navigation</h4>
+                            <a href="#home" class="footer-link">Home</a>
+                            <a href="#software" class="footer-link">Software</a>
+                            <a href="#designs" class="footer-link">My Design</a>
+                        </div>
+
+                        <div class="footer-links-col">
+                            <h4>Social Networks</h4>
+                            <a href="#" class="footer-link">Instagram</a>
+                            <a href="#" class="footer-link">Behance</a>
+                            <a href="#" class="footer-link">LinkedIn</a>
+                        </div>
+                    </div>
+
+                    <div class="footer-bottom">
+                        <div>&copy; 2026 PRISMA ADI SETIONO. All Rights Reserved.</div>
+                        <div>BUILT WITH GSAP + LENIS</div>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.27/bundled/lenis.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // ================= 1. SMOOTH SCROLLING (LENIS) =================
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                direction: 'vertical',
+                gestureDirection: 'vertical',
+                smooth: true,
+                mouseMultiplier: 1,
+                smoothTouch: false,
+                touchMultiplier: 2,
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            // Integrate Lenis with GSAP ScrollTrigger
+            gsap.registerPlugin(ScrollTrigger);
+            
+            lenis.on('scroll', ScrollTrigger.update);
+
+            gsap.ticker.add((time)=>{
+              lenis.raf(time * 1000);
+            });
+            
+            gsap.ticker.lagSmoothing(0);
+
+            // ================= 2. CUSTOM CURSOR =================
+            const cursor = document.querySelector('.cursor');
+            const follower = document.querySelector('.cursor-follower');
+            
+            let mouseX = 0, mouseY = 0;
+            let cursorX = 0, cursorY = 0;
+            let followerX = 0, followerY = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            gsap.ticker.add(() => {
+                cursorX += (mouseX - cursorX) * 0.5;
+                cursorY += (mouseY - cursorY) * 0.5;
+                
+                followerX += (mouseX - followerX) * 0.15;
+                followerY += (mouseY - followerY) * 0.15;
+                
+                gsap.set(cursor, { x: cursorX, y: cursorY });
+                gsap.set(follower, { x: followerX, y: followerY });
+            });
+
+            // Cursor Hover Effects
+            const interactiveElements = document.querySelectorAll('a, button, input, .magnetic-wrap, .gallery-item');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    gsap.to(cursor, { scale: 1.5, duration: 0.3 });
+                    gsap.to(follower, { scale: 1.5, backgroundColor: 'rgba(57, 255, 20, 0.1)', duration: 0.3 });
+                });
+                el.addEventListener('mouseleave', () => {
+                    gsap.to(cursor, { scale: 1, duration: 0.3 });
+                    gsap.to(follower, { scale: 1, backgroundColor: 'transparent', duration: 0.3 });
+                });
+            });
+
+
+            // ================= 3. MAGNETIC ELEMENTS =================
+            const magneticWraps = document.querySelectorAll('.magnetic-wrap');
+
+            magneticWraps.forEach(wrap => {
+                const magneticElement = wrap.querySelector('.magnetic');
+                
+                if (magneticElement) {
+                    wrap.addEventListener('mousemove', (e) => {
+                        const rect = wrap.getBoundingClientRect();
+                        const x = e.clientX - rect.left - rect.width / 2;
+                        const y = e.clientY - rect.top - rect.height / 2;
+                        
+                        gsap.to(magneticElement, {
+                            x: x * 0.4,
+                            y: y * 0.4,
+                            duration: 0.6,
+                            ease: "power3.out"
+                        });
+                    });
+
+                    wrap.addEventListener('mouseleave', () => {
+                        gsap.to(magneticElement, {
+                            x: 0,
+                            y: 0,
+                            duration: 0.8,
+                            ease: "elastic.out(1, 0.3)"
+                        });
+                    });
+                }
+            });
+
+
+            // ================= 4. TEXT SPLITTING & ENTRY ANIMATION =================
+            const splitTitle = new SplitType('.split-text', { types: 'chars' });
+            
+            const masterTl = gsap.timeline();
+
+            masterTl
+            .fromTo(".profile-img-wrap", 
+                { scale: 0, rotation: -45, opacity: 0 }, 
+                { scale: 1, rotation: 0, opacity: 1, duration: 1.2, ease: "expo.out" }
+            )
+            .fromTo(splitTitle.chars, 
+                { y: 100, opacity: 0, rotateX: -90 },
+                { y: 0, opacity: 1, rotateX: 0, stagger: 0.05, duration: 1, ease: "back.out(1.7)" },
+                "-=0.8"
+            )
+            .fromTo(".ui-bar > *", 
+                { y: 30, opacity: 0 },
+                { y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: "power3.out" },
+                "-=0.6"
+            )
+            .fromTo(".about-section", 
+                { x: -50, opacity: 0 },
+                { x: 0, opacity: 1, duration: 1, ease: "power3.out" },
+                "-=0.6"
+            );
+
+
+            // ================= 5. PARALLAX & SCROLL ANIMATIONS =================
+            
+            // Parallax Data Speed
+            document.querySelectorAll('[data-speed]').forEach(el => {
+                gsap.to(el, {
+                    y: (i, target) => -ScrollTrigger.maxScroll(window) * target.dataset.speed * 0.1,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 0.5
+                    }
+                });
+            });
+
+            // Background Grid Parallax
+            gsap.to(".hero-bg-grid", {
+                y: "20%",
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            // Software Cards Stagger Reveal
+            gsap.fromTo(".app-card", 
+                { y: 100, opacity: 0, scale: 0.8 },
+                {
+                    y: 0, opacity: 1, scale: 1,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: ".software-grid",
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+
+            // Gallery Items Reveal
+            gsap.utils.toArray(".gallery-item").forEach((item, i) => {
+                gsap.fromTo(item, 
+                    { y: 80, opacity: 0, clipPath: "inset(100% 0 0 0)" },
+                    {
+                        y: 0, opacity: 1, clipPath: "inset(0% 0 0 0)",
+                        duration: 1,
+                        ease: "power4.out",
+                        scrollTrigger: {
+                            trigger: item,
+                            start: "top 90%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // Floating Orbs Ambient Motion
+            gsap.utils.toArray('.glow-orb').forEach((orb) => {
+                gsap.to(orb, {
+                    x: "random(-50, 50)",
+                    y: "random(-50, 50)",
+                    duration: "random(3, 6)",
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+            });
+
+            // Infinite Marquee Track Animation
+            gsap.to(".marquee-track", {
+                xPercent: -50,
+                ease: "none",
+                duration: 15,
+                repeat: -1
+            });
+
+        });
+    </script>
+</body>
+</html>

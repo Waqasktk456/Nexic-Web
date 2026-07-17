@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Design-ui pages are single compositions, so the whole body is editable.
+    function markEditable() {
+        document.body.classList.add('artifact-editable');
+    }
+
+    // Credit badge with idle-fade. Hover devices only.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        credit.innerHTML = '\u{1F49C} CREATE BY NEXIC';
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+
+    function init() {
+        markEditable();
+        initChromeUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
+</script>
+<!-- /skill:chrome -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Atelier Voss is a strategic design consultancy operating at the intersection of technology, culture, and business transformation for visionary organizations worldwide.">
+    <meta name="author" content="Atelier Voss">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://ateliervoss.com">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Atelier Voss — Strategic Design Consultancy">
+    <meta property="og:description" content="Operating at the intersection of technology, culture, and business transformation for visionary organizations.">
+    <meta property="og:url" content="https://ateliervoss.com">
+    <meta property="og:image" content="https://ateliervoss.com/og.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Atelier Voss — Strategic Design Consultancy">
+    <title>Atelier Voss — Strategic Design Consultancy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Atelier Voss","url":"https://ateliervoss.com","description":"Strategic design consultancy at the intersection of technology, culture, and transformation.","foundingDate":"2015","areaServed":"Worldwide"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the engagement model?","acceptedAnswer":{"@type":"Answer","text":"We operate on quarterly retainers and project-based engagements. Every partnership begins with a 3-week immersion phase."}},{"@type":"Question","name":"Which industries do you serve?","acceptedAnswer":{"@type":"Answer","text":"We work across technology, finance, luxury, healthcare, and cultural institutions globally."}}]}</script>
+    <style>
+/* ===========================================
+   Architectural Design Tokens
+   =========================================== */
+:root {
+    --stone: oklch(96% 0.006 70);
+    --paper: oklch(97.5% 0.004 65);
+    --warm-white: oklch(98.5% 0.003 70);
+    --concrete: oklch(93% 0.005 70);
+    --graphite: oklch(20% 0.01 250);
+    --charcoal: oklch(30% 0.008 250);
+    --text: oklch(18% 0.012 250);
+    --text-2: oklch(38% 0.008 250);
+    --text-3: oklch(55% 0.005 250);
+    --text-4: oklch(70% 0.004 60);
+    --copper: oklch(60% 0.12 55);
+    --copper-light: oklch(88% 0.04 55);
+    --copper-dark: oklch(48% 0.1 55);
+    --border: oklch(90% 0.004 70);
+    --border-s: oklch(93% 0.003 70);
+
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+
+    --ts-xs: 0.75rem; --ts-sm: 0.875rem; --ts-base: 1rem; --ts-lg: 1.125rem;
+    --ts-xl: 1.375rem; --ts-2xl: 1.75rem; --ts-3xl: 2.5rem; --ts-4xl: 3.5rem;
+    --ts-5xl: 5rem; --ts-6xl: 7rem; --ts-7xl: 9rem; --ts-8xl: 12rem;
+
+    --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px;
+    --sp-6: 32px; --sp-7: 48px; --sp-8: 64px; --sp-9: 96px; --sp-10: 128px;
+    --sp-11: 180px; --sp-12: 240px;
+
+    --r-sm: 4px; --r-md: 8px; --r-lg: 12px; --r-xl: 20px;
+
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-smooth: cubic-bezier(0.4, 0, 0, 1);
+    --dur-f: 150ms; --dur-m: 400ms; --dur-s: 700ms; --dur-xs: 1200ms;
+}
+
+/* ===========================================
+   Reset
+   =========================================== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+    font-family:var(--sans);font-size:var(--ts-base);line-height:1.6;
+    color:var(--text);background:var(--warm-white);overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;font-optical-sizing:auto;
+}
+body.is-loading{overflow:hidden}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+h1,h2,h3,h4,h5,h6{font-family:var(--serif);font-weight:400;line-height:1.05;text-wrap:balance}
+p{text-wrap:pretty;max-width:60ch}
+ul,ol{list-style:none}
+
+/* ===========================================
+   Architectural Utilities
+   =========================================== */
+.frame{width:100%;max-width:1400px;margin-inline:auto;padding-inline:var(--sp-7)}
+.frame--wide{max-width:1600px}
+.frame--narrow{max-width:900px}
+
+.label{
+    font-family:var(--sans);font-size:10px;font-weight:600;
+    letter-spacing:0.14em;text-transform:uppercase;color:var(--copper);
+}
+.label--dark{color:var(--text-3)}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.divider{width:48px;height:1px;background:var(--copper);opacity:.5}
+
+/* ===========================================
+   Noise & Grain
+   =========================================== */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:.018;mix-blend-mode:multiply}
+
+/* ===========================================
+   Progress
+   =========================================== */
+.progress{position:fixed;top:0;left:0;height:1px;width:0;background:var(--copper);z-index:10001;opacity:.6}
+
+/* ===========================================
+   Loader — Architectural Reveal
+   =========================================== */
+.loader{
+    position:fixed;inset:0;z-index:99999;background:var(--graphite);
+    display:flex;align-items:center;justify-content:center;
+    transition:opacity .8s var(--ease),visibility .8s;
+}
+.loader.done{opacity:0;visibility:hidden;pointer-events:none}
+.loader__text{
+    font-family:var(--serif);font-size:clamp(var(--ts-3xl),5vw,var(--ts-5xl));
+    color:var(--warm-white);font-weight:300;letter-spacing:0.05em;
+    opacity:0;transform:translateY(12px);animation:fadeUp .8s var(--ease) .2s forwards;
+}
+.loader__line{
+    position:absolute;bottom:40%;left:50%;width:0;height:1px;
+    background:var(--copper);transform:translateX(-50%);
+    animation:expandLine 2s var(--ease) .5s forwards;
+}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+@keyframes expandLine{to{width:120px}}
+
+/* ===========================================
+   Navigation — Floating Architectural
+   =========================================== */
+.nav{
+    position:fixed;top:var(--sp-6);left:50%;z-index:1000;
+    transform:translateX(-50%);opacity:0;transition:opacity var(--dur-m) var(--ease);
+}
+.nav--visible{opacity:1}
+.nav__inner{
+    display:flex;align-items:center;gap:var(--sp-7);
+    padding:var(--sp-3) var(--sp-6);
+    background:oklch(98% 0.003 70/.92);
+    border:1px solid var(--border);border-radius:var(--r-xl);
+}
+.nav__logo{font-family:var(--serif);font-size:var(--ts-lg);font-weight:500;letter-spacing:0.02em}
+.nav__links{display:flex;gap:var(--sp-5)}
+.nav__link{font-size:var(--ts-xs);font-weight:500;color:var(--text-3);letter-spacing:0.02em;transition:color var(--dur-f)}
+.nav__link:hover{color:var(--text)}
+.nav__cta{
+    font-size:var(--ts-xs);font-weight:600;letter-spacing:0.02em;
+    padding:var(--sp-2) var(--sp-4);color:var(--copper);
+    border:1px solid var(--copper-light);border-radius:var(--r-sm);
+    transition:all var(--dur-m) var(--ease);
+}
+.nav__cta:hover{background:var(--copper);color:var(--warm-white);border-color:var(--copper)}
+.nav__mob{display:none;width:20px;height:12px;flex-direction:column;justify-content:space-between}
+.nav__mob span{height:1px;background:var(--text);border-radius:1px}
+
+/* ===========================================
+   Section 01 — Arrival (Full-Screen Typography)
+   =========================================== */
+.arrival{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    position:relative;padding:var(--sp-10) 0;text-align:center;
+}
+.arrival__bg-line{
+    position:absolute;top:50%;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,var(--border),transparent);
+    pointer-events:none;
+}
+.arrival__content{position:relative;z-index:2}
+.arrival__label{margin-bottom:var(--sp-6)}
+.arrival__title{
+    font-size:clamp(var(--ts-5xl),10vw,var(--ts-8xl));
+    font-weight:300;letter-spacing:-0.02em;line-height:.9;
+    margin-bottom:var(--sp-7);color:var(--text);
+}
+.arrival__title-line{display:block;overflow:hidden}
+.arrival__title-w{display:inline-block;transform:translateY(110%);animation:slideIn 1.2s var(--ease) forwards}
+.arrival__title-line:nth-child(2) .arrival__title-w{animation-delay:.15s}
+@keyframes slideIn{to{transform:translateY(0)}}
+.arrival__sub{
+    font-family:var(--sans);font-size:var(--ts-lg);color:var(--text-2);
+    max-width:48ch;margin-inline:auto;line-height:1.75;
+    opacity:0;animation:fadeUp .8s var(--ease) .5s forwards;
+}
+.arrival__scroll{
+    position:absolute;bottom:var(--sp-8);left:50%;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:var(--sp-3);
+    opacity:0;animation:fadeUp 1s var(--ease) 1s forwards;
+}
+.arrival__scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--copper),transparent);position:relative;overflow:hidden}
+.arrival__scroll-line::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--copper);animation:scrollPulse 2.5s ease-in-out infinite}
+@keyframes scrollPulse{0%{top:-100%}100%{top:100%}}
+.arrival__scroll-text{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-4)}
+
+/* ===========================================
+   Section 02 — Manifesto (Editorial Split)
+   =========================================== */
+.manifesto{padding:var(--sp-12) 0;position:relative}
+.manifesto__layout{display:grid;grid-template-columns:1fr 1.6fr;gap:var(--sp-10);align-items:start}
+.manifesto__left{position:sticky;top:var(--sp-10)}
+.manifesto__num{font-family:var(--serif);font-size:var(--ts-6xl);color:var(--concrete);font-weight:300;line-height:1;margin-bottom:var(--sp-4)}
+.manifesto__heading{font-size:var(--ts-3xl);font-weight:400;letter-spacing:-0.01em}
+.manifesto__right{}
+.manifesto__text{font-size:var(--ts-xl);color:var(--text-2);line-height:1.9;margin-bottom:var(--sp-7)}
+.manifesto__text strong{color:var(--text);font-weight:500}
+.manifesto__quote{
+    padding:var(--sp-7) 0;border-top:1px solid var(--border);
+    font-family:var(--serif);font-size:var(--ts-2xl);font-style:italic;
+    color:var(--text-2);line-height:1.5;
+}
+.manifesto__cite{display:block;font-style:normal;font-family:var(--sans);font-size:var(--ts-xs);color:var(--text-4);margin-top:var(--sp-4);letter-spacing:0.04em}
+
+/* ===========================================
+   Section 03 — Philosophy (Massive Typography)
+   =========================================== */
+.philosophy{padding:var(--sp-12) 0;background:var(--graphite);color:var(--warm-white)}
+.philosophy__statement{
+    font-family:var(--serif);font-size:clamp(var(--ts-3xl),4.5vw,var(--ts-5xl));
+    font-weight:300;line-height:1.25;letter-spacing:-0.01em;
+    max-width:1100px;
+}
+.philosophy__statement em{font-style:italic;color:var(--copper)}
+.philosophy__principles{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-9);
+    margin-top:var(--sp-11);padding-top:var(--sp-9);
+    border-top:1px solid oklch(30% 0.008 250);
+}
+.philosophy__principle-num{font-family:var(--serif);font-size:var(--ts-4xl);color:oklch(30% 0.01 250);margin-bottom:var(--sp-4)}
+.philosophy__principle-title{font-family:var(--sans);font-size:var(--ts-sm);font-weight:600;letter-spacing:0.02em;margin-bottom:var(--sp-3)}
+.philosophy__principle-text{font-size:var(--ts-sm);color:oklch(65% 0.005 250);line-height:1.8}
+
+/* ===========================================
+   Section 04 — Gallery (Large Image Composition)
+   =========================================== */
+.gallery{padding:var(--sp-12) 0}
+.gallery__header{margin-bottom:var(--sp-9)}
+.gallery__title{font-size:clamp(var(--ts-3xl),4vw,var(--ts-4xl));letter-spacing:-0.01em;margin-bottom:var(--sp-3)}
+.gallery__mosaic{
+    display:grid;grid-template-columns:1.4fr 1fr;grid-template-rows:auto auto;
+    gap:var(--sp-5);
+}
+.gallery__piece{position:relative;overflow:hidden;border-radius:var(--r-lg)}
+.gallery__piece--tall{grid-row:span 2}
+.gallery__piece img{width:100%;height:100%;object-fit:cover;transition:transform var(--dur-s) var(--ease)}
+.gallery__piece:hover img{transform:scale(1.03)}
+.gallery__piece-caption{
+    position:absolute;bottom:var(--sp-5);left:var(--sp-5);
+    font-family:var(--sans);font-size:var(--ts-xs);color:white;
+    letter-spacing:0.04em;text-transform:uppercase;font-weight:500;
+    opacity:0;transform:translateY(8px);transition:all var(--dur-m) var(--ease);
+}
+.gallery__piece:hover .gallery__piece-caption{opacity:1;transform:translateY(0)}
+
+/* ===========================================
+   Section 05 — Transformation Stories
+   =========================================== */
+.stories{padding:var(--sp-12) 0;background:var(--stone)}
+.stories__header{margin-bottom:var(--sp-10);text-align:center}
+.stories__title{font-size:clamp(var(--ts-3xl),4vw,var(--ts-4xl));letter-spacing:-0.01em}
+.story{
+    display:grid;grid-template-columns:1fr 1.2fr;gap:var(--sp-9);
+    align-items:center;padding:var(--sp-9) 0;
+    border-top:1px solid var(--border);
+}
+.story:nth-child(even){grid-template-columns:1.2fr 1fr}
+.story:nth-child(even) .story__image{order:2}
+.story__image{border-radius:var(--r-lg);overflow:hidden;aspect-ratio:3/2}
+.story__image img{width:100%;height:100%;object-fit:cover;transition:transform var(--dur-s) var(--ease)}
+.story:hover .story__image img{transform:scale(1.02)}
+.story__label{margin-bottom:var(--sp-4)}
+.story__title{font-size:var(--ts-2xl);margin-bottom:var(--sp-4);letter-spacing:-0.01em}
+.story__text{font-size:var(--ts-base);color:var(--text-2);line-height:1.8;margin-bottom:var(--sp-6)}
+.story__stats{display:flex;gap:var(--sp-7)}
+.story__stat-val{font-family:var(--serif);font-size:var(--ts-2xl);color:var(--copper)}
+.story__stat-lbl{font-size:var(--ts-xs);color:var(--text-4);margin-top:2px}
+
+/* ===========================================
+   Section 06 — Research Laboratory
+   =========================================== */
+.lab{padding:var(--sp-12) 0}
+.lab__header{margin-bottom:var(--sp-9);display:flex;justify-content:space-between;align-items:flex-end}
+.lab__title{font-size:clamp(var(--ts-3xl),4vw,var(--ts-4xl));letter-spacing:-0.01em}
+.lab__subtitle{font-size:var(--ts-sm);color:var(--text-3);max-width:35ch;text-align:right;line-height:1.7}
+.lab__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-5)}
+.lab__item{padding:var(--sp-7) var(--sp-6);border:1px solid var(--border);border-radius:var(--r-lg);transition:all var(--dur-m) var(--ease)}
+.lab__item:hover{border-color:var(--copper-light);transform:translateY(-4px)}
+.lab__item-label{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);margin-bottom:var(--sp-5)}
+.lab__item-title{font-family:var(--serif);font-size:var(--ts-xl);margin-bottom:var(--sp-3)}
+.lab__item-text{font-size:var(--ts-sm);color:var(--text-3);line-height:1.7}
+
+/* ===========================================
+   Section 07 — Timeline (Architectural)
+   =========================================== */
+.timeline{padding:var(--sp-12) 0;background:var(--graphite);color:var(--warm-white);overflow:hidden}
+.timeline__header{margin-bottom:var(--sp-9)}
+.timeline__title{font-size:clamp(var(--ts-3xl),4vw,var(--ts-4xl));letter-spacing:-0.01em}
+.timeline__track{display:flex;gap:var(--sp-7);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:var(--sp-5)}
+.timeline__track::-webkit-scrollbar{display:none}
+.timeline__node{flex:0 0 300px;scroll-snap-align:start;position:relative;padding-left:var(--sp-6);border-left:1px solid oklch(30% 0.008 250)}
+.timeline__node:hover{border-color:var(--copper)}
+.timeline__year{font-family:var(--serif);font-size:var(--ts-3xl);color:oklch(35% 0.01 250);margin-bottom:var(--sp-4)}
+.timeline__node:hover .timeline__year{color:var(--copper)}
+.timeline__event{font-family:var(--sans);font-size:var(--ts-sm);font-weight:500;margin-bottom:var(--sp-2)}
+.timeline__desc{font-size:var(--ts-sm);color:oklch(60% 0.005 250);line-height:1.7}
+
+/* ===========================================
+   Section 08 — Impact (Floating Numbers)
+   =========================================== */
+.impact{padding:var(--sp-12) 0;text-align:center}
+.impact__title{font-size:clamp(var(--ts-3xl),4vw,var(--ts-4xl));letter-spacing:-0.01em;margin-bottom:var(--sp-10)}
+.impact__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-8)}
+.impact__item{}
+.impact__num{font-family:var(--serif);font-size:clamp(var(--ts-4xl),6vw,var(--ts-5xl));font-weight:300;color:var(--copper);font-variant-numeric:tabular-nums}
+.impact__lbl{font-size:var(--ts-sm);color:var(--text-3);margin-top:var(--sp-2)}
+.impact__sub{font-size:var(--ts-xs);color:var(--text-4);margin-top:var(--sp-1)}
+
+/* ===========================================
+   Section 09 — Client Theatre (Testimonials)
+   =========================================== */
+.theatre{padding:var(--sp-12) 0;background:var(--stone)}
+.theatre__inner{max-width:900px;margin-inline:auto;text-align:center}
+.theatre__quote{
+    font-family:var(--serif);font-size:clamp(var(--ts-2xl),3vw,var(--ts-3xl));
+    font-weight:300;font-style:italic;line-height:1.5;
+    color:var(--text-2);margin-bottom:var(--sp-7);
+}
+.theatre__author{font-family:var(--sans);font-size:var(--ts-sm);font-weight:600;color:var(--text)}
+.theatre__role{font-size:var(--ts-xs);color:var(--text-4);margin-top:var(--sp-1)}
+.theatre__divider{width:40px;height:1px;background:var(--copper);margin:var(--sp-9) auto}
+
+/* ===========================================
+   Section 10 — Recognition (Architectural Grid)
+   =========================================== */
+.recognition{padding:var(--sp-11) 0}
+.recognition__header{margin-bottom:var(--sp-8)}
+.recognition__title{font-size:clamp(var(--ts-3xl),4vw,var(--ts-4xl));letter-spacing:-0.01em}
+.recognition__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--border)}
+.recognition__item{
+    padding:var(--sp-6);text-align:center;
+    border-right:1px solid var(--border);border-bottom:1px solid var(--border);
+    transition:background var(--dur-m);
+}
+.recognition__item:nth-child(4n){border-right:none}
+.recognition__item:nth-last-child(-n+4){border-bottom:none}
+.recognition__item:hover{background:var(--copper-light)}
+.recognition__item-year{font-family:var(--sans);font-size:var(--ts-xs);color:var(--text-4);margin-bottom:var(--sp-2)}
+.recognition__item-title{font-family:var(--serif);font-size:var(--ts-lg);margin-bottom:var(--sp-1)}
+.recognition__item-org{font-size:var(--ts-xs);color:var(--text-3)}
+
+/* ===========================================
+   Section 11 — Technology Pavilion
+   =========================================== */
+.pavilion{padding:var(--sp-11) 0;background:var(--paper)}
+.pavilion__header{margin-bottom:var(--sp-8)}
+.pavilion__title{font-size:clamp(var(--ts-3xl),4vw,var(--ts-4xl));letter-spacing:-0.01em;margin-bottom:var(--sp-3)}
+.pavilion__cols{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-8)}
+.pavilion__col-title{font-size:var(--ts-xs);font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--copper);margin-bottom:var(--sp-4)}
+.pavilion__col-list{display:flex;flex-direction:column;gap:var(--sp-3)}
+.pavilion__col-item{font-size:var(--ts-sm);color:var(--text-2);padding:var(--sp-3) 0;border-bottom:1px solid var(--border-s);transition:color var(--dur-f)}
+.pavilion__col-item:hover{color:var(--copper)}
+
+/* ===========================================
+   Section 12 — Vision (Full-Screen Statement)
+   =========================================== */
+.vision{
+    min-height:80vh;display:flex;align-items:center;justify-content:center;
+    padding:var(--sp-11) 0;text-align:center;position:relative;
+}
+.vision__statement{
+    font-family:var(--serif);font-size:clamp(var(--ts-3xl),5vw,var(--ts-5xl));
+    font-weight:300;line-height:1.2;letter-spacing:-0.01em;
+    max-width:14ch;color:var(--text);
+}
+.vision__statement em{font-style:italic;color:var(--copper)}
+.vision__accent{
+    position:absolute;width:300px;height:300px;border-radius:50%;
+    border:1px solid var(--border);top:50%;left:50%;
+    transform:translate(-50%,-50%);pointer-events:none;opacity:.3;
+}
+
+/* ===========================================
+   Section 13 — Consultation Lounge (Contact)
+   =========================================== */
+.lounge{padding:var(--sp-12) 0;background:var(--graphite);color:var(--warm-white)}
+.lounge__grid{display:grid;grid-template-columns:1.2fr 1fr;gap:var(--sp-10);align-items:center}
+.lounge__title{font-size:clamp(var(--ts-3xl),4vw,var(--ts-4xl));letter-spacing:-0.01em;margin-bottom:var(--sp-5)}
+.lounge__text{font-size:var(--ts-lg);color:oklch(70% 0.005 250);line-height:1.8;margin-bottom:var(--sp-7)}
+.lounge__details{display:flex;flex-direction:column;gap:var(--sp-5)}
+.lounge__detail{display:flex;justify-content:space-between;padding:var(--sp-4) 0;border-bottom:1px solid oklch(25% 0.01 250)}
+.lounge__detail-label{font-size:var(--ts-sm);color:oklch(55% 0.005 250)}
+.lounge__detail-value{font-size:var(--ts-sm);font-weight:500}
+.lounge__cta{
+    display:inline-flex;align-items:center;gap:var(--sp-3);
+    font-size:var(--ts-sm);font-weight:500;padding:var(--sp-4) var(--sp-6);
+    border:1px solid var(--copper);color:var(--copper);border-radius:var(--r-sm);
+    transition:all var(--dur-m) var(--ease);margin-top:var(--sp-7);
+}
+.lounge__cta:hover{background:var(--copper);color:var(--graphite)}
+
+/* ===========================================
+   Section 14 — Architectural Footer
+   =========================================== */
+.footer{padding:var(--sp-9) 0 var(--sp-6);background:var(--graphite);color:oklch(70% 0.005 250);border-top:1px solid oklch(22% 0.01 250)}
+.footer__grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:var(--sp-7);padding-bottom:var(--sp-8)}
+.footer__brand{font-family:var(--serif);font-size:var(--ts-xl);color:var(--warm-white);font-weight:400;letter-spacing:0.02em}
+.footer__brand-text{font-size:var(--ts-sm);color:oklch(55% 0.005 250);line-height:1.7;margin-top:var(--sp-4);max-width:28ch}
+.footer__col-title{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:oklch(45% 0.005 250);margin-bottom:var(--sp-4)}
+.footer__link{display:block;font-size:var(--ts-sm);color:oklch(60% 0.005 250);padding:var(--sp-2) 0;transition:color var(--dur-f)}
+.footer__link:hover{color:var(--warm-white)}
+.footer__bottom{display:flex;align-items:center;justify-content:space-between;padding-top:var(--sp-5);border-top:1px solid oklch(22% 0.01 250);font-size:var(--ts-xs);color:oklch(40% 0.005 250)}
+.footer__legal{display:flex;gap:var(--sp-5)}
+.footer__legal a{color:oklch(45% 0.005 250);transition:color var(--dur-f)}
+.footer__legal a:hover{color:oklch(70% 0.005 250)}
+
+/* ===========================================
+   Reveal System
+   =========================================== */
+.rv{opacity:0;transform:translateY(32px);transition:opacity var(--dur-xs) var(--ease),transform var(--dur-xs) var(--ease)}
+.rv--in{opacity:1;transform:translateY(0)}
+.stg>*{opacity:0;transform:translateY(20px);transition:opacity var(--dur-s) var(--ease),transform var(--dur-s) var(--ease)}
+.stg--in>*{opacity:1;transform:translateY(0)}
+.stg--in>*:nth-child(1){transition-delay:0ms}.stg--in>*:nth-child(2){transition-delay:70ms}
+.stg--in>*:nth-child(3){transition-delay:140ms}.stg--in>*:nth-child(4){transition-delay:210ms}
+.stg--in>*:nth-child(5){transition-delay:280ms}.stg--in>*:nth-child(6){transition-delay:350ms}
+.stg--in>*:nth-child(7){transition-delay:420ms}.stg--in>*:nth-child(8){transition-delay:490ms}
+
+/* ===========================================
+   Responsive
+   =========================================== */
+@media(max-width:1024px){
+    .manifesto__layout{grid-template-columns:1fr;gap:var(--sp-7)}
+    .manifesto__left{position:static}
+    .gallery__mosaic{grid-template-columns:1fr}
+    .gallery__piece--tall{grid-row:span 1}
+    .story,.story:nth-child(even){grid-template-columns:1fr}
+    .story:nth-child(even) .story__image{order:0}
+    .lab__grid{grid-template-columns:1fr 1fr}
+    .impact__grid{grid-template-columns:repeat(2,1fr);gap:var(--sp-6)}
+    .recognition__grid{grid-template-columns:repeat(2,1fr)}
+    .recognition__item:nth-child(2n){border-right:none}
+    .recognition__item:nth-child(4n){border-right:1px solid var(--border)}
+    .pavilion__cols{grid-template-columns:1fr}
+    .lounge__grid{grid-template-columns:1fr}
+    .footer__grid{grid-template-columns:1fr 1fr}
+    .philosophy__principles{grid-template-columns:1fr;gap:var(--sp-6)}
+}
+@media(max-width:768px){
+    :root{--sp-7:32px;--sp-11:120px;--sp-12:160px}
+    .nav__links{display:none}.nav__mob{display:flex}
+    .lab__grid,.recognition__grid{grid-template-columns:1fr}
+    .recognition__item{border-right:none!important}
+    .impact__grid{grid-template-columns:1fr 1fr}
+    .story__stats{flex-wrap:wrap;gap:var(--sp-5)}
+    .lab__header{flex-direction:column;align-items:flex-start;gap:var(--sp-4)}
+    .lab__subtitle{text-align:left}
+    .footer__grid{grid-template-columns:1fr}
+    .footer__bottom{flex-direction:column;gap:var(--sp-3)}
+    .theatre__quote{font-size:var(--ts-2xl)}
+}
+
+/* ===========================================
+   Accessibility & Motion
+   =========================================== */
+:focus-visible{outline:2px solid var(--copper);outline-offset:3px;border-radius:var(--r-sm)}
+@media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;animation-iteration-count:1!important}
+    .rv,.stg>*{opacity:1;transform:none}
+    .arrival__title-w{transform:none}
+    .arrival__sub,.arrival__scroll{opacity:1}
+    .loader{display:none}
+}
+    </style>
+</head>
+<body class="is-loading">
+
+<!-- ========================================= -->
+<!-- Loader — Architectural Reveal -->
+<!-- ========================================= -->
+<div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__text">Atelier Voss</div>
+    <div class="loader__line"></div>
+</div>
+
+<!-- ========================================= -->
+<!-- Grain Texture -->
+<!-- ========================================= -->
+<svg class="grain" aria-hidden="true"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#g)"/></svg>
+
+<!-- ========================================= -->
+<!-- Progress -->
+<!-- ========================================= -->
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<!-- ========================================= -->
+<!-- Navigation -->
+<!-- ========================================= -->
+<header class="nav" id="nav" role="banner">
+    <nav class="nav__inner" aria-label="Primary navigation">
+        <a href="#" class="nav__logo">Atelier Voss</a>
+        <div class="nav__links">
+            <a href="#manifesto" class="nav__link">Philosophy</a>
+            <a href="#gallery" class="nav__link">Work</a>
+            <a href="#lab" class="nav__link">Research</a>
+            <a href="#lounge" class="nav__link">Contact</a>
+            <a href="#lounge" class="nav__cta">Private Consultation</a>
+        </div>
+        <button class="nav__mob" aria-label="Menu"><span></span><span></span></button>
+    </nav>
+</header>
+
+<!-- ========================================= -->
+<!-- Section 01 — Arrival -->
+<!-- ========================================= -->
+<section class="arrival">
+    <div class="arrival__bg-line" aria-hidden="true"></div>
+    <div class="arrival__content">
+        <div class="arrival__label label">Strategic Design Consultancy</div>
+        <h1 class="arrival__title">
+            <span class="arrival__title-line"><span class="arrival__title-w">Where strategy</span></span>
+            <span class="arrival__title-line"><span class="arrival__title-w">becomes form</span></span>
+        </h1>
+        <p class="arrival__sub">We operate at the intersection of technology, culture, and business transformation. For organizations that refuse to be ordinary.</p>
+    </div>
+    <div class="arrival__scroll" aria-hidden="true">
+        <div class="arrival__scroll-line"></div>
+        <span class="arrival__scroll-text">Discover</span>
+    </div>
+</section>
+
+<!-- ========================================= -->
+<!-- Section 02 — Editorial Manifesto -->
+<!-- ========================================= -->
+<section class="manifesto" id="manifesto">
+    <div class="frame">
+        <div class="manifesto__layout">
+            <div class="manifesto__left rv">
+                <div class="manifesto__num">01</div>
+                <h2 class="manifesto__heading">On the nature of<br>meaningful design</h2>
+            </div>
+            <div class="manifesto__right rv">
+                <p class="manifesto__text">We don't believe in design as decoration. We believe in design as <strong>the primary mechanism through which organizations communicate intelligence</strong>. Every interface, every system, every touchpoint is either building trust or eroding it. There is no neutral ground.</p>
+                <p class="manifesto__text">Our practice exists for organizations ready to treat design as a <strong>strategic instrument</strong> rather than a production function. We work slowly, deliberately, and with the kind of attention that can only come from genuine intellectual engagement with a problem.</p>
+                <blockquote class="manifesto__quote">
+                    "The details are not the details. They make the design."
+                    <cite class="manifesto__cite">— Charles Eames</cite>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================= -->
+<!-- Section 03 — Philosophy (Dark, Massive Type) -->
+<!-- ========================================= -->
+<section class="philosophy">
+    <div class="frame">
+        <div class="rv">
+            <div class="label" style="color:var(--copper)">Core Beliefs</div>
+            <h2 class="philosophy__statement" style="margin-top:var(--sp-6)">
+                We hold that <em>precision</em> is kindness, that <em>restraint</em> is confidence, and that the highest form of innovation is knowing exactly what to leave out.
+            </h2>
+        </div>
+        <div class="philosophy__principles stg">
+            <div>
+                <div class="philosophy__principle-num">I</div>
+                <h3 class="philosophy__principle-title">Intellectual Rigor</h3>
+                <p class="philosophy__principle-text">Every design decision emerges from deep understanding of the problem domain. We research before we sketch. We question before we solve.</p>
+            </div>
+            <div>
+                <div class="philosophy__principle-num">II</div>
+                <h3 class="philosophy__principle-title">Material Honesty</h3>
+                <p class="philosophy__principle-text">Digital interfaces have their own materiality. We design with the grain of the medium, never against it. No skeuomorphism. No pretense.</p>
+            </div>
+            <div>
+                <div class="philosophy__principle-num">III</div>
+                <h3 class="philosophy__principle-title">Temporal Awareness</h3>
+                <p class="philosophy__principle-text">Great design ages gracefully. We build systems that grow more coherent over time rather than accumulating debt.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================= -->
+<!-- Section 04 — Gallery (Image Composition) -->
+<!-- ========================================= -->
+<section class="gallery" id="gallery">
+    <div class="frame">
+        <div class="gallery__header rv">
+            <div class="label">Selected Work</div>
+            <h2 class="gallery__title">Recent exhibitions</h2>
+        </div>
+        <div class="gallery__mosaic rv">
+            <div class="gallery__piece gallery__piece--tall">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=1100&fit=crop&q=80" width="800" height="1100" loading="lazy" decoding="async" alt="Minimalist architectural interior with concrete walls and natural light">
+                <span class="gallery__piece-caption">Spatial Systems — 2025</span>
+            </div>
+            <div class="gallery__piece">
+                <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=700&h=450&fit=crop&q=80" width="700" height="450" loading="lazy" decoding="async" alt="Engineering team working on product interface design">
+                <span class="gallery__piece-caption">Clearway Financial — 2024</span>
+            </div>
+            <div class="gallery__piece">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=700&h=450&fit=crop&q=80" width="700" height="450" loading="lazy" decoding="async" alt="Data visualization dashboard with real-time analytics">
+                <span class="gallery__piece-caption">Orbit Analytics — 2025</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================= -->
+<!-- Section 05 — Transformation Stories -->
+<!-- ========================================= -->
+<section class="stories">
+    <div class="frame">
+        <div class="stories__header rv"><div class="label">Case Studies</div><h2 class="stories__title">Transformations</h2></div>
+        <article class="story rv">
+            <div class="story__image"><img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=533&fit=crop&q=80" width="800" height="533" loading="lazy" decoding="async" alt="Financial technology platform interface"></div>
+            <div><div class="story__label label">Financial Infrastructure</div><h3 class="story__title">Reimagining settlement architecture for 4M merchants</h3><p class="story__text">We redesigned Clearway's entire merchant experience: information architecture, interaction model, and visual system across twelve product surfaces. The result fundamentally changed how their market perceives digital payments.</p><div class="story__stats"><div><div class="story__stat-val">-73%</div><div class="story__stat-lbl">Settlement time</div></div><div><div class="story__stat-val">+340%</div><div class="story__stat-lbl">Adoption</div></div><div><div class="story__stat-val">$2.1B</div><div class="story__stat-lbl">Annual volume</div></div></div></div>
+        </article>
+        <article class="story rv">
+            <div class="story__image"><img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&h=533&fit=crop&q=80" width="800" height="533" loading="lazy" decoding="async" alt="Healthcare professional using digital diagnostic system"></div>
+            <div><div class="story__label label">Healthcare Systems</div><h3 class="story__title">Designing clinical confidence at scale</h3><p class="story__text">From founding through profitability, we architected Novu Health's entire patient experience. The challenge: making complex clinical workflows feel simple without losing the precision physicians require.</p><div class="story__stats"><div><div class="story__stat-val">2.1M</div><div class="story__stat-lbl">Patients</div></div><div><div class="story__stat-val">340</div><div class="story__stat-lbl">Clinics</div></div><div><div class="story__stat-val">92%</div><div class="story__stat-lbl">Satisfaction</div></div></div></div>
+        </article>
+    </div>
+</section>
+
+<!-- ========================================= -->
+<!-- Section 06 — Research Laboratory -->
+<!-- ========================================= -->
+<section class="lab" id="lab">
+    <div class="frame">
+        <div class="lab__header rv">
+            <div><div class="label">Research</div><h2 class="lab__title">The laboratory</h2></div>
+            <p class="lab__subtitle">Active investigations into the boundaries of digital experience design.</p>
+        </div>
+        <div class="lab__grid stg">
+            <article class="lab__item"><div class="lab__item-label">Spatial Computing</div><h3 class="lab__item-title">Post-screen interfaces</h3><p class="lab__item-text">Investigating interaction models for environments where the boundary between digital and physical dissolves entirely.</p></article>
+            <article class="lab__item"><div class="lab__item-label">Generative Systems</div><h3 class="lab__item-title">AI as creative material</h3><p class="lab__item-text">Exploring how machine intelligence can serve as a medium rather than a replacement for human creative judgment.</p></article>
+            <article class="lab__item"><div class="lab__item-label">Temporal Design</div><h3 class="lab__item-title">Designing for deep time</h3><p class="lab__item-text">Building systems that become more coherent and valuable as they age rather than accumulating entropy.</p></article>
+            <article class="lab__item"><div class="lab__item-label">Behavioral Ethics</div><h3 class="lab__item-title">Respectful persuasion</h3><p class="lab__item-text">Frameworks for influencing user behavior without manipulation, coercion, or dark patterns of any kind.</p></article>
+            <article class="lab__item"><div class="lab__item-label">Performance Art</div><h3 class="lab__item-title">Sub-100ms experiences</h3><p class="lab__item-text">Pushing the boundaries of perceived performance through predictive loading, edge computation, and optimistic rendering.</p></article>
+            <article class="lab__item"><div class="lab__item-label">Cultural Systems</div><h3 class="lab__item-title">Design across contexts</h3><p class="lab__item-text">How meaning, hierarchy, and interaction expectations shift across cultural boundaries and linguistic frameworks.</p></article>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================= -->
+<!-- Section 07 — Timeline -->
+<!-- ========================================= -->
+<section class="timeline">
+    <div class="frame">
+        <div class="timeline__header rv"><div class="label" style="color:var(--copper)">Evolution</div><h2 class="timeline__title">A decade of deliberate practice</h2></div>
+    </div>
+    <div style="max-width:1600px;margin-inline:auto;padding-inline:var(--sp-7)">
+        <div class="timeline__track">
+            <div class="timeline__node"><div class="timeline__year">2015</div><div class="timeline__event">Founded in Berlin</div><p class="timeline__desc">Two partners. One belief: design should be treated as strategy, not production.</p></div>
+            <div class="timeline__node"><div class="timeline__year">2017</div><div class="timeline__event">First major engagement</div><p class="timeline__desc">Selected by Deutsche Bank to reimagine their private banking digital experience.</p></div>
+            <div class="timeline__node"><div class="timeline__year">2019</div><div class="timeline__event">New York studio opens</div><p class="timeline__desc">Expanded to serve North American clients while maintaining our European sensibility.</p></div>
+            <div class="timeline__node"><div class="timeline__year">2021</div><div class="timeline__event">Research practice established</div><p class="timeline__desc">Formalized our R&D function. Published first papers on temporal design systems.</p></div>
+            <div class="timeline__node"><div class="timeline__year">2023</div><div class="timeline__event">Tokyo collaboration</div><p class="timeline__desc">Partnership with Muji design team on cross-cultural experience frameworks.</p></div>
+            <div class="timeline__node"><div class="timeline__year">2025</div><div class="timeline__event">AI practice launched</div><p class="timeline__desc">Dedicated practice for organizations building AI-native products with integrity.</p></div>
+            <div class="timeline__node"><div class="timeline__year">2026</div><div class="timeline__event">Today</div><p class="timeline__desc">28 practitioners. Three studios. One uncompromising commitment to meaningful work.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================= -->
+<!-- Section 08 — Impact Numbers -->
+<!-- ========================================= -->
+<section class="impact">
+    <div class="frame">
+        <div class="rv"><div class="label label--dark" style="text-align:center;display:block;margin-bottom:var(--sp-5)">Measured Impact</div><h2 class="impact__title">Numbers that matter</h2></div>
+        <div class="impact__grid stg">
+            <div class="impact__item"><div class="impact__num"><span class="counter" data-target="84">0</span></div><div class="impact__lbl">Engagements completed</div><div class="impact__sub">Since founding</div></div>
+            <div class="impact__item"><div class="impact__num"><span class="counter" data-target="23">0</span></div><div class="impact__lbl">Countries served</div><div class="impact__sub">Three continents</div></div>
+            <div class="impact__item"><div class="impact__num"><span class="counter" data-target="97">0</span>%</div><div class="impact__lbl">Client retention</div><div class="impact__sub">Return engagements</div></div>
+            <div class="impact__item"><div class="impact__num"><span class="counter" data-target="11">0</span></div><div class="impact__lbl">Years of practice</div><div class="impact__sub">Deliberate growth</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================= -->
+<!-- Section 09 — Client Theatre -->
+<!-- ========================================= -->
+<section class="theatre">
+    <div class="frame">
+        <div class="theatre__inner rv">
+            <div class="label" style="margin-bottom:var(--sp-7)">Client Perspective</div>
+            <blockquote class="theatre__quote">"Atelier Voss operates differently from every agency I've worked with. They think in decades, not sprints. The system they built for us has only become more coherent and valuable as we've grown. That's rare."</blockquote>
+            <div class="theatre__author">Helena Richter</div>
+            <div class="theatre__role">Chief Digital Officer, Clearway Financial</div>
+            <div class="theatre__divider" aria-hidden="true"></div>
+            <blockquote class="theatre__quote">"They challenged every assumption we brought to the table. It was uncomfortable at first. Then we realized that's exactly what we were paying for: the courage to be right rather than agreeable."</blockquote>
+            <div class="theatre__author">Dr. Marcus Webb</div>
+            <div class="theatre__role">Founder, Novu Health</div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================= -->
+<!-- Section 10 — Recognition -->
+<!-- ========================================= -->
+<section class="recognition">
+    <div class="frame">
+        <div class="recognition__header rv"><div class="label">Recognition</div><h2 class="recognition__title">Selected acknowledgements</h2></div>
+        <div class="recognition__grid stg">
+            <div class="recognition__item"><div class="recognition__item-year">2025</div><h3 class="recognition__item-title">Grand Prix</h3><div class="recognition__item-org">European Design Awards</div></div>
+            <div class="recognition__item"><div class="recognition__item-year">2025</div><h3 class="recognition__item-title">Studio of the Year</h3><div class="recognition__item-org">Awwwards</div></div>
+            <div class="recognition__item"><div class="recognition__item-year">2024</div><h3 class="recognition__item-title">Best Digital Experience</h3><div class="recognition__item-org">D&AD</div></div>
+            <div class="recognition__item"><div class="recognition__item-year">2024</div><h3 class="recognition__item-title">Innovation Award</h3><div class="recognition__item-org">IF Design</div></div>
+            <div class="recognition__item"><div class="recognition__item-year">2023</div><h3 class="recognition__item-title">Site of the Year</h3><div class="recognition__item-org">CSS Design Awards</div></div>
+            <div class="recognition__item"><div class="recognition__item-year">2023</div><h3 class="recognition__item-title">Excellence in UX</h3><div class="recognition__item-org">Red Dot</div></div>
+            <div class="recognition__item"><div class="recognition__item-year">2022</div><h3 class="recognition__item-title">Best Interface</h3><div class="recognition__item-org">Webby Awards</div></div>
+            <div class="recognition__item"><div class="recognition__item-year">2022</div><h3 class="recognition__item-title">Cultural Impact</h3><div class="recognition__item-org">Fast Company</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================= -->
+<!-- Section 11 — Technology Pavilion -->
+<!-- ========================================= -->
+<section class="pavilion">
+    <div class="frame">
+        <div class="pavilion__header rv"><div class="label">Capabilities</div><h2 class="pavilion__title">Technical repertoire</h2></div>
+        <div class="pavilion__cols rv">
+            <div><div class="pavilion__col-title">Strategy</div><div class="pavilion__col-list"><span class="pavilion__col-item">Product Strategy</span><span class="pavilion__col-item">Information Architecture</span><span class="pavilion__col-item">User Research</span><span class="pavilion__col-item">Service Design</span><span class="pavilion__col-item">Brand Positioning</span></div></div>
+            <div><div class="pavilion__col-title">Design</div><div class="pavilion__col-list"><span class="pavilion__col-item">Experience Design</span><span class="pavilion__col-item">Visual Systems</span><span class="pavilion__col-item">Interaction Design</span><span class="pavilion__col-item">Motion Design</span><span class="pavilion__col-item">Design Systems</span></div></div>
+            <div><div class="pavilion__col-title">Engineering</div><div class="pavilion__col-list"><span class="pavilion__col-item">React / Next.js</span><span class="pavilion__col-item">Platform Architecture</span><span class="pavilion__col-item">Performance Engineering</span><span class="pavilion__col-item">AI Integration</span><span class="pavilion__col-item">Cloud Infrastructure</span></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================= -->
+<!-- Section 12 — Vision Statement -->
+<!-- ========================================= -->
+<section class="vision">
+    <div class="vision__accent" aria-hidden="true"></div>
+    <div class="frame">
+        <h2 class="vision__statement rv">The future belongs to organizations that <em>design with intention</em></h2>
+    </div>
+</section>
+
+<!-- ========================================= -->
+<!-- Section 13 — Consultation Lounge -->
+<!-- ========================================= -->
+<section class="lounge" id="lounge">
+    <div class="frame">
+        <div class="lounge__grid rv">
+            <div>
+                <div class="label" style="color:var(--copper);margin-bottom:var(--sp-5)">Private Consultation</div>
+                <h2 class="lounge__title">Begin a conversation</h2>
+                <p class="lounge__text">We accept six new engagements per year. Each begins with a private consultation to understand your organization, your ambition, and whether we're the right partner for the work ahead.</p>
+                <a href="mailto:studio@ateliervoss.com" class="lounge__cta">Request Consultation →</a>
+            </div>
+            <div class="lounge__details">
+                <div class="lounge__detail"><span class="lounge__detail-label">Email</span><span class="lounge__detail-value">studio@ateliervoss.com</span></div>
+                <div class="lounge__detail"><span class="lounge__detail-label">Response</span><span class="lounge__detail-value">Within 48 hours</span></div>
+                <div class="lounge__detail"><span class="lounge__detail-label">Berlin Studio</span><span class="lounge__detail-value">Linienstraße 40, 10119</span></div>
+                <div class="lounge__detail"><span class="lounge__detail-label">New York Studio</span><span class="lounge__detail-value">85 Delancey St, 10002</span></div>
+                <div class="lounge__detail"><span class="lounge__detail-label">Availability</span><span class="lounge__detail-value">Q1 2027</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================= -->
+<!-- Architectural Footer -->
+<!-- ========================================= -->
+<footer class="footer" role="contentinfo">
+    <div class="frame">
+        <div class="footer__grid">
+            <div><div class="footer__brand">Atelier Voss</div><p class="footer__brand-text">Strategic design consultancy operating at the intersection of technology, culture, and business transformation. Berlin. New York.</p></div>
+            <div><h3 class="footer__col-title">Practice</h3><a href="#" class="footer__link">Philosophy</a><a href="#" class="footer__link">Work</a><a href="#" class="footer__link">Research</a><a href="#" class="footer__link">Team</a><a href="#" class="footer__link">Careers</a></div>
+            <div><h3 class="footer__col-title">Services</h3><a href="#" class="footer__link">Product Strategy</a><a href="#" class="footer__link">Experience Design</a><a href="#" class="footer__link">Design Engineering</a><a href="#" class="footer__link">Brand Systems</a></div>
+            <div><h3 class="footer__col-title">Connect</h3><a href="#" class="footer__link">LinkedIn</a><a href="#" class="footer__link">Twitter/X</a><a href="#" class="footer__link">Dribbble</a><a href="#" class="footer__link">Are.na</a></div>
+        </div>
+        <div class="footer__bottom">
+            <span>&copy; 2026 Atelier Voss GmbH. All rights reserved.</span>
+            <div class="footer__legal"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Imprint</a></div>
+        </div>
+    </div>
+</footer>
+
+<script>
+// ===========================================
+// Loader
+// ===========================================
+(function(){
+    const loader=document.getElementById('loader');
+    const nav=document.getElementById('nav');
+    setTimeout(()=>{loader.classList.add('done');document.body.classList.remove('is-loading');nav.classList.add('nav--visible')},2600);
+})();
+
+// ===========================================
+// Scroll Progress
+// ===========================================
+const prog=document.getElementById('progress');
+let raf=null;
+window.addEventListener('scroll',()=>{
+    if(raf)return;
+    raf=requestAnimationFrame(()=>{
+        prog.style.width=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100)+'%';
+        raf=null;
+    });
+},{passive:true});
+
+// ===========================================
+// Reveal (IntersectionObserver)
+// ===========================================
+const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+        if(e.isIntersecting){
+            e.target.classList.add(e.target.classList.contains('rv')?'rv--in':'stg--in');
+            obs.unobserve(e.target);
+        }
+    });
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv,.stg').forEach(el=>obs.observe(el));
+
+// ===========================================
+// Counter Animation
+// ===========================================
+const cObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+        if(!e.isIntersecting)return;
+        const el=e.target,target=+el.dataset.target,start=performance.now(),dur=2200;
+        (function tick(now){
+            const p=Math.min((now-start)/dur,1);
+            el.textContent=Math.round((1-Math.pow(1-p,4))*target);
+            if(p<1)requestAnimationFrame(tick);
+        })(start);
+        cObs.unobserve(el);
+    });
+},{threshold:0.5});
+document.querySelectorAll('.counter').forEach(c=>cObs.observe(c));
+
+// ===========================================
+// Smooth Anchors
+// ===========================================
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',function(e){
+        const h=this.getAttribute('href');if(h==='#')return;
+        e.preventDefault();const t=document.querySelector(h);
+        if(t)window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-80,behavior:'smooth'});
+    });
+});
+</script>
+</body>
+</html>

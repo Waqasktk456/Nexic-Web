@@ -1,0 +1,2743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Design-ui pages are single compositions, so the whole body is editable.
+    function markEditable() {
+        document.body.classList.add('artifact-editable');
+    }
+
+    // Credit badge with idle-fade. Hover devices only.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        credit.innerHTML = '\u{1F49C} CREATE BY NEXIC';
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+
+    function init() {
+        markEditable();
+        initChromeUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
+</script>
+<!-- /skill:chrome -->
+<!-- skill:libraries -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js" integrity="sha384-XcdcwHqIPULERb2yDEM4R0XaQKU3YnDsrTmjACBZyfdVVqjh6xQ4/DCMd7XLcA6Y" crossorigin="anonymous"></script>
+<!-- /skill:libraries -->
+  <!-- Meta Foundation -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aurix OS | Enterprise AI Infrastructure for the Next Decade</title>
+  <meta name="description" content="Aurix OS is the enterprise AI infrastructure platform trusted by startups, unicorns, and global organizations to orchestrate intelligence, automation, and secure scale." />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0d1017" />
+  <link rel="canonical" href="https://example.com/aurix-os" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Aurix OS | Enterprise AI Infrastructure for the Next Decade" />
+  <meta property="og:description" content="A premium enterprise AI platform that turns fragmented systems into orchestrated intelligence." />
+  <meta property="og:url" content="https://example.com/aurix-os" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80" />
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Aurix OS | Enterprise AI Infrastructure for the Next Decade" />
+  <meta name="twitter:description" content="A premium enterprise AI platform that turns fragmented systems into orchestrated intelligence." />
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80" />
+
+  <!-- Performance Hint -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+  <!-- Schema Ready -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Aurix OS",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "Enterprise AI infrastructure platform for automation, orchestration, analytics and secure scale.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <style>
+    /* Design Tokens */
+    :root {
+      --bg: oklch(11.5% 0.014 262);
+      --bg-soft: oklch(15.5% 0.016 258);
+      --bg-elevated: oklch(20.5% 0.018 258);
+      --surface-line: oklch(100% 0 0 / 0.08);
+      --surface-line-strong: oklch(100% 0 0 / 0.16);
+      --text: oklch(92% 0.01 255);
+      --text-soft: oklch(75% 0.014 255);
+      --text-faint: oklch(61% 0.012 255);
+      --indigo: oklch(66% 0.2 282);
+      --cyan: oklch(78% 0.15 212);
+      --emerald: oklch(79% 0.14 168);
+      --gold: oklch(83% 0.12 92);
+      --violet-deep: oklch(46% 0.16 289);
+      --danger: oklch(68% 0.18 24);
+      --shadow-ambient: 0 30px 80px rgba(3, 8, 20, 0.42);
+      --shadow-soft: 0 16px 40px rgba(3, 8, 20, 0.26);
+      --radius-xs: 12px;
+      --radius-sm: 20px;
+      --radius-md: 28px;
+      --radius-lg: 42px;
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.5rem;
+      --space-6: 2rem;
+      --space-7: 3rem;
+      --space-8: 4rem;
+      --space-9: 6rem;
+      --space-10: 8rem;
+      --space-11: 12rem;
+      --max-width: 1600px;
+      --line: 1px solid var(--surface-line);
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* Base Reset */
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Manrope", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(98, 76, 255, 0.22), transparent 0 26%),
+        radial-gradient(circle at 85% 15%, rgba(53, 203, 255, 0.17), transparent 0 22%),
+        radial-gradient(circle at 70% 78%, rgba(46, 197, 143, 0.12), transparent 0 20%),
+        linear-gradient(180deg, oklch(11% 0.015 262), oklch(10% 0.01 260) 26%, oklch(12% 0.012 258) 60%, oklch(9.5% 0.01 255));
+      color: var(--text);
+      line-height: 1.58;
+      letter-spacing: -0.01em;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+
+    /* Atmospheric Layers */
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    body::before {
+      background:
+        linear-gradient(115deg, rgba(255,255,255,0.05), transparent 22%, transparent 78%, rgba(255,255,255,0.03)),
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,0.06), transparent 32%);
+      mix-blend-mode: screen;
+      opacity: 0.65;
+    }
+
+    body::after {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 120px 120px;
+      mask-image: radial-gradient(circle at center, black 42%, transparent 88%);
+      opacity: 0.18;
+    }
+
+    /* Typography */
+    h1, h2, h3, p { margin: 0; }
+    h1, h2, h3 { text-wrap: balance; }
+    p { text-wrap: pretty; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.55rem 0.9rem;
+      border: var(--line);
+      border-radius: 999px;
+      font-size: 0.74rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--cyan), rgba(255,255,255,0.2));
+      box-shadow: 0 0 18px rgba(78, 207, 255, 0.5);
+    }
+
+    .display {
+      font-size: clamp(4rem, 9vw, 9.5rem);
+      line-height: 0.92;
+      font-weight: 800;
+      letter-spacing: -0.06em;
+      max-width: 11ch;
+    }
+
+    .display em {
+      font-family: "Instrument Serif", serif;
+      font-style: italic;
+      font-weight: 400;
+      color: oklch(88% 0.06 91);
+      letter-spacing: -0.03em;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 4.75rem);
+      line-height: 0.98;
+      font-weight: 750;
+      letter-spacing: -0.05em;
+      max-width: 11ch;
+    }
+
+    .lede {
+      font-size: clamp(1.05rem, 1.7vw, 1.3rem);
+      color: var(--text-soft);
+      max-width: 56ch;
+    }
+
+    .tiny {
+      font-size: 0.85rem;
+      color: var(--text-faint);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* Shared Layout */
+    .site-shell {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .nav-wrap,
+    .section-inner,
+    .footer-inner {
+      width: min(calc(100% - 3rem), var(--max-width));
+      margin-inline: auto;
+    }
+
+    section {
+      position: relative;
+      padding: var(--space-10) 0;
+    }
+
+    section.compact {
+      padding: var(--space-9) 0;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+
+    .stack-4 > * + * { margin-top: var(--space-4); }
+    .stack-5 > * + * { margin-top: var(--space-5); }
+    .stack-6 > * + * { margin-top: var(--space-6); }
+    .stack-7 > * + * { margin-top: var(--space-7); }
+
+    /* Navigation */
+    .site-nav {
+      position: sticky;
+      top: 1rem;
+      z-index: 30;
+      padding-top: 1rem;
+    }
+
+    .nav-bar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem 1.1rem;
+      border: var(--line);
+      border-radius: 999px;
+      background: rgba(14, 18, 28, 0.62);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-mark {
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 0.85rem;
+      position: relative;
+      background: conic-gradient(from 190deg, rgba(91, 112, 255, 0.95), rgba(74, 230, 255, 0.9), rgba(129, 255, 214, 0.75), rgba(91, 112, 255, 0.95));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 0 22px rgba(76, 193, 255, 0.18);
+      overflow: hidden;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 0.42rem;
+      border-radius: 0.6rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      transform: rotate(8deg);
+    }
+
+    .brand-mark::after {
+      inset: 0.8rem;
+      transform: rotate(-10deg);
+      background: rgba(8,10,18,0.52);
+    }
+
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.4rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a,
+    .footer-links a {
+      color: var(--text-soft);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 180ms var(--ease-out-expo);
+    }
+
+    .nav-links a:hover,
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    /* Buttons */
+    .cta-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-height: 3.35rem;
+      padding: 0 1.25rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      transition: transform 180ms var(--ease-out-quart), box-shadow 180ms var(--ease-out-quart), border-color 180ms var(--ease-out-quart), background 180ms var(--ease-out-quart);
+      will-change: transform;
+    }
+
+    .btn:focus-visible {
+      outline: 3px solid rgba(113, 217, 255, 0.65);
+      outline-offset: 4px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, rgba(82, 97, 255, 0.96), rgba(61, 214, 255, 0.95));
+      box-shadow: 0 22px 60px rgba(55, 113, 255, 0.26);
+    }
+
+    .btn-secondary {
+      border-color: var(--surface-line-strong);
+      background: rgba(255,255,255,0.02);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 28px 60px rgba(8, 12, 24, 0.42);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding-top: 7rem;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.06fr) minmax(400px, 0.94fr);
+      gap: clamp(2rem, 6vw, 6rem);
+      align-items: center;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-copy .lede {
+      max-width: 52ch;
+    }
+
+    .hero-aside {
+      position: relative;
+      min-height: 46rem;
+      display: grid;
+      place-items: center;
+    }
+
+    .orbital-stage {
+      position: relative;
+      width: min(100%, 42rem);
+      aspect-ratio: 0.95;
+      border-radius: 3rem;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 40% 38%, rgba(141, 108, 255, 0.26), transparent 0 24%),
+        radial-gradient(circle at 72% 30%, rgba(92, 219, 255, 0.18), transparent 0 18%),
+        radial-gradient(circle at 70% 72%, rgba(53, 201, 158, 0.12), transparent 0 18%),
+        linear-gradient(155deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow-ambient);
+    }
+
+    .orbital-stage::before {
+      content: "";
+      position: absolute;
+      inset: 1.25rem;
+      border-radius: 2.5rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      mask: linear-gradient(white, transparent 70%);
+    }
+
+    .constellation,
+    .constellation::before,
+    .constellation::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+      background-repeat: no-repeat;
+    }
+
+    .constellation {
+      background-image:
+        radial-gradient(circle at 20% 22%, rgba(255,255,255,0.8) 0 1px, transparent 2px),
+        radial-gradient(circle at 62% 18%, rgba(255,255,255,0.65) 0 1px, transparent 2px),
+        radial-gradient(circle at 72% 42%, rgba(255,255,255,0.58) 0 1px, transparent 2px),
+        radial-gradient(circle at 30% 64%, rgba(255,255,255,0.55) 0 1px, transparent 2px),
+        radial-gradient(circle at 58% 72%, rgba(255,255,255,0.44) 0 1px, transparent 2px),
+        radial-gradient(circle at 80% 72%, rgba(255,255,255,0.68) 0 1px, transparent 2px);
+      opacity: 0.8;
+    }
+
+    .constellation::before {
+      background:
+        linear-gradient(120deg, transparent 22%, rgba(255,255,255,0.08) 22.4%, transparent 23%),
+        linear-gradient(180deg, transparent 43%, rgba(255,255,255,0.08) 43.4%, transparent 44%),
+        linear-gradient(65deg, transparent 61%, rgba(255,255,255,0.08) 61.4%, transparent 62%);
+      opacity: 0.5;
+    }
+
+    .halo-ring,
+    .data-plane,
+    .signal-core,
+    .floating-chip,
+    .mini-panel {
+      position: absolute;
+    }
+
+    .halo-ring {
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: inset 0 0 60px rgba(255,255,255,0.02);
+    }
+
+    .ring-1 { width: 76%; height: 76%; top: 12%; left: 12%; }
+    .ring-2 { width: 54%; height: 54%; top: 23%; left: 23%; }
+    .ring-3 { width: 30%; height: 30%; top: 35%; left: 35%; }
+
+    .signal-core {
+      inset: 50% auto auto 50%;
+      width: 10rem;
+      height: 10rem;
+      transform: translate(-50%, -50%);
+      border-radius: 2.5rem;
+      background:
+        radial-gradient(circle at 35% 35%, rgba(255,255,255,0.28), transparent 0 28%),
+        linear-gradient(145deg, rgba(58, 87, 255, 0.95), rgba(91, 232, 255, 0.86));
+      box-shadow: 0 0 90px rgba(73, 148, 255, 0.34), inset 0 1px 0 rgba(255,255,255,0.22);
+      display: grid;
+      place-items: center;
+    }
+
+    .signal-core::before,
+    .signal-core::after {
+      content: "";
+      position: absolute;
+      border-radius: 1.8rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      inset: 1rem;
+    }
+
+    .signal-core::after {
+      inset: 1.9rem;
+      border-radius: 1.2rem;
+      background: rgba(8, 10, 18, 0.42);
+    }
+
+    .signal-core span {
+      position: relative;
+      z-index: 1;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.06em;
+    }
+
+    .data-plane {
+      width: 15rem;
+      height: 9rem;
+      border-radius: 1.6rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015));
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .data-plane::before {
+      content: "";
+      position: absolute;
+      inset: 1rem;
+      border-radius: 1rem;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.1), transparent),
+        linear-gradient(90deg, rgba(91, 112, 255, 0.3), rgba(61, 214, 255, 0.2));
+      mask: linear-gradient(180deg, rgba(0,0,0,0.9), transparent 75%);
+    }
+
+    .plane-a { top: 12%; right: 4%; transform: rotate(8deg); }
+    .plane-b { bottom: 13%; left: 6%; transform: rotate(-9deg); width: 13rem; }
+
+    .floating-chip {
+      display: grid;
+      gap: 0.4rem;
+      padding: 1rem 1.05rem;
+      min-width: 11rem;
+      border-radius: 1.2rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(14, 18, 28, 0.7);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .chip-a { left: 5%; top: 16%; }
+    .chip-b { right: 8%; bottom: 18%; }
+    .chip-c { left: 16%; bottom: 28%; min-width: 9.5rem; }
+
+    .mini-panel {
+      right: 10%; top: 44%; width: 13rem; padding: 1rem; border-radius: 1.4rem;
+      border: 1px solid rgba(255,255,255,0.08); background: rgba(13, 17, 26, 0.75); backdrop-filter: blur(16px);
+    }
+
+    .mini-bars {
+      display: grid;
+      gap: 0.65rem;
+      margin-top: 0.9rem;
+    }
+
+    .mini-bars span {
+      display: block;
+      height: 0.55rem;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(84, 107, 255, 0.82), rgba(77, 214, 255, 0.82));
+    }
+
+    .mini-bars span:nth-child(2) { width: 78%; }
+    .mini-bars span:nth-child(3) { width: 62%; }
+
+    /* Marquee Ribbon */
+    .ribbon {
+      position: relative;
+      overflow: hidden;
+      padding: 1.15rem 0;
+      border-block: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      backdrop-filter: blur(12px);
+    }
+
+    .ribbon-track {
+      display: flex;
+      gap: 3rem;
+      width: max-content;
+      animation: ribbon 28s linear infinite;
+      padding-left: 2rem;
+    }
+
+    .ribbon-item {
+      font-size: 0.92rem;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      white-space: nowrap;
+    }
+
+    @keyframes ribbon {
+      to { transform: translateX(-50%); }
+    }
+
+    /* Section Specific Surfaces */
+    .lens-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: var(--space-7);
+      align-items: stretch;
+    }
+
+    .viz-canvas,
+    .panel-shell,
+    .security-shell,
+    .roi-shell,
+    .pricing-shell,
+    .faq-shell {
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+      box-shadow: var(--shadow-ambient);
+      overflow: hidden;
+    }
+
+    /* AI Visualization */
+    .viz-canvas {
+      min-height: 38rem;
+      padding: 2rem;
+      display: grid;
+      align-items: end;
+    }
+
+    .network-svg {
+      width: 100%;
+      height: 100%;
+      min-height: 32rem;
+    }
+
+    .signal-caption {
+      position: absolute;
+      right: 2rem;
+      bottom: 2rem;
+      width: min(18rem, 40%);
+      padding: 1.1rem;
+      border-radius: 1.4rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(10, 13, 21, 0.72);
+      backdrop-filter: blur(12px);
+    }
+
+    /* Ecosystem */
+    .ecosystem-layout {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: var(--space-8);
+      align-items: center;
+    }
+
+    .orbit-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 1.1rem;
+    }
+
+    .orbit-tile {
+      min-height: 14rem;
+      border-radius: 2rem;
+      padding: 1.4rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.08), transparent 34%),
+        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .orbit-tile:nth-child(1) { transform: translateY(2rem); }
+    .orbit-tile:nth-child(2) { transform: translateY(-1rem); }
+    .orbit-tile:nth-child(3) { transform: translateY(1rem); }
+    .orbit-tile:nth-child(4) { transform: translateY(-2rem); }
+
+    .orbit-tile::after {
+      content: "";
+      position: absolute;
+      width: 9rem;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      right: -2rem;
+      bottom: -2rem;
+      background: radial-gradient(circle, rgba(86, 124, 255, 0.35), transparent 70%);
+      filter: blur(10px);
+    }
+
+    /* Feature Matrix */
+    .matrix-layout {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: var(--space-7);
+      align-items: start;
+    }
+
+    .matrix-board {
+      padding: 2rem;
+      display: grid;
+      gap: 1rem;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .matrix-row {
+      display: grid;
+      grid-template-columns: 1.1fr repeat(4, 0.7fr);
+      gap: 0.75rem;
+      align-items: center;
+      padding: 0.95rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .matrix-row:last-child { border-bottom: 0; }
+
+    .dot {
+      width: 0.8rem;
+      height: 0.8rem;
+      border-radius: 50%;
+      justify-self: center;
+      background: radial-gradient(circle, var(--cyan), rgba(84, 220, 255, 0.2));
+      box-shadow: 0 0 16px rgba(84, 220, 255, 0.35);
+    }
+
+    .dot.dim {
+      background: rgba(255,255,255,0.12);
+      box-shadow: none;
+    }
+
+    /* Workflow Spine */
+    .workflow-spine {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+      align-items: end;
+    }
+
+    .workflow-step {
+      position: relative;
+      padding: 1.4rem 1rem 1.2rem;
+      min-height: 16rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .workflow-step:nth-child(odd) { transform: translateY(2rem); }
+    .workflow-step::before {
+      content: attr(data-step);
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+
+    /* Timeline */
+    .timeline-shell {
+      position: relative;
+      display: grid;
+      gap: 1.25rem;
+      margin-top: var(--space-7);
+    }
+
+    .timeline-shell::before {
+      content: "";
+      position: absolute;
+      left: calc(50% - 0.5px);
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.18), transparent);
+    }
+
+    .timeline-node {
+      display: grid;
+      grid-template-columns: 1fr 6rem 1fr;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .timeline-node:nth-child(even) .timeline-copy {
+      grid-column: 3;
+    }
+
+    .timeline-node:nth-child(even) .timeline-spacer {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .timeline-pin {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      margin: 0 auto;
+      background: radial-gradient(circle, var(--gold), rgba(255,255,255,0.2));
+      box-shadow: 0 0 24px rgba(255, 214, 100, 0.35);
+    }
+
+    .timeline-copy {
+      padding: 1.3rem 1.4rem;
+      border-radius: 1.6rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.025);
+    }
+
+    /* Problem Transformation */
+    .transformation-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.1rem;
+      margin-top: var(--space-7);
+    }
+
+    .transformation-pane {
+      border-radius: 2rem;
+      padding: 1.6rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      min-height: 18rem;
+    }
+
+    .transformation-pane.before {
+      background: linear-gradient(180deg, rgba(255,88,88,0.08), rgba(255,255,255,0.02));
+    }
+
+    .transformation-pane.bridge {
+      background: linear-gradient(180deg, rgba(93,112,255,0.12), rgba(255,255,255,0.015));
+    }
+
+    .transformation-pane.after {
+      background: linear-gradient(180deg, rgba(55,203,162,0.1), rgba(255,255,255,0.02));
+    }
+
+    /* Integrations Universe */
+    .universe-shell {
+      position: relative;
+      min-height: 42rem;
+      border-radius: 3rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(91, 112, 255, 0.16), transparent 0 14%),
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    }
+
+    .universe-center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 12rem;
+      height: 12rem;
+      border-radius: 2.5rem;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, rgba(80, 95, 255, 0.96), rgba(44, 209, 255, 0.88));
+      box-shadow: 0 0 90px rgba(79, 116, 255, 0.34);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .planet {
+      position: absolute;
+      width: 9rem;
+      min-height: 5rem;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+      border-radius: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(10, 14, 23, 0.8);
+      backdrop-filter: blur(12px);
+    }
+
+    /* Dashboard */
+    .dashboard-shell {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 1.1rem;
+      padding: 1.2rem;
+      border-radius: 2.6rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
+      box-shadow: var(--shadow-ambient);
+    }
+
+    .dashboard-main,
+    .dashboard-side {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .slab {
+      border-radius: 1.7rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.025);
+      padding: 1.2rem;
+      overflow: hidden;
+    }
+
+    .chart-shell {
+      height: 22rem;
+      position: relative;
+    }
+
+    /* Product Architecture */
+    .architecture-grid {
+      display: grid;
+      grid-template-columns: 0.75fr 1.25fr;
+      gap: var(--space-7);
+      align-items: center;
+    }
+
+    .architecture-map {
+      position: relative;
+      min-height: 34rem;
+      border-radius: 2.5rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    }
+
+    .arch-layer {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(80%, 34rem);
+      padding: 1rem 1.2rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 1.35rem;
+      background: rgba(10, 14, 22, 0.82);
+      backdrop-filter: blur(14px);
+      text-align: center;
+    }
+
+    /* Automation Journey */
+    .journey-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: var(--space-7);
+    }
+
+    .journey-card {
+      border-radius: 2rem;
+      padding: 1.4rem;
+      min-height: 17rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02));
+      position: relative;
+    }
+
+    .journey-card::after {
+      content: "";
+      position: absolute;
+      inset: auto 1.4rem 1.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(76, 108, 255, 0.85), rgba(70, 219, 255, 0.78), rgba(62, 206, 155, 0.72));
+    }
+
+    /* Intelligence Engine */
+    .engine-shell {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: var(--space-7);
+      align-items: center;
+    }
+
+    .engine-core {
+      min-height: 30rem;
+      position: relative;
+      border-radius: 50%;
+      aspect-ratio: 1;
+      max-width: 34rem;
+      margin-inline: auto;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        radial-gradient(circle at center, rgba(89, 111, 255, 0.32), transparent 0 24%),
+        radial-gradient(circle at center, rgba(53, 214, 255, 0.14), transparent 0 46%),
+        rgba(255,255,255,0.02);
+      box-shadow: var(--shadow-ambient);
+    }
+
+    .engine-core .ring-1,
+    .engine-core .ring-2,
+    .engine-core .ring-3 {
+      inset: auto;
+    }
+
+    .engine-tag {
+      position: absolute;
+      padding: 0.8rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(10, 14, 22, 0.74);
+      backdrop-filter: blur(12px);
+    }
+
+    /* Customer Success */
+    .success-path {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: var(--space-8);
+      align-items: center;
+    }
+
+    .path-rail {
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    .path-stop {
+      padding: 1.3rem 1.4rem;
+      border-radius: 1.7rem;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* Stats */
+    .stats-cloud {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 1fr;
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .stat-monolith,
+    .stat-column {
+      border-radius: 2rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+      padding: 1.5rem;
+    }
+
+    .giant-number {
+      font-size: clamp(4rem, 8vw, 8rem);
+      line-height: 0.9;
+      font-weight: 800;
+      letter-spacing: -0.06em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Case Study */
+    .case-study {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+
+    .quote-panel {
+      padding: 2rem;
+      border-radius: 2.4rem;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .quote-mark {
+      font-family: "Instrument Serif", serif;
+      font-size: 5rem;
+      color: oklch(86% 0.06 91);
+      line-height: 0.8;
+    }
+
+    /* Metrics */
+    .metric-wave {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+      align-items: end;
+      min-height: 26rem;
+    }
+
+    .metric-bar {
+      position: relative;
+      min-height: 10rem;
+      border-radius: 2rem 2rem 0.9rem 0.9rem;
+      background: linear-gradient(180deg, rgba(80, 107, 255, 0.86), rgba(76, 209, 255, 0.66));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 30px 60px rgba(37, 95, 255, 0.18);
+      padding: 1rem;
+      display: flex;
+      align-items: end;
+    }
+
+    .metric-bar:nth-child(1) { min-height: 12rem; }
+    .metric-bar:nth-child(2) { min-height: 16rem; }
+    .metric-bar:nth-child(3) { min-height: 22rem; }
+    .metric-bar:nth-child(4) { min-height: 19rem; }
+    .metric-bar:nth-child(5) { min-height: 25rem; }
+
+    /* Security */
+    .security-shell {
+      padding: 1.3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .shield-panel,
+    .compliance-grid {
+      border-radius: 2rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.025);
+      padding: 1.4rem;
+    }
+
+    .compliance-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    /* Performance */
+    .performance-strip {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: var(--space-7);
+      align-items: center;
+    }
+
+    .latency-lines {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .latency-track {
+      display: grid;
+      grid-template-columns: 11rem 1fr auto;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .latency-bar {
+      height: 0.75rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+
+    .latency-bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, rgba(85, 105, 255, 0.85), rgba(62, 211, 255, 0.8));
+    }
+
+    /* Developer API */
+    .api-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .code-window,
+    .api-map {
+      border-radius: 2rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.025);
+      overflow: hidden;
+    }
+
+    .window-top {
+      display: flex;
+      gap: 0.4rem;
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .window-top span {
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+    }
+
+    pre {
+      margin: 0;
+      padding: 1.4rem;
+      overflow: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: oklch(88% 0.014 240);
+    }
+
+    code { font-variant-ligatures: none; }
+
+    /* Comparison */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: var(--space-7);
+      align-items: center;
+    }
+
+    .comparison-board {
+      display: grid;
+      gap: 0.8rem;
+      border-radius: 2.2rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 1.3rem;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .compare-row {
+      display: grid;
+      grid-template-columns: 1.1fr 0.8fr 0.8fr;
+      gap: 1rem;
+      padding: 1rem;
+      border-radius: 1.2rem;
+      background: rgba(255,255,255,0.015);
+    }
+
+    /* ROI Calculator */
+    .roi-shell {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 1rem;
+      padding: 1.4rem;
+    }
+
+    .slider-group {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .slider-card {
+      padding: 1rem 1.1rem;
+      border-radius: 1.3rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      appearance: none;
+      height: 0.5rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.09);
+      outline: none;
+      margin-top: 1rem;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 1.1rem;
+      height: 1.1rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--indigo), var(--cyan));
+      box-shadow: 0 0 0 5px rgba(76, 106, 255, 0.15);
+      cursor: pointer;
+    }
+
+    .roi-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      align-content: start;
+    }
+
+    .roi-kpi {
+      padding: 1.3rem;
+      border-radius: 1.6rem;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* Team Intelligence */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .person-node {
+      padding: 1.25rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+      min-height: 16rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .avatar {
+      width: 3.1rem;
+      height: 3.1rem;
+      border-radius: 1rem;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      background: linear-gradient(135deg, rgba(87, 109, 255, 0.88), rgba(74, 217, 255, 0.76));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+    }
+
+    /* Roadmap */
+    .roadmap-band {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .roadmap-cell {
+      padding: 1.4rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.025);
+      min-height: 18rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .roadmap-cell::before {
+      content: "";
+      position: absolute;
+      inset: auto -15% -20% auto;
+      width: 12rem;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79, 112, 255, 0.28), transparent 70%);
+    }
+
+    /* Global Network */
+    .global-shell {
+      min-height: 36rem;
+      border-radius: 2.8rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(72, 109, 255, 0.12), transparent 0 26%),
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    }
+
+    .global-shell svg {
+      width: 100%;
+      height: 100%;
+      min-height: 36rem;
+    }
+
+    /* Pricing */
+    .pricing-shell {
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: 0.8fr 1.05fr 0.95fr;
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .price-column {
+      border-radius: 2rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.025);
+      padding: 1.5rem;
+      display: grid;
+      gap: 1rem;
+      align-content: start;
+    }
+
+    .price-column.featured {
+      background: linear-gradient(180deg, rgba(82, 99, 255, 0.2), rgba(255,255,255,0.03));
+      transform: translateY(-1rem);
+    }
+
+    /* FAQ */
+    .faq-shell {
+      padding: 1.2rem;
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .faq-item {
+      border-radius: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      background: transparent;
+      color: var(--text);
+      border: 0;
+      padding: 1.2rem 1.25rem;
+      text-align: left;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .faq-answer {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 320ms var(--ease-out-expo);
+    }
+
+    .faq-answer > div {
+      overflow: hidden;
+      padding: 0 1.25rem;
+      color: var(--text-soft);
+    }
+
+    .faq-item[open] .faq-answer {
+      grid-template-rows: 1fr;
+    }
+
+    .faq-item[open] .faq-answer > div {
+      padding-bottom: 1.2rem;
+    }
+
+    /* Final CTA */
+    .final-cta {
+      min-height: 34rem;
+      border-radius: 3rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% 24%, rgba(103, 100, 255, 0.28), transparent 0 22%),
+        radial-gradient(circle at 84% 68%, rgba(52, 209, 255, 0.18), transparent 0 24%),
+        linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+      display: grid;
+      align-items: center;
+      padding: clamp(2rem, 5vw, 4rem);
+      box-shadow: var(--shadow-ambient);
+    }
+
+    /* Footer */
+    footer {
+      padding: var(--space-9) 0 var(--space-7);
+    }
+
+    .footer-inner {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 1rem;
+    }
+
+    .footer-col {
+      display: grid;
+      gap: 0.8rem;
+      align-content: start;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-faint);
+      font-size: 0.92rem;
+    }
+
+    /* Reveal Animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px) scale(0.985);
+      transition:
+        opacity 700ms var(--ease-out-expo),
+        transform 700ms var(--ease-out-expo);
+      will-change: transform, opacity;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Floating Motion */
+    @keyframes driftA {
+      0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+      50% { transform: translate3d(0, -12px, 0) rotate(2deg); }
+    }
+
+    @keyframes driftB {
+      0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+      50% { transform: translate3d(0, 14px, 0) rotate(-2deg); }
+    }
+
+    @keyframes rotateSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .float-a { animation: driftA 8s ease-in-out infinite; }
+    .float-b { animation: driftB 10s ease-in-out infinite; }
+    .rotate-slow { animation: rotateSlow 30s linear infinite; transform-origin: center; }
+
+    /* Cursor Glow */
+    .cursor-glow {
+      position: fixed;
+      width: 18rem;
+      height: 18rem;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+      background: radial-gradient(circle, rgba(80, 116, 255, 0.16), rgba(80, 116, 255, 0.06) 35%, transparent 72%);
+      filter: blur(12px);
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 220ms ease;
+    }
+
+    /* Responsive */
+    @media (max-width: 1180px) {
+      .hero-grid,
+      .lens-grid,
+      .ecosystem-layout,
+      .matrix-layout,
+      .architecture-grid,
+      .engine-shell,
+      .success-path,
+      .performance-strip,
+      .comparison-grid,
+      .footer-top,
+      .split,
+      .case-study,
+      .workflow-spine,
+      .stats-cloud,
+      .pricing-shell,
+      .security-shell,
+      .roi-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .workflow-spine,
+      .journey-grid,
+      .roadmap-band,
+      .team-grid,
+      .metric-wave {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-aside { min-height: 34rem; }
+      .timeline-shell::before { left: 1rem; }
+      .timeline-node { grid-template-columns: 2rem 1fr; }
+      .timeline-node .timeline-copy,
+      .timeline-node:nth-child(even) .timeline-copy { grid-column: 2; }
+      .timeline-node .timeline-spacer,
+      .timeline-node:nth-child(even) .timeline-spacer { display: none; }
+      .timeline-pin { margin: 0; }
+    }
+
+    @media (max-width: 820px) {
+      .nav-bar {
+        grid-template-columns: 1fr auto;
+        border-radius: 2rem;
+      }
+
+      .nav-links { display: none; }
+      .nav-bar .btn-secondary { display: none; }
+      .hero { padding-top: 5rem; }
+      section { padding: var(--space-9) 0; }
+      .nav-wrap, .section-inner, .footer-inner { width: min(calc(100% - 1.25rem), var(--max-width)); }
+      .transformation-grid,
+      .api-grid,
+      .compliance-grid,
+      .roi-metrics,
+      .pricing-shell,
+      .team-grid,
+      .roadmap-band,
+      .journey-grid,
+      .metric-wave,
+      .workflow-spine,
+      .stats-cloud,
+      .footer-links {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-shell,
+      .security-shell,
+      .pricing-shell,
+      .roi-shell,
+      .api-grid { grid-template-columns: 1fr; }
+
+      .matrix-row,
+      .compare-row,
+      .latency-track {
+        grid-template-columns: 1fr;
+        justify-items: start;
+      }
+
+      .display { max-width: 8ch; }
+      .orbital-stage { aspect-ratio: 1; }
+      .planet { position: relative; inset: auto !important; width: 100%; }
+      .universe-shell {
+        display: grid;
+        gap: 1rem;
+        padding: 1rem;
+        min-height: unset;
+      }
+      .universe-center {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        width: 100%;
+        height: auto;
+        min-height: 10rem;
+      }
+      .footer-bottom { flex-direction: column; }
+      .cursor-glow { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Cursor Glow -->
+  <div class="cursor-glow" aria-hidden="true"></div>
+
+  <div class="site-shell">
+    <!-- Navigation -->
+    <header class="site-nav" aria-label="Primary">
+      <div class="nav-wrap">
+        <nav class="nav-bar">
+          <a class="brand" href="#top" aria-label="Aurix OS home">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span>Aurix OS</span>
+          </a>
+
+          <div class="nav-links" aria-label="Section links">
+            <a href="#ecosystem">Ecosystem</a>
+            <a href="#architecture">Architecture</a>
+            <a href="#security">Security</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
+          </div>
+
+          <div class="cta-row">
+            <a class="btn btn-secondary magnetic" href="#dashboard">See platform</a>
+            <a class="btn btn-primary magnetic" href="#final-cta">Book a live demo</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- Hero Section -->
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="section-inner hero-grid">
+          <div class="hero-copy stack-6 reveal">
+            <span class="eyebrow">Trusted by operators building the next trillion</span>
+            <div class="stack-5">
+              <h1 class="display" id="hero-title">Build a company that <em>thinks</em> before the market moves.</h1>
+              <p class="lede">Aurix OS turns enterprise data, systems, and workflows into one continuously learning operating layer. Less dashboard theater, more institutional intelligence.</p>
+            </div>
+
+            <div class="cta-row">
+              <a class="btn btn-primary magnetic" href="#final-cta">Enter the platform</a>
+              <a class="btn btn-secondary magnetic" href="#case-study">Why teams switch</a>
+            </div>
+
+            <p class="tiny">deployed across regulated finance, biotech, logistics, infrastructure, and AI-native product teams</p>
+          </div>
+
+          <div class="hero-aside reveal" aria-hidden="true">
+            <div class="orbital-stage">
+              <div class="constellation"></div>
+              <div class="halo-ring ring-1 rotate-slow"></div>
+              <div class="halo-ring ring-2 rotate-slow" style="animation-direction: reverse; animation-duration: 22s;"></div>
+              <div class="halo-ring ring-3 rotate-slow" style="animation-duration: 16s;"></div>
+              <div class="data-plane plane-a float-a"></div>
+              <div class="data-plane plane-b float-b"></div>
+              <div class="signal-core float-a"><span>AI</span></div>
+              <div class="floating-chip chip-a float-b">
+                <span class="tiny">prediction layer</span>
+                <strong>97.4% anomaly confidence</strong>
+              </div>
+              <div class="floating-chip chip-b float-a">
+                <span class="tiny">autonomy index</span>
+                <strong>5.8x workflow acceleration</strong>
+              </div>
+              <div class="floating-chip chip-c float-b">
+                <span class="tiny">trust fabric</span>
+                <strong>zero blind execution</strong>
+              </div>
+              <div class="mini-panel float-a">
+                <span class="tiny">live orchestration</span>
+                <div class="mini-bars">
+                  <span style="width: 92%"></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trust Ribbon -->
+      <div class="ribbon" aria-label="Trusted by enterprise operators">
+        <div class="ribbon-track">
+          <span class="ribbon-item">signal-native orchestration</span>
+          <span class="ribbon-item">fortune 200 security posture</span>
+          <span class="ribbon-item">agentic workflow control</span>
+          <span class="ribbon-item">cross-cloud intelligence fabric</span>
+          <span class="ribbon-item">model governance by design</span>
+          <span class="ribbon-item">signal-native orchestration</span>
+          <span class="ribbon-item">fortune 200 security posture</span>
+          <span class="ribbon-item">agentic workflow control</span>
+          <span class="ribbon-item">cross-cloud intelligence fabric</span>
+          <span class="ribbon-item">model governance by design</span>
+        </div>
+      </div>
+
+      <!-- Dynamic AI Visualization -->
+      <section class="compact" aria-labelledby="viz-title">
+        <div class="section-inner lens-grid">
+          <div class="stack-5 reveal">
+            <span class="eyebrow">01 dynamic intelligence field</span>
+            <h2 class="section-title" id="viz-title">One signal lattice, thousands of real-time decisions.</h2>
+            <p class="lede">Most platforms collect events. Aurix composes them. Every node strengthens context for every other node, so insights stop arriving late and start changing what happens next.</p>
+          </div>
+
+          <div class="viz-canvas reveal">
+            <svg class="network-svg" viewBox="0 0 800 560" role="img" aria-label="Animated AI network visualization">
+              <defs>
+                <linearGradient id="linkGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(91,112,255,0.1)" />
+                  <stop offset="50%" stop-color="rgba(90,218,255,0.95)" />
+                  <stop offset="100%" stop-color="rgba(91,112,255,0.1)" />
+                </linearGradient>
+                <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#ffffff" />
+                  <stop offset="35%" stop-color="#6dd6ff" />
+                  <stop offset="100%" stop-color="rgba(109,214,255,0)" />
+                </radialGradient>
+              </defs>
+              <g opacity="0.25">
+                <circle cx="400" cy="280" r="190" fill="none" stroke="rgba(255,255,255,0.08)" />
+                <circle cx="400" cy="280" r="120" fill="none" stroke="rgba(255,255,255,0.06)" />
+              </g>
+              <g stroke="url(#linkGlow)" stroke-width="2" fill="none">
+                <path d="M160 120 C280 130, 330 220, 400 280" class="animate-path" />
+                <path d="M620 100 C560 180, 510 220, 400 280" class="animate-path" />
+                <path d="M140 420 C260 360, 310 310, 400 280" class="animate-path" />
+                <path d="M660 410 C560 360, 510 320, 400 280" class="animate-path" />
+                <path d="M260 80 C320 140, 350 210, 400 280" class="animate-path" />
+                <path d="M530 460 C500 390, 470 330, 400 280" class="animate-path" />
+              </g>
+              <g>
+                <circle cx="400" cy="280" r="62" fill="rgba(73,103,255,0.75)" />
+                <circle cx="400" cy="280" r="95" fill="none" stroke="rgba(95,214,255,0.18)" />
+                <circle cx="400" cy="280" r="16" fill="url(#nodeGlow)" />
+
+                <circle cx="160" cy="120" r="14" fill="url(#nodeGlow)" />
+                <circle cx="620" cy="100" r="12" fill="url(#nodeGlow)" />
+                <circle cx="140" cy="420" r="10" fill="url(#nodeGlow)" />
+                <circle cx="660" cy="410" r="11" fill="url(#nodeGlow)" />
+                <circle cx="260" cy="80" r="10" fill="url(#nodeGlow)" />
+                <circle cx="530" cy="460" r="13" fill="url(#nodeGlow)" />
+              </g>
+            </svg>
+            <div class="signal-caption">
+              <div class="stack-4">
+                <span class="tiny">context accumulation</span>
+                <strong>9.3B events correlated daily without breaking lineage, permissions, or audit continuity.</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Future Product Ecosystem -->
+      <section id="ecosystem" aria-labelledby="ecosystem-title">
+        <div class="section-inner ecosystem-layout">
+          <div class="orbit-grid reveal">
+            <article class="orbit-tile">
+              <span class="tiny">core intelligence</span>
+              <h3>Signal Brain</h3>
+              <p class="lede">Learns from behavior, not just schema. The system gets sharper as your teams move.</p>
+            </article>
+            <article class="orbit-tile">
+              <span class="tiny">automation mesh</span>
+              <h3>Flow Fabric</h3>
+              <p class="lede">Builds adaptive execution paths that react to confidence, risk, and downstream impact.</p>
+            </article>
+            <article class="orbit-tile">
+              <span class="tiny">operator layer</span>
+              <h3>Command Surface</h3>
+              <p class="lede">A controlled environment for leaders who need visibility without the noise tax.</p>
+            </article>
+            <article class="orbit-tile">
+              <span class="tiny">trust system</span>
+              <h3>Proof Engine</h3>
+              <p class="lede">Every model choice, every action, every exception stays explainable under pressure.</p>
+            </article>
+          </div>
+          <div class="stack-6 reveal">
+            <span class="eyebrow">02 future product ecosystem</span>
+            <h2 class="section-title" id="ecosystem-title">Four products, one design intelligence, zero platform sprawl.</h2>
+            <p class="lede">Aurix was designed like an operating system, not a feature pile. Each surface can stand alone. Together they behave like a coordinated enterprise mind.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Feature Matrix -->
+      <section aria-labelledby="matrix-title">
+        <div class="section-inner matrix-layout">
+          <div class="stack-5 reveal">
+            <span class="eyebrow">03 interactive feature matrix</span>
+            <h2 class="section-title" id="matrix-title">Replace six categories of software with one opinionated layer.</h2>
+            <p class="lede">This is what the market still gets wrong: buying separate products for analytics, automation, governance, forecasting, copilots, and workflow control is just paying extra for fragmentation.</p>
+          </div>
+          <div class="matrix-board reveal" role="table" aria-label="Platform capability matrix">
+            <div class="matrix-row" role="row">
+              <strong role="columnheader">Capability</strong>
+              <strong role="columnheader">Observe</strong>
+              <strong role="columnheader">Decide</strong>
+              <strong role="columnheader">Act</strong>
+              <strong role="columnheader">Prove</strong>
+            </div>
+            <div class="matrix-row" role="row">
+              <span>Cross-system context</span><span class="dot"></span><span class="dot"></span><span class="dot dim"></span><span class="dot"></span>
+            </div>
+            <div class="matrix-row" role="row">
+              <span>Autonomous playbooks</span><span class="dot dim"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </div>
+            <div class="matrix-row" role="row">
+              <span>Policy-aware execution</span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </div>
+            <div class="matrix-row" role="row">
+              <span>Executive command visibility</span><span class="dot"></span><span class="dot"></span><span class="dot dim"></span><span class="dot"></span>
+            </div>
+            <div class="matrix-row" role="row">
+              <span>Self-improving workflows</span><span class="dot dim"></span><span class="dot"></span><span class="dot"></span><span class="dot dim"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Enterprise Workflow -->
+      <section aria-labelledby="workflow-title">
+        <div class="section-inner stack-7">
+          <div class="split">
+            <div class="stack-5 reveal">
+              <span class="eyebrow">04 enterprise workflow</span>
+              <h2 class="section-title" id="workflow-title">Every serious workflow should move like a spine, not a maze.</h2>
+            </div>
+            <p class="lede reveal">Aurix compresses enterprise operations into a directional sequence: sense, score, resolve, verify, learn. Fewer handoffs. Fewer hidden decisions. More controlled speed.</p>
+          </div>
+          <div class="workflow-spine reveal">
+            <article class="workflow-step" data-step="sense"><h3>Sense</h3><p>Streams from apps, infra, documents, and human signals.</p></article>
+            <article class="workflow-step" data-step="score"><h3>Score</h3><p>Confidence, urgency, risk, and opportunity in one pass.</p></article>
+            <article class="workflow-step" data-step="resolve"><h3>Resolve</h3><p>Humans and agents coordinate around one recommended path.</p></article>
+            <article class="workflow-step" data-step="verify"><h3>Verify</h3><p>Execution is checked against policy, compliance, and expected outcome.</p></article>
+            <article class="workflow-step" data-step="learn"><h3>Learn</h3><p>Results retrain routing, thresholds, and future recommendations.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Animated Technology Timeline -->
+      <section aria-labelledby="timeline-title">
+        <div class="section-inner stack-6">
+          <div class="split">
+            <div class="stack-5 reveal">
+              <span class="eyebrow">05 technology timeline</span>
+              <h2 class="section-title" id="timeline-title">A system architecture built for the next decade, not the next funding memo.</h2>
+            </div>
+            <p class="lede reveal">Most AI stacks age badly because they hardcode today's model assumptions into tomorrow's workflows. Aurix keeps the intelligence layer modular, observable, and survivable.</p>
+          </div>
+          <div class="timeline-shell reveal">
+            <div class="timeline-node">
+              <div class="timeline-copy"><span class="tiny">phase 01</span><h3>Signal normalization</h3><p>Standardizes events from structured and unstructured systems without flattening meaning.</p></div>
+              <div class="timeline-pin" aria-hidden="true"></div>
+              <div class="timeline-spacer"></div>
+            </div>
+            <div class="timeline-node">
+              <div class="timeline-copy"><span class="tiny">phase 02</span><h3>Reasoning assembly</h3><p>Chains retrieval, context memory, and policy checks before any action is proposed.</p></div>
+              <div class="timeline-pin" aria-hidden="true"></div>
+              <div class="timeline-spacer"></div>
+            </div>
+            <div class="timeline-node">
+              <div class="timeline-copy"><span class="tiny">phase 03</span><h3>Execution governance</h3><p>Every agent and automation path inherits a provable trust envelope with reversible controls.</p></div>
+              <div class="timeline-pin" aria-hidden="true"></div>
+              <div class="timeline-spacer"></div>
+            </div>
+            <div class="timeline-node">
+              <div class="timeline-copy"><span class="tiny">phase 04</span><h3>Adaptive optimization</h3><p>Outcome loops feed back into allocation logic so the whole organization sharpens over time.</p></div>
+              <div class="timeline-pin" aria-hidden="true"></div>
+              <div class="timeline-spacer"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Problem Transformation Story -->
+      <section aria-labelledby="transform-title">
+        <div class="section-inner stack-6">
+          <div class="stack-5 reveal">
+            <span class="eyebrow">06 problem transformation story</span>
+            <h2 class="section-title" id="transform-title">What teams escape, what they gain, what they never go back to.</h2>
+          </div>
+          <div class="transformation-grid reveal">
+            <article class="transformation-pane before"><span class="tiny">before aurix</span><h3>Tool sprawl</h3><p>Signals trapped in dashboards, Slack threads, tickets, and one-off scripts. No shared intelligence, just scattered alerts.</p></article>
+            <article class="transformation-pane bridge"><span class="tiny">transformation</span><h3>Operational coherence</h3><p>Aurix composes fragmented inputs into recommendations with confidence scores, risk checks, and automatable actions.</p></article>
+            <article class="transformation-pane after"><span class="tiny">after aurix</span><h3>Institutional advantage</h3><p>Decisions become faster, more explainable, and less dependent on tribal memory or heroics.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Smart Integrations Universe -->
+      <section aria-labelledby="integration-title">
+        <div class="section-inner stack-6">
+          <div class="split">
+            <div class="stack-5 reveal">
+              <span class="eyebrow">07 integrations universe</span>
+              <h2 class="section-title" id="integration-title">Your stack does not need another tab. It needs a gravity center.</h2>
+            </div>
+            <p class="lede reveal">Aurix wraps existing systems in a reasoning layer, so teams keep the tools they need while the company gains one source of action truth.</p>
+          </div>
+          <div class="universe-shell reveal" aria-label="Integration ecosystem diagram">
+            <div class="universe-center">Aurix Core</div>
+            <div class="planet" style="top: 8%; left: 14%;">CRM systems</div>
+            <div class="planet" style="top: 13%; right: 12%;">Cloud infra</div>
+            <div class="planet" style="left: 8%; top: 46%;">Support ops</div>
+            <div class="planet" style="right: 6%; top: 48%;">Finance systems</div>
+            <div class="planet" style="bottom: 12%; left: 18%;">Product telemetry</div>
+            <div class="planet" style="bottom: 10%; right: 16%;">Knowledge bases</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Live Dashboard Preview -->
+      <section id="dashboard" aria-labelledby="dashboard-title">
+        <div class="section-inner stack-6">
+          <div class="split">
+            <div class="stack-5 reveal">
+              <span class="eyebrow">08 live dashboard preview</span>
+              <h2 class="section-title" id="dashboard-title">A command surface executives actually use.</h2>
+            </div>
+            <p class="lede reveal">No noise wall, no fake complexity. Just the handful of metrics, flows, and decision contexts that actually drive outcomes.</p>
+          </div>
+          <div class="dashboard-shell reveal">
+            <div class="dashboard-main">
+              <article class="slab chart-shell">
+                <canvas id="commandChart" aria-label="Performance chart" role="img"></canvas>
+              </article>
+              <article class="slab">
+                <div class="split" style="grid-template-columns: 0.9fr 1.1fr; gap: 1rem;">
+                  <div class="stack-4">
+                    <span class="tiny">intervention quality</span>
+                    <div class="giant-number">94%</div>
+                    <p class="lede">Recommended actions accepted by operators after trust review.</p>
+                  </div>
+                  <div class="stack-4">
+                    <span class="tiny">active orchestration lanes</span>
+                    <strong>32 live workflows</strong>
+                    <p>Revenue risk, onboarding, account health, infrastructure, and compliance all tracked in one control plane.</p>
+                  </div>
+                </div>
+              </article>
+            </div>
+            <aside class="dashboard-side">
+              <article class="slab stack-4">
+                <span class="tiny">today's signal pressure</span>
+                <strong>1,284 decisions surfaced</strong>
+                <p>62 escalated, 491 auto-resolved, 731 queued with verified confidence scoring.</p>
+              </article>
+              <article class="slab stack-4">
+                <span class="tiny">trust envelope</span>
+                <strong>99.991% audit continuity</strong>
+                <p>Every model output, rule branch, and approval step remains inspectable.</p>
+              </article>
+              <article class="slab stack-4">
+                <span class="tiny">model posture</span>
+                <strong>12 active models</strong>
+                <p>Optimized by latency, cost, domain fidelity, and policy compatibility.</p>
+              </article>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- Product Architecture -->
+      <section id="architecture" aria-labelledby="architecture-title">
+        <div class="section-inner architecture-grid">
+          <div class="stack-5 reveal">
+            <span class="eyebrow">09 product architecture</span>
+            <h2 class="section-title" id="architecture-title">Infrastructure-grade by design, elegant enough to stay invisible.</h2>
+            <p class="lede">This stack is intentionally layered so teams can evolve models, policies, and interfaces without ripping out the machine underneath.</p>
+          </div>
+          <div class="architecture-map reveal" aria-label="Platform architecture layers">
+            <div class="arch-layer" style="top: 8%;">Experience Layer: executive surfaces, operator workflows, embedded copilots</div>
+            <div class="arch-layer" style="top: 28%; width: 70%;">Reasoning Layer: retrieval, memory, policy evaluation, simulation</div>
+            <div class="arch-layer" style="top: 48%; width: 76%;">Action Layer: orchestration, approvals, automation, exception routing</div>
+            <div class="arch-layer" style="top: 68%; width: 68%;">Trust Layer: permissions, lineage, governance, audit, rollback</div>
+            <div class="arch-layer" style="top: 84%; width: 82%;">Foundation Layer: data systems, apps, APIs, event streams, document stores</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Automation Journey -->
+      <section aria-labelledby="journey-title">
+        <div class="section-inner stack-6">
+          <div class="split">
+            <div class="stack-5 reveal">
+              <span class="eyebrow">10 automation journey</span>
+              <h2 class="section-title" id="journey-title">Automation should feel supervised, not reckless.</h2>
+            </div>
+            <p class="lede reveal">Aurix never treats autonomy like a stunt. Every automated move inherits thresholds, confidence bands, and fallback paths.</p>
+          </div>
+          <div class="journey-grid reveal">
+            <article class="journey-card"><span class="tiny">capture</span><h3>Context intake</h3><p>Collects events, intent, historical outcomes, and permissions.</p></article>
+            <article class="journey-card"><span class="tiny">evaluate</span><h3>Reasoning pass</h3><p>Scores what is safe, urgent, valuable, and reversible.</p></article>
+            <article class="journey-card"><span class="tiny">execute</span><h3>Guided action</h3><p>Runs with human approval or automatically inside approved envelopes.</p></article>
+            <article class="journey-card"><span class="tiny">learn</span><h3>Outcome refinement</h3><p>Improves future thresholds from real business results, not vanity feedback.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI Intelligence Engine -->
+      <section aria-labelledby="engine-title">
+        <div class="section-inner engine-shell">
+          <div class="engine-core reveal" aria-hidden="true">
+            <div class="halo-ring ring-1 rotate-slow" style="width:72%; height:72%; top:14%; left:14%;"></div>
+            <div class="halo-ring ring-2 rotate-slow" style="width:50%; height:50%; top:25%; left:25%; animation-direction: reverse;"></div>
+            <div class="halo-ring ring-3 rotate-slow" style="width:28%; height:28%; top:36%; left:36%;"></div>
+            <div class="engine-tag" style="top: 12%; left: 0;">policy reasoning</div>
+            <div class="engine-tag" style="right: -2%; top: 22%;">memory retrieval</div>
+            <div class="engine-tag" style="left: 6%; bottom: 18%;">simulation</div>
+            <div class="engine-tag" style="right: 4%; bottom: 10%;">action scoring</div>
+          </div>
+          <div class="stack-6 reveal">
+            <span class="eyebrow">11 intelligence engine</span>
+            <h2 class="section-title" id="engine-title">More than generation: reasoning, memory, policy, and proof in one loop.</h2>
+            <p class="lede">Throwing a model at enterprise work is amateur hour. Real systems need memory selection, decision simulation, policy checks, confidence bands, and rollback-aware action planning. Aurix does the grown-up version.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Customer Success Journey -->
+      <section aria-labelledby="success-title">
+        <div class="section-inner success-path">
+          <div class="stack-5 reveal">
+            <span class="eyebrow">12 customer success journey</span>
+            <h2 class="section-title" id="success-title">Value arrives in weeks because the rollout sequence is not dumb.</h2>
+            <p class="lede">Most enterprise onboarding dies from ambition overload. Aurix starts with one high-value signal lane, proves lift, then expands into a company-wide intelligence fabric.</p>
+          </div>
+          <div class="path-rail reveal">
+            <article class="path-stop"><span class="tiny">week 1</span><h3>Signal mapping</h3><p>Connect systems, establish trust boundaries, identify the highest-value decision lane.</p></article>
+            <article class="path-stop"><span class="tiny">week 3</span><h3>Pilot orchestration</h3><p>Deploy supervised workflows with human checkpoints and outcome tracking.</p></article>
+            <article class="path-stop"><span class="tiny">week 6</span><h3>Autonomy bands</h3><p>Move qualified decisions into partially or fully automated execution envelopes.</p></article>
+            <article class="path-stop"><span class="tiny">quarter 2</span><h3>Operating layer</h3><p>Expand across departments with common governance, measurement, and intelligence reuse.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Enterprise Scale Statistics -->
+      <section aria-labelledby="stats-title">
+        <div class="section-inner stack-6">
+          <div class="split">
+            <div class="stack-5 reveal">
+              <span class="eyebrow">13 enterprise scale statistics</span>
+              <h2 class="section-title" id="stats-title">The numbers that matter are operational, not decorative.</h2>
+            </div>
+            <p class="lede reveal">No fake vanity counter parade. Just the metrics buyers actually use to separate real platforms from pitch decks in expensive clothes.</p>
+          </div>
+          <div class="stats-cloud reveal">
+            <article class="stat-monolith">
+              <span class="tiny">event throughput</span>
+              <div class="giant-number">9.3B</div>
+              <p>daily signals correlated across cloud apps, documents, telemetry, and workflow systems</p>
+            </article>
+            <article class="stat-column">
+              <span class="tiny">decision latency</span>
+              <div class="giant-number">84ms</div>
+              <p>median reasoning response in production routing paths</p>
+            </article>
+            <article class="stat-column">
+              <span class="tiny">automation uplift</span>
+              <div class="giant-number">5.8x</div>
+              <p>faster cycle completion for multi-team enterprise workflows</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Case Study Experience -->
+      <section id="case-study" aria-labelledby="case-title">
+        <div class="section-inner case-study">
+          <div class="quote-panel reveal">
+            <div class="quote-mark">“</div>
+            <h2 class="section-title" id="case-title" style="font-size: clamp(2rem, 3.6vw, 3.6rem);">We replaced a dozen operational rituals with one living system.</h2>
+            <p class="lede" style="margin-top: 1rem;">Aurix didn't just cut software. It changed how the company made decisions under pressure.</p>
+            <p class="tiny" style="margin-top: 1.5rem;">chief operating officer, global fintech platform</p>
+          </div>
+          <div class="stack-6 reveal">
+            <span class="eyebrow">14 case study experience</span>
+            <p class="lede">A hypergrowth fintech used Aurix to unify fraud signals, support volume, payment anomalies, and account risk. Result: the ops team stopped reacting in fragments and started steering one coordinated system.</p>
+            <div class="transformation-grid" style="margin-top: 0; grid-template-columns: repeat(3, 1fr);">
+              <article class="transformation-pane before"><span class="tiny">before</span><h3>14 tools</h3><p>Alerts everywhere, ownership nowhere.</p></article>
+              <article class="transformation-pane bridge"><span class="tiny">during</span><h3>1 command layer</h3><p>Decisions scored, routed, and verified centrally.</p></article>
+              <article class="transformation-pane after"><span class="tiny">after</span><h3>41% faster resolution</h3><p>Lower escalation burden, better customer trust, cleaner audit readiness.</p></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Animated Success Metrics -->
+      <section aria-labelledby="metric-title">
+        <div class="section-inner stack-6">
+          <div class="split">
+            <div class="stack-5 reveal">
+              <span class="eyebrow">15 success metrics</span>
+              <h2 class="section-title" id="metric-title">When the system learns, the curve changes shape.</h2>
+            </div>
+            <p class="lede reveal">The real signal of maturity is compounding lift. Aurix improves routing precision, workflow speed, and decision quality together, which is rare and frankly better.</p>
+          </div>
+          <div class="metric-wave reveal" aria-label="Animated success metrics bars">
+            <article class="metric-bar"><strong>+18%</strong></article>
+            <article class="metric-bar"><strong>+29%</strong></article>
+            <article class="metric-bar"><strong>+41%</strong></article>
+            <article class="metric-bar"><strong>+53%</strong></article>
+            <article class="metric-bar"><strong>+68%</strong></article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Platform Security Center -->
+      <section id="security" aria-labelledby="security-title">
+        <div class="section-inner stack-6">
+          <div class="split">
+            <div class="stack-5 reveal">
+              <span class="eyebrow">16 security center</span>
+              <h2 class="section-title" id="security-title">Security isn't a tab. It is the operating condition.</h2>
+            </div>
+            <p class="lede reveal">Aurix was built for teams that need AI without giving up auditability, control, or sleep.</p>
+          </div>
+          <div class="security-shell reveal">
+            <article class="shield-panel stack-5">
+              <span class="tiny">trust guarantees</span>
+              <h3>Policy-bound execution</h3>
+              <p>Every workflow path is constrained by role-based access, environment controls, event lineage, and reversible action logs.</p>
+              <p>That means enterprise AI without the usual hand-wavy nonsense.</p>
+            </article>
+            <div class="compliance-grid">
+              <article class="slab"><span class="tiny">compliance</span><strong>SOC 2 Type II</strong></article>
+              <article class="slab"><span class="tiny">privacy</span><strong>Regional data controls</strong></article>
+              <article class="slab"><span class="tiny">governance</span><strong>Model approval chains</strong></article>
+              <article class="slab"><span class="tiny">resilience</span><strong>Rollback-safe automations</strong></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Performance Visualization -->
+      <section aria-labelledby="performance-title">
+        <div class="section-inner performance-strip">
+          <div class="stack-5 reveal">
+            <span class="eyebrow">17 performance visualization</span>
+            <h2 class="section-title" id="performance-title">Fast where it counts, stable where it matters more.</h2>
+            <p class="lede">Low latency is cute until governance disappears. Aurix keeps both: fast routing plus audit-safe execution paths.</p>
+          </div>
+          <div class="latency-lines reveal">
+            <div class="latency-track"><span>reasoning query</span><div class="latency-bar"><span style="width: 22%"></span></div><strong>84ms</strong></div>
+            <div class="latency-track"><span>policy validation</span><div class="latency-bar"><span style="width: 31%"></span></div><strong>112ms</strong></div>
+            <div class="latency-track"><span>workflow route</span><div class="latency-bar"><span style="width: 18%"></span></div><strong>69ms</strong></div>
+            <div class="latency-track"><span>rollback snapshot</span><div class="latency-bar"><span style="width: 36%"></span></div><strong>131ms</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Developer API Universe -->
+      <section aria-labelledby="api-title">
+        <div class="section-inner stack-6">
+          <div class="split">
+            <div class="stack-5 reveal">
+              <span class="eyebrow">18 developer api universe</span>
+              <h2 class="section-title" id="api-title">Composable enough for builders, disciplined enough for enterprise architecture.</h2>
+            </div>
+            <p class="lede reveal">Developers get event streams, model routing controls, execution hooks, and observability surfaces. Not a toy SDK, an actual platform.</p>
+          </div>
+          <div class="api-grid reveal">
+            <article class="code-window">
+              <div class="window-top"><span></span><span></span><span></span></div>
+              <pre><code>// Decision Orchestration Example
+const session = await aurix.signals.ingest({
+  source: "payments.risk",
+  context: customerProfile,
+  event: anomalyPayload
+});
+
+const decision = await aurix.reasoning.evaluate({
+  sessionId: session.id,
+  policy: "fraud-escalation-v4",
+  autonomy: "supervised"
+});
+
+if (decision.confidence &gt; 0.92) {
+  await aurix.actions.route(decision.actionPlan);
+}</code></pre>
+            </article>
+            <article class="api-map stack-5" style="padding: 1.4rem;">
+              <span class="tiny">developer surfaces</span>
+              <h3>Signals, reasoning, actions, proof.</h3>
+              <p>Use event-first architecture to pipe enterprise context into orchestrated decisions and compliance-safe automation layers.</p>
+              <p><strong>REST</strong> · <strong>Streaming</strong> · <strong>Webhooks</strong> · <strong>Typed SDKs</strong></p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Comparison Experience -->
+      <section aria-labelledby="comparison-title">
+        <div class="section-inner comparison-grid">
+          <div class="stack-5 reveal">
+            <span class="eyebrow">19 comparison experience</span>
+            <h2 class="section-title" id="comparison-title">The difference is not more AI. It's less chaos.</h2>
+            <p class="lede">Legacy stacks make teams assemble meaning after the fact. Aurix gives them coordinated context before execution.</p>
+          </div>
+          <div class="comparison-board reveal">
+            <div class="compare-row"><strong>Dimension</strong><strong>Legacy stack</strong><strong>Aurix OS</strong></div>
+            <div class="compare-row"><span>Decision context</span><span>fragmented</span><span>composed in real time</span></div>
+            <div class="compare-row"><span>Automation safety</span><span>rule-based brittle logic</span><span>policy and confidence aware</span></div>
+            <div class="compare-row"><span>Auditability</span><span>partial afterthought</span><span>native by default</span></div>
+            <div class="compare-row"><span>Operator experience</span><span>alert overload</span><span>ranked action clarity</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive ROI Calculator Layout -->
+      <section aria-labelledby="roi-title">
+        <div class="section-inner stack-6">
+          <div class="split">
+            <div class="stack-5 reveal">
+              <span class="eyebrow">20 roi calculator</span>
+              <h2 class="section-title" id="roi-title">If the math doesn't work, don't buy the platform. Simple.</h2>
+            </div>
+            <p class="lede reveal">Move the inputs. The estimate updates live. This is the part where serious buyers stop nodding and start budgeting.</p>
+          </div>
+          <div class="roi-shell reveal">
+            <div class="slider-group">
+              <label class="slider-card">Monthly workflow volume: <strong><span id="volumeValue">120,000</span></strong>
+                <input id="volumeRange" type="range" min="10000" max="500000" step="5000" value="120000" aria-label="Monthly workflow volume" />
+              </label>
+              <label class="slider-card">Average human minutes per workflow: <strong><span id="minutesValue">14</span></strong>
+                <input id="minutesRange" type="range" min="2" max="40" step="1" value="14" aria-label="Average human minutes per workflow" />
+              </label>
+              <label class="slider-card">Fully loaded hourly cost: <strong>$<span id="costValue">58</span></strong>
+                <input id="costRange" type="range" min="20" max="180" step="2" value="58" aria-label="Fully loaded hourly cost" />
+              </label>
+            </div>
+            <div class="roi-metrics" aria-live="polite">
+              <article class="roi-kpi"><span class="tiny">hours recovered / month</span><div class="giant-number" id="hoursRecovered">7,560</div></article>
+              <article class="roi-kpi"><span class="tiny">monthly value created</span><div class="giant-number" id="monthlyValue">$438k</div></article>
+              <article class="roi-kpi"><span class="tiny">annualized impact</span><div class="giant-number" id="annualValue">$5.3m</div></article>
+              <article class="roi-kpi"><span class="tiny">estimated payback</span><div class="giant-number" id="paybackValue">8 wks</div></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Team Intelligence Section -->
+      <section aria-labelledby="team-title">
+        <div class="section-inner stack-6">
+          <div class="split">
+            <div class="stack-5 reveal">
+              <span class="eyebrow">21 team intelligence</span>
+              <h2 class="section-title" id="team-title">Different operators, one shared machine memory.</h2>
+            </div>
+            <p class="lede reveal">The platform is strongest when finance, operations, product, and engineering stop optimizing isolated views of the same company.</p>
+          </div>
+          <div class="team-grid reveal">
+            <article class="person-node"><div class="avatar">OP</div><div><h3>Operations</h3><p>Sees bottlenecks, interventions, queue health, and downstream exposure.</p></div></article>
+            <article class="person-node"><div class="avatar">FN</div><div><h3>Finance</h3><p>Understands cost-of-delay, margin leakage, and decision impact in real time.</p></div></article>
+            <article class="person-node"><div class="avatar">PD</div><div><h3>Product</h3><p>Connects usage, churn patterns, and feature friction to live customer risk.</p></div></article>
+            <article class="person-node"><div class="avatar">EN</div><div><h3>Engineering</h3><p>Monitors system posture, automation quality, and model performance under load.</p></div></article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Innovation Roadmap -->
+      <section aria-labelledby="roadmap-title">
+        <div class="section-inner stack-6">
+          <div class="split">
+            <div class="stack-5 reveal">
+              <span class="eyebrow">22 innovation roadmap</span>
+              <h2 class="section-title" id="roadmap-title">Built to compound. Not built to plateau.</h2>
+            </div>
+            <p class="lede reveal">The roadmap is aimed at deeper orchestration, safer autonomy, and broader system memory, which is exactly where enterprise AI should be heading.</p>
+          </div>
+          <div class="roadmap-band reveal">
+            <article class="roadmap-cell"><span class="tiny">Q1</span><h3>Multi-agent governance</h3><p>Shared trust envelopes across specialized enterprise agents.</p></article>
+            <article class="roadmap-cell"><span class="tiny">Q2</span><h3>Predictive intervention layer</h3><p>Move from reactive workflows to preemptive business correction.</p></article>
+            <article class="roadmap-cell"><span class="tiny">Q3</span><h3>Simulation sandbox</h3><p>Test policy and automation changes before they touch production.</p></article>
+            <article class="roadmap-cell"><span class="tiny">Q4</span><h3>Global intelligence mesh</h3><p>Cross-region reasoning with jurisdiction-aware policy controls.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Global Network Visualization -->
+      <section aria-labelledby="global-title">
+        <div class="section-inner stack-6">
+          <div class="split">
+            <div class="stack-5 reveal">
+              <span class="eyebrow">23 global network</span>
+              <h2 class="section-title" id="global-title">Enterprise scale means global signal flow, not local hacks multiplied.</h2>
+            </div>
+            <p class="lede reveal">Aurix is built for distributed operations where decisions cross teams, regions, regulatory regimes, and systems without losing continuity.</p>
+          </div>
+          <div class="global-shell reveal">
+            <svg viewBox="0 0 1200 560" role="img" aria-label="Global network visualization">
+              <defs>
+                <linearGradient id="arcStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(255,255,255,0)" />
+                  <stop offset="50%" stop-color="rgba(85, 213, 255, 0.95)" />
+                  <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+                </linearGradient>
+              </defs>
+              <g opacity="0.22">
+                <ellipse cx="600" cy="290" rx="360" ry="160" fill="none" stroke="rgba(255,255,255,0.08)" />
+                <ellipse cx="600" cy="290" rx="260" ry="110" fill="none" stroke="rgba(255,255,255,0.05)" />
+              </g>
+              <g stroke="url(#arcStroke)" stroke-width="2" fill="none">
+                <path d="M220 260 Q430 80 600 290" />
+                <path d="M980 240 Q770 90 600 290" />
+                <path d="M310 400 Q520 180 600 290" />
+                <path d="M900 400 Q730 170 600 290" />
+              </g>
+              <g fill="#73d8ff">
+                <circle cx="220" cy="260" r="8" />
+                <circle cx="310" cy="400" r="8" />
+                <circle cx="600" cy="290" r="12" />
+                <circle cx="980" cy="240" r="8" />
+                <circle cx="900" cy="400" r="8" />
+              </g>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pricing Experience -->
+      <section id="pricing" aria-labelledby="pricing-title">
+        <div class="section-inner stack-6">
+          <div class="split">
+            <div class="stack-5 reveal">
+              <span class="eyebrow">24 pricing experience</span>
+              <h2 class="section-title" id="pricing-title">Pricing aligned to operational lift, not seat-count theater.</h2>
+            </div>
+            <p class="lede reveal">If your platform value scales with intelligence and workflow depth, pricing it like a note-taking app is ridiculous. Aurix prices for impact.</p>
+          </div>
+          <div class="pricing-shell reveal">
+            <article class="price-column">
+              <span class="tiny">launch</span>
+              <h3>Growth Core</h3>
+              <div class="giant-number" style="font-size: clamp(2.6rem, 5vw, 4.5rem);">$8k</div>
+              <p>/ month, platform minimum</p>
+              <p>For startups and scale-ups proving one mission-critical orchestration lane.</p>
+              <a class="btn btn-secondary magnetic" href="#final-cta">Start with one lane</a>
+            </article>
+            <article class="price-column featured">
+              <span class="tiny">most adopted</span>
+              <h3>Enterprise Command</h3>
+              <div class="giant-number" style="font-size: clamp(2.6rem, 5vw, 4.5rem);">Custom</div>
+              <p>based on signal volume, workflow depth, and governance scope</p>
+              <p>For organizations replacing fragmented ops software with one controlled intelligence layer.</p>
+              <a class="btn btn-primary magnetic" href="#final-cta">Talk to architecture</a>
+            </article>
+            <article class="price-column">
+              <span class="tiny">sovereign</span>
+              <h3>Regulated Cloud</h3>
+              <div class="giant-number" style="font-size: clamp(2.6rem, 5vw, 4.5rem);">Private</div>
+              <p>custom deployment posture</p>
+              <p>For critical infrastructure, financial platforms, biotech, and jurisdiction-heavy environments.</p>
+              <a class="btn btn-secondary magnetic" href="#final-cta">Review deployment</a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Experience -->
+      <section id="faq" aria-labelledby="faq-title">
+        <div class="section-inner stack-6">
+          <div class="split">
+            <div class="stack-5 reveal">
+              <span class="eyebrow">25 faq experience</span>
+              <h2 class="section-title" id="faq-title">The questions serious buyers ask before they commit.</h2>
+            </div>
+            <p class="lede reveal">Good. Skepticism is healthy. Enterprise AI deserves more interrogation, not less.</p>
+          </div>
+          <div class="faq-shell reveal">
+            <details class="faq-item" open>
+              <summary class="faq-question">How long does production rollout take?<span>+</span></summary>
+              <div class="faq-answer"><div>Most customers launch an initial high-value workflow in 4 to 8 weeks, then expand from that controlled foundation.</div></div>
+            </details>
+            <details class="faq-item">
+              <summary class="faq-question">Can we keep our existing tools?<span>+</span></summary>
+              <div class="faq-answer"><div>Yes. Aurix is designed to become the orchestration and intelligence layer above your current systems, not a destructive rip-and-replace event.</div></div>
+            </details>
+            <details class="faq-item">
+              <summary class="faq-question">How do you prevent unsafe autonomous actions?<span>+</span></summary>
+              <div class="faq-answer"><div>Every action path is bounded by policy, confidence thresholds, approvals, reversible controls, and a full audit trail.</div></div>
+            </details>
+            <details class="faq-item">
+              <summary class="faq-question">Do you support private deployments?<span>+</span></summary>
+              <div class="faq-answer"><div>Yes. Private cloud and highly controlled deployment models are available for regulated and sensitive environments.</div></div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Final CTA Experience -->
+      <section id="final-cta" aria-labelledby="cta-title">
+        <div class="section-inner">
+          <div class="final-cta reveal">
+            <div class="stack-6" style="max-width: 58rem;">
+              <span class="eyebrow">26 final call</span>
+              <h2 class="section-title" id="cta-title" style="max-width: 10ch;">Build the operating system your competitors will wish they found first.</h2>
+              <p class="lede">If you're serious about enterprise AI, stop buying disconnected tools and start building compound advantage.</p>
+              <div class="cta-row">
+                <a class="btn btn-primary magnetic" href="mailto:hello@aurix.ai">Book an executive walkthrough</a>
+                <a class="btn btn-secondary magnetic" href="mailto:architecture@aurix.ai">Talk to platform engineering</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Luxury Footer -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-top reveal">
+          <div class="stack-5">
+            <a class="brand" href="#top">
+              <span class="brand-mark" aria-hidden="true"></span>
+              <span>Aurix OS</span>
+            </a>
+            <p class="lede">Enterprise AI infrastructure for organizations that want intelligence, control, and speed in the same system.</p>
+          </div>
+          <div class="footer-links">
+            <div class="footer-col">
+              <span class="tiny">platform</span>
+              <a href="#ecosystem">Products</a>
+              <a href="#architecture">Architecture</a>
+              <a href="#security">Security</a>
+            </div>
+            <div class="footer-col">
+              <span class="tiny">company</span>
+              <a href="#case-study">Customers</a>
+              <a href="#pricing">Pricing</a>
+              <a href="#faq">FAQ</a>
+            </div>
+            <div class="footer-col">
+              <span class="tiny">contact</span>
+              <a href="mailto:hello@aurix.ai">hello@aurix.ai</a>
+              <a href="mailto:press@aurix.ai">press@aurix.ai</a>
+              <a href="mailto:partners@aurix.ai">partners@aurix.ai</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom reveal">
+          <span>© 2032 Aurix Systems. Built for institutions, not hype cycles.</span>
+          <span>Semantic HTML, accessible structure, motion-aware interactions, and performance-first rendering.</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Chart Initialization
+    const chartCanvas = document.getElementById('commandChart');
+    if (chartCanvas && typeof Chart !== 'undefined') {
+      new Chart(chartCanvas, {
+        type: 'line',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [
+            {
+              label: 'Interventions prevented',
+              data: [42, 57, 61, 78, 82, 94, 108],
+              borderColor: 'rgba(98, 215, 255, 1)',
+              backgroundColor: 'rgba(98, 215, 255, 0.12)',
+              fill: true,
+              tension: 0.42,
+              borderWidth: 2.5,
+              pointRadius: 0
+            },
+            {
+              label: 'Autonomous resolutions',
+              data: [25, 33, 46, 54, 62, 74, 89],
+              borderColor: 'rgba(111, 106, 255, 1)',
+              backgroundColor: 'rgba(111, 106, 255, 0.08)',
+              fill: true,
+              tension: 0.42,
+              borderWidth: 2.5,
+              pointRadius: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: 'rgba(230, 236, 245, 0.8)',
+                usePointStyle: true,
+                padding: 18,
+                font: { family: 'Manrope', size: 12, weight: '600' }
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(12, 16, 24, 0.96)',
+              borderColor: 'rgba(255,255,255,0.08)',
+              borderWidth: 1,
+              titleColor: '#fff',
+              bodyColor: 'rgba(220, 226, 236, 0.9)'
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(255,255,255,0.05)' },
+              ticks: { color: 'rgba(201, 210, 224, 0.7)' }
+            },
+            y: {
+              grid: { color: 'rgba(255,255,255,0.05)' },
+              ticks: { color: 'rgba(201, 210, 224, 0.7)' }
+            }
+          }
+        }
+      });
+    }
+
+    // Reveal on Scroll
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.16 });
+
+    document.querySelectorAll('.reveal').forEach((node) => revealObserver.observe(node));
+
+    // Magnetic Button Interaction
+    const magnets = document.querySelectorAll('.magnetic');
+    magnets.forEach((button) => {
+      button.addEventListener('mousemove', (event) => {
+        const rect = button.getBoundingClientRect();
+        const x = event.clientX - rect.left - rect.width / 2;
+        const y = event.clientY - rect.top - rect.height / 2;
+        button.style.transform = `translate(${x * 0.08}px, ${y * 0.08}px)`;
+      });
+
+      button.addEventListener('mouseleave', () => {
+        button.style.transform = '';
+      });
+    });
+
+    // Cursor Glow
+    const glow = document.querySelector('.cursor-glow');
+    if (glow && window.matchMedia('(pointer:fine)').matches) {
+      window.addEventListener('pointermove', (event) => {
+        glow.style.opacity = '1';
+        glow.style.left = `${event.clientX}px`;
+        glow.style.top = `${event.clientY}px`;
+      }, { passive: true });
+    }
+
+    // ROI Calculator Logic
+    const volumeRange = document.getElementById('volumeRange');
+    const minutesRange = document.getElementById('minutesRange');
+    const costRange = document.getElementById('costRange');
+
+    const volumeValue = document.getElementById('volumeValue');
+    const minutesValue = document.getElementById('minutesValue');
+    const costValue = document.getElementById('costValue');
+    const hoursRecovered = document.getElementById('hoursRecovered');
+    const monthlyValue = document.getElementById('monthlyValue');
+    const annualValue = document.getElementById('annualValue');
+    const paybackValue = document.getElementById('paybackValue');
+
+    const formatCompactCurrency = (value) => {
+      if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}m`;
+      if (value >= 1000) return `$${Math.round(value / 1000)}k`;
+      return `$${Math.round(value)}`;
+    };
+
+    const formatNumber = (value) => new Intl.NumberFormat('en-US').format(Math.round(value));
+
+    const updateROI = () => {
+      const volume = Number(volumeRange.value);
+      const minutes = Number(minutesRange.value);
+      const cost = Number(costRange.value);
+
+      volumeValue.textContent = formatNumber(volume);
+      minutesValue.textContent = minutes;
+      costValue.textContent = cost;
+
+      const recoveredHours = volume * (minutes * 0.27) / 60;
+      const monthlySavings = recoveredHours * cost;
+      const annualSavings = monthlySavings * 12;
+      const paybackWeeks = Math.max(4, Math.round(420000 / monthlySavings * 4.3));
+
+      hoursRecovered.textContent = formatNumber(recoveredHours);
+      monthlyValue.textContent = formatCompactCurrency(monthlySavings);
+      annualValue.textContent = formatCompactCurrency(annualSavings);
+      paybackValue.textContent = `${paybackWeeks} wks`;
+    };
+
+    [volumeRange, minutesRange, costRange].forEach((input) => {
+      input?.addEventListener('input', updateROI, { passive: true });
+    });
+
+    updateROI();
+
+    // FAQ Symbol Sync
+    document.querySelectorAll('.faq-item').forEach((item) => {
+      const summary = item.querySelector('.faq-question span');
+      item.addEventListener('toggle', () => {
+        if (summary) summary.textContent = item.open ? '−' : '+';
+      });
+    });
+
+    // SVG Path Animation Enhancement
+    document.querySelectorAll('.animate-path').forEach((path, index) => {
+      const length = path.getTotalLength();
+      path.style.strokeDasharray = `${length}`;
+      path.style.strokeDashoffset = `${length}`;
+      path.animate(
+        [
+          { strokeDashoffset: length, opacity: 0.25 },
+          { strokeDashoffset: 0, opacity: 1 },
+          { strokeDashoffset: -length, opacity: 0.15 }
+        ],
+        {
+          duration: 5000 + index * 900,
+          iterations: Infinity,
+          easing: 'linear'
+        }
+      );
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexicWeb – SaaS Architecture for Modern Web Products</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #040407;
+    --surface: #0b0c13;
+    --card: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+    --border-hover: rgba(130,100,255,0.35);
+    --purple: #7c5cfc;
+    --purple-soft: rgba(124,92,252,0.15);
+    --purple-glow: rgba(124,92,252,0.08);
+    --blue: #4f8ef7;
+    --text: #e8e8f0;
+    --muted: #7a7a90;
+    --dim: #4a4a60;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    
+font-family:'Satoshi',sans-serif;
+}
+  
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(4,4,7,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px; font-weight: 800;
+    letter-spacing: -0.3px;
+    color: #fff;
+  }
+  .nav-logo span { color: var(--purple); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { color: var(--muted); font-size: 13px; font-weight: 500; text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-badge {
+    background: var(--purple-soft);
+    border: 1px solid rgba(124,92,252,0.3);
+    color: #a88cff;
+    font-size: 12px; font-weight: 600;
+    padding: 5px 14px; border-radius: 100px;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    padding: 120px 48px 80px;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 60px;
+    align-items: start;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  /* ambient glow */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(124,92,252,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ─── LEFT SIDE ─── */
+  .hero-left { padding-top: 12px; }
+
+  /* ─── LIVE PREVIEW IMAGE ─── */
+  .preview-block {
+    position: relative;
+    margin-bottom: 36px;
+    border-radius: 18px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: #0d0d18;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,92,252,0.08);
+    aspect-ratio: 16/9;
+    max-height: 320px;
+  }
+  .preview-block:hover .preview-img { transform: scale(1.04); }
+  .preview-block:hover .preview-overlay { opacity: 1; }
+  .preview-block:hover .preview-badge { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+  .preview-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* SVG mock screenshot inside preview */
+  .preview-mock {
+    width: 100%; height: 100%;
+    display: flex; align-items: stretch;
+    flex-direction: column;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .preview-block:hover .preview-mock { transform: scale(1.04); }
+
+  .preview-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(124,92,252,0.18) 0%, rgba(0,0,0,0.55) 100%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .preview-badge {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0.88);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 100px;
+    padding: 12px 24px;
+    display: flex; align-items: center; gap: 10px;
+    color: #fff;
+    font-size: 14px; font-weight: 700;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .preview-badge i { font-size: 15px; color: #fff; }
+
+  .preview-topbar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    flex-shrink: 0;
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+  .url-bar {
+    flex: 1; background: rgba(255,255,255,0.06); border-radius: 5px;
+    height: 20px; margin: 0 10px;
+    display: flex; align-items: center; padding: 0 10px;
+    font-size: 10px; color: var(--dim);
+  }
+  .preview-body {
+    flex: 1; padding: 18px; overflow: hidden;
+    background: linear-gradient(160deg, #0d0f1e 0%, #080a14 100%);
+    position: relative;
+  }
+  .mock-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .mock-logo { width: 54px; height: 10px; background: rgba(124,92,252,0.5); border-radius: 4px; }
+  .mock-nav-links { display: flex; gap: 8px; }
+  .mock-link { width: 28px; height: 7px; background: rgba(255,255,255,0.1); border-radius: 3px; }
+  .mock-btn-nav { width: 44px; height: 18px; background: rgba(124,92,252,0.35); border-radius: 5px; }
+
+  .mock-hero-area { display: flex; gap: 16px; align-items: flex-start; }
+  .mock-left { flex: 1; }
+  .mock-tag { width: 70px; height: 8px; background: rgba(124,92,252,0.3); border-radius: 20px; margin-bottom: 10px; }
+  .mock-h1-l { width: 90%; height: 12px; background: rgba(255,255,255,0.22); border-radius: 4px; margin-bottom: 7px; }
+  .mock-h1-s { width: 65%; height: 12px; background: rgba(255,255,255,0.18); border-radius: 4px; margin-bottom: 14px; }
+  .mock-sub { width: 80%; height: 7px; background: rgba(255,255,255,0.08); border-radius: 3px; margin-bottom: 5px; }
+  .mock-sub2 { width: 55%; height: 7px; background: rgba(255,255,255,0.06); border-radius: 3px; margin-bottom: 14px; }
+  .mock-tags-row { display: flex; gap: 5px; margin-bottom: 16px; }
+  .mock-pill { height: 14px; border-radius: 20px; background: rgba(255,255,255,0.07); }
+  .mock-btn-row { display: flex; gap: 8px; }
+  .mock-btn-g { width: 80px; height: 22px; background: linear-gradient(90deg, #25D366, #20bf5b); border-radius: 6px; }
+  .mock-btn-o { width: 60px; height: 22px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; }
+
+  .mock-right { width: 110px; flex-shrink: 0; }
+  .mock-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(124,92,252,0.15); border-radius: 8px; padding: 10px; }
+  .mock-price-line { width: 50px; height: 14px; background: rgba(255,255,255,0.2); border-radius: 4px; margin-bottom: 8px; }
+  .mock-select-box { height: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; margin-bottom: 8px; }
+  .mock-feat { height: 6px; background: rgba(255,255,255,0.07); border-radius: 3px; margin-bottom: 5px; width: 90%; }
+  .mock-feat2 { width: 70%; }
+  .mock-feat3 { width: 80%; }
+  .mock-cta { height: 18px; background: linear-gradient(90deg, #25D366, #20bf5b); border-radius: 5px; margin-top: 10px; }
+
+  .preview-shine {
+    position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.035), transparent);
+    transform: skewX(-15deg);
+    animation: shine 4s ease-in-out infinite;
+  }
+  @keyframes shine { 0%,100% { left: -60%; } 50% { left: 130%; } }
+
+  /* LIVE PREVIEW BUTTON */
+  .btn-live-preview {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: transparent;
+    border: 1px solid rgba(124,92,252,0.4);
+    color: #a88cff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px; font-weight: 700;
+    padding: 10px 20px; border-radius: 100px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+    margin-top: 12px;
+    letter-spacing: 0.2px;
+  }
+  .btn-live-preview:hover {
+    background: rgba(124,92,252,0.12);
+    border-color: var(--purple);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(124,92,252,0.2);
+    transform: translateY(-1px);
+  }
+  .btn-live-preview .live-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: #5dde8c;
+    box-shadow: 0 0 6px #5dde8c;
+    animation: pulse-dot 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse-dot { 0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:0.5; transform:scale(0.75); } }
+
+  .category-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--purple-soft);
+    border: 1px solid rgba(124,92,252,0.25);
+    color: #a88cff;
+    font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 100px;
+    margin-bottom: 28px;
+  }
+  .category-tag i { font-size: 10px; }
+
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -1.5px;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  .hero-title .accent { color: var(--purple); }
+
+  .hero-subtitle {
+    font-size: 16px; font-weight: 400;
+    color: var(--muted);
+    margin-bottom: 28px;
+    max-width: 480px;
+    line-height: 1.6;
+  }
+
+  .feature-tags {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 32px;
+  }
+  .feature-tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 12px; font-weight: 600;
+    padding: 6px 14px; border-radius: 100px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .feature-tag::before {
+    content: '';
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--purple);
+  }
+
+  .hero-desc {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.75;
+    max-width: 500px;
+    padding-left: 16px;
+    border-left: 2px solid rgba(124,92,252,0.4);
+  }
+
+  .meta-row {
+    display: flex; align-items: center; gap: 24px;
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+  .meta-item { display: flex; flex-direction: column; gap: 3px; }
+  .meta-label { font-size: 11px; font-weight: 600; color: var(--dim); text-transform: uppercase; letter-spacing: 0.8px; }
+  .meta-value { font-size: 13px; font-weight: 600; color: var(--text); }
+  .meta-divider { width: 1px; height: 32px; background: var(--border); }
+  .rating { display: flex; gap: 3px; color: #f5a623; font-size: 12px; }
+
+  /* ─── STICKY CHECKOUT CARD ─── */
+  .checkout-wrap { position: sticky; top: 84px; }
+
+  .checkout-card {
+    background: rgba(255,255,255,0.035);
+    backdrop-filter: blur(24px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 0 0 1px rgba(124,92,252,0.05), 0 24px 64px rgba(0,0,0,0.5);
+  }
+
+  .card-header {
+    margin-bottom: 22px;
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px; font-weight: 700;
+    color: #fff; margin-bottom: 4px;
+  }
+  .card-sub { font-size: 12px; color: var(--muted); }
+
+  /* PRICE DISPLAY */
+  .price-display {
+    display: flex; align-items: baseline; gap: 6px;
+    margin-bottom: 20px;
+    padding: 16px 18px;
+    background: var(--purple-glow);
+    border: 1px solid rgba(124,92,252,0.12);
+    border-radius: var(--radius-sm);
+  }
+  .price-currency { font-size: 18px; font-weight: 700; color: var(--purple); margin-top: 4px; }
+  .price-amount {
+    font-family: 'Syne', sans-serif;
+    font-size: 42px; font-weight: 800;
+    color: #fff; line-height: 1;
+    transition: all 0.3s ease;
+  }
+  .price-period { font-size: 13px; color: var(--muted); align-self: flex-end; margin-bottom: 4px; }
+
+  /* CUSTOM SELECT */
+  .select-wrap { position: relative; margin-bottom: 18px; }
+  .select-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; display: block; }
+
+  .custom-select {
+    position: relative; cursor: pointer;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 13px 42px 13px 16px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px; font-weight: 600;
+    color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    user-select: none;
+  }
+  .custom-select:hover { border-color: rgba(124,92,252,0.4); }
+  .custom-select.open { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(124,92,252,0.1); }
+  .select-arrow {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--muted); font-size: 11px;
+    transition: transform 0.25s;
+    pointer-events: none;
+  }
+  .custom-select.open .select-arrow { transform: translateY(-50%) rotate(180deg); }
+
+  .select-dropdown {
+    position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 50;
+    background: #12121e;
+    border: 1px solid rgba(124,92,252,0.25);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+    display: none;
+  }
+  .select-dropdown.show { display: block; animation: dropIn 0.18s ease; }
+  @keyframes dropIn { from { opacity:0; transform: translateY(-6px); } to { opacity:1; transform: translateY(0); } }
+
+  .select-option {
+    padding: 13px 16px;
+    font-size: 14px; font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: background 0.15s;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .select-option:last-child { border-bottom: none; }
+  .select-option:hover { background: rgba(124,92,252,0.1); }
+  .select-option.selected { background: rgba(124,92,252,0.12); color: #a88cff; }
+  .option-price { font-size: 13px; font-weight: 700; color: var(--purple); }
+
+  /* PACKAGE DETAILS */
+  .pkg-details {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-bottom: 20px;
+    animation: fadeIn 0.25s ease;
+  }
+  @keyframes fadeIn { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform: translateY(0); } }
+  .pkg-name { font-size: 12px; font-weight: 700; color: var(--purple); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
+  .pkg-feature {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; color: var(--text);
+    padding: 5px 0;
+  }
+  .pkg-feature i { color: #5dde8c; font-size: 11px; flex-shrink: 0; }
+
+  /* BUTTONS */
+  .btn-primary {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%;
+    background: #25D366;
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 15px 24px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px; font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    margin-bottom: 10px;
+    letter-spacing: 0.2px;
+  }
+  .btn-primary:hover {
+    background: #20bf5b;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(37,211,102,0.25);
+  }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-secondary {
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    width: 100%;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 24px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--border-hover); color: var(--text); background: rgba(255,255,255,0.03); }
+
+  .trust-row {
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .trust-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--dim); }
+  .trust-item i { font-size: 11px; color: var(--muted); }
+
+  /* ─── SECTION ─── */
+  .section {
+    position: relative; z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 80px 48px;
+  }
+  .section-divider {
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
+    max-width: 1280px; margin: 0 auto;
+    position: relative; z-index: 1;
+  }
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--purple);
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 16px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); max-width: 60px; }
+
+  .section-heading {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(26px, 3vw, 38px);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.8px;
+    margin-bottom: 16px;
+  }
+
+  /* ─── OVERVIEW SECTION ─── */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .overview-text p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.85;
+    margin-bottom: 20px;
+  }
+
+  .overview-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 12px; font-weight: 600;
+    padding: 7px 14px; border-radius: 100px;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .pill i { color: var(--purple); font-size: 11px; }
+
+  /* ─── ICON NAV CARDS ─── */
+  .nav-cards {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+
+  .nav-card {
+    display: block; text-decoration: none;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .nav-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at top right, rgba(124,92,252,0.06), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .nav-card:hover { transform: translateY(-3px); border-color: var(--border-hover); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+  .nav-card:hover::before { opacity: 1; }
+
+  .card-icon {
+    width: 36px; height: 36px;
+    background: var(--purple-soft);
+    border: 1px solid rgba(124,92,252,0.2);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; color: var(--purple);
+    margin-bottom: 12px;
+  }
+  .nav-card-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 5px; }
+  .nav-card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .nav-card-arrow {
+    position: absolute; right: 16px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--dim); font-size: 12px;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .nav-card:hover .nav-card-arrow { color: var(--purple); transform: translateY(-50%) translateX(2px); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 28px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    max-width: 1280px; margin: 0 auto;
+  }
+  .footer-logo { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--muted); }
+  .footer-logo span { color: var(--purple); }
+  .footer-copy { font-size: 12px; color: var(--dim); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
+    .checkout-wrap { position: static; }
+    .overview-grid { grid-template-columns: 1fr; gap: 40px; }
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    .section { padding: 60px 24px; }
+    footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
+  }
+  @media (max-width: 480px) {
+    .hero-title { font-size: 28px; }
+    .nav-cards { grid-template-columns: 1fr; }
+    .meta-row { flex-wrap: wrap; gap: 16px; }
+    .meta-divider { display: none; }
+  }
+  /* ─── PREVIEW MODAL ─── */
+  .preview-modal {
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .preview-modal.show { opacity: 1; pointer-events: all; }
+  .preview-modal.show .modal-inner { transform: scale(1) translateY(0); }
+
+  .modal-inner {
+    background: #0d0e1a;
+    border: 1px solid rgba(124,92,252,0.2);
+    border-radius: 18px;
+    width: 100%; max-width: 900px;
+    overflow: hidden;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8), 0 0 0 1px rgba(124,92,252,0.08);
+    transform: scale(0.94) translateY(16px);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .modal-topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .modal-url { font-size: 12px; color: var(--muted); margin-left: 6px; }
+  .modal-close-btn {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+    color: var(--muted); border-radius: 7px; width: 28px; height: 28px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; transition: background 0.2s, color 0.2s;
+  }
+  .modal-close-btn:hover { background: rgba(255,80,80,0.15); color: #ff6060; }
+
+  .modal-preview-body {
+    padding: 28px 32px;
+    background: linear-gradient(160deg, #0d0f1e 0%, #080a14 100%);
+    min-height: 380px;
+  }
+
+  .modal-mock-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 28px;
+  }
+  .mmock-logo { width: 80px; height: 12px; background: rgba(124,92,252,0.45); border-radius: 5px; }
+  .mmock-link { width: 38px; height: 8px; background: rgba(255,255,255,0.1); border-radius: 3px; }
+  .mmock-btn { width: 64px; height: 22px; background: rgba(124,92,252,0.35); border-radius: 6px; }
+
+  .modal-mock-content { display: flex; gap: 28px; align-items: flex-start; }
+  .mmock-left { flex: 1; }
+  .mmock-right { width: 180px; flex-shrink: 0; }
+
+  .mmock-badge { width: 100px; height: 10px; background: rgba(124,92,252,0.3); border-radius: 20px; margin-bottom: 14px; }
+  .mmock-h1 { height: 18px; background: rgba(255,255,255,0.2); border-radius: 5px; margin-bottom: 10px; }
+  .mmock-tag { height: 16px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; }
+  .mmock-p { height: 8px; background: rgba(255,255,255,0.08); border-radius: 3px; margin-bottom: 7px; width: 85%; }
+  .mmock-cta-g { width: 120px; height: 28px; background: linear-gradient(90deg, #25D366, #20bf5b); border-radius: 7px; }
+  .mmock-cta-o { width: 90px; height: 28px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 7px; }
+  .mmock-card { background: rgba(255,255,255,0.035); border: 1px solid rgba(124,92,252,0.18); border-radius: 12px; padding: 18px; }
+
+  .modal-footer-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 20px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.02);
+    font-size: 12px; color: var(--muted);
+  }
+  .modal-open-btn {
+    display: flex; align-items: center; gap: 7px;
+    color: #a88cff; font-size: 12px; font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .modal-open-btn:hover { color: #fff; }
+
+
+
+
+
+
+
+
+
+.preview-block{
+  position:relative;
+  width:100%;
+  height:320px;
+  border-radius:18px;
+  overflow:hidden;
+  cursor:pointer;
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+/* IMAGE */
+.preview-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition:0.4s ease;
+}
+
+/* FULL CLICK LAYER (NO BUG EVER) */
+.preview-link{
+  position:absolute;
+  inset:0;
+  z-index:5;
+}
+
+/* OVERLAY */
+.preview-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(124,92,252,0.18),rgba(0,0,0,0.6));
+  opacity:0;
+  transition:0.3s ease;
+  z-index:2;
+  pointer-events:none;
+}
+
+.preview-block:hover .preview-overlay{
+  opacity:1;
+}
+
+/* BADGE */
+.preview-badge{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(0.9);
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.2);
+  padding:12px 20px;
+  border-radius:999px;
+  color:#fff;
+  font-weight:700;
+  font-size:14px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  opacity:0;
+  transition:0.3s ease;
+  z-index:3;
+  pointer-events:none;
+}
+
+.preview-block:hover .preview-badge{
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
+}
+
+@media (max-width:768px){
+
+.product-title{
+font-size:clamp(2.2rem,10vw,4rem);
+line-height:0.95;
+letter-spacing:-0.04em;
+max-width:100%;
+}
+
+}
+
+
+/* =========================
+   MOBILE RESPONSIVE FIX
+========================= */
+
+@media (max-width: 768px){
+
+  nav{
+    padding:0 15px;
+    height:60px;
+  }
+
+  .nav-logo{
+    font-size:16px;
+  }
+
+  .nav-badge{
+    display:none;
+  }
+
+  .hero{
+    grid-template-columns:1fr !important;
+    gap:30px;
+    padding:90px 15px 40px;
+  }
+
+  .hero-left,
+  .checkout-wrap{
+    width:100%;
+  }
+
+  .preview-block{
+    height:auto !important;
+    aspect-ratio:16/9;
+  }
+
+  .hero-title{
+    font-size:32px !important;
+    line-height:1.1;
+  }
+
+  .hero-subtitle,
+  .hero-desc{
+    max-width:100%;
+    font-size:14px;
+  }
+
+  .feature-tags{
+    gap:6px;
+  }
+
+  .feature-tag{
+    font-size:11px;
+    padding:6px 10px;
+  }
+
+  .meta-row{
+    flex-wrap:wrap;
+    gap:12px;
+  }
+
+  .meta-divider{
+    display:none;
+  }
+
+  .checkout-card{
+    width:100%;
+    padding:20px;
+  }
+
+  .price-amount{
+    font-size:34px;
+  }
+
+  .overview-grid{
+    grid-template-columns:1fr !important;
+    gap:30px;
+  }
+
+  .nav-cards{
+    grid-template-columns:1fr;
+  }
+
+  .section{
+    padding:50px 15px;
+  }
+
+  .section-heading{
+    font-size:28px;
+  }
+
+  .modal-preview-body{
+    padding:15px;
+  }
+
+  .modal-mock-content{
+    flex-direction:column;
+  }
+
+  .mmock-right{
+    width:100%;
+  }
+
+  footer{
+    flex-direction:column;
+    gap:10px;
+    text-align:center;
+    padding:20px 15px;
+  }
+
+}
+
+/* EXTRA SMALL MOBILE */
+
+@media (max-width:480px){
+
+  .hero-title{
+    font-size:26px !important;
+  }
+
+  .category-tag{
+    font-size:10px;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-live-preview{
+    width:100%;
+  }
+
+  .price-amount{
+    font-size:30px;
+  }
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+<div class="nav-logo" onclick="location.reload();">
+  Nexic<span>Web</span>
+</div>
+  <ul class="nav-links">
+   <ul class="nav-links">
+        <li><a href="index.html#home" class="nav-link active">Home</a></li>
+        <li><a href="index.html#websites" class="nav-link">Websites</a></li>
+        <li><a href="index.html#membership" class="nav-link">Membership</a></li>
+        <li><a href="index.html#experts" class="nav-link">Experts</a></li>
+  <div class="nav-badge"><i class="fa-solid fa-shield-check" style="margin-right:6px;font-size:10px;"></i>Verified Product</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+  <!-- LEFT -->
+  <div class="hero-left">
+
+    <!-- BIG PRODUCT PREVIEW IMAGE -->
+    
+
+
+
+
+
+
+
+
+
+
+
+<!-- BIG PRODUCT PREVIEW IMAGE (FIXED VERSION) -->
+<div class="preview-block">
+
+  <!-- IMAGE (CHANGE ONLY THIS SRC FOR YOUR IMAGE) -->
+  <img 
+    src="image/LAND.png"
+    alt="Preview Image"
+    class="preview-img"
+  >
+
+  <!-- CLICK LINK WRAP -->
+  <a 
+    href="https://monolith-nexic.netlify.app/" 
+    target="_blank" 
+    class="preview-link"
+  ></a>
+
+  <!-- HOVER OVERLAY -->
+  <div class="preview-overlay"></div>
+
+  <!-- BADGE -->
+  <div class="preview-badge">
+    <i class="fa-solid fa-play"></i>
+    View Live Preview
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- LIVE PREVIEW BUTTON -->
+    <a href="https://monolith-nexic.netlify.app/" target="_blank" class="btn-live-preview" id="livePreviewBtn">
+      <span class="live-dot"></span>
+      Live Preview
+      <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:11px;"></i>
+    </a>
+
+    <div class="category-tag" style="margin-top:28px;">
+      <i class="fa-solid fa-layer-group"></i>
+      SaaS Frontend Architecture
+    </div>
+
+    <h1 class="hero-title">
+    Empowering Enterprises Through Intelligent Technology and Innovation<br>
+    
+      <span class="accent">Built for the Future</span>
+    </h1>
+
+    <p class="hero-subtitle">
+     Scalable Solutions That Inspire Growth, Efficiency & Digital Transformation
+    </p>
+
+    <div class="feature-tags">
+      <span class="feature-tag">Responsive Design</span>
+      <span class="feature-tag">SEO Optimized</span>
+      <span class="feature-tag">Clean Code</span>
+      <span class="feature-tag">Fast Performance</span>
+    </div>
+
+    <p class="hero-desc">
+      We partner with ambitious organizations to create enterprise-grade digital experiences that simplify complexity, improve operational efficiency, and unlock new opportunities through modern technology and strategic innovation.
+    </p>
+
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="meta-label">Rating</span>
+        <div class="rating">
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star-half-stroke"></i>
+          <span style="color:var(--muted);font-size:12px;margin-left:4px;">4.8</span>
+        </div>
+      </div>
+      <div class="meta-divider"></div>
+      <div class="meta-item">
+        <span class="meta-label">Category</span>
+        <span class="meta-value">SaaS Template</span>
+      </div>
+      <div class="meta-divider"></div>
+      <div class="meta-item">
+        <span class="meta-label">License</span>
+        <span class="meta-value">Commercial</span>
+      </div>
+      <div class="meta-divider"></div>
+      <div class="meta-item">
+        <span class="meta-label">Updates</span>
+        <span class="meta-value">Lifetime</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT – CHECKOUT CARD -->
+  <div class="checkout-wrap">
+    <div class="checkout-card">
+      <div class="card-header">
+        <div class="card-title">Choose Your Package</div>
+        <div class="card-sub">Select the plan that fits your project</div>
+      </div>
+
+      <!-- PRICE DISPLAY -->
+      <div class="price-display">
+        <span class="price-currency">$</span>
+        <span class="price-amount" id="priceAmount">49</span>
+        <span class="price-period">/ one-time</span>
+      </div>
+
+      <!-- CUSTOM SELECT -->
+      <div class="select-wrap">
+        <label class="select-label">Package</label>
+        <div class="custom-select" id="customSelect">
+          <span id="selectText">Starter – $49</span>
+          <i class="fa-solid fa-chevron-down select-arrow"></i>
+          <div class="select-dropdown" id="selectDropdown">
+            <div class="select-option selected" data-value="starter" data-price="29" data-label="Starter – $29">
+              Starter <span class="option-price">$49</span>
+            </div>
+            <div class="select-option" data-value="professional" data-price="49" data-label="Professional – $49">
+              Professional <span class="option-price">$69</span>
+            </div>
+            <div class="select-option" data-value="agency" data-price="99" data-label="Agency – $99">
+              Agency <span class="option-price">$149</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PACKAGE DETAILS -->
+      <div class="pkg-details" id="pkgDetails">
+        <div class="pkg-name" id="pkgName">Starter Package</div>
+        <div id="pkgFeatures">
+          <div class="pkg-feature"><i class="fa-solid fa-check"></i> 1 Landing Page</div>
+          <div class="pkg-feature"><i class="fa-solid fa-check"></i> Basic UI Components</div>
+          <div class="pkg-feature"><i class="fa-solid fa-check"></i> Email Support</div>
+        </div>
+      </div>
+
+      <!-- BUTTONS -->
+      <button class="btn-primary" id="whatsappBtn">
+        <i class="fa-brands fa-whatsapp" style="font-size:18px;"></i>
+        Checkout via WhatsApp
+      </button>
+      <button class="btn-secondary" id="cartBtn">
+        
+
+      <div class="trust-row">
+        <div class="trust-item"><i class="fa-solid fa-lock"></i> Secure</div>
+        <div class="trust-item"><i class="fa-solid fa-rotate-left"></i> Refundable</div>
+        <div class="trust-item"><i class="fa-solid fa-headset"></i> Support</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PRODUCT OVERVIEW + ICON NAV -->
+<section class="section" id="overview">
+  <div class="overview-grid">
+
+    <!-- LEFT – DESCRIPTION -->
+    <div class="overview-text">
+      <div class="section-label"><i class="fa-solid fa-cube"></i> Product Overview</div>
+      <h2 class="section-heading">Built for Real-World<br>Deployment</h2>
+
+      <p>
+        This SaaS template includes a production-grade frontend system designed for real-world applications. Built with modular architecture, it ensures scalability, maintainability, and high performance across all devices.
+      </p>
+      <p>
+        Every section is independently composed, following a clean separation of concerns. Whether you're shipping a startup MVP or scaling an enterprise platform, the architecture adapts without friction.
+      </p>
+      <p>
+        Responsive by default, semantic by design, and optimized for Core Web Vitals — this is a frontend foundation you can trust in production.
+      </p>
+
+      <div class="overview-pills">
+        <span class="pill"><i class="fa-solid fa-bolt"></i> Lightweight CSS</span>
+        <span class="pill"><i class="fa-solid fa-mobile-screen"></i> Mobile-First</span>
+        <span class="pill"><i class="fa-solid fa-code"></i> Vanilla JS</span>
+        <span class="pill"><i class="fa-solid fa-magnifying-glass"></i> SEO Ready</span>
+        <span class="pill"><i class="fa-solid fa-gauge-high"></i> 95+ Lighthouse</span>
+      </div>
+    </div>
+
+    <!-- RIGHT – ICON NAV CARDS -->
+    <div id="resources">
+      <div class="section-label"><i class="fa-solid fa-link"></i> Resources</div>
+      <h2 class="section-heading" style="margin-bottom:20px;">Quick Navigation</h2>
+
+      <div class="nav-cards">
+
+        <a class="nav-card" href="https://github.com" target="_blank" rel="noopener">
+          <div class="card-icon"><i class="fa-brands fa-github"></i></div>
+          <div class="nav-card-title">Full Source Code</div>
+          <div class="nav-card-desc">Browse the complete repository and project structure.</div>
+          <i class="fa-solid fa-arrow-right nav-card-arrow"></i>
+        </a>
+
+        <a class="nav-card" href="https://getbootstrap.com" target="_blank" rel="noopener">
+          <div class="card-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+          <div class="nav-card-title">Responsive System</div>
+          <div class="nav-card-desc">Grid and breakpoint reference for the layout.</div>
+          <i class="fa-solid fa-arrow-right nav-card-arrow"></i>
+        </a>
+
+        <a class="nav-card" href="https://developer.mozilla.org" target="_blank" rel="noopener">
+          <div class="card-icon"><i class="fa-solid fa-puzzle-piece"></i></div>
+          <div class="nav-card-title">UI Components</div>
+          <div class="nav-card-desc">Standard components reference via MDN Web Docs.</div>
+          <i class="fa-solid fa-arrow-right nav-card-arrow"></i>
+        </a>
+
+        <a class="nav-card" href="https://web.dev" target="_blank" rel="noopener">
+          <div class="card-icon"><i class="fa-solid fa-gauge-high"></i></div>
+          <div class="nav-card-title">Performance</div>
+          <div class="nav-card-desc">Core Web Vitals and optimization best practices.</div>
+          <i class="fa-solid fa-arrow-right nav-card-arrow"></i>
+        </a>
+
+        <a class="nav-card" href="https://developer.mozilla.org/en-US/docs/Web" target="_blank" rel="noopener">
+          <div class="card-icon"><i class="fa-solid fa-book-open"></i></div>
+          <div class="nav-card-title">Documentation</div>
+          <div class="nav-card-desc">Full web platform API reference and guides.</div>
+          <i class="fa-solid fa-arrow-right nav-card-arrow"></i>
+        </a>
+
+        <a class="nav-card" href="https://css-tricks.com" target="_blank" rel="noopener">
+          <div class="card-icon"><i class="fa-brands fa-css3-alt"></i></div>
+          <div class="nav-card-title">Customization</div>
+          <div class="nav-card-desc">Advanced CSS techniques and theming guides.</div>
+          <i class="fa-solid fa-arrow-right nav-card-arrow"></i>
+        </a>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE PREVIEW MODAL -->
+<div class="preview-modal" id="previewModal">
+  <div class="modal-inner">
+    <div class="modal-topbar">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <div class="modal-url">nexicweb.io — Live Preview</div>
+      </div>
+      <button class="modal-close-btn" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-preview-body">
+      <!-- Full expanded mock UI -->
+      <div class="modal-mock-nav">
+        <div class="mmock-logo"></div>
+        <div style="display:flex;gap:12px;">
+          <div class="mmock-link"></div><div class="mmock-link"></div><div class="mmock-link"></div>
+        </div>
+        <div class="mmock-btn"></div>
+      </div>
+      <div class="modal-mock-content">
+        <div class="mmock-left">
+          <div class="mmock-badge"></div>
+          <div class="mmock-h1" style="width:88%"></div>
+          <div class="mmock-h1" style="width:72%"></div>
+          <div class="mmock-h1" style="width:55%;height:22px;"></div>
+          <div style="display:flex;gap:7px;margin:18px 0 12px;">
+            <div class="mmock-tag" style="width:80px"></div>
+            <div class="mmock-tag" style="width:68px"></div>
+            <div class="mmock-tag" style="width:74px"></div>
+            <div class="mmock-tag" style="width:62px"></div>
+          </div>
+          <div class="mmock-p"></div>
+          <div class="mmock-p" style="width:75%"></div>
+          <div class="mmock-p" style="width:60%"></div>
+          <div style="display:flex;gap:10px;margin-top:20px;">
+            <div class="mmock-cta-g"></div>
+            <div class="mmock-cta-o"></div>
+          </div>
+          <div style="display:flex;gap:20px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.06);">
+            <div><div style="width:30px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;margin-bottom:5px;"></div><div style="width:50px;height:9px;background:rgba(255,255,255,0.18);border-radius:3px;"></div></div>
+            <div><div style="width:30px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;margin-bottom:5px;"></div><div style="width:60px;height:9px;background:rgba(255,255,255,0.18);border-radius:3px;"></div></div>
+            <div><div style="width:30px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;margin-bottom:5px;"></div><div style="width:50px;height:9px;background:rgba(255,255,255,0.18);border-radius:3px;"></div></div>
+          </div>
+        </div>
+        <div class="mmock-right">
+          <div class="mmock-card">
+            <div style="width:55px;height:8px;background:rgba(255,255,255,0.1);border-radius:3px;margin-bottom:6px;"></div>
+            <div style="width:70px;height:26px;background:rgba(255,255,255,0.18);border-radius:4px;margin-bottom:12px;"></div>
+            <div style="height:20px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:5px;margin-bottom:10px;"></div>
+            <div style="height:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:5px;padding:8px;margin-bottom:4px;">
+              <div style="height:6px;width:60%;background:rgba(124,92,252,0.3);border-radius:3px;"></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:5px;margin:4px 0;"><div style="width:8px;height:8px;background:#5dde8c;border-radius:50%;"></div><div style="flex:1;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;"></div></div>
+            <div style="display:flex;align-items:center;gap:5px;margin:4px 0;"><div style="width:8px;height:8px;background:#5dde8c;border-radius:50%;"></div><div style="flex:1;height:6px;background:rgba(255,255,255,0.08);border-radius:3px;"></div></div>
+            <div style="display:flex;align-items:center;gap:5px;margin:4px 0;"><div style="width:8px;height:8px;background:#5dde8c;border-radius:50%;"></div><div style="flex:1;height:6px;background:rgba(255,255,255,0.08);border-radius:3px;"></div></div>
+            <div style="height:24px;background:linear-gradient(90deg,#25D366,#20bf5b);border-radius:5px;margin-top:12px;"></div>
+            <div style="height:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:5px;margin-top:6px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer-bar">
+      <span><i class="fa-solid fa-circle" style="color:#5dde8c;font-size:8px;margin-right:6px;"></i>Live Design Preview</span>
+      <a href="https://nexicweb.io" target="_blank" class="modal-open-btn">Open in New Tab <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:11px;"></i></a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Nexic<span>Web</span></div>
+  <div class="footer-copy">© 2026 NexicWeb. All rights reserved.</div>
+</footer>
+
+<script>
+  /* ─── PACKAGE DATA ─── */
+
+
+
+
+const packages = {
+  starter: {
+    label: 'Starter – $49',
+    name: 'Starter Package',
+    price: '49',
+    features: [
+      'Up to 5 Pages Website',
+      'Responsive Design',
+      'Basic SEO Setup',
+      'Email Support'
+    ]
+  },
+
+  professional: {
+    label: 'Professional – $99',
+    name: 'Professional Package',
+    price: '99',
+    features: [
+      'Up to 15 Pages Website',
+      'Advanced UI Design',
+      'SEO Optimization (On-page)',
+      'Performance Optimization',
+      'Priority Support'
+    ]
+  },
+
+  agency: {
+    label: 'Agency – $149',
+    name: 'Agency Package',
+    price: '149',
+    features: [
+      'Up to 30 Pages Website',
+      'Premium UI/UX Design',
+      'Full SEO Optimization',
+      'Speed + Performance Optimization',
+      'Source Code Access',
+      'Commercial License',
+      'Lifetime Support (basic updates)'
+    ]
+  }
+};
+
+
+
+
+
+
+
+
+
+  
+  
+
+  let selected = 'starter';
+
+  /* ─── CUSTOM SELECT ─── */
+  const customSelect = document.getElementById('customSelect');
+  const selectDropdown = document.getElementById('selectDropdown');
+  const selectText = document.getElementById('selectText');
+
+  customSelect.addEventListener('click', (e) => {
+    const isOpen = selectDropdown.classList.contains('show');
+    selectDropdown.classList.toggle('show', !isOpen);
+    customSelect.classList.toggle('open', !isOpen);
+    e.stopPropagation();
+  });
+
+  document.addEventListener('click', () => {
+    selectDropdown.classList.remove('show');
+    customSelect.classList.remove('open');
+  });
+
+  document.querySelectorAll('.select-option').forEach(opt => {
+    opt.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const value = opt.dataset.value;
+      selected = value;
+      const pkg = packages[value];
+
+      /* update selected state */
+      document.querySelectorAll('.select-option').forEach(o => o.classList.remove('selected'));
+
+
+      
+      opt.classList.add('selected');
+
+
+
+
+      /* update label */
+      selectText.textContent = pkg.label;
+
+      /* animate price */
+      const priceEl = document.getElementById('priceAmount');
+      priceEl.style.opacity = '0';
+      priceEl.style.transform = 'translateY(-6px)';
+      setTimeout(() => {
+        priceEl.textContent = pkg.price;
+        priceEl.style.transition = 'opacity 0.25s, transform 0.25s';
+        priceEl.style.opacity = '1';
+        priceEl.style.transform = 'translateY(0)';
+      }, 150);
+
+      /* update package name */
+      document.getElementById('pkgName').textContent = pkg.name;
+
+      /* update features */
+      const featuresEl = document.getElementById('pkgFeatures');
+      featuresEl.innerHTML = pkg.features
+        .map(f => `<div class="pkg-feature"><i class="fa-solid fa-check"></i> ${f}</div>`)
+        .join('');
+
+      /* re-trigger animation */
+      const pkgDetails = document.getElementById('pkgDetails');
+      pkgDetails.style.animation = 'none';
+      pkgDetails.offsetHeight;
+      pkgDetails.style.animation = '';
+
+      /* close dropdown */
+      selectDropdown.classList.remove('show');
+      customSelect.classList.remove('open');
+    });
+  });
+
+  /* ─── WHATSAPP CHECKOUT ─── */
+  document.getElementById('whatsappBtn').addEventListener('click', () => {
+    const pkg = packages[selected];
+    const featuresList = pkg.features.map(f => `- ${f}`).join('\n');
+    const message = `Hello NexicWeb, I want to purchase ${pkg.name} for $${pkg.price}.\n\nPackage Details:\n${featuresList}\n\nPlease guide me to complete the order.`;
+    const encoded = encodeURIComponent(message);
+    window.open(`https://wa.me/8801334212149?text=${encoded}`, '_blank');
+  });
+
+  /* ─── ADD TO CART (UI only) ─── */
+  document.getElementById('cartBtn').addEventListener('click', () => {
+    const btn = document.getElementById('cartBtn');
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Added to Cart';
+    btn.style.borderColor = 'rgba(93,222,140,0.4)';
+    btn.style.color = '#5dde8c';
+    setTimeout(() => {
+      btn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Add to Cart';
+      btn.style.borderColor = '';
+      btn.style.color = '';
+    }, 2000);
+  });
+
+  /* ─── PREVIEW BLOCK CLICK ─── */
+  document.getElementById('previewBlock').addEventListener('click', () => {
+    document.getElementById('previewModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('livePreviewBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('previewModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('modalClose').addEventListener('click', () => {
+    document.getElementById('previewModal').classList.remove('show');
+    document.body.style.overflow = '';
+  });
+  document.getElementById('previewModal').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      document.getElementById('previewModal').classList.remove('show');
+      document.body.style.overflow = '';
+    }
+  });
+
+  /* ─── PRICE ANIM INIT ─── */
+  const priceEl = document.getElementById('priceAmount');
+  priceEl.style.transition = 'opacity 0.25s, transform 0.25s';
+</script>
+</body>
+</html>

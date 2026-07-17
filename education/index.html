@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rajshahi Model Academy | Premium Education</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === VARIABLES & RESET === */
+        :root {
+            --primary: #1e3a8a; /* Deep Blue */
+            --primary-light: #3b82f6;
+            --secondary: #facc15; /* Warning/Highlight */
+            --bg-light: #f8fafc;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* === UTILITIES === */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .section-title { text-align: center; margin-bottom: 40px; font-size: 2.5rem; color: var(--primary); }
+        .btn { padding: 10px 24px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; transition: var(--transition); display: inline-block; text-decoration: none; }
+        .btn-primary { background: var(--primary); color: var(--white); }
+        .btn-primary:hover { background: #152c6a; transform: translateY(-2px); }
+        .btn-outline { border: 2px solid var(--primary); color: var(--primary); background: transparent; }
+        .btn-outline:hover { background: var(--primary); color: var(--white); }
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* === NAVBAR === */
+        nav {
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); cursor: pointer; font-family: 'Poppins', sans-serif; }
+        .nav-links { display: flex; gap: 25px; align-items: center; list-style: none; }
+        .nav-links li a { text-decoration: none; color: var(--text-dark); font-weight: 500; transition: var(--transition); cursor: pointer; }
+        .nav-links li a:hover { color: var(--primary-light); }
+        .dropdown { position: relative; }
+        .dropdown-menu {
+            position: absolute; top: 150%; left: 0; background: var(--white); box-shadow: var(--shadow-md);
+            border-radius: 6px; padding: 10px 0; min-width: 150px; opacity: 0; visibility: hidden; transition: var(--transition);
+        }
+        .dropdown:hover .dropdown-menu { top: 100%; opacity: 1; visibility: visible; }
+        .dropdown-menu li { padding: 8px 20px; }
+        .dropdown-menu li a { display: block; }
+        .dropdown-menu li:hover { background: var(--bg-light); }
+        
+        /* === HERO SECTION === */
+        .hero {
+            height: 80vh;
+            background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+        }
+        .hero-content h1 { font-size: 3.5rem; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .hero-content p { font-size: 1.2rem; margin-bottom: 30px; max-width: 600px; margin-inline: auto; }
+
+        /* === FEATURES / CARDS === */
+        .py-5 { padding: 80px 0; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .card { background: var(--white); border-radius: 12px; padding: 30px; box-shadow: var(--shadow-md); transition: var(--transition); text-align: center; }
+        .card:hover { transform: translateY(-10px); box-shadow: var(--shadow-lg); }
+        .card i { font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; }
+
+        /* === ABOUT SECTION === */
+        .about-flex { display: flex; align-items: center; gap: 50px; }
+        .about-img { flex: 1; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-lg); }
+        .about-img img { width: 100%; height: auto; display: block; }
+        .about-text { flex: 1; }
+
+        /* === STATS === */
+        .stats-bg { background: var(--primary); color: var(--white); padding: 60px 0; text-align: center; }
+        .stat-number { font-size: 3rem; font-weight: 700; font-family: 'Poppins'; }
+
+        /* === FORMS & INPUTS === */
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1rem; outline: none; transition: var(--transition); }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+
+        /* === STUDENT PROFILE === */
+        .profile-card { background: var(--white); border-radius: 12px; padding: 40px; box-shadow: var(--shadow-lg); display: flex; gap: 30px; max-width: 700px; margin: 40px auto; }
+        .profile-img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg-light); }
+        .profile-details h2 { color: var(--primary); margin-bottom: 15px; }
+        .profile-details p { margin-bottom: 8px; font-size: 1.1rem; }
+        
+        /* === TEACHER CARDS === */
+        .teacher-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 15px; }
+
+        /* === ADMIN DASHBOARD === */
+        .admin-layout { display: flex; min-height: 80vh; }
+        .sidebar { width: 250px; background: var(--white); padding: 20px; box-shadow: var(--shadow-md); }
+        .sidebar-menu li { list-style: none; margin-bottom: 10px; }
+        .sidebar-menu li a { display: block; padding: 10px; border-radius: 6px; cursor: pointer; transition: var(--transition); }
+        .sidebar-menu li a:hover, .sidebar-menu li a.active { background: var(--primary); color: var(--white); }
+        .admin-content { flex: 1; padding: 40px; background: var(--bg-light); }
+
+        /* === FOOTER === */
+        footer { background: var(--text-dark); color: var(--white); padding: 50px 0 20px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        .footer-links li { list-style: none; margin-bottom: 10px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: var(--transition); }
+        .footer-links a:hover { color: var(--white); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { display: none; } /* Simplified for demo */
+            .about-flex { flex-direction: column; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .profile-card { flex-direction: column; text-align: center; }
+            .admin-layout { flex-direction: column; }
+            .sidebar { width: 100%; }
+
+        }
+
+        
+/* ===== CLASSIC FONT ===== */
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Times New Roman', serif;
+}
+
+/* ===== ABOUT SECTION IMAGE LEFT ===== */
+.about-flex {
+    flex-direction: row-reverse;
+}
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container nav-container">
+            <div class="logo" onclick="navigate('home')">🎓 Rajshahi Academy</div>
+            <ul class="nav-links">
+                <li><a onclick="navigate('home')">Home</a></li>
+                <li><a onclick="navigate('about')">About</a></li>
+                <li class="dropdown">
+                    <a>Academics <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a onclick="navigate('academics')">Curriculum</a></li>
+                        <li><a onclick="navigate('rules')">Rules</a></li>
+                    </ul>
+                </li>
+                <li><a onclick="navigate('student-search')">Students</a></li>
+                <li><a onclick="navigate('teachers')">Teachers</a></li>
+                <li><a onclick="navigate('admission')">Admission</a></li>
+                <li><a onclick="navigate('contact')">Contact</a></li>
+            </ul>
+            <div>
+                <a onclick="navigate('admin-login')" class="btn btn-outline"><i class="fas fa-lock"></i> Admin Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <main id="app-root">
+        
+        <div id="page-home" class="page fade-in">
+            <header class="hero">
+                <div class="container hero-content">
+                    <h1>Excellence in Education</h1>
+                    <p>Empowering the next generation of leaders in Bangladesh with world-class facilities and dedicated faculty.</p>
+                    <a onclick="navigate('admission')" class="btn btn-primary" style="font-size: 1.1rem; padding: 15px 30px;">Apply Now 2026</a>
+                </div>
+            </header>
+
+            <section class="py-5 container">
+                <div class="grid-3">
+                    <div class="card">
+                        <i class="fas fa-book-open"></i>
+                        <h3>Modern Curriculum</h3>
+                        <p>Updated NCTB guidelines mixed with practical, skill-based modern learning.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <h3>Expert Faculty</h3>
+                        <p>Highly qualified teachers dedicated to nurturing student potential.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-laptop-code"></i>
+                        <h3>Digital Campus</h3>
+                        <p>Fully digitized classrooms, labs, and online student management portal.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-5 bg-light">
+                <div class="container about-flex">
+                    <div class="about-img">
+                        <img src="https://static.vecteezy.com/system/resources/thumbnails/049/172/328/small/view-of-architecture-of-american-school-building-exterior-concept-free-photo.jpeg"
+                    <div class="about-text">
+                        <h2>Message from the Principal</h2>
+                        <br>
+                        <p><i>"Education is the most powerful weapon which you can use to change the world."</i></p>
+                        <br>
+                        <p>Welcome to Rajshahi Model Academy. Since our establishment, we have been committed to providing a holistic education that balances academic excellence with character building. Our state-of-the-art facilities and dedicated staff ensure that every student reaches their full potential.</p>
+                        <br>
+                        <h4>Dr. Aminul Islam</h4>
+                        <p class="text-muted">Principal, Rajshahi Model Academy</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="stats-bg">
+                <div class="container grid-3">
+                    <div>
+                        <div class="stat-number">1500+</div>
+                        <div>Active Students</div>
+                    </div>
+                    <div>
+                        <div class="stat-number">85+</div>
+                        <div>Expert Teachers</div>
+                    </div>
+                    <div>
+                        <div class="stat-number">100%</div>
+                        <div>Passing Rate (SSC)</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-5 container">
+                <h2 class="section-title">Notice Board</h2>
+                <div class="grid-3" id="public-notice-board">
+                    </div>
+            </section>
+        </div>
+
+        <div id="page-student-search" class="page hidden fade-in py-5 container">
+            <h2 class="section-title">Student Verification Portal</h2>
+            <div style="max-width: 500px; margin: 0 auto; text-align: center;">
+                <p class="text-muted" style="margin-bottom: 20px;">Enter the Student Roll Number to view their details.</p>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="search-roll" class="form-control" placeholder="e.g. 10101">
+                    <button onclick="searchStudent()" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                </div>
+                <div id="search-error" style="color: red; margin-top: 10px; display: none;">Student not found. Please check the roll number.</div>
+            </div>
+            
+            <div id="student-result" class="hidden">
+                <div class="profile-card">
+                    <img id="res-img" src="" alt="Student" class="profile-img">
+                    <div class="profile-details">
+                        <h2 id="res-name">Student Name</h2>
+                        <p><strong>Roll No:</strong> <span id="res-roll"></span></p>
+                        <p><strong>Class:</strong> <span id="res-class"></span> (Sec: <span id="res-sec"></span>)</p>
+                        <p><strong>Phone:</strong> <span id="res-phone"></span></p>
+                        <p><strong>Address:</strong> <span id="res-address"></span></p>
+                        <span style="display: inline-block; padding: 5px 12px; background: #dcfce7; color: #166534; border-radius: 20px; font-size: 0.9rem; margin-top: 10px; font-weight: 600;">Status: Active</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-teachers" class="page hidden fade-in py-5 container">
+            <h2 class="section-title">Our Esteemed Faculty</h2>
+            <div class="grid-3" id="teachers-grid">
+                </div>
+        </div>
+
+        <div id="page-admission" class="page hidden fade-in py-5 container">
+            <h2 class="section-title">Online Admission 2026</h2>
+            <div class="card" style="max-width: 600px; margin: 0 auto; text-align: left;">
+                <form onsubmit="event.preventDefault(); alert('Application Submitted Successfully!'); navigate('home');">
+                    <div class="form-group">
+                        <label>Student Full Name</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Class Applying For</label>
+                        <select class="form-control" required>
+                            <option>Class 6</option>
+                            <option>Class 7</option>
+                            <option>Class 8</option>
+                            <option>Class 9 (Science)</option>
+                            <option>Class 9 (Humanities)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Guardian Phone</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Application</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="page-admin-login" class="page hidden fade-in py-5 container">
+            <div class="card" style="max-width: 400px; margin: 50px auto;">
+                <h2 style="margin-bottom: 20px; color: var(--primary);">System Login</h2>
+                <p class="text-muted" style="margin-bottom: 20px; font-size: 0.9rem;">Demo Credentials: admin / admin123</p>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="admin-user" class="form-control" value="admin">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="admin-pass" class="form-control" value="admin123">
+                </div>
+                <button onclick="handleLogin()" class="btn btn-primary" style="width: 100%;">Secure Login</button>
+            </div>
+        </div>
+
+        <div id="page-admin-dashboard" class="page hidden fade-in">
+            <div class="admin-layout">
+                <div class="sidebar">
+                    <h3 style="margin-bottom: 30px; color: var(--primary);">Dashboard</h3>
+                    <ul class="sidebar-menu">
+                        <li><a class="active" onclick="showAdminTab('add-student')"><i class="fas fa-user-plus"></i> Add Student</a></li>
+                        <li><a onclick="showAdminTab('add-teacher')"><i class="fas fa-chalkboard-teacher"></i> Add Teacher</a></li>
+                        <li><a onclick="showAdminTab('add-notice')"><i class="fas fa-bullhorn"></i> Post Notice</a></li>
+                        <li style="margin-top: 30px;"><a onclick="logout()" style="color: red;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
+                </div>
+                <div class="admin-content">
+                    
+                    <div id="tab-add-student" class="admin-tab">
+                        <h2>Register New Student</h2>
+                        <div class="card" style="margin-top: 20px; text-align: left;">
+                            <form id="form-add-student" onsubmit="addStudent(event)">
+                                <div class="grid-3">
+                                    <div class="form-group"><label>Name</label><input type="text" id="ns-name" class="form-control" required></div>
+                                    <div class="form-group"><label>Roll Number</label><input type="number" id="ns-roll" class="form-control" required></div>
+                                    <div class="form-group"><label>Class</label><input type="text" id="ns-class" class="form-control" required></div>
+                                    <div class="form-group"><label>Section</label><input type="text" id="ns-sec" class="form-control" required></div>
+                                    <div class="form-group"><label>Phone</label><input type="text" id="ns-phone" class="form-control" required></div>
+                                </div>
+                                <div class="form-group"><label>Address</label><input type="text" id="ns-address" class="form-control" required></div>
+                                <button type="submit" class="btn btn-primary">Save Student Record</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="page-about" class="page hidden fade-in py-5 container"><h2 class="section-title">About Us</h2><p style="text-align:center;">Detailed school history goes here.</p></div>
+        <div id="page-academics" class="page hidden fade-in py-5 container"><h2 class="section-title">Academics</h2><p style="text-align:center;">Curriculum syllabus details go here.</p></div>
+        <div id="page-rules" class="page hidden fade-in py-5 container"><h2 class="section-title">Rules & Regulations</h2><p style="text-align:center;">Disciplinary rules go here.</p></div>
+        <div id="page-contact" class="page hidden fade-in py-5 container"><h2 class="section-title">Contact Us</h2><p style="text-align:center;">Address: Bogura Road, Rajshahi, Bangladesh</p></div>
+
+    </main>
+
+  <!-- ADD THIS AFTER NOTICE SECTION (HOME PAGE er niche) -->
+
+<!-- === GALLERY SECTION === -->
+<section class="py-5 container">
+    <h2 class="section-title">Campus Gallery</h2>
+    <div class="grid-3">
+        <div class="card"><img src="https://images.unsplash.com/photo-1588072432836-e10032774350" style="width:100%; border-radius:10px;"></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1596495578065-6e0763fa1178" style="width:100%; border-radius:10px;"></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1607237138185-eedd9c632b0b" style="width:100%; border-radius:10px;"></div>
+    </div>
+</section>
+
+<!-- === EVENTS SECTION === -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title">Upcoming Events</h2>
+        <div class="grid-3">
+            <div class="card">
+                <h3>Science Fair 2026</h3>
+                <p class="text-muted">June 10, 2026</p>
+                <p>طلاب will showcase innovative science projects.</p>
+            </div>
+            <div class="card">
+                <h3>Annual Sports Day</h3>
+                <p class="text-muted">July 5, 2026</p>
+                <p>A full day of competitive sports & fun activities.</p>
+            </div>
+            <div class="card">
+                <h3>Debate Competition</h3>
+                <p class="text-muted">May 28, 2026</p>
+                <p>Inter-school debate championship.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- === TESTIMONIALS === -->
+<section class="py-5 container">
+    <h2 class="section-title">What Parents Say</h2>
+    <div class="grid-3">
+        <div class="card">
+            <p>"Best school in Rajshahi! My son improved a lot."</p>
+            <h4>- Mr. Karim</h4>
+        </div>
+        <div class="card">
+            <p>"Highly professional teachers and environment."</p>
+            <h4>- Mrs. Rahman</h4>
+        </div>
+        <div class="card">
+            <p>"Digital system is very helpful for parents."</p>
+            <h4>- Mr. Hasan</h4>
+        </div>
+    </div>
+</section>
+
+<!-- === FAQ SECTION === -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="card">
+            <p><strong>Q: How to apply?</strong></p>
+            <p>A: Go to Admission section and fill the form.</p>
+        </div>
+        <div class="card">
+            <p><strong>Q: Do you have hostel?</strong></p>
+            <p>A: Currently no hostel facility available.</p>
+        </div>
+        <div class="card">
+            <p><strong>Q: Is digital class available?</strong></p>
+            <p>A: Yes, fully digital classrooms are provided.</p>
+        </div>
+    </div>
+</section>
+
+<!-- === NEWSLETTER === -->
+<section class="py-5 container">
+    <div class="card" style="text-align:center;">
+        <h2 style="color:var(--primary); margin-bottom:10px;">Stay Updated</h2>
+        <p class="text-muted">Subscribe for latest notices & updates</p>
+        <div style="display:flex; gap:10px; margin-top:20px; justify-content:center;">
+            <input type="email" class="form-control" placeholder="Enter your email" style="max-width:300px;">
+            <button class="btn btn-primary">Subscribe</button>
+        </div>
+    </div>
+</section>
+  
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3 style="margin-bottom: 15px;">Rajshahi Academy</h3>
+                    <p class="text-muted">Empowering the youth of Bangladesh through quality education and modern facilities.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 15px;">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a onclick="navigate('home')">Home</a></li>
+                        <li><a onclick="navigate('admission')">Admission Process</a></li>
+                        <li><a onclick="navigate('student-search')">Verify Student</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 15px;">Contact</h4>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> Bogura Road, Rajshahi, BD</li>
+                        <li><i class="fas fa-phone"></i> +880 1711-000000</li>
+                        <li><i class="fas fa-envelope"></i> info@rajshahiacademy.edu.bd</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="border-top: 1px solid #334155; padding-top: 20px; text-align: center; color: var(--text-muted);">
+                &copy; 2026 Rajshahi Model Academy. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- DUMMY DATA (Simulating a Database) ---
+        let db = {
+            students: [
+                { roll: "10101", name: "Fahim Rahman", class: "10", sec: "A", phone: "01700112233", address: "Uposhahar, Rajshahi", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" },
+                { roll: "10102", name: "Sadia Akter", class: "9", sec: "B", phone: "01700445566", address: "Shaheb Bazar, Rajshahi", img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" }
+            ],
+            teachers: [
+                { name: "Rafiqul Islam", subject: "Mathematics", qual: "MSc in Math, RU", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" },
+                { name: "Nusrat Jahan", subject: "English", qual: "MA in English, DU", img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" },
+                { name: "Kamrul Hasan", subject: "Physics", qual: "BSc in Physics, BUET", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" }
+            ],
+            notices: [
+                { date: "April 20, 2026", title: "Eid-ul-Fitr Vacation", desc: "School will remain closed from April 25 to May 5." },
+                { date: "April 15, 2026", title: "Half Yearly Exam Schedule", desc: "Exams for Class 6 to 10 will begin on May 15." }
+            ]
+        };
+
+        // --- ROUTING / NAVIGATION ---
+        function navigate(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => page.classList.add('hidden'));
+            // Show target page
+            document.getElementById(`page-${pageId}`).classList.remove('hidden');
+            window.scrollTo(0, 0);
+            
+            // Re-render dynamic content when visiting specific pages
+            if(pageId === 'teachers') renderTeachers();
+            if(pageId === 'home') renderNotices();
+        }
+
+        // --- STUDENT SEARCH ---
+        function searchStudent() {
+            const roll = document.getElementById('search-roll').value;
+            const student = db.students.find(s => s.roll === roll);
+            const errorEl = document.getElementById('search-error');
+            const resultEl = document.getElementById('student-result');
+
+            if (student) {
+                errorEl.style.display = 'none';
+                document.getElementById('res-img').src = student.img || 'https://via.placeholder.150';
+                document.getElementById('res-name').innerText = student.name;
+                document.getElementById('res-roll').innerText = student.roll;
+                document.getElementById('res-class').innerText = student.class;
+                document.getElementById('res-sec').innerText = student.sec;
+                document.getElementById('res-phone').innerText = student.phone;
+                document.getElementById('res-address').innerText = student.address;
+                resultEl.classList.remove('hidden');
+            } else {
+                resultEl.classList.add('hidden');
+                errorEl.style.display = 'block';
+            }
+        }
+
+        // --- RENDER TEACHERS ---
+        function renderTeachers() {
+            const grid = document.getElementById('teachers-grid');
+            grid.innerHTML = db.teachers.map(t => `
+                <div class="card">
+                    <img src="${t.img}" class="teacher-img" alt="${t.name}">
+                    <h3 style="color: var(--primary);">${t.name}</h3>
+                    <p style="font-weight: 600;">${t.subject}</p>
+                    <p class="text-muted" style="font-size: 0.9rem;">${t.qual}</p>
+                </div>
+            `).join('');
+        }
+
+        // --- RENDER NOTICES ---
+        function renderNotices() {
+            const board = document.getElementById('public-notice-board');
+            if(!board) return;
+            board.innerHTML = db.notices.map(n => `
+                <div class="card" style="text-align: left; border-left: 4px solid var(--secondary);">
+                    <div class="text-muted" style="font-size: 0.85rem; margin-bottom: 5px;"><i class="far fa-calendar-alt"></i> ${n.date}</div>
+                    <h4 style="margin-bottom: 10px;">${n.title}</h4>
+                    <p style="font-size: 0.9rem;">${n.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        // --- ADMIN SYSTEM ---
+        function handleLogin() {
+            const u = document.getElementById('admin-user').value;
+            const p = document.getElementById('admin-pass').value;
+            if (u === 'admin' && p === 'admin123') {
+                navigate('admin-dashboard');
+            } else {
+                alert("Invalid Credentials. Use admin / admin123");
+            }
+        }
+
+        function logout() {
+            navigate('admin-login');
+        }
+
+        function showAdminTab(tabId) {
+            alert(`Switched to ${tabId} mode. (Other forms follow the exact same logic as Add Student to keep code concise).`);
+        }
+
+        function addStudent(e) {
+            e.preventDefault();
+            const newStudent = {
+                name: document.getElementById('ns-name').value,
+                roll: document.getElementById('ns-roll').value,
+                class: document.getElementById('ns-class').value,
+                sec: document.getElementById('ns-sec').value,
+                phone: document.getElementById('ns-phone').value,
+                address: document.getElementById('ns-address').value,
+                img: "https://via.placeholder.com/256/1e3a8a/ffffff?text=Student"
+            };
+            db.students.push(newStudent);
+            alert("Student added successfully! Go to Students tab to search for Roll: " + newStudent.roll);
+            document.getElementById('form-add-student').reset();
+        }
+
+        // Initialize Home Data
+        renderNotices();
+    </script>
+</body>
+</html>

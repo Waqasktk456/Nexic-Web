@@ -1,0 +1,271 @@
+/* ==========================================================================
+   VARIABLES, RESET, & BASE STYLES
+   ========================================================================== */
+:root {
+    /* Main Dark Forest Green Color Palette */
+    --bg-base: #0a110d; /* Ultra dark green base */
+    --text-main: #f0f5f1;
+    --text-muted: rgba(240, 245, 241, 0.65);
+    --accent-green: #1a4d36; /* Rich forest green */
+    --accent-green-hover: #246a4a;
+    
+    /* Strict Glassmorphism System */
+    --glass-bg: rgba(18, 28, 20, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-blur: blur(20px);
+    
+    /* Layout & Motion */
+    --transition-smooth: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', -apple-system, sans-serif; background-color: var(--bg-base); color: var(--text-main); overflow-x: hidden; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 400; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* Cinematic Label */
+.label { font-size: 0.75rem; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-green-hover); display: block; margin-bottom: 12px; }
+
+/* ==========================================================================
+   CINEMATIC BLUR IMAGE BACKGROUND SYSTEM (PIXEL-LEVEL ACCURATE)
+   ========================================================================== */
+.bg-layer-image {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    object-fit: cover;
+    object-position: center;
+    filter: blur(5px); /* Increased blur for premium feel */
+    opacity: 0.35; /* Subtle presence of the tree */
+    z-index: -3; /* Base layer */
+}
+
+.bg-layer-gradient {
+    position: fixed;
+    inset: 0;
+    /* Gradient shifts from slightly lighter to deeper dark green */
+    background: linear-gradient(135deg, rgba(10, 17, 13, 0.6), #060a08);
+    z-index: -2; /* Middle layer */
+}
+
+.bg-vignette {
+    position: fixed;
+    inset: 0;
+    /* Soft vignette (dark corners) for studio photography feel */
+    background: radial-gradient(circle at 50% 40%, transparent 20%, rgba(0,0,0,0.9) 120%);
+    z-index: -1; /* Top background layer, allows content above */
+}
+
+/* ==========================================================================
+   NAVBAR (100% TRANSPARENT GLASS)
+   ========================================================================== */
+.navbar {
+    position: fixed; top: 0; left: 0; width: 100%;
+    padding: 30px 6%;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 100;
+    transition: var(--transition-smooth);
+    border-bottom: 1px solid transparent;
+}
+
+/* Scroll Effect */
+.navbar.scrolled {
+    background: rgba(10, 17, 13, 0.8);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 20px 6%;
+}
+
+.brand-logo {
+    font-size: 1.1rem; font-weight: 600; letter-spacing: 5px;
+    text-transform: uppercase; cursor: pointer;
+}
+
+.nav-links { display: flex; gap: 48px; }
+.nav-links a { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); transition: 0.3s; }
+.nav-links a:hover { color: var(--text-main); }
+
+.nav-actions { display: flex; gap: 24px; }
+.nav-actions i { font-size: 1.2rem; color: var(--text-muted); cursor: pointer; transition: 0.3s; }
+.nav-actions i:hover { color: var(--text-main); }
+
+/* ==========================================================================
+   UI COMPONENTS (GLASS & BUTTONS)
+   ========================================================================== */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    border-radius: 24px;
+}
+
+/* THE SIGNATURE DOME CASING */
+.glass-dome {
+    border-radius: 200px 200px 20px 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.3) 100%);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-bottom: 3px solid rgba(255,255,255,0.2);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 30px 60px rgba(0,0,0,0.6);
+    position: relative; overflow: hidden;
+}
+
+/* BUTTONS */
+.btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 12px; padding: 18px 36px;
+    border-radius: 50px;
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 1px;
+    text-transform: uppercase; transition: var(--transition-smooth);
+}
+
+.btn-primary { background: var(--text-main); color: var(--bg-base); }
+.btn-primary:hover { background: #ffffff; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,255,255,0.1); }
+
+.btn-ghost { background: transparent; color: var(--text-main); border: 1px solid var(--glass-border); }
+.btn-ghost:hover { background: rgba(255,255,255,0.05); border-color: var(--text-main); }
+
+.btn-filled-green { background: var(--accent-green); color: var(--text-main); border: 1px solid rgba(255,255,255,0.1); width: 100%; }
+.btn-filled-green:hover { background: var(--accent-green-hover); transform: translateY(-2px); }
+
+.btn-glass { background: var(--glass-bg); backdrop-filter: var(--blur); border: 1px solid var(--glass-border); color: var(--text-main); width: 100%; }
+.btn-glass:hover { background: rgba(255,255,255,0.1); }
+
+/* ==========================================================================
+   HOME VIEW & SECTIONS
+   ========================================================================== */
+.hero {
+    height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 6% 0;
+    max-width: 1400px; margin: 0 auto;
+    gap: 80px;
+}
+
+.hero-content { flex: 1; }
+.hero-title { font-size: 5.5rem; line-height: 0.95; margin-bottom: 24px; letter-spacing: -3px; }
+.hero-desc { font-size: 1.15rem; color: var(--text-muted); max-width: 480px; margin-bottom: 48px; line-height: 1.7; }
+.hero-actions { display: flex; gap: 16px; }
+
+.hero-visual { flex: 1; display: flex; justify-content: center; position: relative; }
+.hero-dome-wrapper { width: 420px; height: 580px; position: relative; }
+.hero-dome-wrapper .glass-dome { width: 100%; height: 100%; display: flex; align-items: flex-end; justify-content: center; }
+.hero-plant { width: 95%; height: auto; transform: translateY(-20px); filter: drop-shadow(0 20px 40px #000); mix-blend-mode: screen; animation: floatSubtle 7s ease-in-out infinite; }
+
+@keyframes floatSubtle { 0%, 100% { transform: translateY(-20px); } 50% { transform: translateY(-40px); } }
+
+/* COLLECTION SECTION */
+.collection-section { padding: 120px 6%; max-width: 1400px; margin: 0 auto; }
+.section-header { text-align: center; margin-bottom: 64px; }
+.section-header h2 { font-size: 2.5rem; margin-bottom: 12px; }
+.section-subtitle { font-size: 0.8rem; font-weight: 500; letter-spacing: 2px; color: var(--text-muted); }
+
+.grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+.product-card { cursor: pointer; transition: var(--transition-smooth); text-align: center; }
+.product-card:hover .card-dome { transform: translateY(-8px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 40px 80px rgba(0,0,0,0.8); }
+
+.card-dome { height: 420px; width: 100%; margin-bottom: 24px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 20px; transition: var(--transition-smooth); }
+.card-dome img { width: 85%; mix-blend-mode: screen; }
+
+.card-title { font-size: 1.1rem; font-weight: 500; margin-bottom: 8px; }
+.card-price { font-size: 0.9rem; color: var(--text-muted); letter-spacing: 1px; }
+
+.section-footer { margin-top: 60px; text-align: center; }
+
+/* AR SECTION */
+.ar-section { padding: 100px 6%; max-width: 1400px; margin: 0 auto; }
+.ar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.ar-visual { display: flex; justify-content: center; }
+.phone-frame { width: 300px; height: 600px; padding: 12px; border-radius: 40px; overflow: hidden; }
+.ar-screenshot { width: 100%; height: 100%; object-fit: cover; border-radius: 30px; }
+.ar-content h2 { font-size: 3rem; margin: 20px 0; }
+.ar-content p { color: var(--text-muted); margin-bottom: 40px; max-width: 440px; line-height: 1.7; }
+.ar-content .btn { max-width: 250px; }
+
+/* STUDIO SECTION */
+.studio-section { margin: 100px 6%; padding: 80px; max-width: 1400px; margin-inline: auto; }
+.studio-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: center; }
+.studio-text h2 { font-size: 3rem; margin: 20px 0; }
+.studio-text p { color: var(--text-muted); margin-bottom: 40px; line-height: 1.7; }
+.feat-list li { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; color: var(--text-muted); }
+.feat-list i { color: var(--accent-green-hover); font-size: 1.5rem; }
+.studio-image { width: 100%; border-radius: 20px; opacity: 0.8; }
+
+/* JOURNAL SECTION */
+.journal-section { padding: 120px 6%; max-width: 1400px; margin: 0 auto; }
+.journal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+.journal-card { padding: 20px; transition: var(--transition-smooth); }
+.journal-card:hover { transform: translateY(-5px); background: rgba(18,28,20,0.6); }
+.journal-card img { width: 100%; border-radius: 12px; margin-bottom: 20px; height: 220px; object-fit: cover; }
+.journal-meta { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 12px; }
+.journal-meta span { color: var(--accent-green-hover); }
+.journal-card h3 { font-size: 1.4rem; line-height: 1.3; }
+
+/* ECO SECTION */
+.eco-section { padding: 120px 6%; text-align: center; max-width: 800px; margin: 0 auto; }
+.divider { width: 1px; height: 80px; background: var(--glass-border); margin: 0 auto 40px; }
+.eco-section h2 { font-size: 3rem; margin-bottom: 30px; }
+.eco-section p { font-size: 1.1rem; color: var(--text-muted); line-height: 1.8; }
+
+/* ==========================================================================
+   VIEW: PRODUCT DETAIL (Clicking a plant)
+   ========================================================================== */
+.view-section { display: none; opacity: 0; transition: opacity 0.6s ease; }
+.view-section.is-active { display: block; opacity: 1; }
+
+.detail-page { padding: 140px 6% 100px; max-width: 1400px; margin: 0 auto; }
+.back-nav { margin-bottom: 40px; }
+.back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; cursor: pointer; }
+.back-btn:hover { color: var(--text-main); transform: translateX(-4px); transition: 0.3s; }
+
+.detail-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 100px; align-items: center; }
+.detail-visual { display: flex; justify-content: center; }
+.detail-visual .glass-dome { width: 100%; aspect-ratio: 3/4; display: flex; align-items: flex-end; justify-content: center; }
+.detail-plant { width: 85%; margin-bottom: 20px; }
+
+.detail-info { padding: 60px; }
+.detail-title { font-size: 3.5rem; line-height: 1.1; margin-bottom: 16px; }
+.detail-price { font-size: 1.6rem; color: var(--text-muted); margin-bottom: 32px; letter-spacing: 1px; }
+.detail-desc { color: var(--text-muted); line-height: 1.8; margin-bottom: 48px; }
+.detail-actions { display: flex; flex-direction: column; gap: 16px; }
+
+/* ==========================================================================
+   PROFESSIONAL FOOTER
+   ========================================================================== */
+.footer { background: rgba(0,0,0,0.5); padding: 100px 6% 40px; border-top: 1px solid var(--glass-border); margin-top: 60px; border-radius: 40px 40px 0 0; }
+.footer-main { display: grid; grid-template-columns: 2fr repeat(4, 1fr); gap: 60px; margin-bottom: 80px; }
+.footer-brand .logo { font-size: 1.5rem; font-weight: 600; letter-spacing: 3px; margin-bottom: 20px; }
+.footer-brand p { color: var(--text-muted); max-width: 250px; }
+.footer-col h4 { margin-bottom: 30px; font-size: 0.9rem; text-transform: uppercase; color: var(--text-main); letter-spacing: 1px; }
+.footer-col ul li { margin-bottom: 15px; }
+.footer-col ul a { color: var(--text-muted); font-size: 0.85rem; transition: 0.3s; }
+.footer-col ul a:hover { color: var(--accent-green-hover); padding-left: 5px; }
+
+.footer-bottom { border-top: 1px solid var(--glass-border); padding-top: 40px; display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.85rem; }
+.socials { display: flex; gap: 24px; font-size: 1.2rem; }
+.socials i { cursor: pointer; transition: 0.3s; }
+.socials i:hover { color: var(--text-main); }
+
+/* ==========================================================================
+   RESPONSIVE LAYOUT
+   ========================================================================== */
+@media (max-width: 1100px) {
+    .hero { flex-direction: column; text-align: center; padding-top: 140px; }
+    .hero-title { font-size: 3.5rem; }
+    .hero-desc { margin: 0 auto 48px; }
+    .hero-actions { justify-content: center; }
+    .hero-dome-wrapper { width: 340px; height: 480px; }
+    .grid-container, .journal-grid { grid-template-columns: repeat(2, 1fr); }
+    .studio-grid, .ar-grid, .detail-grid { grid-template-columns: 1fr; gap: 40px; }
+    .footer-main { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .nav-links { display: none; }
+    .grid-container, .journal-grid, .footer-main { grid-template-columns: 1fr; }
+    .studio-section { padding: 40px; }
+    .studio-text h2, .ar-content h2, .eco-section h2, .detail-title { font-size: 2.2rem; }
+}

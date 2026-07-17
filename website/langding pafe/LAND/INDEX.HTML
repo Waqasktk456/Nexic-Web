@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Design-ui pages are single compositions, so the whole body is editable.
+    function markEditable() {
+        document.body.classList.add('artifact-editable');
+    }
+
+    // Credit badge with idle-fade. Hover devices only.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        credit.innerHTML = '\u{1F49C} by NEXIC WEB ';
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+
+    function init() {
+        markEditable();
+        initChromeUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
+</script>
+<!-- /skill:chrome -->
+<!-- skill:libraries -->
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.383.0/dist/umd/lucide.min.js" integrity="sha384-wHFvAtjmgnkA2PJcMsDaCgdipf7X7YV44X/igbLHpvGiq6T5/PvFKl93grpvtbQT" crossorigin="anonymous"></script>
+<script>document.addEventListener("DOMContentLoaded",()=>lucide.createIcons())</script>
+<!-- /skill:libraries -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexic Web | Premium Web Design & Development Agency</title>
+<meta name="description" content="Nexic Web crafts premium digital experiences for ambitious brands. Custom web design, development, and branding that outperform the competition.">
+<meta name="keywords" content="web design agency, web development, premium websites, UI UX design, branding, e-commerce development">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://nexicweb.com">
+<meta property="og:title" content="Nexic Web | Premium Web Design & Development Agency">
+<meta property="og:description" content="We craft premium digital experiences for brands that refuse to blend in.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg-deep:oklch(7% 0.02 285);
+  --bg:oklch(11% 0.02 285);
+  --surface-1:oklch(15% 0.025 285);
+  --surface-2:oklch(19% 0.025 285);
+  --surface-3:oklch(24% 0.03 285);
+  --border:oklch(20% 0.03 285);
+  --border-subtle:oklch(16% 0.02 285);
+  --text:oklch(93% 0.006 285);
+  --text-2:oklch(68% 0.015 285);
+  --text-3:oklch(42% 0.015 285);
+  --violet:oklch(65% 0.22 290);
+  --violet-light:oklch(75% 0.18 290);
+  --violet-dim:oklch(40% 0.15 290);
+  --gold:oklch(82% 0.13 80);
+  --gold-hover:oklch(88% 0.15 80);
+  --gold-dark:oklch(30% 0.06 80);
+  --success:oklch(72% 0.14 155);
+  --error:oklch(65% 0.18 25);
+  --font-display:'Sora',system-ui,sans-serif;
+  --font-body:'Inter',system-ui,sans-serif;
+  --ease-out-expo:cubic-bezier(0.16,1,0.3,1);
+  --ease-out-quart:cubic-bezier(0.25,1,0.5,1);
+  --section-py:clamp(80px,12vw,140px);
+  --px:clamp(20px,5vw,48px);
+  --container:1200px;
+  --radius:16px;
+  --radius-sm:10px;
+  --radius-xs:6px;
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:var(--font-body);font-size:1rem;line-height:1.65;color:var(--text-2);background:var(--bg-deep);font-weight:350;overflow-x:hidden}
+h1,h2,h3,h4,h5,h6{font-family:var(--font-display);color:var(--text);line-height:1.15;font-weight:600;text-wrap:balance}
+p{text-wrap:pretty;max-width:68ch}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font-body);border:none;cursor:pointer;background:none;color:inherit}
+img{max-width:100%;display:block}
+ul,ol{list-style:none}
+input,textarea,select{font-family:var(--font-body);font-size:1rem}
+::selection{background:oklch(65% 0.22 290 / 0.35);color:var(--text)}
+
+/* ---- LOADER ---- */
+.loader{position:fixed;inset:0;z-index:9999;background:var(--bg-deep);display:flex;align-items:center;justify-content:center;transition:opacity 0.5s var(--ease-out-expo),visibility 0.5s}
+.loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-logo{font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--text);opacity:0;transform:translateY(12px);animation:loaderIn 0.8s var(--ease-out-expo) 0.2s forwards}
+.loader-logo span{color:var(--violet)}
+@keyframes loaderIn{to{opacity:1;transform:translateY(0)}}
+
+/* ---- CURSOR GLOW ---- */
+.cursor-glow{position:fixed;width:600px;height:600px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle,oklch(65% 0.22 290 / 0.06) 0%,transparent 70%);transform:translate(-50%,-50%);transition:opacity 0.3s;opacity:0}
+.cursor-glow.active{opacity:1}
+@media(hover:none){.cursor-glow{display:none}}
+
+/* ---- NAVBAR ---- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 var(--px);transition:background 0.4s,box-shadow 0.4s}
+.nav.scrolled{background:oklch(7% 0.02 285 / 0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 1px 0 var(--border-subtle)}
+.nav-inner{max-width:var(--container);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px}
+.nav-logo{font-family:var(--font-display);font-size:1.35rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.nav-logo span{color:var(--violet)}
+.nav-links{display:flex;align-items:center;gap:36px}
+.nav-links a{font-size:0.9rem;font-weight:450;color:var(--text-2);transition:color 0.25s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--violet);transform:scaleX(0);transition:transform 0.3s var(--ease-out-expo);transform-origin:left}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+.nav-links a.active::after{transform:scaleX(1)}
+.nav-cta{padding:10px 24px;border-radius:999px;background:var(--gold);color:oklch(15% 0.03 80);font-weight:600;font-size:0.875rem;transition:background 0.25s,transform 0.25s;letter-spacing:0.01em}
+.nav-cta:hover{background:var(--gold-hover);transform:translateY(-1px)}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;width:28px;cursor:pointer;padding:8px 0}
+.nav-hamburger span{display:block;height:2px;background:var(--text);border-radius:2px;transition:transform 0.3s var(--ease-out-expo),opacity 0.3s}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ---- MOBILE MENU ---- */
+.mobile-menu{position:fixed;inset:0;z-index:999;background:var(--bg-deep);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;opacity:0;visibility:hidden;transition:opacity 0.4s var(--ease-out-expo),visibility 0.4s}
+.mobile-menu.open{opacity:1;visibility:visible}
+.mobile-menu a{font-family:var(--font-display);font-size:1.75rem;font-weight:500;color:var(--text);transition:color 0.25s}
+.mobile-menu a:hover{color:var(--violet)}
+
+/* ---- SECTIONS COMMON ---- */
+.section{padding:var(--section-py) var(--px)}
+.section-dark{background:var(--bg-deep)}
+.section-alt{background:var(--bg)}
+.section-inner{max-width:var(--container);margin:0 auto}
+.section-header{max-width:640px;margin-bottom:clamp(48px,6vw,80px)}
+.section-header.center{margin-left:auto;margin-right:auto;text-align:center}
+.eyebrow{font-family:var(--font-display);font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--violet);margin-bottom:16px}
+.section-title{font-size:clamp(1.85rem,4vw,2.75rem);margin-bottom:20px}
+.section-desc{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text-2);line-height:1.7}
+
+/* ---- REVEAL ANIMATION ---- */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.8s var(--ease-out-expo),transform 0.8s var(--ease-out-expo)}
+.reveal.revealed{opacity:1;transform:translateY(0)}
+.reveal-stagger{opacity:0;transform:translateY(24px);transition:opacity 0.7s var(--ease-out-expo),transform 0.7s var(--ease-out-expo);transition-delay:calc(var(--i,0) * 80ms)}
+.reveal-stagger.revealed{opacity:1;transform:translateY(0)}
+
+/* ---- BUTTONS ---- */
+.btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:0.95rem;border-radius:var(--radius-sm);transition:all 0.3s var(--ease-out-expo);letter-spacing:0.01em}
+.btn-primary{padding:14px 32px;background:var(--gold);color:oklch(15% 0.03 80)}
+.btn-primary:hover{background:var(--gold-hover);transform:translateY(-2px);box-shadow:0 8px 32px oklch(82% 0.13 80 / 0.2)}
+.btn-outline{padding:14px 32px;border:1.5px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--text-3);transform:translateY(-2px)}
+.btn-sm{padding:10px 20px;font-size:0.85rem;border-radius:var(--radius-xs)}
+.btn-ghost{color:var(--violet);font-weight:500}
+.btn-ghost:hover{color:var(--violet-light)}
+
+/* ============================================ */
+/* HERO                                         */
+/* ============================================ */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:120px var(--px) 80px}
+.hero-bg{position:absolute;inset:0;overflow:hidden}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(100px);will-change:transform}
+.hero-orb-1{width:600px;height:600px;background:oklch(55% 0.22 290 / 0.2);top:-10%;right:-5%;animation:orbFloat1 25s ease-in-out infinite}
+.hero-orb-2{width:500px;height:500px;background:oklch(60% 0.15 340 / 0.12);bottom:-10%;left:-8%;animation:orbFloat2 30s ease-in-out infinite}
+.hero-orb-3{width:400px;height:400px;background:oklch(75% 0.12 80 / 0.08);top:40%;left:50%;animation:orbFloat3 20s ease-in-out infinite}
+@keyframes orbFloat1{0%,100%{transform:translate(0,0)}25%{transform:translate(-60px,40px)}50%{transform:translate(-30px,80px)}75%{transform:translate(30px,30px)}}
+@keyframes orbFloat2{0%,100%{transform:translate(0,0)}33%{transform:translate(50px,-40px)}66%{transform:translate(20px,-80px)}}
+@keyframes orbFloat3{0%,100%{transform:translate(0,0)}50%{transform:translate(-80px,50px)}}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:900px}
+.hero-eyebrow{font-family:var(--font-display);font-size:0.8rem;font-weight:500;text-transform:uppercase;letter-spacing:0.15em;color:var(--violet);margin-bottom:28px;opacity:0;animation:heroFadeUp 0.8s var(--ease-out-expo) 0.6s forwards}
+.hero-title{font-size:clamp(2.5rem,6.5vw,5rem);font-weight:700;line-height:1.05;margin-bottom:28px;opacity:0;animation:heroFadeUp 0.9s var(--ease-out-expo) 0.8s forwards}
+.hero-title em{font-style:normal;color:var(--violet)}
+.hero-sub{font-size:clamp(1.05rem,1.8vw,1.25rem);color:var(--text-2);max-width:600px;margin:0 auto 44px;line-height:1.7;opacity:0;animation:heroFadeUp 0.9s var(--ease-out-expo) 1s forwards}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:64px;opacity:0;animation:heroFadeUp 0.9s var(--ease-out-expo) 1.2s forwards}
+.hero-stats{display:flex;align-items:center;justify-content:center;gap:clamp(24px,4vw,56px);flex-wrap:wrap;opacity:0;animation:heroFadeUp 0.9s var(--ease-out-expo) 1.4s forwards}
+.hero-stat{text-align:center}
+.hero-stat-num{font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.25rem);font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}
+.hero-stat-label{font-size:0.8rem;color:var(--text-3);margin-top:4px;text-transform:uppercase;letter-spacing:0.06em;font-weight:500}
+.hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-3);font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;opacity:0;animation:heroFadeUp 0.9s var(--ease-out-expo) 1.6s forwards}
+.hero-scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--violet),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes heroFadeUp{to{opacity:1;transform:translateY(0)}from{transform:translateY(24px)}}
+@keyframes scrollPulse{0%,100%{opacity:0.3;transform:scaleY(0.6)}50%{opacity:1;transform:scaleY(1)}}
+
+/* ============================================ */
+/* SOCIAL PROOF / LOGOS                          */
+/* ============================================ */
+.logos-section{padding:48px 0;background:var(--bg);border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle);overflow:hidden}
+.logos-label{text-align:center;font-size:0.8rem;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;font-weight:500;margin-bottom:32px;padding:0 var(--px)}
+.marquee{display:flex;overflow:hidden;user-select:none;gap:0}
+.marquee-track{display:flex;gap:clamp(40px,6vw,80px);animation:marquee 40s linear infinite;flex-shrink:0;padding-right:clamp(40px,6vw,80px)}
+@keyframes marquee{to{transform:translateX(-100%)}}
+.marquee-item{font-family:var(--font-display);font-size:clamp(1.1rem,2vw,1.4rem);font-weight:600;color:var(--text-3);white-space:nowrap;transition:color 0.3s}
+.marquee-item:hover{color:var(--text-2)}
+
+/* ============================================ */
+/* ABOUT                                        */
+/* ============================================ */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(48px,6vw,96px);align-items:center}
+.about-text .about-lead{font-size:clamp(1.15rem,2vw,1.35rem);color:var(--text);line-height:1.7;margin-bottom:24px;font-weight:400}
+.about-text p{margin-bottom:20px}
+.about-values{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+.about-value h4{font-size:1rem;font-weight:600;margin-bottom:6px}
+.about-value p{font-size:0.875rem;color:var(--text-3);max-width:28ch}
+.about-visual{position:relative;aspect-ratio:1;max-width:480px;justify-self:center}
+.about-shape{position:absolute;border-radius:var(--radius);border:1.5px solid var(--border)}
+.about-shape-1{inset:10% 10% 20% 5%;background:var(--surface-1);transform:rotate(-3deg)}
+.about-shape-2{inset:15% 5% 15% 15%;background:var(--surface-2);transform:rotate(2deg)}
+.about-shape-3{inset:25% 15% 10% 10%;background:linear-gradient(135deg,oklch(55% 0.2 290 / 0.15),oklch(70% 0.1 80 / 0.1));backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.5rem);font-weight:700;color:var(--text)}
+.about-timeline{margin-top:clamp(64px,8vw,96px);display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative}
+.about-timeline::before{content:'';position:absolute;top:20px;left:0;right:0;height:2px;background:var(--border)}
+.timeline-item{position:relative;padding-top:44px}
+.timeline-dot{position:absolute;top:13px;left:0;width:14px;height:14px;border-radius:50%;background:var(--violet);border:3px solid var(--bg-deep)}
+.timeline-year{font-family:var(--font-display);font-size:0.85rem;font-weight:600;color:var(--violet);margin-bottom:8px}
+.timeline-text{font-size:0.875rem;color:var(--text-2);max-width:24ch}
+
+/* ============================================ */
+/* SERVICES                                     */
+/* ============================================ */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.service-card{background:var(--surface-1);border:1px solid var(--border-subtle);border-radius:var(--radius);padding:clamp(28px,3vw,40px);transition:transform 0.4s var(--ease-out-expo),border-color 0.4s,background 0.4s;position:relative;overflow:hidden}
+.service-card:hover{transform:translateY(-4px);border-color:var(--border);background:var(--surface-2)}
+.service-card:nth-child(1){grid-column:span 2}
+.service-card:nth-child(4){grid-column:span 2}
+.service-icon{width:48px;height:48px;border-radius:var(--radius-sm);background:oklch(65% 0.22 290 / 0.12);display:flex;align-items:center;justify-content:center;margin-bottom:24px;color:var(--violet)}
+.service-card h3{font-size:1.25rem;font-weight:600;margin-bottom:12px}
+.service-card p{font-size:0.95rem;color:var(--text-2);margin-bottom:20px;max-width:50ch}
+.service-benefits{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.service-benefit{font-size:0.78rem;padding:5px 12px;border-radius:999px;background:var(--surface-3);color:var(--text-2);font-weight:450}
+.service-link{font-size:0.875rem;font-weight:500;color:var(--violet);display:inline-flex;align-items:center;gap:6px;transition:gap 0.3s var(--ease-out-expo)}
+.service-link:hover{gap:10px}
+
+/* ============================================ */
+/* WHY CHOOSE US                                */
+/* ============================================ */
+.why-features{display:grid;gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.why-feature{display:grid;grid-template-columns:1fr 1fr;min-height:280px}
+.why-feature:not(:last-child){border-bottom:1px solid var(--border)}
+.why-feature:nth-child(even){direction:rtl}
+.why-feature:nth-child(even) > *{direction:ltr}
+.why-feature-content{padding:clamp(32px,4vw,56px);display:flex;flex-direction:column;justify-content:center}
+.why-feature-content .feature-number{font-family:var(--font-display);font-size:3.5rem;font-weight:700;color:oklch(65% 0.22 290 / 0.15);line-height:1;margin-bottom:16px}
+.why-feature-content h3{font-size:1.35rem;font-weight:600;margin-bottom:12px}
+.why-feature-content p{font-size:0.95rem;color:var(--text-2);max-width:42ch}
+.why-feature-visual{background:var(--surface-1);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.why-feature-visual .big-stat{font-family:var(--font-display);font-size:clamp(3rem,6vw,5rem);font-weight:700;color:var(--text)}
+.why-feature-visual .big-stat small{display:block;font-size:0.9rem;font-weight:450;color:var(--text-3);margin-top:8px;letter-spacing:0.04em}
+
+/* ============================================ */
+/* PORTFOLIO                                    */
+/* ============================================ */
+.portfolio-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:48px}
+.portfolio-tab{padding:8px 20px;border-radius:999px;font-size:0.85rem;font-weight:500;color:var(--text-3);border:1px solid transparent;transition:all 0.3s;cursor:pointer}
+.portfolio-tab:hover{color:var(--text-2)}
+.portfolio-tab.active{color:var(--text);background:var(--surface-2);border-color:var(--border)}
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.portfolio-card{border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer;group:true}
+.portfolio-card-img{aspect-ratio:4/3;position:relative;overflow:hidden}
+.portfolio-card-img .card-bg{position:absolute;inset:0;transition:transform 0.6s var(--ease-out-expo)}
+.portfolio-card:hover .card-bg{transform:scale(1.05)}
+.portfolio-card-overlay{position:absolute;inset:0;background:oklch(7% 0.02 285 / 0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity 0.4s var(--ease-out-expo);padding:24px;text-align:center}
+.portfolio-card:hover .portfolio-card-overlay{opacity:1}
+.portfolio-card-overlay h4{font-size:1.15rem;margin-bottom:8px}
+.portfolio-card-overlay p{font-size:0.85rem;color:var(--text-2);margin-bottom:16px}
+.portfolio-card-meta{padding:20px 0 0;display:flex;align-items:center;justify-content:space-between}
+.portfolio-card-meta h4{font-size:1rem;font-weight:600}
+.portfolio-card-meta span{font-size:0.8rem;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em}
+
+/* ============================================ */
+/* PROCESS                                      */
+/* ============================================ */
+.process-timeline{position:relative;max-width:800px;margin:0 auto}
+.process-line{position:absolute;left:28px;top:0;bottom:0;width:2px;background:var(--border)}
+.process-line-fill{position:absolute;left:28px;top:0;width:2px;background:var(--violet);height:0;transition:height 0.1s linear}
+.process-step{display:flex;gap:clamp(24px,3vw,40px);padding-bottom:clamp(40px,5vw,60px);position:relative}
+.process-step:last-child{padding-bottom:0}
+.process-dot{width:56px;height:56px;border-radius:50%;background:var(--surface-1);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--font-display);font-weight:700;font-size:0.9rem;color:var(--text-3);transition:all 0.4s var(--ease-out-expo);z-index:2}
+.process-step.active .process-dot{background:var(--violet);border-color:var(--violet);color:var(--text)}
+.process-content h3{font-size:1.2rem;font-weight:600;margin-bottom:8px;padding-top:14px}
+.process-content p{font-size:0.95rem;color:var(--text-2);max-width:48ch}
+
+/* ============================================ */
+/* TECHNOLOGIES                                 */
+/* ============================================ */
+.tech-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:32px}
+.tech-group h4{font-size:0.85rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);margin-bottom:20px}
+.tech-list{display:flex;flex-wrap:wrap;gap:10px}
+.tech-pill{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:var(--radius-sm);background:var(--surface-1);border:1px solid var(--border-subtle);font-size:0.875rem;font-weight:450;color:var(--text-2);transition:all 0.3s var(--ease-out-expo)}
+.tech-pill:hover{border-color:var(--border);color:var(--text);transform:translateY(-2px);background:var(--surface-2)}
+.tech-pill i{color:var(--violet)}
+
+/* ============================================ */
+/* PRICING                                      */
+/* ============================================ */
+.pricing-toggle{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:56px}
+.pricing-toggle span{font-size:0.95rem;color:var(--text-3);font-weight:450;transition:color 0.3s}
+.pricing-toggle span.active{color:var(--text)}
+.toggle-switch{width:52px;height:28px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);position:relative;cursor:pointer;transition:background 0.3s}
+.toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--violet);transition:transform 0.3s var(--ease-out-expo)}
+.toggle-switch.yearly::after{transform:translateX(24px)}
+.toggle-switch.yearly{background:oklch(65% 0.22 290 / 0.2)}
+.pricing-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+.pricing-card{border-radius:var(--radius);border:1px solid var(--border-subtle);padding:clamp(28px,3vw,40px);background:var(--surface-1);position:relative;transition:transform 0.4s var(--ease-out-expo),border-color 0.4s}
+.pricing-card:hover{transform:translateY(-4px)}
+.pricing-card.popular{border-color:var(--violet);background:var(--surface-2);transform:scale(1.03)}
+.pricing-card.popular:hover{transform:scale(1.03) translateY(-4px)}
+.pricing-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:4px 16px;border-radius:999px;background:var(--violet);color:var(--text);font-size:0.75rem;font-weight:600;letter-spacing:0.04em;text-transform:uppercase}
+.pricing-name{font-size:1.15rem;font-weight:600;margin-bottom:8px}
+.pricing-price{font-family:var(--font-display);margin-bottom:8px}
+.pricing-price .amount{font-size:clamp(2rem,4vw,2.75rem);font-weight:700;color:var(--text)}
+.pricing-price .period{font-size:0.875rem;color:var(--text-3);font-weight:400}
+.pricing-desc{font-size:0.875rem;color:var(--text-3);margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid var(--border-subtle)}
+.pricing-features{display:flex;flex-direction:column;gap:14px;margin-bottom:36px}
+.pricing-feature{display:flex;align-items:flex-start;gap:10px;font-size:0.9rem;color:var(--text-2)}
+.pricing-feature i{color:var(--violet);flex-shrink:0;margin-top:2px}
+.pricing-card .btn{width:100%;justify-content:center}
+
+/* ============================================ */
+/* TESTIMONIALS                                 */
+/* ============================================ */
+.testimonials-track-wrapper{overflow:hidden;margin:0 calc(-1 * var(--px))}
+.testimonials-track{display:flex;gap:24px;padding:0 var(--px);transition:transform 0.6s var(--ease-out-expo)}
+.testimonial-card{min-width:clamp(320px,40vw,420px);flex-shrink:0;padding:clamp(28px,3vw,36px);border-radius:var(--radius);background:var(--surface-1);border:1px solid var(--border-subtle)}
+.testimonial-stars{display:flex;gap:4px;margin-bottom:20px;color:var(--gold)}
+.testimonial-text{font-size:1.05rem;color:var(--text);line-height:1.7;margin-bottom:28px;font-weight:350}
+.testimonial-author{display:flex;align-items:center;gap:14px}
+.testimonial-avatar{width:44px;height:44px;border-radius:50%;background:var(--surface-3);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:600;font-size:0.85rem;color:var(--violet)}
+.testimonial-info h5{font-size:0.9rem;font-weight:600;color:var(--text)}
+.testimonial-info p{font-size:0.8rem;color:var(--text-3)}
+.testimonial-controls{display:flex;gap:12px;margin-top:40px;justify-content:center}
+.testimonial-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-2);transition:all 0.3s}
+.testimonial-btn:hover{border-color:var(--violet);color:var(--violet)}
+
+/* ============================================ */
+/* FAQ                                          */
+/* ============================================ */
+.faq-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:clamp(40px,6vw,80px);align-items:start}
+.faq-categories{position:sticky;top:100px}
+.faq-cat{padding:12px 20px;border-radius:var(--radius-sm);font-size:0.95rem;font-weight:450;color:var(--text-3);cursor:pointer;transition:all 0.3s;display:block;width:100%}
+.faq-cat:hover{color:var(--text-2)}
+.faq-cat.active{color:var(--text);background:var(--surface-1)}
+.faq-list{display:flex;flex-direction:column;gap:12px}
+.faq-item{border:1px solid var(--border-subtle);border-radius:var(--radius-sm);overflow:hidden;transition:border-color 0.3s}
+.faq-item[open]{border-color:var(--border)}
+.faq-item summary{padding:20px 24px;font-family:var(--font-display);font-size:1rem;font-weight:500;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;list-style:none;transition:background 0.3s}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::marker{display:none}
+.faq-item summary:hover{background:var(--surface-1)}
+.faq-chevron{transition:transform 0.3s var(--ease-out-expo);color:var(--text-3);flex-shrink:0}
+.faq-item[open] .faq-chevron{transform:rotate(180deg)}
+.faq-answer{padding:0 24px 24px;font-size:0.95rem;color:var(--text-2);line-height:1.7;max-width:60ch}
+
+/* ============================================ */
+/* FINAL CTA                                    */
+/* ============================================ */
+.cta-section{position:relative;overflow:hidden;text-align:center;padding:clamp(96px,14vw,160px) var(--px)}
+.cta-bg{position:absolute;inset:0;overflow:hidden}
+.cta-orb{position:absolute;border-radius:50%;filter:blur(120px)}
+.cta-orb-1{width:500px;height:500px;background:oklch(55% 0.22 290 / 0.2);top:-20%;left:20%;animation:orbFloat1 20s ease-in-out infinite}
+.cta-orb-2{width:400px;height:400px;background:oklch(75% 0.12 80 / 0.12);bottom:-15%;right:15%;animation:orbFloat2 25s ease-in-out infinite}
+.cta-content{position:relative;z-index:2;max-width:700px;margin:0 auto}
+.cta-content h2{font-size:clamp(2rem,5vw,3.5rem);font-weight:700;margin-bottom:20px}
+.cta-content p{font-size:clamp(1rem,1.5vw,1.2rem);color:var(--text-2);margin:0 auto 40px;max-width:50ch}
+
+/* ============================================ */
+/* CONTACT                                      */
+/* ============================================ */
+.contact-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(40px,6vw,80px)}
+.contact-form{display:flex;flex-direction:column;gap:20px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.form-group{display:flex;flex-direction:column;gap:8px}
+.form-group label{font-size:0.85rem;font-weight:500;color:var(--text)}
+.form-group input,.form-group textarea,.form-group select{padding:14px 18px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface-1);color:var(--text);transition:border-color 0.3s,background 0.3s;outline:none}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--violet);background:var(--surface-2)}
+.form-group textarea{resize:vertical;min-height:120px}
+.form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.contact-info{display:flex;flex-direction:column;gap:32px}
+.contact-info-item{display:flex;gap:16px;align-items:flex-start}
+.contact-info-icon{width:44px;height:44px;border-radius:var(--radius-sm);background:var(--surface-1);border:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--violet)}
+.contact-info-item h4{font-size:0.95rem;font-weight:600;margin-bottom:4px}
+.contact-info-item p{font-size:0.9rem;color:var(--text-2)}
+.contact-info-item a{color:var(--text-2);transition:color 0.3s}
+.contact-info-item a:hover{color:var(--violet)}
+.contact-map{margin-top:16px;border-radius:var(--radius);overflow:hidden;aspect-ratio:16/10;background:var(--surface-1);border:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:0.9rem}
+.contact-socials{display:flex;gap:12px;margin-top:8px}
+.contact-social{width:40px;height:40px;border-radius:var(--radius-xs);border:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:center;color:var(--text-3);transition:all 0.3s}
+.contact-social:hover{border-color:var(--violet);color:var(--violet)}
+
+/* ============================================ */
+/* FOOTER                                       */
+/* ============================================ */
+.footer{background:var(--bg-deep);border-top:1px solid var(--border-subtle);padding:clamp(56px,8vw,80px) var(--px) 0}
+.footer-inner{max-width:var(--container);margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.5fr;gap:clamp(32px,4vw,56px);margin-bottom:56px}
+.footer-brand{max-width:280px}
+.footer-logo{font-family:var(--font-display);font-size:1.35rem;font-weight:700;color:var(--text);margin-bottom:16px}
+.footer-logo span{color:var(--violet)}
+.footer-brand p{font-size:0.875rem;color:var(--text-3);margin-bottom:20px}
+.footer-col h5{font-family:var(--font-display);font-size:0.85rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text);margin-bottom:20px}
+.footer-col a{display:block;font-size:0.9rem;color:var(--text-3);padding:6px 0;transition:color 0.3s}
+.footer-col a:hover{color:var(--text)}
+.footer-newsletter{display:flex;gap:8px;margin-top:8px}
+.footer-newsletter input{flex:1;padding:10px 16px;border-radius:var(--radius-xs);border:1px solid var(--border);background:var(--surface-1);color:var(--text);font-size:0.875rem;outline:none;min-width:0}
+.footer-newsletter input:focus{border-color:var(--violet)}
+.footer-newsletter button{padding:10px 18px;border-radius:var(--radius-xs);background:var(--violet);color:var(--text);font-size:0.85rem;font-weight:600;transition:background 0.3s;flex-shrink:0}
+.footer-newsletter button:hover{background:var(--violet-light)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding:24px 0;border-top:1px solid var(--border-subtle);flex-wrap:wrap;gap:16px}
+.footer-bottom p{font-size:0.8rem;color:var(--text-3)}
+.footer-bottom-links{display:flex;gap:24px}
+.footer-bottom-links a{font-size:0.8rem;color:var(--text-3);transition:color 0.3s}
+.footer-bottom-links a:hover{color:var(--text)}
+
+/* ============================================ */
+/* RESPONSIVE                                   */
+/* ============================================ */
+@media(max-width:1024px){
+  .nav-links{display:none}
+  .nav-hamburger{display:flex}
+  .about-grid{grid-template-columns:1fr}
+  .about-visual{display:none}
+  .about-timeline{grid-template-columns:repeat(2,1fr)}
+  .services-grid{grid-template-columns:repeat(2,1fr)}
+  .service-card:nth-child(1),.service-card:nth-child(4){grid-column:span 1}
+  .why-feature{grid-template-columns:1fr;min-height:auto}
+  .why-feature:nth-child(even){direction:ltr}
+  .why-feature-visual{min-height:200px;order:1}
+  .why-feature-content{order:2}
+  .portfolio-grid{grid-template-columns:repeat(2,1fr)}
+  .pricing-cards{grid-template-columns:1fr 1fr}
+  .pricing-card.popular{transform:none}
+  .pricing-card.popular:hover{transform:translateY(-4px)}
+  .faq-grid{grid-template-columns:1fr}
+  .faq-categories{position:static;display:flex;flex-wrap:wrap;gap:8px}
+  .faq-cat{padding:8px 16px;border-radius:999px;border:1px solid var(--border-subtle)}
+  .contact-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:640px){
+  .hero-title{font-size:clamp(2rem,8vw,3rem)}
+  .hero-actions{flex-direction:column;width:100%}
+  .hero-actions .btn{width:100%;justify-content:center}
+  .hero-stats{flex-direction:column;gap:20px}
+  .services-grid{grid-template-columns:1fr}
+  .about-timeline{grid-template-columns:1fr}
+  .portfolio-grid{grid-template-columns:1fr}
+  .pricing-cards{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .testimonial-card{min-width:calc(100vw - 48px)}
+  .why-feature-visual .big-stat{font-size:2.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <div class="loader-logo">Nexic<span>.</span></div>
+</div>
+
+<!-- CURSOR GLOW -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- NAVBAR -->
+<header class="nav" id="nav" role="banner">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" aria-label="Nexic Web Home">Nexic<span>.</span></a>
+    <nav class="nav-links" role="navigation" aria-label="Main navigation">
+      <a href="#about" data-section="about">About</a>
+      <a href="#services" data-section="services">Services</a>
+      <a href="#portfolio" data-section="portfolio">Work</a>
+      <a href="#pricing" data-section="pricing">Pricing</a>
+      <a href="#contact" data-section="contact">Contact</a>
+      <a href="#contact" class="nav-cta">Start a Project</a>
+    </nav>
+    <button class="nav-hamburger" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
+  <a href="#about" class="mobile-link">About</a>
+  <a href="#services" class="mobile-link">Services</a>
+  <a href="#portfolio" class="mobile-link">Work</a>
+  <a href="#pricing" class="mobile-link">Pricing</a>
+  <a href="#contact" class="mobile-link">Contact</a>
+  <a href="#contact" class="btn btn-primary mobile-link">Start a Project</a>
+</div>
+
+<main>
+<!-- ============================================ -->
+<!-- HERO                                         -->
+<!-- ============================================ -->
+<section class="hero" id="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Web Design &amp; Development Agency</p>
+    <h1 class="hero-title">We don't build websites.<br>We build <em>unfair advantages.</em></h1>
+    <p class="hero-sub">Nexic Web creates premium digital experiences for brands that refuse to blend in. Strategy-first design, bulletproof code, measurable results.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-primary">Start Your Project <i data-lucide="arrow-right" width="18" height="18"></i></a>
+      <a href="#portfolio" class="btn btn-outline">View Our Work</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num" data-count="200">0</div>
+        <div class="hero-stat-label">Projects Shipped</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" data-count="98" data-suffix="%">0</div>
+        <div class="hero-stat-label">Client Retention</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" data-count="50" data-prefix="$" data-suffix="M+">0</div>
+        <div class="hero-stat-label">Revenue Generated</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- LOGOS / SOCIAL PROOF                          -->
+<!-- ============================================ -->
+<section class="logos-section" aria-label="Trusted by leading companies">
+  <p class="logos-label">Trusted by innovative brands worldwide</p>
+  <div class="marquee">
+    <div class="marquee-track" aria-hidden="true">
+      <span class="marquee-item">Luminance</span>
+      <span class="marquee-item">Peakflow</span>
+      <span class="marquee-item">Synthetica</span>
+      <span class="marquee-item">Archway</span>
+      <span class="marquee-item">Meridian</span>
+      <span class="marquee-item">Vaultline</span>
+      <span class="marquee-item">Corevolt</span>
+      <span class="marquee-item">Skyward</span>
+      <span class="marquee-item">Nebulus</span>
+      <span class="marquee-item">Prismiq</span>
+    </div>
+    <div class="marquee-track" aria-hidden="true">
+      <span class="marquee-item">Luminance</span>
+      <span class="marquee-item">Peakflow</span>
+      <span class="marquee-item">Synthetica</span>
+      <span class="marquee-item">Archway</span>
+      <span class="marquee-item">Meridian</span>
+      <span class="marquee-item">Vaultline</span>
+      <span class="marquee-item">Corevolt</span>
+      <span class="marquee-item">Skyward</span>
+      <span class="marquee-item">Nebulus</span>
+      <span class="marquee-item">Prismiq</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- ABOUT                                        -->
+<!-- ============================================ -->
+<section class="section section-dark" id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p class="eyebrow">Our Story</p>
+        <h2 class="section-title">Born from obsession with craft</h2>
+        <p class="about-lead">Nexic Web was founded on a simple belief: the internet deserves better. Too many brands settle for templates and mediocrity. We exist to change that.</p>
+        <p>We're a team of designers, engineers, and strategists who treat every pixel as a decision and every line of code as architecture. No templates. No shortcuts. Just work that earns attention and drives results.</p>
+        <div class="about-values">
+          <div class="about-value reveal-stagger" style="--i:0">
+            <h4>Vision</h4>
+            <p>To set the global standard for digital craftsmanship.</p>
+          </div>
+          <div class="about-value reveal-stagger" style="--i:1">
+            <h4>Mission</h4>
+            <p>Build digital experiences that create measurable competitive advantage.</p>
+          </div>
+          <div class="about-value reveal-stagger" style="--i:2">
+            <h4>Philosophy</h4>
+            <p>Strategy before aesthetics, performance before launch.</p>
+          </div>
+          <div class="about-value reveal-stagger" style="--i:3">
+            <h4>Promise</h4>
+            <p>Every project ships on time, on budget, beyond expectations.</p>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual reveal" aria-hidden="true">
+        <div class="about-shape about-shape-1"></div>
+        <div class="about-shape about-shape-2"></div>
+        <div class="about-shape about-shape-3">N.</div>
+      </div>
+    </div>
+    <div class="about-timeline reveal">
+      <div class="timeline-item reveal-stagger" style="--i:0">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2018</div>
+        <p class="timeline-text">Founded as a two-person studio in San Francisco</p>
+      </div>
+      <div class="timeline-item reveal-stagger" style="--i:1">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2020</div>
+        <p class="timeline-text">Hit 50 projects, opened our first dedicated office</p>
+      </div>
+      <div class="timeline-item reveal-stagger" style="--i:2">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2022</div>
+        <p class="timeline-text">Crossed $20M in client revenue generated, team grew to 25</p>
+      </div>
+      <div class="timeline-item reveal-stagger" style="--i:3">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2024</div>
+        <p class="timeline-text">200+ projects shipped, serving clients across 14 countries</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- SERVICES                                     -->
+<!-- ============================================ -->
+<section class="section section-alt" id="services">
+  <div class="section-inner">
+    <div class="section-header center reveal">
+      <p class="eyebrow">What We Do</p>
+      <h2 class="section-title">Services built around your growth</h2>
+      <p class="section-desc">Every engagement starts with strategy and ends with measurable impact. Here's how we get there.</p>
+    </div>
+    <div class="services-grid">
+      <article class="service-card reveal-stagger" style="--i:0">
+        <div class="service-icon"><i data-lucide="palette" width="24" height="24"></i></div>
+        <h3>Web Design</h3>
+        <p>Strategy-led design that converts visitors into customers. We obsess over every interaction, layout decision, and visual detail to create experiences that feel inevitable.</p>
+        <div class="service-benefits">
+          <span class="service-benefit">UX Research</span>
+          <span class="service-benefit">Wireframing</span>
+          <span class="service-benefit">Prototyping</span>
+          <span class="service-benefit">Design Systems</span>
+        </div>
+        <a href="#contact" class="service-link">Discuss your project <i data-lucide="arrow-right" width="16" height="16"></i></a>
+      </article>
+      <article class="service-card reveal-stagger" style="--i:1">
+        <div class="service-icon"><i data-lucide="code" width="24" height="24"></i></div>
+        <h3>Web Development</h3>
+        <p>Clean, performant code that scales with your ambition. Built for speed, accessibility, and long-term maintainability.</p>
+        <div class="service-benefits">
+          <span class="service-benefit">React / Next.js</span>
+          <span class="service-benefit">CMS Integration</span>
+          <span class="service-benefit">API Development</span>
+        </div>
+        <a href="#contact" class="service-link">Discuss your project <i data-lucide="arrow-right" width="16" height="16"></i></a>
+      </article>
+      <article class="service-card reveal-stagger" style="--i:2">
+        <div class="service-icon"><i data-lucide="shopping-cart" width="24" height="24"></i></div>
+        <h3>E-commerce</h3>
+        <p>Storefronts engineered to turn browsers into buyers. From checkout flow to product discovery, every element drives revenue.</p>
+        <div class="service-benefits">
+          <span class="service-benefit">Shopify</span>
+          <span class="service-benefit">Custom Stores</span>
+          <span class="service-benefit">Payment Integration</span>
+        </div>
+        <a href="#contact" class="service-link">Discuss your project <i data-lucide="arrow-right" width="16" height="16"></i></a>
+      </article>
+      <article class="service-card reveal-stagger" style="--i:3">
+        <div class="service-icon"><i data-lucide="pen-tool" width="24" height="24"></i></div>
+        <h3>Brand Identity</h3>
+        <p>Visual systems that make you instantly recognizable. We build brands from the logo up: typography, color, voice, and guidelines that keep everything cohesive as you scale.</p>
+        <div class="service-benefits">
+          <span class="service-benefit">Logo Design</span>
+          <span class="service-benefit">Brand Guidelines</span>
+          <span class="service-benefit">Visual Identity</span>
+          <span class="service-benefit">Brand Strategy</span>
+        </div>
+        <a href="#contact" class="service-link">Discuss your project <i data-lucide="arrow-right" width="16" height="16"></i></a>
+      </article>
+      <article class="service-card reveal-stagger" style="--i:4">
+        <div class="service-icon"><i data-lucide="trending-up" width="24" height="24"></i></div>
+        <h3>SEO &amp; Growth</h3>
+        <p>Organic visibility that compounds over time. Technical SEO, content strategy, and performance optimization that drives qualified traffic.</p>
+        <div class="service-benefits">
+          <span class="service-benefit">Technical SEO</span>
+          <span class="service-benefit">Content Strategy</span>
+          <span class="service-benefit">Analytics</span>
+        </div>
+        <a href="#contact" class="service-link">Discuss your project <i data-lucide="arrow-right" width="16" height="16"></i></a>
+      </article>
+      <article class="service-card reveal-stagger" style="--i:5">
+        <div class="service-icon"><i data-lucide="smartphone" width="24" height="24"></i></div>
+        <h3>Mobile Apps</h3>
+        <p>Native experiences your users will actually love. From concept to App Store, we build mobile products that retain and delight.</p>
+        <div class="service-benefits">
+          <span class="service-benefit">iOS &amp; Android</span>
+          <span class="service-benefit">React Native</span>
+          <span class="service-benefit">App Strategy</span>
+        </div>
+        <a href="#contact" class="service-link">Discuss your project <i data-lucide="arrow-right" width="16" height="16"></i></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- WHY CHOOSE US                                -->
+<!-- ============================================ -->
+<section class="section section-dark" id="why">
+  <div class="section-inner">
+    <div class="section-header center reveal">
+      <p class="eyebrow">Why Nexic</p>
+      <h2 class="section-title">What makes us different</h2>
+      <p class="section-desc">We're not the cheapest. We're not the fastest. We're the ones you hire when the result actually matters.</p>
+    </div>
+    <div class="why-features reveal">
+      <div class="why-feature">
+        <div class="why-feature-content">
+          <div class="feature-number">01</div>
+          <h3>100% Custom, Zero Templates</h3>
+          <p>Every line of code is written for your project. No WordPress themes, no page builders, no shortcuts. Your brand deserves original work.</p>
+        </div>
+        <div class="why-feature-visual">
+          <div class="big-stat" aria-label="Zero templates used">0<small>Templates Used. Ever.</small></div>
+        </div>
+      </div>
+      <div class="why-feature">
+        <div class="why-feature-content">
+          <div class="feature-number">02</div>
+          <h3>Measurable ROI, Not Just Pretty Pixels</h3>
+          <p>Design without performance is decoration. We track conversions, engagement, and revenue impact from day one. Our average client sees 12x ROI within the first year.</p>
+        </div>
+        <div class="why-feature-visual">
+          <div class="big-stat" aria-label="12 times average ROI">12x<small>Average Client ROI</small></div>
+        </div>
+      </div>
+      <div class="why-feature">
+        <div class="why-feature-content">
+          <div class="feature-number">03</div>
+          <h3>48-Hour Response Time, Always</h3>
+          <p>No ghosting, no ticket queues, no "we'll get back to you next week." Your dedicated project lead responds within 48 hours, every time.</p>
+        </div>
+        <div class="why-feature-visual">
+          <div class="big-stat" aria-label="48 hour response time">&lt;48h<small>Guaranteed Response</small></div>
+        </div>
+      </div>
+      <div class="why-feature">
+        <div class="why-feature-content">
+          <div class="feature-number">04</div>
+          <h3>Post-Launch Support Included</h3>
+          <p>Launch day isn't the finish line. Every project includes 90 days of post-launch support, bug fixes, and performance monitoring at no extra cost.</p>
+        </div>
+        <div class="why-feature-visual">
+          <div class="big-stat" aria-label="90 days included support">90d<small>Free Post-Launch Support</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- PORTFOLIO                                    -->
+<!-- ============================================ -->
+<section class="section section-alt" id="portfolio">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <p class="eyebrow">Selected Work</p>
+      <h2 class="section-title">Projects that speak for themselves</h2>
+      <p class="section-desc">A curated selection of our recent work across industries.</p>
+    </div>
+    <div class="portfolio-tabs reveal" role="tablist">
+      <button class="portfolio-tab active" data-filter="all" role="tab" aria-selected="true">All</button>
+      <button class="portfolio-tab" data-filter="design" role="tab">Web Design</button>
+      <button class="portfolio-tab" data-filter="ecommerce" role="tab">E-commerce</button>
+      <button class="portfolio-tab" data-filter="branding" role="tab">Branding</button>
+      <button class="portfolio-tab" data-filter="mobile" role="tab">Mobile</button>
+    </div>
+    <div class="portfolio-grid">
+      <article class="portfolio-card reveal-stagger" style="--i:0" data-category="design">
+        <div class="portfolio-card-img">
+          <div class="card-bg" style="background:linear-gradient(135deg,oklch(30% 0.12 290),oklch(20% 0.08 240))"></div>
+          <div class="portfolio-card-overlay">
+            <h4>View Case Study</h4>
+            <p>SaaS Dashboard Redesign</p>
+            <a href="#" class="btn btn-sm btn-outline">Explore</a>
+          </div>
+        </div>
+        <div class="portfolio-card-meta">
+          <h4>Luminance</h4>
+          <span>Web Design</span>
+        </div>
+      </article>
+      <article class="portfolio-card reveal-stagger" style="--i:1" data-category="ecommerce">
+        <div class="portfolio-card-img">
+          <div class="card-bg" style="background:linear-gradient(135deg,oklch(25% 0.08 80),oklch(18% 0.06 40))"></div>
+          <div class="portfolio-card-overlay">
+            <h4>View Case Study</h4>
+            <p>Premium E-commerce Platform</p>
+            <a href="#" class="btn btn-sm btn-outline">Explore</a>
+          </div>
+        </div>
+        <div class="portfolio-card-meta">
+          <h4>Peakflow</h4>
+          <span>E-commerce</span>
+        </div>
+      </article>
+      <article class="portfolio-card reveal-stagger" style="--i:2" data-category="branding">
+        <div class="portfolio-card-img">
+          <div class="card-bg" style="background:linear-gradient(135deg,oklch(22% 0.1 160),oklch(15% 0.06 200))"></div>
+          <div class="portfolio-card-overlay">
+            <h4>View Case Study</h4>
+            <p>Complete Brand Identity System</p>
+            <a href="#" class="btn btn-sm btn-outline">Explore</a>
+          </div>
+        </div>
+        <div class="portfolio-card-meta">
+          <h4>Synthetica</h4>
+          <span>Branding</span>
+        </div>
+      </article>
+      <article class="portfolio-card reveal-stagger" style="--i:3" data-category="design">
+        <div class="portfolio-card-img">
+          <div class="card-bg" style="background:linear-gradient(135deg,oklch(20% 0.06 320),oklch(14% 0.04 280))"></div>
+          <div class="portfolio-card-overlay">
+            <h4>View Case Study</h4>
+            <p>Real Estate Listing Platform</p>
+            <a href="#" class="btn btn-sm btn-outline">Explore</a>
+          </div>
+        </div>
+        <div class="portfolio-card-meta">
+          <h4>Archway</h4>
+          <span>Web Design</span>
+        </div>
+      </article>
+      <article class="portfolio-card reveal-stagger" style="--i:4" data-category="mobile">
+        <div class="portfolio-card-img">
+          <div class="card-bg" style="background:linear-gradient(135deg,oklch(25% 0.1 250),oklch(16% 0.08 220))"></div>
+          <div class="portfolio-card-overlay">
+            <h4>View Case Study</h4>
+            <p>Mobile Banking Experience</p>
+            <a href="#" class="btn btn-sm btn-outline">Explore</a>
+          </div>
+        </div>
+        <div class="portfolio-card-meta">
+          <h4>Meridian</h4>
+          <span>Mobile</span>
+        </div>
+      </article>
+      <article class="portfolio-card reveal-stagger" style="--i:5" data-category="design">
+        <div class="portfolio-card-img">
+          <div class="card-bg" style="background:linear-gradient(135deg,oklch(22% 0.12 10),oklch(14% 0.06 350))"></div>
+          <div class="portfolio-card-overlay">
+            <h4>View Case Study</h4>
+            <p>Trading Platform Redesign</p>
+            <a href="#" class="btn btn-sm btn-outline">Explore</a>
+          </div>
+        </div>
+        <div class="portfolio-card-meta">
+          <h4>Vaultline</h4>
+          <span>Web Design</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- PROCESS                                      -->
+<!-- ============================================ -->
+<section class="section section-dark" id="process">
+  <div class="section-inner">
+    <div class="section-header center reveal">
+      <p class="eyebrow">How We Work</p>
+      <h2 class="section-title">From first call to live product</h2>
+      <p class="section-desc">A proven process refined over 200+ projects. No surprises, no scope creep, no missed deadlines.</p>
+    </div>
+    <div class="process-timeline" id="processTimeline">
+      <div class="process-line" aria-hidden="true"></div>
+      <div class="process-line-fill" id="processLineFill" aria-hidden="true"></div>
+      <div class="process-step reveal-stagger" style="--i:0">
+        <div class="process-dot">01</div>
+        <div class="process-content">
+          <h3>Discovery</h3>
+          <p>We learn your business, audience, and goals through structured workshops and stakeholder interviews.</p>
+        </div>
+      </div>
+      <div class="process-step reveal-stagger" style="--i:1">
+        <div class="process-dot">02</div>
+        <div class="process-content">
+          <h3>Research</h3>
+          <p>Competitor analysis, market positioning, user research, and technical feasibility assessment.</p>
+        </div>
+      </div>
+      <div class="process-step reveal-stagger" style="--i:2">
+        <div class="process-dot">03</div>
+        <div class="process-content">
+          <h3>Strategy</h3>
+          <p>Information architecture, content strategy, user flows, and a clear project roadmap with milestones.</p>
+        </div>
+      </div>
+      <div class="process-step reveal-stagger" style="--i:3">
+        <div class="process-dot">04</div>
+        <div class="process-content">
+          <h3>Design</h3>
+          <p>High-fidelity mockups and interactive prototypes. You see exactly what the final product will look and feel like before we write code.</p>
+        </div>
+      </div>
+      <div class="process-step reveal-stagger" style="--i:4">
+        <div class="process-dot">05</div>
+        <div class="process-content">
+          <h3>Development</h3>
+          <p>Clean, semantic code with CMS integration, API connections, and performance optimization baked in from the start.</p>
+        </div>
+      </div>
+      <div class="process-step reveal-stagger" style="--i:5">
+        <div class="process-dot">06</div>
+        <div class="process-content">
+          <h3>Testing</h3>
+          <p>Cross-browser QA, accessibility audit, performance benchmarks, and security review before anything goes live.</p>
+        </div>
+      </div>
+      <div class="process-step reveal-stagger" style="--i:6">
+        <div class="process-dot">07</div>
+        <div class="process-content">
+          <h3>Launch</h3>
+          <p>Deployment, DNS configuration, SSL setup, analytics integration, and 24-hour post-launch monitoring.</p>
+        </div>
+      </div>
+      <div class="process-step reveal-stagger" style="--i:7">
+        <div class="process-dot">08</div>
+        <div class="process-content">
+          <h3>Growth</h3>
+          <p>90 days of included support, performance reports, A/B testing recommendations, and ongoing optimization.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- TECHNOLOGIES                                 -->
+<!-- ============================================ -->
+<section class="section section-alt" id="technologies">
+  <div class="section-inner">
+    <div class="section-header center reveal">
+      <p class="eyebrow">Tech Stack</p>
+      <h2 class="section-title">Tools we trust</h2>
+      <p class="section-desc">We pick the right tool for the job, not the trendiest one. Here's what we work with most.</p>
+    </div>
+    <div class="tech-groups reveal">
+      <div class="tech-group">
+        <h4>Frontend</h4>
+        <div class="tech-list">
+          <span class="tech-pill"><i data-lucide="code" width="16" height="16"></i> React</span>
+          <span class="tech-pill"><i data-lucide="code" width="16" height="16"></i> Next.js</span>
+          <span class="tech-pill"><i data-lucide="code" width="16" height="16"></i> Vue</span>
+          <span class="tech-pill"><i data-lucide="code" width="16" height="16"></i> TypeScript</span>
+          <span class="tech-pill"><i data-lucide="code" width="16" height="16"></i> Tailwind CSS</span>
+          <span class="tech-pill"><i data-lucide="code" width="16" height="16"></i> Framer Motion</span>
+        </div>
+      </div>
+      <div class="tech-group">
+        <h4>Backend</h4>
+        <div class="tech-list">
+          <span class="tech-pill"><i data-lucide="server" width="16" height="16"></i> Node.js</span>
+          <span class="tech-pill"><i data-lucide="server" width="16" height="16"></i> Python</span>
+          <span class="tech-pill"><i data-lucide="server" width="16" height="16"></i> Go</span>
+          <span class="tech-pill"><i data-lucide="database" width="16" height="16"></i> PostgreSQL</span>
+          <span class="tech-pill"><i data-lucide="database" width="16" height="16"></i> Redis</span>
+          <span class="tech-pill"><i data-lucide="database" width="16" height="16"></i> MongoDB</span>
+        </div>
+      </div>
+      <div class="tech-group">
+        <h4>CMS &amp; Platforms</h4>
+        <div class="tech-list">
+          <span class="tech-pill"><i data-lucide="layout" width="16" height="16"></i> WordPress</span>
+          <span class="tech-pill"><i data-lucide="layout" width="16" height="16"></i> Webflow</span>
+          <span class="tech-pill"><i data-lucide="layout" width="16" height="16"></i> Sanity</span>
+          <span class="tech-pill"><i data-lucide="layout" width="16" height="16"></i> Strapi</span>
+          <span class="tech-pill"><i data-lucide="shopping-cart" width="16" height="16"></i> Shopify</span>
+        </div>
+      </div>
+      <div class="tech-group">
+        <h4>Cloud &amp; DevOps</h4>
+        <div class="tech-list">
+          <span class="tech-pill"><i data-lucide="cloud" width="16" height="16"></i> AWS</span>
+          <span class="tech-pill"><i data-lucide="cloud" width="16" height="16"></i> Vercel</span>
+          <span class="tech-pill"><i data-lucide="cloud" width="16" height="16"></i> Cloudflare</span>
+          <span class="tech-pill"><i data-lucide="box" width="16" height="16"></i> Docker</span>
+          <span class="tech-pill"><i data-lucide="git-branch" width="16" height="16"></i> GitHub Actions</span>
+        </div>
+      </div>
+      <div class="tech-group">
+        <h4>AI &amp; Analytics</h4>
+        <div class="tech-list">
+          <span class="tech-pill"><i data-lucide="sparkles" width="16" height="16"></i> OpenAI</span>
+          <span class="tech-pill"><i data-lucide="sparkles" width="16" height="16"></i> Claude</span>
+          <span class="tech-pill"><i data-lucide="bar-chart-2" width="16" height="16"></i> Google Analytics</span>
+          <span class="tech-pill"><i data-lucide="bar-chart-2" width="16" height="16"></i> Mixpanel</span>
+          <span class="tech-pill"><i data-lucide="bar-chart-2" width="16" height="16"></i> Hotjar</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- PRICING                                      -->
+<!-- ============================================ -->
+<section class="section section-dark" id="pricing">
+  <div class="section-inner">
+    <div class="section-header center reveal">
+      <p class="eyebrow">Investment</p>
+      <h2 class="section-title">Transparent pricing, no surprises</h2>
+      <p class="section-desc">Choose the engagement model that fits your needs. All plans include strategy, design, development, and post-launch support.</p>
+    </div>
+    <div class="pricing-toggle reveal">
+      <span class="active" id="monthlyLabel">Monthly</span>
+      <div class="toggle-switch" id="pricingToggle" role="switch" aria-checked="false" tabindex="0" aria-label="Toggle yearly pricing"></div>
+      <span id="yearlyLabel">Yearly <span style="color:var(--violet);font-size:0.8rem;font-weight:500">(Save 20%)</span></span>
+    </div>
+    <div class="pricing-cards">
+      <div class="pricing-card reveal-stagger" style="--i:0">
+        <div class="pricing-name">Starter</div>
+        <div class="pricing-price">
+          <span class="amount" data-monthly="2,999" data-yearly="2,399">$2,999</span>
+          <span class="period">/month</span>
+        </div>
+        <p class="pricing-desc">Perfect for startups and small businesses launching their first professional web presence.</p>
+        <div class="pricing-features">
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Custom landing page design</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Up to 5 pages</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Mobile responsive</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Basic SEO setup</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> CMS integration</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> 30 days post-launch support</div>
+        </div>
+        <a href="#contact" class="btn btn-outline">Get Started</a>
+      </div>
+      <div class="pricing-card popular reveal-stagger" style="--i:1">
+        <div class="pricing-badge">Most Popular</div>
+        <div class="pricing-name">Professional</div>
+        <div class="pricing-price">
+          <span class="amount" data-monthly="7,999" data-yearly="6,399">$7,999</span>
+          <span class="period">/month</span>
+        </div>
+        <p class="pricing-desc">For growing businesses that need a custom web application or e-commerce platform with real scale.</p>
+        <div class="pricing-features">
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Everything in Starter</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Unlimited pages</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Custom web application</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> E-commerce integration</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Advanced SEO &amp; analytics</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> API integrations</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> 90 days post-launch support</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Dedicated project lead</div>
+        </div>
+        <a href="#contact" class="btn btn-primary">Get Started</a>
+      </div>
+      <div class="pricing-card reveal-stagger" style="--i:2">
+        <div class="pricing-name">Enterprise</div>
+        <div class="pricing-price">
+          <span class="amount">Custom</span>
+          <span class="period"></span>
+        </div>
+        <p class="pricing-desc">For established companies that need a full-scale digital platform and ongoing partnership.</p>
+        <div class="pricing-features">
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Everything in Professional</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Full-stack platform development</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Mobile app development</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Brand identity system</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Priority support (SLA)</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Ongoing retainer partnership</div>
+          <div class="pricing-feature"><i data-lucide="check" width="16" height="16"></i> Quarterly strategy reviews</div>
+        </div>
+        <a href="#contact" class="btn btn-outline">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- TESTIMONIALS                                 -->
+<!-- ============================================ -->
+<section class="section section-alt" id="testimonials">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <p class="eyebrow">Client Stories</p>
+      <h2 class="section-title">Words from the people we've worked with</h2>
+    </div>
+    <div class="testimonials-track-wrapper">
+      <div class="testimonials-track" id="testimonialsTrack">
+        <div class="testimonial-card">
+          <div class="testimonial-stars" aria-label="5 out of 5 stars">
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+          </div>
+          <p class="testimonial-text">"Nexic completely transformed our digital presence. Our conversion rate jumped 340% within two months of launch. The attention to detail in every interaction is something I've never experienced with another agency."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">SL</div>
+            <div class="testimonial-info">
+              <h5>Sarah Liu</h5>
+              <p>CEO, Luminance</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars" aria-label="5 out of 5 stars">
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+          </div>
+          <p class="testimonial-text">"We interviewed 12 agencies. Nexic was the only one that asked about our business model before showing us design portfolios. That approach carried through the entire project. The result speaks for itself."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">MK</div>
+            <div class="testimonial-info">
+              <h5>Marcus Kim</h5>
+              <p>Founder, Peakflow</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars" aria-label="5 out of 5 stars">
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+          </div>
+          <p class="testimonial-text">"The brand identity system Nexic built for us is genuinely world-class. Every touchpoint feels cohesive, from our website to our pitch decks. We went from 'who are they?' to 'we need to work with them' overnight."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">AJ</div>
+            <div class="testimonial-info">
+              <h5>Amara Johnson</h5>
+              <p>CMO, Synthetica</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars" aria-label="5 out of 5 stars">
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+          </div>
+          <p class="testimonial-text">"Our mobile app retention rate is 4x the industry average. Nexic didn't just build what we asked for, they pushed back on bad ideas and proposed better ones. That's exactly the partner we needed."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">RP</div>
+            <div class="testimonial-info">
+              <h5>Raj Patel</h5>
+              <p>CTO, Meridian</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars" aria-label="5 out of 5 stars">
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+            <i data-lucide="star" width="16" height="16"></i>
+          </div>
+          <p class="testimonial-text">"We launched our e-commerce store with Nexic and did $1.2M in the first quarter. The checkout flow they designed converts at nearly double what Shopify's default templates manage. Worth every penny."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">EW</div>
+            <div class="testimonial-info">
+              <h5>Elena Wu</h5>
+              <p>Founder, Corevolt</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-controls reveal">
+      <button class="testimonial-btn" id="testimonialPrev" aria-label="Previous testimonial"><i data-lucide="arrow-left" width="18" height="18"></i></button>
+      <button class="testimonial-btn" id="testimonialNext" aria-label="Next testimonial"><i data-lucide="arrow-right" width="18" height="18"></i></button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- FAQ                                          -->
+<!-- ============================================ -->
+<section class="section section-dark" id="faq">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <p class="eyebrow">FAQ</p>
+      <h2 class="section-title">Questions we hear often</h2>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-categories reveal">
+        <button class="faq-cat active" data-cat="all">All Questions</button>
+        <button class="faq-cat" data-cat="process">Process</button>
+        <button class="faq-cat" data-cat="pricing">Pricing</button>
+        <button class="faq-cat" data-cat="support">Support</button>
+      </div>
+      <div class="faq-list" id="faqList">
+        <details class="faq-item reveal-stagger" style="--i:0" data-cat="process">
+          <summary>How long does a typical project take? <i data-lucide="chevron-down" width="18" height="18" class="faq-chevron"></i></summary>
+          <div class="faq-answer">Most projects take 8 to 14 weeks from kickoff to launch. Simple landing pages can ship in 4 to 6 weeks, while full-scale platforms with custom features typically take 12 to 20 weeks. We'll give you a firm timeline during our discovery phase.</div>
+        </details>
+        <details class="faq-item reveal-stagger" style="--i:1" data-cat="process">
+          <summary>What does the design process look like? <i data-lucide="chevron-down" width="18" height="18" class="faq-chevron"></i></summary>
+          <div class="faq-answer">We start with a discovery workshop to understand your business, audience, and goals. From there, we move into research, wireframes, and high-fidelity mockups. You'll see interactive prototypes before we write any code, so there are no surprises at launch.</div>
+        </details>
+        <details class="faq-item reveal-stagger" style="--i:2" data-cat="process">
+          <summary>Do you work with existing brands or only new ones? <i data-lucide="chevron-down" width="18" height="18" class="faq-chevron"></i></summary>
+          <div class="faq-answer">Both. About 60% of our projects involve redesigning existing websites or evolving established brands. We're equally comfortable building from scratch or working within existing brand guidelines.</div>
+        </details>
+        <details class="faq-item reveal-stagger" style="--i:3" data-cat="pricing">
+          <summary>What's included in the pricing? <i data-lucide="chevron-down" width="18" height="18" class="faq-chevron"></i></summary>
+          <div class="faq-answer">Every plan includes strategy, design, development, testing, deployment, and post-launch support. We don't charge extra for revisions during the design phase (up to 3 rounds) or for basic CMS training. Hosting and domain registration are separate.</div>
+        </details>
+        <details class="faq-item reveal-stagger" style="--i:4" data-cat="pricing">
+          <summary>Can I pay in installments? <i data-lucide="chevron-down" width="18" height="18" class="faq-chevron"></i></summary>
+          <div class="faq-answer">Yes. We typically structure payments as 40% upfront, 30% at design approval, and 30% at launch. For larger projects, we can arrange custom payment schedules. We accept wire transfer, credit card, and crypto.</div>
+        </details>
+        <details class="faq-item reveal-stagger" style="--i:5" data-cat="pricing">
+          <summary>What if I need something not listed in the plans? <i data-lucide="chevron-down" width="18" height="18" class="faq-chevron"></i></summary>
+          <div class="faq-answer">The plans are starting points. Most clients need some customization. Tell us what you're building and we'll put together a proposal that fits your exact requirements and budget.</div>
+        </details>
+        <details class="faq-item reveal-stagger" style="--i:6" data-cat="support">
+          <summary>What happens after launch? <i data-lucide="chevron-down" width="18" height="18" class="faq-chevron"></i></summary>
+          <div class="faq-answer">Every project includes post-launch support (30 to 90 days depending on your plan). During this period, we fix bugs, make minor adjustments, and monitor performance. After that, you can continue with a retainer or handle things independently with the documentation and training we provide.</div>
+        </details>
+        <details class="faq-item reveal-stagger" style="--i:7" data-cat="support">
+          <summary>Do you offer ongoing maintenance? <i data-lucide="chevron-down" width="18" height="18" class="faq-chevron"></i></summary>
+          <div class="faq-answer">Yes. We offer monthly retainer packages for ongoing development, content updates, performance monitoring, and feature additions. About 70% of our clients move to a retainer after their initial project.</div>
+        </details>
+        <details class="faq-item reveal-stagger" style="--i:8" data-cat="support">
+          <summary>Will I be able to update content myself? <i data-lucide="chevron-down" width="18" height="18" class="faq-chevron"></i></summary>
+          <div class="faq-answer">Absolutely. We integrate a content management system (CMS) into every project so you can update text, images, and basic layouts without touching code. We also provide training and documentation.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- FINAL CTA                                    -->
+<!-- ============================================ -->
+<section class="cta-section section-dark" id="cta">
+  <div class="cta-bg" aria-hidden="true">
+    <div class="cta-orb cta-orb-1"></div>
+    <div class="cta-orb cta-orb-2"></div>
+  </div>
+  <div class="cta-content reveal">
+    <p class="eyebrow">Ready?</p>
+    <h2>Let's build something your competitors will envy</h2>
+    <p>Book a free 30-minute strategy call. We'll audit your current site, discuss your goals, and map out a plan to get there.</p>
+    <a href="#contact" class="btn btn-primary">Book Your Free Strategy Call <i data-lucide="arrow-right" width="18" height="18"></i></a>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- CONTACT                                      -->
+<!-- ============================================ -->
+<section class="section section-alt" id="contact">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <p class="eyebrow">Get in Touch</p>
+      <h2 class="section-title">Start the conversation</h2>
+      <p class="section-desc">Tell us about your project and we'll respond within 48 hours with a tailored proposal.</p>
+    </div>
+    <div class="contact-grid">
+      <form class="contact-form reveal" id="contactForm" action="#" method="post" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Jane" required>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Smith">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="jane@company.com" required>
+          </div>
+          <div class="form-group">
+            <label for="budget">Budget Range</label>
+            <select id="budget" name="budget">
+              <option value="" disabled selected>Select budget</option>
+              <option value="5k-10k">$5,000 - $10,000</option>
+              <option value="10k-25k">$10,000 - $25,000</option>
+              <option value="25k-50k">$25,000 - $50,000</option>
+              <option value="50k+">$50,000+</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="message">Tell us about your project</label>
+          <textarea id="message" name="message" rows="5" placeholder="What are you building? What are your goals? Any timeline constraints?"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message <i data-lucide="send" width="16" height="16"></i></button>
+      </form>
+      <div class="contact-info reveal">
+        <div class="contact-info-item">
+          <div class="contact-info-icon"><i data-lucide="mail" width="20" height="20"></i></div>
+          <div>
+            <h4>Email</h4>
+            <p><a href="mailto:hello@nexicweb.com">hello@nexicweb.com</a></p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon"><i data-lucide="phone" width="20" height="20"></i></div>
+          <div>
+            <h4>Phone</h4>
+            <p><a href="tel:+15552345678">+1 (555) 234-5678</a></p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon"><i data-lucide="message-circle" width="20" height="20"></i></div>
+          <div>
+            <h4>WhatsApp</h4>
+            <p><a href="https://wa.me/15552345678">Chat with us</a></p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon"><i data-lucide="map-pin" width="20" height="20"></i></div>
+          <div>
+            <h4>Office</h4>
+            <p>420 Design Ave, Suite 200<br>San Francisco, CA 94102</p>
+          </div>
+        </div>
+        <div class="contact-socials">
+          <a href="#" class="contact-social" aria-label="Twitter"><i data-lucide="twitter" width="18" height="18"></i></a>
+          <a href="#" class="contact-social" aria-label="Instagram"><i data-lucide="instagram" width="18" height="18"></i></a>
+          <a href="#" class="contact-social" aria-label="LinkedIn"><i data-lucide="linkedin" width="18" height="18"></i></a>
+          <a href="#" class="contact-social" aria-label="GitHub"><i data-lucide="github" width="18" height="18"></i></a>
+        </div>
+        <div class="contact-map" aria-label="Map placeholder">
+          <i data-lucide="map" width="24" height="24" style="margin-right:8px"></i> Interactive map loads here
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============================================ -->
+<!-- FOOTER                                       -->
+<!-- ============================================ -->
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">Nexic<span>.</span></div>
+        <p>Premium digital experiences for brands that refuse to blend in. Strategy-first design, bulletproof code, measurable results.</p>
+        <div class="contact-socials">
+          <a href="#" class="contact-social" aria-label="Twitter"><i data-lucide="twitter" width="16" height="16"></i></a>
+          <a href="#" class="contact-social" aria-label="Instagram"><i data-lucide="instagram" width="16" height="16"></i></a>
+          <a href="#" class="contact-social" aria-label="LinkedIn"><i data-lucide="linkedin" width="16" height="16"></i></a>
+          <a href="#" class="contact-social" aria-label="GitHub"><i data-lucide="github" width="16" height="16"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="#about">About</a>
+        <a href="#portfolio">Work</a>
+        <a href="#process">Process</a>
+        <a href="#contact">Contact</a>
+        <a href="#">Careers</a>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <a href="#services">Web Design</a>
+        <a href="#services">Development</a>
+        <a href="#services">E-commerce</a>
+        <a href="#services">Branding</a>
+        <a href="#services">SEO</a>
+        <a href="#services">Mobile Apps</a>
+      </div>
+      <div class="footer-col">
+        <h5>Newsletter</h5>
+        <p style="font-size:0.875rem;color:var(--text-3);margin-bottom:16px">Design insights, case studies, and industry trends. Once a month, no spam.</p>
+        <form class="footer-newsletter" action="#" aria-label="Newsletter signup">
+          <input type="email" placeholder="your@email.com" aria-label="Email for newsletter">
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Nexic Web. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ---- LOADER ----
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1200);
+});
+
+// ---- CURSOR GLOW ----
+const glow = document.getElementById('cursorGlow');
+let glowActive = false;
+document.addEventListener('mousemove', (e) => {
+  if (!glowActive) { glow.classList.add('active'); glowActive = true; }
+  glow.style.left = e.clientX + 'px';
+  glow.style.top = e.clientY + 'px';
+});
+
+// ---- NAVBAR SCROLL ----
+const nav = document.getElementById('nav');
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// ---- ACTIVE NAV LINK ----
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a[data-section]');
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.nav-links a[data-section="${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+sections.forEach(s => sectionObserver.observe(s));
+
+// ---- MOBILE MENU ----
+const menuToggle = document.getElementById('menuToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+menuToggle.addEventListener('click', () => {
+  const isOpen = mobileMenu.classList.toggle('open');
+  menuToggle.classList.toggle('open');
+  menuToggle.setAttribute('aria-expanded', isOpen);
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+});
+document.querySelectorAll('.mobile-link').forEach(link => {
+  link.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    menuToggle.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  });
+});
+
+// ---- SCROLL REVEAL ----
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => revealObserver.observe(el));
+
+// ---- COUNTER ANIMATION ----
+const counters = document.querySelectorAll('[data-count]');
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.count);
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '+';
+      const duration = 2000;
+      const start = performance.now();
+      function update(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 4);
+        const current = Math.floor(eased * target);
+        el.textContent = prefix + current.toLocaleString() + (progress >= 1 ? suffix : '');
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+counters.forEach(c => counterObserver.observe(c));
+
+// ---- PROCESS TIMELINE LINE FILL ----
+const processTimeline = document.getElementById('processTimeline');
+const processLineFill = document.getElementById('processLineFill');
+const processSteps = document.querySelectorAll('.process-step');
+if (processTimeline && processLineFill) {
+  const processObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('active');
+    });
+  }, { threshold: 0.4 });
+  processSteps.forEach(s => {
+    processObserver.observe(s);
+    processObserver.observe(s.querySelector('.process-dot'));
+  });
+  window.addEventListener('scroll', () => {
+    const rect = processTimeline.getBoundingClientRect();
+    const timelineHeight = processTimeline.offsetHeight;
+    const viewTop = window.innerHeight * 0.5;
+    const progress = Math.min(Math.max((viewTop - rect.top) / timelineHeight, 0), 1);
+    processLineFill.style.height = (progress * 100) + '%';
+  }, { passive: true });
+}
+
+// ---- PRICING TOGGLE ----
+const pricingToggle = document.getElementById('pricingToggle');
+const monthlyLabel = document.getElementById('monthlyLabel');
+const yearlyLabel = document.getElementById('yearlyLabel');
+let isYearly = false;
+function updatePricing() {
+  const amounts = document.querySelectorAll('.pricing-price .amount[data-monthly]');
+  amounts.forEach(a => {
+    a.textContent = '$' + (isYearly ? a.dataset.yearly : a.dataset.monthly);
+  });
+  pricingToggle.classList.toggle('yearly', isYearly);
+  pricingToggle.setAttribute('aria-checked', isYearly);
+  monthlyLabel.classList.toggle('active', !isYearly);
+  yearlyLabel.classList.toggle('active', isYearly);
+}
+pricingToggle.addEventListener('click', () => { isYearly = !isYearly; updatePricing(); });
+pricingToggle.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); isYearly = !isYearly; updatePricing(); }
+});
+
+// ---- TESTIMONIAL SLIDER ----
+const track = document.getElementById('testimonialsTrack');
+const prevBtn = document.getElementById('testimonialPrev');
+const nextBtn = document.getElementById('testimonialNext');
+let currentSlide = 0;
+let autoSlideInterval;
+function getSlideWidth() {
+  const card = track.querySelector('.testimonial-card');
+  return card.offsetWidth + 24; // card width + gap
+}
+function getMaxSlide() {
+  const cards = track.querySelectorAll('.testimonial-card');
+  const trackWidth = track.parentElement.offsetWidth;
+  const totalWidth = cards.length * getSlideWidth();
+  return Math.max(0, Math.ceil((totalWidth - trackWidth) / getSlideWidth()));
+}
+function slideTo(index) {
+  currentSlide = Math.max(0, Math.min(index, getMaxSlide()));
+  track.style.transform = `translateX(-${currentSlide * getSlideWidth()}px)`;
+}
+function startAutoSlide() {
+  autoSlideInterval = setInterval(() => {
+    slideTo(currentSlide >= getMaxSlide() ? 0 : currentSlide + 1);
+  }, 5000);
+}
+function resetAutoSlide() {
+  clearInterval(autoSlideInterval);
+  startAutoSlide();
+}
+prevBtn.addEventListener('click', () => { slideTo(currentSlide - 1); resetAutoSlide(); });
+nextBtn.addEventListener('click', () => { slideTo(currentSlide + 1); resetAutoSlide(); });
+startAutoSlide();
+
+// ---- PORTFOLIO FILTER ----
+const portfolioTabs = document.querySelectorAll('.portfolio-tab');
+const portfolioCards = document.querySelectorAll('.portfolio-card');
+portfolioTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    portfolioTabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    const filter = tab.dataset.filter;
+    portfolioCards.forEach(card => {
+      const show = filter === 'all' || card.dataset.category === filter;
+      card.style.display = show ? '' : 'none';
+      if (show) { card.style.opacity = '0'; card.style.transform = 'translateY(16px)';
+        requestAnimationFrame(() => { card.style.transition = 'opacity 0.5s, transform 0.5s'; card.style.opacity = '1'; card.style.transform = 'translateY(0)'; });
+      }
+    });
+  });
+});
+
+// ---- FAQ FILTER ----
+const faqCats = document.querySelectorAll('.faq-cat');
+const faqItems = document.querySelectorAll('.faq-item');
+faqCats.forEach(cat => {
+  cat.addEventListener('click', () => {
+    faqCats.forEach(c => c.classList.remove('active'));
+    cat.classList.add('active');
+    const filter = cat.dataset.cat;
+    faqItems.forEach(item => {
+      item.style.display = (filter === 'all' || item.dataset.cat === filter) ? '' : 'none';
+    });
+  });
+});
+
+// ---- SMOOTH SCROLL FOR ANCHOR LINKS ----
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    const targetId = link.getAttribute('href');
+    if (targetId === '#') return;
+    const target = document.querySelector(targetId);
+    if (target) {
+      e.preventDefault();
+      const offset = 80;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+
+// ---- CONTACT FORM (Basic Validation Demo) ----
+document.getElementById('contactForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type="submit"]');
+  btn.textContent = 'Sent!';
+  btn.style.background = 'var(--success)';
+  setTimeout(() => { btn.innerHTML = 'Send Message <i data-lucide="send" width="16" height="16"></i>'; btn.style.background = ''; lucide.createIcons(); }, 3000);
+});
+</script>
+</body>
+</html>

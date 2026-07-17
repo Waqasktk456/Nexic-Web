@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tahmid | CEO of NexicWeb</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+
+    <style>
+        /* CSS Variables - Ultra-Minimalist Luxury Theme */
+        :root {
+            --bg-color: #030303;
+            --surface-color: rgba(20, 20, 20, 0.4);
+            --border-color: rgba(255, 255, 255, 0.05);
+            --text-main: #f0f0f0;
+            --text-muted: #888888;
+            --accent-subtle: rgba(255, 255, 255, 0.1);
+            /* Font overridden for Nexic brand consistency */
+            --font-primary: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Custom cursor */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        ::selection {
+            background: var(--text-main);
+            color: var(--bg-color);
+        }
+
+        /* Lenis Smooth Scroll Recommended CSS */
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+        /* Typography - Minimalist styling */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        
+        a {
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+        .cursor-glow {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass {
+            background: var(--surface-color);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+        }
+
+        /* ThreeJS Canvas */
+        #webgl-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Layout & Sections */
+        section {
+            padding: 8rem 5%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            transition: all 0.4s ease;
+        }
+        nav.scrolled {
+            background: rgba(3, 3, 3, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 5%;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links a {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 1px;
+            background: var(--text-main);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        #hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0;
+        }
+        .hero-title {
+            font-size: 8vw;
+            line-height: 1;
+            margin-bottom: 1rem;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+        .hero-subtitle {
+            font-size: 1.5vw;
+            color: var(--text-muted);
+            letter-spacing: 0.3em;
+            margin-bottom: 2rem;
+        }
+        .typing-text {
+            font-size: 1.2rem;
+            min-height: 2rem;
+            border-right: 2px solid var(--text-main);
+            padding-right: 5px;
+            animation: blink 0.75s step-end infinite;
+        }
+        @keyframes blink { 50% { border-color: transparent; } }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .terminal {
+            border-radius: 8px;
+            padding: 2rem;
+            font-family: monospace !important; /* Force monospace for terminal only */
+            font-size: 0.9rem;
+            color: #aaa;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .terminal-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #333; }
+        .code-line { margin-bottom: 0.5rem; }
+        .code-keyword { color: #fff; }
+        
+        /* Projects Bento Grid */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 300px;
+            gap: 1.5rem;
+        }
+        .bento-item {
+            border-radius: 12px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s ease, border-color 0.4s ease;
+        }
+        .bento-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.2);
+        }
+        .bento-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+        .bento-item:nth-child(4) { grid-column: span 2; }
+        .project-tag {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            font-size: 0.7rem;
+            padding: 0.3rem 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+        }
+        .project-title { font-size: 1.5rem; margin-bottom: 0.5rem; }
+
+        /* Services */
+        .services-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .service-row {
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: padding 0.3s ease;
+        }
+        .service-row:hover {
+            padding: 2.5rem 1rem;
+            background: rgba(255,255,255,0.01);
+        }
+        .service-name { font-size: 2rem; }
+        
+        /* Stack Marquee */
+        .marquee-container {
+            overflow: hidden;
+            padding: 4rem 0;
+            display: flex;
+            background: rgba(255,255,255,0.01);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .marquee-content {
+            display: flex;
+            gap: 4rem;
+            animation: scroll 20s linear infinite;
+            white-space: nowrap;
+        }
+        .marquee-item { font-size: 2rem; color: var(--text-muted); text-transform: uppercase; }
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            border-left: 1px solid var(--border-color);
+            padding-left: 3rem;
+            margin-left: 1rem;
+        }
+        .timeline-item {
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -3.35rem;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--text-main);
+        }
+        .year { color: var(--text-muted); margin-bottom: 0.5rem; font-size: 0.9rem; }
+        
+        /* Team, Labs, Blog (Grid layouts) */
+        .standard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .card {
+            padding: 2rem;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+        .card:hover { background: rgba(255,255,255,0.02); }
+
+        /* Contact Section & WhatsApp CTA */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+        .form-group { margin-bottom: 2rem; }
+        input, textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 1rem 0;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus { border-color: var(--text-main); }
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--text-main);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 30px;
+            font-family: inherit;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: transform 0.3s;
+        }
+        .btn:hover { transform: scale(1.05); }
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--text-main);
+        }
+        
+        /* Footer */
+        footer {
+            padding: 6rem 5% 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        .footer-huge {
+            font-size: 12vw;
+            line-height: 1;
+            color: rgba(255,255,255,0.02);
+            font-weight: bold;
+            pointer-events: none;
+        }
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .bento-grid { grid-template-columns: repeat(2, 1fr); }
+            .bento-item:nth-child(1) { grid-column: span 2; }
+            .bento-item:nth-child(4) { grid-column: span 2; }
+            .about-grid, .contact-wrapper { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .bento-grid { grid-template-columns: 1fr; }
+            .bento-item:nth-child(1), .bento-item:nth-child(4) { grid-column: span 1; }
+            .hero-title { font-size: 15vw; }
+            .hero-subtitle { font-size: 3vw; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-glow"></div>
+
+    <!-- WebGL Background -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="glass">
+        <div class="logo">NEXICWEB</div>
+        <div class="nav-links">
+            <a href="#hero">Home</a>
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#services">Services</a>
+            <a href="#team">Team</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <h1 class="hero-title">TAHMID</h1>
+            <h2 class="hero-subtitle">CEO OF NEXICWEB</h2>
+            <div class="typing-text" id="typewriter"></div>
+        </div>
+    </section>
+
+    <!-- About / Story -->
+    <section id="about">
+        <div class="container about-grid">
+            <div class="about-content fade-up">
+                <h3 class="section-title">The Architect</h3>
+                <p style="margin-bottom: 2rem; color: var(--text-muted); line-height: 1.8;">
+                    Crafting ultra-premium digital experiences. We strip away the unnecessary, leaving only absolute minimalist luxury and elite performance. NexicWeb represents the intersection of high-end aesthetics and rigorous engineering.
+                </p>
+                <a href="#projects" class="btn btn-outline">Explore Labs</a>
+            </div>
+            <div class="glass terminal fade-up">
+                <div class="terminal-header">
+                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                </div>
+                <div class="code-line"><span class="code-keyword">const</span> <span style="color:#fff;">developer</span> = {</div>
+                <div class="code-line">&nbsp;&nbsp;name: <span style="color:#aaa;">"Tahmid"</span>,</div>
+                <div class="code-line">&nbsp;&nbsp;role: <span style="color:#aaa;">"CEO & Elite Dev"</span>,</div>
+                <div class="code-line">&nbsp;&nbsp;agency: <span style="color:#aaa;">"NexicWeb"</span>,</div>
+                <div class="code-line">&nbsp;&nbsp;focus: [<span style="color:#aaa;">"Minimalism"</span>, <span style="color:#aaa;">"Luxury UI"</span>, <span style="color:#aaa;">"Performance"</span>]</div>
+                <div class="code-line">};</div>
+                <div class="code-line"><br>><span class="typing-text" style="font-size:0.9rem; border-right-width: 1px;"> system.init(developer);</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects (Bento Grid) -->
+    <section id="projects">
+        <div class="container">
+            <h3 class="section-title">Selected Works</h3>
+            <div class="bento-grid">
+                <div class="glass bento-item fade-up">
+                    <div class="project-tag">E-Commerce</div>
+                    <h4 class="project-title">Aura Luxury</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Cinematic digital storefront.</p>
+                </div>
+                <div class="glass bento-item fade-up">
+                    <div class="project-tag">SaaS</div>
+                    <h4 class="project-title">Nexic Platform</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Minimalist management.</p>
+                </div>
+                <div class="glass bento-item fade-up">
+                    <div class="project-tag">Web3</div>
+                    <h4 class="project-title">Ether Vault</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Dark mode interface.</p>
+                </div>
+                <div class="glass bento-item fade-up">
+                    <div class="project-tag">Automotive</div>
+                    <h4 class="project-title">M-Series Concept</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">3D WebGL showroom.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services">
+        <div class="container">
+            <h3 class="section-title">Expertise</h3>
+            <div class="services-list">
+                <div class="service-row fade-up">
+                    <span class="service-name">Creative Development</span>
+                    <span style="color: var(--text-muted)">01</span>
+                </div>
+                <div class="service-row fade-up">
+                    <span class="service-name">SaaS Architecture</span>
+                    <span style="color: var(--text-muted)">02</span>
+                </div>
+                <div class="service-row fade-up">
+                    <span class="service-name">WebGL & 3D Interaction</span>
+                    <span style="color: var(--text-muted)">03</span>
+                </div>
+                <div class="service-row fade-up">
+                    <span class="service-name">Luxury UI/UX</span>
+                    <span style="color: var(--text-muted)">04</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Marquee -->
+    <div class="marquee-container">
+        <div class="marquee-content">
+            <!-- Repeated for infinite effect -->
+            <span class="marquee-item">JavaScript</span>
+            <span class="marquee-item">Three.js</span>
+            <span class="marquee-item">GSAP</span>
+            <span class="marquee-item">React</span>
+            <span class="marquee-item">Node.js</span>
+            <span class="marquee-item">Python</span>
+            <span class="marquee-item">WebGL</span>
+            <span class="marquee-item">AWS</span>
+            <span class="marquee-item">JavaScript</span>
+            <span class="marquee-item">Three.js</span>
+            <span class="marquee-item">GSAP</span>
+            <span class="marquee-item">React</span>
+        </div>
+    </div>
+
+    <!-- Experience & Timeline -->
+    <section id="experience">
+        <div class="container about-grid">
+            <div>
+                <h3 class="section-title">Timeline</h3>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item fade-up">
+                    <div class="year">Present</div>
+                    <h4>CEO & Lead Architect</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">NexicWeb Agency</p>
+                </div>
+                <div class="timeline-item fade-up">
+                    <div class="year">2024</div>
+                    <h4>Senior Creative Developer</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Freelance Elite Portfolio</p>
+                </div>
+                <div class="timeline-item fade-up">
+                    <div class="year">2022</div>
+                    <h4>Full Stack Engineer</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Tech Innovations Ltd.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team & Labs (Combined visual block) -->
+    <section id="team">
+        <div class="container">
+            <h3 class="section-title">NexicWeb Members</h3>
+            <div class="standard-grid">
+                <div class="glass card fade-up">
+                    <h4>Tahmid</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">CEO / Founder</p>
+                </div>
+                <div class="glass card fade-up">
+                    <h4>AI Systems</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">Automated Integration</p>
+                </div>
+                <div class="glass card fade-up">
+                    <h4>Creative Team</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">Global Roster</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h3 class="section-title">Initiate Protocol</h3>
+            <div class="contact-wrapper">
+                <div class="contact-info fade-up">
+                    <h4 style="font-size: 2rem; margin-bottom: 2rem;">Ready to build a billion-dollar digital experience?</h4>
+                    <p style="color: var(--text-muted); margin-bottom: 3rem;">We specialize in ultra-minimalist luxury web platforms. Connect directly for Elite Tier project inquiries.</p>
+                    
+                    <!-- WhatsApp Integration as requested for Nexic Elite -->
+                    <a href="https://wa.me/8801234567890?text=I%20am%20interested%20in%20the%20NexicWeb%20Elite%20Membership" target="_blank" class="btn" style="background: #fff; color: #000; margin-bottom: 1rem; display: block; text-align: center;">
+                        Apply For Elite Membership (WhatsApp)
+                    </a>
+                </div>
+                <div class="glass card fade-up" style="padding: 3rem;">
+                    <form onsubmit="event.preventDefault();">
+                        <div class="form-group">
+                            <input type="text" placeholder="Name // Alias" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Secure Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="4" placeholder="Project Coordinates" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-outline" style="width: 100%;">Transmit Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-huge">NEXICWEB</div>
+        <div class="container footer-bottom">
+            <div>&copy; 2026 TAHMID. ALL RIGHTS RESERVED.</div>
+            <div style="display: flex; gap: 2rem;">
+                <a href="#">TWITTER</a>
+                <a href="#">GITHUB</a>
+                <a href="#">LINKEDIN</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // --- 1. Cursor & Hover Physics ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorGlow = document.querySelector('.cursor-glow');
+
+        window.addEventListener('mousemove', (e) => {
+            // Smooth glow follow
+            gsap.to(cursorGlow, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.8,
+                ease: "power2.out"
+            });
+            // Instant dot follow
+            gsap.to(cursorDot, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.1
+            });
+        });
+
+        // Hover effects on links/buttons
+        const interactables = document.querySelectorAll('a, button, .bento-item, .service-row');
+        interactables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                gsap.to(cursorGlow, { width: 400, height: 400, background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0) 70%)', duration: 0.3 });
+                gsap.to(cursorDot, { scale: 0, duration: 0.2 });
+            });
+            el.addEventListener('mouseleave', () => {
+                gsap.to(cursorGlow, { width: 300, height: 300, background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 70%)', duration: 0.3 });
+                gsap.to(cursorDot, { scale: 1, duration: 0.2 });
+            });
+        });
+
+        // --- 2. Lenis Smooth Scroll ---
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Sync ScrollTrigger with Lenis
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000) });
+        gsap.ticker.lagSmoothing(0, 0);
+
+        // --- 3. Three.js Minimalist Particle Background ---
+        const canvas = document.querySelector('#webgl-canvas');
+        const scene = new THREE.Scene();
+        // Fog for depth in minimalist setting
+        scene.fog = new THREE.FogExp2(0x030303, 0.001);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Performance optimization
+
+        // Ultra-minimalist particles (white/grey to match luxury theme)
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 700;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 10;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const material = new THREE.PointsMaterial({
+            size: 0.015,
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.3,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, material);
+        scene.add(particlesMesh);
+        camera.position.z = 3;
+
+        // Mouse interaction with particles
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - windowHalfX);
+            mouseY = (event.clientY - windowHalfY);
+        });
+
+        const clock = new THREE.Clock();
+
+        function animateThree() {
+            requestAnimationFrame(animateThree);
+            const elapsedTime = clock.getElapsedTime();
+
+            targetX = mouseX * 0.001;
+            targetY = mouseY * 0.001;
+
+            particlesMesh.rotation.y += 0.0005;
+            particlesMesh.rotation.x += 0.0002;
+
+            // Subtle parallax based on mouse
+            particlesMesh.rotation.y += 0.05 * (targetX - particlesMesh.rotation.y);
+            particlesMesh.rotation.x += 0.05 * (targetY - particlesMesh.rotation.x);
+
+            renderer.render(scene, camera);
+        }
+        animateThree();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // --- 4. GSAP Animations & ScrollTrigger ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero Typography Split & Animate
+        const heroTitle = new SplitType('.hero-title', { types: 'chars' });
+        gsap.from(heroTitle.chars, {
+            y: 100,
+            opacity: 0,
+            rotationX: -90,
+            stagger: 0.05,
+            duration: 1.5,
+            ease: "power4.out",
+            delay: 0.2
+        });
+
+        gsap.from('.hero-subtitle', {
+            y: 30,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out",
+            delay: 1
+        });
+
+        // Sticky Navbar effect
+        ScrollTrigger.create({
+            start: 'top -80',
+            end: 99999,
+            toggleClass: {className: 'scrolled', targets: 'nav'}
+        });
+
+        // Fade Up Elements
+        const fadeElements = document.querySelectorAll('.fade-up, .section-title');
+        fadeElements.forEach((el) => {
+            gsap.to(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 85%",
+                },
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                ease: "power3.out"
+            });
+        });
+
+        // --- 5. Typewriter Effect ---
+        const phrases = ["Full Stack Developer", "Creative Coder", "UI Engineer", "Backend Architect"];
+        let phraseIndex = 0;
+        let letterIndex = 0;
+        let currentPhrase = [];
+        let isDeleting = false;
+        const typewriterEl = document.getElementById('typewriter');
+
+        function loop() {
+            typewriterEl.innerHTML = currentPhrase.join('');
+
+            if (letterIndex < phrases[phraseIndex].length && !isDeleting) {
+                currentPhrase.push(phrases[phraseIndex][letterIndex]);
+                letterIndex++;
+                setTimeout(loop, 100);
+            } else if (isDeleting && letterIndex > 0) {
+                currentPhrase.pop();
+                letterIndex--;
+                setTimeout(loop, 50);
+            } else if (letterIndex === phrases[phraseIndex].length) {
+                isDeleting = true;
+                setTimeout(loop, 2000); // Pause at end of word
+            } else if (isDeleting && letterIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                setTimeout(loop, 500);
+            }
+        }
+        setTimeout(loop, 2000); // Start delay
+    </script>
+</body>
+</html>

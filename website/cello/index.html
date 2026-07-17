@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cello - Premium eCommerce</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="marquee-content">
+            <span>Free Shipping Worldwide When Order Above $500</span>
+            <span>Free Shipping Worldwide When Order Above $500</span>
+            <span>Free Shipping Worldwide When Order Above $500</span>
+            <span>Free Shipping Worldwide When Order Above $500</span>
+        </div>
+    </div>
+
+    <header class="main-nav">
+        <div class="container">
+            <a href="#" class="logo">Cello<span>.</span></a>
+            
+            <div class="search-container">
+                <select>
+                    <option>All Categories</option>
+                    <option>Smartphones</option>
+                    <option>Laptops</option>
+                    <option>Audio</option>
+                </select>
+                <input type="text" placeholder="Search for products, brands...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="user-actions">
+                <div class="action-item"><span>EN</span> <i class="fas fa-chevron-down" style="font-size:0.7rem;"></i></div>
+                <div class="action-item"><span>INR ₹</span> <i class="fas fa-chevron-down" style="font-size:0.7rem;"></i></div>
+                <div class="action-item"><i class="far fa-user"></i> <span>Account</span></div>
+                <div class="action-item"><i class="far fa-heart"></i></div>
+                <div class="action-item cart-wrapper">
+                    <div class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge" id="cart-count">0</span>
+                    </div>
+                    <span>$0.00</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="sub-nav">
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="#" class="shop-all"><i class="fas fa-bars"></i> Shop All</a></li>
+                <li><a href="#">Electronics</a></li>
+                <li><a href="#" style="color: var(--danger);">Offer</a></li>
+                <li><a href="#">Blogs</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Theme Features</a></li>
+            </ul>
+            <ul class="nav-extras">
+                <li><a href="#">All Collections</a></li>
+                <li><a href="#">FAQs</a></li>
+                <li><a href="#">About Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-slide active">
+            <div class="hero-content">
+                <p>New Arrival 2024</p>
+                <h1>Stay Ahead With Latest Gadgets</h1>
+                <p>Experience crystal clear sound with our premium noise-canceling headphones. Limited stock available.</p>
+                <div class="btn-group">
+                    <button class="btn btn-solid">Buy Now</button>
+                    <button class="btn btn-outline">See More</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80" alt="Headphones">
+            </div>
+        </div>
+        <div class="hero-slide">
+            <div class="hero-content">
+                <p>Trending Now</p>
+                <h1>Smart Watches For Smart People</h1>
+                <p>Track your health, receive notifications, and look stylish doing it.</p>
+                <div class="btn-group">
+                    <button class="btn btn-solid">Buy Now</button>
+                    <button class="btn btn-outline">See More</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=600&q=80" alt="Smart Watch">
+            </div>
+        </div>
+        
+        <div class="slider-controls">
+            <div class="dot active" onclick="setSlide(0)"></div>
+            <div class="dot" onclick="setSlide(1)"></div>
+        </div>
+    </section>
+
+    <section class="collections">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Shop by Category</h2>
+                <a href="#" class="view-all">View all collections <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="collection-grid">
+                <div class="collection-card"><i class="fas fa-mobile-alt"></i><h3>Smartphones</h3><p>124 items</p></div>
+                <div class="collection-card"><i class="fas fa-laptop"></i><h3>Laptops</h3><p>86 items</p></div>
+                <div class="collection-card"><i class="fas fa-headphones"></i><h3>Audio</h3><p>210 items</p></div>
+                <div class="collection-card"><i class="fas fa-camera"></i><h3>Cameras</h3><p>45 items</p></div>
+                <div class="collection-card"><i class="fas fa-tv"></i><h3>Televisions</h3><p>32 items</p></div>
+                <div class="collection-card"><i class="fas fa-gamepad"></i><h3>Gaming</h3><p>150 items</p></div>
+                <div class="collection-card"><i class="far fa-clock"></i><h3>Wearables</h3><p>95 items</p></div>
+                <div class="collection-card"><i class="fas fa-print"></i><h3>Printers</h3><p>28 items</p></div>
+                <div class="collection-card"><i class="fas fa-plug"></i><h3>Accessories</h3><p>400 items</p></div>
+                <div class="collection-card"><i class="fas fa-network-wired"></i><h3>Networking</h3><p>60 items</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="products container">
+        <div class="section-header">
+            <h2 class="section-title">Featured Products</h2>
+            <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="product-grid" id="product-container">
+            </div>
+    </section>
+
+    <section class="deal-section">
+        <div class="container">
+            <div class="deal-header">
+                <h2 class="section-title">Deal Of The Day</h2>
+                <div class="timer">
+                    <div class="time-box"><span id="days">00</span><small>Days</small></div>
+                    <div class="time-box"><span id="hours">00</span><small>Hours</small></div>
+                    <div class="time-box"><span id="mins">00</span><small>Mins</small></div>
+                    <div class="time-box"><span id="secs">00</span><small>Secs</small></div>
+                </div>
+            </div>
+            
+            <div class="deal-grid" id="deal-container">
+                </div>
+        </div>
+    </section>
+
+    <section class="banners container">
+        <div class="banner-grid">
+            <div class="banner-card">
+                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=500&q=80" class="banner-bg" alt="Phones">
+                <div class="banner-overlay"></div>
+                <div class="banner-content">
+                    <h4>Latest Smartphones</h4>
+                    <a href="#">Shop Now</a>
+                </div>
+            </div>
+            <div class="banner-card">
+                <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=500&q=80" class="banner-bg" alt="Earbuds">
+                <div class="banner-overlay"></div>
+                <div class="banner-content">
+                    <h4>True Wireless Earbuds</h4>
+                    <a href="#">Shop Now</a>
+                </div>
+            </div>
+            <div class="banner-card">
+                <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=500&q=80" class="banner-bg" alt="Tablets">
+                <div class="banner-overlay"></div>
+                <div class="banner-content">
+                    <h4>Powerful Tablets</h4>
+                    <a href="#">Shop Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="luxury-arrivals container">
+        <div class="section-header">
+            <h2 class="section-title">Premium Footwear Exclusives</h2>
+            <a href="#" class="view-all">Explore Drops <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="product-grid" id="luxury-container">
+            </div>
+    </section>
+
+    <section class="premium-features-section">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-glass-card">
+                    <i class="fas fa-gem"></i>
+                    <h3>Premium Quality</h3>
+                    <p>Curated selection of high-end, authentic products.</p>
+                </div>
+                <div class="feature-glass-card">
+                    <i class="fas fa-shipping-fast"></i>
+                    <h3>Express Delivery</h3>
+                    <p>Complimentary worldwide priority shipping.</p>
+                </div>
+                <div class="feature-glass-card">
+                    <i class="fas fa-undo"></i>
+                    <h3>Free Returns</h3>
+                    <p>30-day seamless return policy on all luxury goods.</p>
+                </div>
+                <div class="feature-glass-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>24/7 Concierge</h3>
+                    <p>Dedicated support for our premium members.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-col brand-col">
+                    <a href="#" class="logo footer-logo">Cello<span>.</span></a>
+                    <p>Elevating your lifestyle with ultra-modern design, premium products, and exceptional customer service.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Store Locator</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Customer Care</h3>
+                    <ul>
+                        <li><a href="#">Track Order</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Returns & Exchanges</a></li>
+                        <li><a href="#">FAQs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col newsletter-col">
+                    <h3>Join Our Newsletter</h3>
+                    <p>Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
+                    <form class="newsletter-form" onsubmit="event.preventDefault();">
+                        <input type="email" placeholder="Enter your email" required>
+                        <button type="submit"><i class="fas fa-envelope"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Cello Premium eCommerce. All Rights Reserved.</p>
+                <div class="payment-icons">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                    <i class="fab fa-cc-apple-pay"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="product-detail-modal" class="product-modal-overlay hidden">
+        <div class="product-modal-container">
+            <button class="close-modal-btn" onclick="closeProductView()"><i class="fas fa-times"></i></button>
+            <div class="product-modal-content">
+                <div class="modal-image-gallery">
+                    <div class="main-image-container">
+                        <img id="modal-main-img" src="" alt="Product">
+                    </div>
+                </div>
+                <div class="modal-product-info">
+                    <span class="modal-brand">Cello Premium</span>
+                    <h1 id="modal-title">Product Title</h1>
+                    <div class="modal-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        <span>(128 Reviews)</span>
+                    </div>
+                    <div class="modal-price" id="modal-price">$0.00</div>
+                    <p class="modal-description">Experience the pinnacle of modern design and utility. Crafted with premium materials, this item ensures durability while maintaining a clean, minimal aesthetic.</p>
+                    
+                    <div class="modal-variants">
+                        <h3>Select Size / Specification</h3>
+                        <div class="variant-options">
+                            <button class="variant-btn active">Standard</button>
+                            <button class="variant-btn">Pro</button>
+                            <button class="variant-btn">Max</button>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <div class="qty-selector">
+                            <button onclick="updateQty(-1)">-</button>
+                            <input type="text" id="modal-qty" value="1" readonly>
+                            <button onclick="updateQty(1)">+</button>
+                        </div>
+                        <button class="btn-solid modal-add-cart" onclick="addModalToCart()">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        <button class="modal-wishlist"><i class="far fa-heart"></i></button>
+                    </div>
+                    
+                    <div class="modal-meta">
+                        <p><strong>Availability:</strong> <span style="color: #2e7d32;">In Stock</span></p>
+                        <p><strong>SKU:</strong> CELLO-2026</p>
+                        <p><strong>Category:</strong> Premium Selection</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="style.js"></script>
+</body>
+</html>

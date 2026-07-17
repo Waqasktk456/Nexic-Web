@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura | Premium Editorial Publication</title>
+    
+    <!-- Fonts: Clash Display (Headings) & Inter (Body) -->
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons: Lucide (Premium minimal icons) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & THEME
+           ========================================================================== */
+        :root {
+            /* Colors */
+            --bg-main: #FFFFFF;
+            --bg-sec: #FAFAFA;
+            --bg-alt: #F5F7FA;
+            --bg-glass: rgba(255, 255, 255, 0.85);
+            
+            --text-main: #0F172A;
+            --text-muted: #334155;
+            --text-light: #64748B;
+            
+            --accent: #2563EB;
+            --accent-hover: #1D4ED8;
+            --accent-light: #EFF6FF;
+            
+            --border: #E2E8F0;
+            --border-light: #F1F5F9;
+            
+            /* Typography */
+            --font-head: 'Clash Display', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            
+            /* Shadows (Soft & Elegant) */
+            --shadow-sm: 0 4px 6px -1px rgba(15, 23, 42, 0.03), 0 2px 4px -1px rgba(15, 23, 42, 0.02);
+            --shadow-md: 0 10px 15px -3px rgba(15, 23, 42, 0.04), 0 4px 6px -2px rgba(15, 23, 42, 0.02);
+            --shadow-lg: 0 20px 25px -5px rgba(15, 23, 42, 0.05), 0 10px 10px -5px rgba(15, 23, 42, 0.02);
+            --shadow-float: 0 30px 60px -12px rgba(15, 23, 42, 0.08);
+            
+            /* Layout & Spacing */
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-full: 9999px;
+            
+            --section-pad: clamp(4rem, 8vw, 8rem);
+            --container-max: 1280px;
+            --container-reading: 720px;
+            
+            /* Animations */
+            --transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            --transition-fast: all 0.3s ease;
+        }
+
+        /* Dark Mode Variables (Toggled via JS) */
+        [data-theme="dark"] {
+            --bg-main: #0B0F19;
+            --bg-sec: #111827;
+            --bg-alt: #1F2937;
+            --bg-glass: rgba(11, 15, 25, 0.85);
+            --text-main: #F8FAFC;
+            --text-muted: #CBD5E1;
+            --text-light: #94A3B8;
+            --border: #334155;
+            --border-light: #1E293B;
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            --shadow-float: 0 30px 60px -12px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ==========================================================================
+           2. RESET & BASE STYLES
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        ::selection {
+            background: var(--text-main);
+            color: var(--bg-main);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-head);
+            font-weight: 600;
+            line-height: 1.1;
+            color: var(--text-main);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            letter-spacing: -0.02em;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 1.75rem;
+            border-radius: var(--radius-full);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--text-main);
+            color: var(--bg-main);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            background-color: var(--accent);
+            color: #fff;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-main);
+            background-color: var(--bg-sec);
+        }
+
+        /* ==========================================================================
+           3. CUSTOM CURSOR & PROGRESS BAR
+           ========================================================================== */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--text-main);
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        .progress-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            height: 3px;
+            background: transparent;
+            z-index: 10000;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--text-main);
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        /* ==========================================================================
+           4. NAVBAR (Sticky & Glassmorphism)
+           ========================================================================== */
+        nav {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            padding: 1.25rem 0;
+            z-index: 1000;
+            transition: var(--transition);
+            border-bottom: 1px solid transparent;
+        }
+
+        nav.scrolled {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            position: relative;
+            transition: var(--transition-fast);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: var(--text-main);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-main);
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+        }
+
+        /* ==========================================================================
+           5. HERO SECTION
+           ========================================================================== */
+        .hero {
+            padding: calc(var(--section-pad) + 5rem) 0 var(--section-pad);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Abstract Background Shapes */
+        .hero-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.5;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+
+        .shape-1 {
+            width: 400px; height: 400px;
+            background: var(--border);
+            top: -10%; right: -5%;
+        }
+
+        .shape-2 {
+            width: 300px; height: 300px;
+            background: var(--bg-alt);
+            bottom: 10%; left: -5%;
+            animation-delay: 2s;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: clamp(3.5rem, 6vw, 5.5rem);
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-desc {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            max-width: 480px;
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .featured-card {
+            background: var(--bg-main);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            box-shadow: var(--shadow-float);
+            border: 1px solid var(--border-light);
+            position: relative;
+            z-index: 2;
+            transition: var(--transition);
+        }
+
+        .featured-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .featured-card img {
+            width: 100%;
+            height: 380px;
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 0.75rem;
+        }
+
+        .featured-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .author-mini {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .author-mini img {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            margin: 0;
+        }
+
+        /* Floating elements in hero */
+        .floating-element {
+            position: absolute;
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 3;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .float-1 { bottom: -20px; left: -40px; }
+        .float-2 { top: 40px; right: -30px; animation-delay: 1.5s; }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-20px); }
+        }
+
+        /* ==========================================================================
+           6. FEATURED ARTICLES GRID
+           ========================================================================== */
+        .section {
+            padding: var(--section-pad) 0;
+        }
+
+        .bg-gray {
+            background-color: var(--bg-sec);
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .article-card {
+            background: var(--bg-main);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .article-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-8px);
+        }
+
+        .card-img-wrap {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 16/10;
+        }
+
+        .card-img-wrap img {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .article-card:hover .card-img-wrap img {
+            transform: scale(1.05);
+        }
+
+        .category-tag {
+            position: absolute;
+            top: 1rem; left: 1rem;
+            background: var(--bg-glass);
+            backdrop-filter: blur(8px);
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-main);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .card-content {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin: 0.5rem 0 1rem;
+            line-height: 1.3;
+        }
+
+        .card-excerpt {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .bookmark-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        
+        .bookmark-btn:hover, .bookmark-btn.active {
+            color: var(--accent);
+        }
+
+        /* ==========================================================================
+           7. TRENDING STORIES (HORIZONTAL SLIDER)
+           ========================================================================== */
+        .slider-container {
+            position: relative;
+            margin-top: 3rem;
+        }
+
+        .trending-slider {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 2rem;
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .trending-slider::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        .trending-card {
+            min-width: 400px;
+            scroll-snap-align: start;
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            aspect-ratio: 4/3;
+        }
+
+        .trending-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%);
+            z-index: 1;
+        }
+
+        .trending-card img {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s ease;
+        }
+
+        .trending-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .trending-content {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%;
+            padding: 2rem;
+            z-index: 2;
+            color: #fff;
+        }
+
+        .trending-content .card-meta {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .trending-content h3 {
+            color: #fff;
+            font-size: 1.75rem;
+            margin-top: 0.5rem;
+        }
+
+        /* ==========================================================================
+           8. CATEGORY SHOWCASE
+           ========================================================================== */
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .category-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem;
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            border-color: var(--text-main);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+        }
+
+        .cat-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .cat-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-sec);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            transition: var(--transition);
+        }
+
+        .category-card:hover .cat-icon {
+            background: var(--text-main);
+            color: var(--bg-main);
+        }
+
+        .cat-count {
+            color: var(--text-light);
+            font-size: 0.875rem;
+            background: var(--bg-alt);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+        }
+
+        /* ==========================================================================
+           9. PROFESSIONAL ARTICLE LAYOUT (READING VIEW)
+           ========================================================================== */
+        .article-reading {
+            background: var(--bg-main);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .article-container {
+            max-width: var(--container-reading);
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .article-header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin: 1.5rem 0;
+            line-height: 1.1;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .article-cover {
+            width: 100%;
+            height: 60vh;
+            border-radius: var(--radius-lg);
+            margin-bottom: 4rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .article-body {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .article-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-body h2 {
+            font-size: 2rem;
+            margin: 3rem 0 1.5rem;
+            color: var(--text-main);
+        }
+
+        /* Drop cap */
+        .article-body > p:first-of-type::first-letter {
+            float: left;
+            font-size: 4.5rem;
+            line-height: 1;
+            font-family: var(--font-head);
+            font-weight: 700;
+            margin: 0.1em 0.1em 0 0;
+            color: var(--text-main);
+        }
+
+        blockquote {
+            font-size: 1.5rem;
+            font-family: var(--font-head);
+            font-style: italic;
+            border-left: 4px solid var(--text-main);
+            padding-left: 2rem;
+            margin: 3rem 0;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        .code-block {
+            background: #111827;
+            color: #F8FAFC;
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            font-family: monospace;
+            font-size: 0.95rem;
+            overflow-x: auto;
+            margin: 2rem 0;
+            box-shadow: inset 0 0 0 1px #334155;
+        }
+
+        /* ==========================================================================
+           10. AUTHOR SHOWCASE
+           ========================================================================== */
+        .author-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .author-card:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: var(--border);
+            transform: translateY(-5px);
+        }
+
+        .author-card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            border: 4px solid var(--bg-sec);
+        }
+
+        .author-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .author-role {
+            color: var(--accent);
+            font-weight: 500;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        /* ==========================================================================
+           11. NEWSLETTER SECTION
+           ========================================================================== */
+        .newsletter-wrap {
+            background: linear-gradient(135deg, var(--bg-sec) 0%, var(--accent-light) 100%);
+            border-radius: var(--radius-lg);
+            padding: 5rem 2rem;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            border: 1px solid #fff;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .newsletter-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .newsletter-wrap h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 2.5rem;
+            background: var(--bg-main);
+            padding: 0.5rem;
+            border-radius: var(--radius-full);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .newsletter-form input {
+            flex-grow: 1;
+            border: none;
+            background: transparent;
+            padding: 1rem 1.5rem;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            color: var(--text-main);
+        }
+
+        /* ==========================================================================
+           12. FOOTER
+           ========================================================================== */
+        footer {
+            background: var(--bg-main);
+            padding: 6rem 0 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            margin: 1.5rem 0;
+            max-width: 300px;
+        }
+
+        .footer-links h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links ul li a {
+            color: var(--text-muted);
+            transition: var(--transition-fast);
+        }
+
+        .footer-links ul li a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-light);
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        /* ==========================================================================
+           13. RESPONSIVE DESIGN
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 3rem; }
+            .hero-content { margin: 0 auto; }
+            .hero-desc { margin: 0 auto 2.5rem; }
+            .floating-element { display: none; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; } /* Mobile menu simplified for demo */
+            .mobile-menu-btn { display: flex; }
+            .grid-3 { grid-template-columns: 1fr; }
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr; }
+            .trending-card { min-width: 80vw; }
+            .newsletter-form { flex-direction: column; background: transparent; box-shadow: none; padding: 0; }
+            .newsletter-form input { background: var(--bg-main); border-radius: var(--radius-full); margin-bottom: 1rem; }
+            .article-meta { flex-direction: column; gap: 0.5rem; }
+        }
+
+        /* ==========================================================================
+           14. UTILITIES & ANIMATIONS
+           ========================================================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Reading Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- 1. PREMIUM NAVBAR -->
+    <nav id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <i data-lucide="aperture" stroke-width="2.5"></i>
+                Aura.
+            </a>
+            <div class="nav-links">
+                <a href="#" class="active">Home</a>
+                <a href="#featured">Articles</a>
+                <a href="#categories">Categories</a>
+                <a href="#article-showcase">Reading View</a>
+                <a href="#authors">Authors</a>
+            </div>
+            <div class="nav-actions">
+                <button class="icon-btn" aria-label="Search"><i data-lucide="search"></i></button>
+                <button class="icon-btn" id="theme-toggle" aria-label="Toggle Theme"><i data-lucide="moon"></i></button>
+                <button class="btn btn-primary" style="padding: 0.6rem 1.25rem;">Subscribe</button>
+                <button class="icon-btn mobile-menu-btn"><i data-lucide="menu"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. LUXURY HERO SECTION -->
+    <header class="hero">
+        <div class="hero-shape shape-1"></div>
+        <div class="hero-shape shape-2"></div>
+        <div class="container hero-grid">
+            <div class="hero-content reveal">
+                <span class="hero-badge">Digital Magazine</span>
+                <h1 class="hero-title">Thoughtful Stories For The Modern Creative World.</h1>
+                <p class="hero-desc">Explore premium insights on design, technology, and startup culture. Curated for visionaries and builders.</p>
+                <div style="display: flex; gap: 1rem; justify-content: flex-start; flex-wrap: wrap;">
+                    <a href="#featured" class="btn btn-primary">Start Reading <i data-lucide="arrow-right" size="18"></i></a>
+                    <a href="#categories" class="btn btn-outline">Browse Topics</a>
+                </div>
+            </div>
+            <div class="hero-visual reveal" style="transition-delay: 0.2s;">
+                <div class="floating-element float-1">
+                    <i data-lucide="trending-up" color="var(--accent)"></i>
+                    <div>
+                        <div style="font-weight: 600; font-size: 0.9rem;">Trending Now</div>
+                        <div style="font-size: 0.8rem; color: var(--text-light);">24k Readers</div>
+                    </div>
+                </div>
+                <div class="floating-element float-2">
+                    <i data-lucide="award" color="#F59E0B"></i>
+                    <span style="font-weight: 600; font-size: 0.9rem;">Editor's Pick</span>
+                </div>
+                <div class="featured-card">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="Minimal Architecture">
+                    <div class="card-meta">
+                        <span style="color: var(--accent); font-weight: 600;">Design</span>
+                        <span>•</span>
+                        <span>5 min read</span>
+                    </div>
+                    <h3>The Principles of Invisible UI Design</h3>
+                    <div class="author-mini" style="margin-top: 1rem;">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Author">
+                        <div>
+                            <div style="font-size: 0.85rem; font-weight: 600;">Elena Rostova</div>
+                            <div style="font-size: 0.75rem; color: var(--text-light);">Oct 12, 2023</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 3. FEATURED ARTICLES SECTION -->
+    <section id="featured" class="section bg-gray">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title">Latest Perspectives</h2>
+                <a href="#" class="btn btn-outline">View All Articles</a>
+            </div>
+            <div class="grid-3">
+                <!-- Article 1 -->
+                <article class="article-card reveal">
+                    <div class="card-img-wrap">
+                        <span class="category-tag">Technology</span>
+                        <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?auto=format&fit=crop&w=600&q=80" alt="Workspace">
+                    </div>
+                    <div class="card-content">
+                        <div class="card-meta">Oct 24, 2023 • 8 min read</div>
+                        <h3 class="card-title">Building a Resilient Startup in the AI Era</h3>
+                        <p class="card-excerpt">How founders are adapting their strategies to leverage artificial intelligence while maintaining human-centric products.</p>
+                        <div class="card-footer">
+                            <div class="author-mini">
+                                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" alt="Author">
+                                <span style="font-weight: 500; font-size: 0.9rem;">David Chen</span>
+                            </div>
+                            <button class="bookmark-btn"><i data-lucide="bookmark"></i></button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 2 -->
+                <article class="article-card reveal" style="transition-delay: 0.1s;">
+                    <div class="card-img-wrap">
+                        <span class="category-tag">Creativity</span>
+                        <img src="https://images.unsplash.com/photo-1557672172-298e090bd0f1?auto=format&fit=crop&w=600&q=80" alt="Abstract Art">
+                    </div>
+                    <div class="card-content">
+                        <div class="card-meta">Oct 20, 2023 • 6 min read</div>
+                        <h3 class="card-title">The Psychology of Color in Digital Branding</h3>
+                        <p class="card-excerpt">An deep dive into how modern brands utilize subtle color theory to build trust and drive user engagement.</p>
+                        <div class="card-footer">
+                            <div class="author-mini">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="Author">
+                                <span style="font-weight: 500; font-size: 0.9rem;">Sarah Miller</span>
+                            </div>
+                            <button class="bookmark-btn"><i data-lucide="bookmark"></i></button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 3 -->
+                <article class="article-card reveal" style="transition-delay: 0.2s;">
+                    <div class="card-img-wrap">
+                        <span class="category-tag">Productivity</span>
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80" alt="Minimal Setup">
+                    </div>
+                    <div class="card-content">
+                        <div class="card-meta">Oct 18, 2023 • 4 min read</div>
+                        <h3 class="card-title">Mastering Deep Work in a Distracted World</h3>
+                        <p class="card-excerpt">Practical frameworks for reclaiming your focus and achieving flow state during your most critical tasks.</p>
+                        <div class="card-footer">
+                            <div class="author-mini">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Author">
+                                <span style="font-weight: 500; font-size: 0.9rem;">Elena Rostova</span>
+                            </div>
+                            <button class="bookmark-btn"><i data-lucide="bookmark"></i></button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. TRENDING STORIES (HORIZONTAL SLIDER) -->
+    <section id="trending" class="section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title">Trending Now</h2>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="icon-btn" style="border: 1px solid var(--border); border-radius: 50%; padding: 0.5rem;"><i data-lucide="chevron-left"></i></button>
+                    <button class="icon-btn" style="border: 1px solid var(--border); border-radius: 50%; padding: 0.5rem;"><i data-lucide="chevron-right"></i></button>
+                </div>
+            </div>
+            <div class="slider-container reveal">
+                <div class="trending-slider">
+                    <div class="trending-card">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" alt="Tech">
+                        <div class="trending-content">
+                            <span class="category-tag" style="position: static; display: inline-block; margin-bottom: 1rem;">Future</span>
+                            <div class="card-meta">32k Views • 10 min read</div>
+                            <h3>Web3 and the Evolution of Digital Ownership</h3>
+                        </div>
+                    </div>
+                    <div class="trending-card">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Team">
+                        <div class="trending-content">
+                            <span class="category-tag" style="position: static; display: inline-block; margin-bottom: 1rem;">Startups</span>
+                            <div class="card-meta">28k Views • 7 min read</div>
+                            <h3>Scaling Culture: From 10 to 100 Employees</h3>
+                        </div>
+                    </div>
+                    <div class="trending-card">
+                        <img src="https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&w=800&q=80" alt="Design">
+                        <div class="trending-content">
+                            <span class="category-tag" style="position: static; display: inline-block; margin-bottom: 1rem;">Design</span>
+                            <div class="card-meta">21k Views • 5 min read</div>
+                            <h3>Typography Trends Defining 2024</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. CATEGORY SHOWCASE -->
+    <section id="categories" class="section bg-gray">
+        <div class="container">
+            <h2 class="section-title reveal" style="margin-bottom: 3rem; text-align: center;">Explore Topics</h2>
+            <div class="grid-4 reveal">
+                <div class="category-card">
+                    <div class="cat-info">
+                        <div class="cat-icon"><i data-lucide="pen-tool"></i></div>
+                        <h3 style="font-size: 1.1rem;">Design</h3>
+                    </div>
+                    <span class="cat-count">42</span>
+                </div>
+                <div class="category-card">
+                    <div class="cat-info">
+                        <div class="cat-icon"><i data-lucide="cpu"></i></div>
+                        <h3 style="font-size: 1.1rem;">Technology</h3>
+                    </div>
+                    <span class="cat-count">86</span>
+                </div>
+                <div class="category-card">
+                    <div class="cat-info">
+                        <div class="cat-icon"><i data-lucide="rocket"></i></div>
+                        <h3 style="font-size: 1.1rem;">Startups</h3>
+                    </div>
+                    <span class="cat-count">34</span>
+                </div>
+                <div class="category-card">
+                    <div class="cat-info">
+                        <div class="cat-icon"><i data-lucide="target"></i></div>
+                        <h3 style="font-size: 1.1rem;">Productivity</h3>
+                    </div>
+                    <span class="cat-count">51</span>
+                </div>
+                <div class="category-card">
+                    <div class="cat-info">
+                        <div class="cat-icon"><i data-lucide="bot"></i></div>
+                        <h3 style="font-size: 1.1rem;">AI</h3>
+                    </div>
+                    <span class="cat-count">128</span>
+                </div>
+                <div class="category-card">
+                    <div class="cat-info">
+                        <div class="cat-icon"><i data-lucide="coffee"></i></div>
+                        <h3 style="font-size: 1.1rem;">Lifestyle</h3>
+                    </div>
+                    <span class="cat-count">29</span>
+                </div>
+                <div class="category-card">
+                    <div class="cat-info">
+                        <div class="cat-icon"><i data-lucide="briefcase"></i></div>
+                        <h3 style="font-size: 1.1rem;">Business</h3>
+                    </div>
+                    <span class="cat-count">67</span>
+                </div>
+                <div class="category-card">
+                    <div class="cat-info">
+                        <div class="cat-icon"><i data-lucide="lightbulb"></i></div>
+                        <h3 style="font-size: 1.1rem;">Creativity</h3>
+                    </div>
+                    <span class="cat-count">45</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. PROFESSIONAL ARTICLE PAGE (Visual Representation) -->
+    <section id="article-showcase" class="article-reading">
+        <div class="article-container reveal">
+            <div class="article-header">
+                <span class="hero-badge">Deep Dive</span>
+                <h1>The Future of Spatial Computing</h1>
+                <div class="article-meta">
+                    <div class="author-mini">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" alt="Author">
+                        <span style="font-weight: 500; color: var(--text-main);">David Chen</span>
+                    </div>
+                    <span>Oct 28, 2023</span>
+                    <span>12 min read</span>
+                    <div style="display: flex; gap: 0.5rem; margin-left: 1rem;">
+                        <button class="icon-btn"><i data-lucide="twitter" size="18"></i></button>
+                        <button class="icon-btn"><i data-lucide="linkedin" size="18"></i></button>
+                        <button class="icon-btn"><i data-lucide="link" size="18"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <img src="https://images.unsplash.com/photo-1622979135240-caa6648190b6?auto=format&fit=crop&w=1200&q=80" alt="VR Headset" class="article-cover">
+
+            <div class="article-body">
+                <p>Spatial computing is no longer a concept confined to science fiction. As hardware matures and software ecosystems expand, we are standing on the precipice of a fundamental shift in how we interact with digital information. It is the transition from screens to environments.</p>
+                
+                <p>The core premise is seamless integration. Instead of forcing human attention into a bounded rectangular frame, spatial computing projects digital affordances into the physical spaces where human life naturally occurs. This requires a leap not just in optics and processing power, but in UX paradigms.</p>
+
+                <h2>Designing for Depth</h2>
+                <p>When the Z-axis becomes available, interface design changes completely. UI elements must respect occlusion, lighting, and physical boundaries. Traditional wireframing falls short.</p>
+
+                <blockquote>
+                    "The best interface is no interface. In spatial computing, the environment itself becomes the canvas, and your physical intuition is the primary input device."
+                </blockquote>
+
+                <p>Consider the logic of handling an object in 3D space. It requires physics simulation, affordance cues (like shadows and highlights), and haptic feedback. Here is a basic example of how developers define a spatial entity:</p>
+
+                <div class="code-block">
+const spatialEntity = new RealityKit.Entity({
+    mesh: Geometry.Sphere(radius: 0.5),
+    material: new PBRMaterial({
+        roughness: 0.2,
+        metallic: 0.8,
+        color: '#FFFFFF'
+    }),
+    components: [PhysicsBody, Interactable]
+});
+scene.add(spatialEntity);
+                </div>
+
+                <p>As we build these new worlds, the emphasis must remain on human-centric design. Technology should adapt to our physiology, not the other way around. The brands that win the next decade will be those that master invisible, ambient, and deeply contextual experiences.</p>
+            </div>
+            
+            <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; gap: 1rem;">
+                    <span class="category-tag" style="position: static;">AR/VR</span>
+                    <span class="category-tag" style="position: static;">UX Design</span>
+                </div>
+                <button class="btn btn-outline"><i data-lucide="heart"></i> 4.2k Likes</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. AUTHOR SHOWCASE -->
+    <section id="authors" class="section">
+        <div class="container">
+            <h2 class="section-title reveal" style="text-align: center; margin-bottom: 4rem;">Meet Our Editors</h2>
+            <div class="grid-3 reveal">
+                <div class="author-card">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Author">
+                    <h3>Elena Rostova</h3>
+                    <span class="author-role">Head of Design</span>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Exploring the intersection of minimalism, typography, and digital product creation.</p>
+                    <a href="#" style="font-weight: 500; font-size: 0.9rem; text-decoration: underline;">View Articles</a>
+                </div>
+                <div class="author-card">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80" alt="Author">
+                    <h3>David Chen</h3>
+                    <span class="author-role">Technology Editor</span>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Covering spatial computing, artificial intelligence, and the future of software architecture.</p>
+                    <a href="#" style="font-weight: 500; font-size: 0.9rem; text-decoration: underline;">View Articles</a>
+                </div>
+                <div class="author-card">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="Author">
+                    <h3>Sarah Miller</h3>
+                    <span class="author-role">Strategy Lead</span>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Analyzing startup growth, brand positioning, and the modern creator economy.</p>
+                    <a href="#" style="font-weight: 500; font-size: 0.9rem; text-decoration: underline;">View Articles</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. NEWSLETTER SECTION -->
+    <section id="newsletter" class="section">
+        <div class="container reveal">
+            <div class="newsletter-wrap">
+                <div class="hero-shape shape-1" style="width: 200px; height: 200px; background: #fff; opacity: 0.2; top: -50px; right: -50px;"></div>
+                <div class="newsletter-content">
+                    <h2>Get the finest stories, weekly.</h2>
+                    <p style="color: var(--text-muted); font-size: 1.1rem;">Join 50,000+ designers, developers, and founders receiving our highly curated Sunday digest.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Enter your email address..." required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                    <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 1rem;">No spam. Unsubscribe at any time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. LARGE PROFESSIONAL FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <i data-lucide="aperture" stroke-width="2.5"></i>
+                        Aura.
+                    </a>
+                    <p>A premium digital publication dedicated to thoughtful stories covering design, technology, and modern culture.</p>
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button class="icon-btn"><i data-lucide="twitter"></i></button>
+                        <button class="icon-btn"><i data-lucide="instagram"></i></button>
+                        <button class="icon-btn"><i data-lucide="github"></i></button>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="#">Design Systems</a></li>
+                        <li><a href="#">Technology</a></li>
+                        <li><a href="#">Startups</a></li>
+                        <li><a href="#">Productivity</a></li>
+                        <li><a href="#">Artificial Intelligence</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Aura</a></li>
+                        <li><a href="#">Editorial Guidelines</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Advertise</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Accessibility</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Aura Publication. All rights reserved.</p>
+                <p>Designed with minimal precision.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Icons
+            lucide.createIcons();
+
+            // Custom Cursor Logic
+            const cursorDot = document.querySelector('.cursor-dot');
+            const cursorOutline = document.querySelector('.cursor-outline');
+            
+            // Only enable custom cursor on non-touch devices
+            if (window.matchMedia("(pointer: fine)").matches) {
+                window.addEventListener('mousemove', (e) => {
+                    const posX = e.clientX;
+                    const posY = e.clientY;
+
+                    cursorDot.style.left = `${posX}px`;
+                    cursorDot.style.top = `${posY}px`;
+                    
+                    // Add a slight delay for the outline for a smooth effect
+                    cursorOutline.animate({
+                        left: `${posX}px`,
+                        top: `${posY}px`
+                    }, { duration: 150, fill: "forwards" });
+                });
+
+                // Enlarge cursor on hoverables
+                const hoverables = document.querySelectorAll('a, button, .article-card, .category-card');
+                hoverables.forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                        cursorOutline.style.backgroundColor = 'rgba(15, 23, 42, 0.05)';
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+                        cursorOutline.style.backgroundColor = 'transparent';
+                    });
+                });
+            } else {
+                cursorDot.style.display = 'none';
+                cursorOutline.style.display = 'none';
+            }
+
+            // Navbar Scroll Effect & Reading Progress Bar
+            const navbar = document.getElementById('navbar');
+            const progressBar = document.getElementById('progressBar');
+
+            window.addEventListener('scroll', () => {
+                // Navbar glass effect
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+
+                // Progress bar calculation
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                progressBar.style.width = scrolled + "%";
+            });
+
+            // Scroll Reveal Animation via Intersection Observer
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); // Only animate once
+                    }
+                });
+            }, {
+                root: null,
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // Theme Toggle (Dark/Light mode)
+            const themeBtn = document.getElementById('theme-toggle');
+            let isDark = false;
+
+            themeBtn.addEventListener('click', () => {
+                isDark = !isDark;
+                if (isDark) {
+                    document.body.setAttribute('data-theme', 'dark');
+                    themeBtn.innerHTML = '<i data-lucide="sun"></i>';
+                } else {
+                    document.body.removeAttribute('data-theme');
+                    themeBtn.innerHTML = '<i data-lucide="moon"></i>';
+                }
+                lucide.createIcons();
+            });
+
+            // Bookmark Toggle Interaction
+            const bookmarkBtns = document.querySelectorAll('.bookmark-btn');
+            bookmarkBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault(); // Prevent navigating if inside link
+                    this.classList.toggle('active');
+                    const icon = this.querySelector('i');
+                    if(this.classList.contains('active')) {
+                        icon.setAttribute('fill', 'currentColor');
+                    } else {
+                        icon.setAttribute('fill', 'none');
+                    }
+                });
+            });
+
+            // Smooth Scroll for Nav Links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetEl = document.querySelector(targetId);
+                    if (targetEl) {
+                        e.preventDefault();
+                        targetEl.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                        
+                        // Update active state
+                        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+                        this.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

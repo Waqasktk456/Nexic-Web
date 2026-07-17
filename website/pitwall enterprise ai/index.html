@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Design-ui pages are single compositions, so the whole body is editable.
+    function markEditable() {
+        document.body.classList.add('artifact-editable');
+    }
+
+    // Credit badge with idle-fade. Hover devices only.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        credit.innerHTML = '\u{1F49C} CREATE BY NEXIC';
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+
+    function init() {
+        markEditable();
+        initChromeUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
+</script>
+<!-- /skill:chrome -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VECTRAL | Race-Grade Enterprise Intelligence</title>
+  <meta name="description" content="Vectral delivers race-grade AI infrastructure for enterprises that need millisecond decisions, continuous telemetry, and pit-wall clarity across every business operation." />
+  <meta name="theme-color" content="#080a0e" />
+  <link rel="canonical" href="https://vectral.ai" />
+  <meta property="og:title" content="VECTRAL | Race-Grade Enterprise Intelligence" />
+  <meta property="og:description" content="Enterprise AI infrastructure built for speed, precision, and compound advantage." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* =======================================================
+       CREATIVE DNA: Formula One Telemetry × Enterprise AI
+       
+       Visual Language:
+       - Pit-wall data density meets strategic clarity
+       - Carbon-fiber surface textures and precision borders
+       - Sector-timing color language (purple/green/yellow)
+       - DRS zones as feature activation metaphors
+       - Telemetry stream aesthetics for data visualization
+       - Steward-panel precision for governance features
+       - Race-engineer clarity for executive surfaces
+    ======================================================= */
+
+    :root {
+      /* Pit-wall palette: dark carbon with telemetry accents */
+      --carbon: #080a0e;
+      --carbon-1: #0d1016;
+      --carbon-2: #12161e;
+      --carbon-3: #181d28;
+      --carbon-4: #1f2635;
+      --carbon-5: #283042;
+      /* Sector colors: F1 timing language */
+      --sector-purple: #a855f7;
+      --sector-green: #22c55e;
+      --sector-yellow: #eab308;
+      --sector-red: #ef4444;
+      /* Telemetry accents */
+      --throttle: #3b82f6;
+      --brake: #ef4444;
+      --drs: #22d3ee;
+      --ers: #f97316;
+      /* Neutral telemetry */
+      --data-0: #f1f5f9;
+      --data-1: #cbd5e1;
+      --data-2: #94a3b8;
+      --data-3: #64748b;
+      --data-4: #475569;
+      /* Racing precision */
+      --timing-font: "JetBrains Mono", ui-monospace, monospace;
+      --body-font: "Inter", system-ui, sans-serif;
+      /* Structure */
+      --border: rgba(255, 255, 255, 0.06);
+      --border-active: rgba(168, 85, 247, 0.4);
+      --glow-purple: rgba(168, 85, 247, 0.15);
+      --glow-green: rgba(34, 197, 94, 0.12);
+      --radius: 2px;
+      --radius-md: 6px;
+      --radius-lg: 12px;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* =======================================================
+       BASE
+    ======================================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--body-font);
+      background: var(--carbon);
+      color: var(--data-0);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Carbon fiber texture overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 1px,
+          rgba(255,255,255,0.008) 1px,
+          rgba(255,255,255,0.008) 2px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 1px,
+          rgba(255,255,255,0.008) 1px,
+          rgba(255,255,255,0.008) 2px
+        );
+      background-size: 4px 4px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3, p { margin: 0; }
+    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    :focus-visible { outline: 2px solid var(--sector-purple); outline-offset: 2px; }
+
+    .shell {
+      width: min(calc(100% - 2rem), 1540px);
+      margin-inline: auto;
+    }
+
+    /* =======================================================
+       TYPOGRAPHY: TELEMETRY PRECISION
+    ======================================================= */
+    .timing {
+      font-family: var(--timing-font);
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .display {
+      font-size: clamp(3.6rem, 8.5vw, 8.5rem);
+      font-weight: 900;
+      line-height: 0.88;
+      letter-spacing: -0.06em;
+    }
+
+    .headline {
+      font-size: clamp(2.2rem, 4.5vw, 4.8rem);
+      font-weight: 800;
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+    }
+
+    .subhead {
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      color: var(--data-2);
+      max-width: 58ch;
+    }
+
+    .sector-label {
+      font-family: var(--timing-font);
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--data-3);
+    }
+
+    .sector-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      font-family: var(--timing-font);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--data-2);
+    }
+
+    .sector-tag::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: var(--sector-purple);
+      box-shadow: 0 0 8px var(--sector-purple);
+    }
+
+    /* =======================================================
+       NAVIGATION: PIT-WALL COMMAND STRIP
+    ======================================================= */
+    .pitwall-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8, 10, 14, 0.88);
+      backdrop-filter: blur(16px);
+    }
+
+    .pitwall-nav__inner {
+      display: flex;
+      align-items: center;
+      height: 52px;
+      gap: 0;
+    }
+
+    .pitwall-nav__brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-right: 24px;
+      border-right: 1px solid var(--border);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      font-size: 0.95rem;
+    }
+
+    .pitwall-nav__brand-mark {
+      width: 24px;
+      height: 24px;
+      position: relative;
+    }
+
+    .pitwall-nav__brand-mark::before,
+    .pitwall-nav__brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 2px solid var(--sector-purple);
+    }
+
+    .pitwall-nav__brand-mark::before { transform: rotate(0deg); }
+    .pitwall-nav__brand-mark::after { transform: rotate(45deg); opacity: 0.5; }
+
+    .pitwall-nav__sectors {
+      display: flex;
+      align-items: stretch;
+      height: 100%;
+      margin-left: 24px;
+    }
+
+    .pitwall-nav__sector {
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      font-family: var(--timing-font);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      color: var(--data-3);
+      border-right: 1px solid var(--border);
+      position: relative;
+      transition: color 160ms var(--ease);
+    }
+
+    .pitwall-nav__sector:hover { color: var(--data-1); }
+    .pitwall-nav__sector.active { color: var(--sector-purple); }
+    .pitwall-nav__sector.active::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--sector-purple);
+      box-shadow: 0 0 8px var(--sector-purple);
+    }
+
+    .pitwall-nav__telemetry {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .pitwall-nav__metric {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .pitwall-nav__metric-label {
+      font-family: var(--timing-font);
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--data-4);
+    }
+
+    .pitwall-nav__metric-value {
+      font-family: var(--timing-font);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--sector-green);
+    }
+
+    .drs-btn {
+      padding: 8px 18px;
+      background: var(--sector-purple);
+      color: white;
+      font-family: var(--timing-font);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: box-shadow 160ms var(--ease), transform 160ms var(--ease);
+      box-shadow: 0 0 0 0 var(--glow-purple);
+    }
+
+    .drs-btn:hover {
+      box-shadow: 0 0 24px var(--sector-purple);
+      transform: translateY(-1px);
+    }
+
+    /* =======================================================
+       HERO: RACE START GRID COMPOSITION
+    ======================================================= */
+    .hero {
+      min-height: 100svh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      padding-top: 52px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero__grid-lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 120px 120px;
+      mask-image: radial-gradient(ellipse 80% 70% at center, black 20%, transparent 72%);
+    }
+
+    .hero__content {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: clamp(2rem, 6vw, 6rem);
+      align-items: center;
+      padding: clamp(4rem, 10vw, 8rem) 0;
+    }
+
+    .hero__copy {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero__pre {
+      margin-bottom: 24px;
+    }
+
+    .hero__title {
+      margin-bottom: 24px;
+    }
+
+    .hero__title .purple { color: var(--sector-purple); }
+
+    .hero__actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .btn-race {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      font-family: var(--timing-font);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: all 160ms var(--ease);
+    }
+
+    .btn-race--primary {
+      background: var(--sector-purple);
+      color: white;
+      box-shadow: 0 8px 24px rgba(168, 85, 247, 0.2);
+    }
+
+    .btn-race--primary:hover {
+      box-shadow: 0 12px 36px rgba(168, 85, 247, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .btn-race--ghost {
+      border: 1px solid var(--border);
+      color: var(--data-1);
+    }
+
+    .btn-race--ghost:hover {
+      border-color: var(--sector-purple);
+      color: var(--sector-purple);
+    }
+
+    /* Telemetry Visual */
+    .hero__telemetry {
+      position: relative;
+      min-height: 500px;
+      border: 1px solid var(--border);
+      background: var(--carbon-1);
+      overflow: hidden;
+    }
+
+    .hero__telemetry::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 28px;
+      background: var(--carbon-2);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+    }
+
+    .telem-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      background: var(--carbon-2);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--timing-font);
+      font-size: 0.68rem;
+      color: var(--data-3);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      gap: 16px;
+    }
+
+    .telem-header__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--sector-green);
+      box-shadow: 0 0 6px var(--sector-green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .telem-canvas {
+      position: absolute;
+      top: 28px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    .telem-canvas svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .telem-overlay {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .telem-kpi {
+      padding: 10px 12px;
+      background: rgba(8, 10, 14, 0.85);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+    }
+
+    .telem-kpi__label {
+      font-family: var(--timing-font);
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--data-4);
+      margin-bottom: 4px;
+    }
+
+    .telem-kpi__value {
+      font-family: var(--timing-font);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--sector-green);
+    }
+
+    .telem-kpi__value.purple { color: var(--sector-purple); }
+    .telem-kpi__value.yellow { color: var(--sector-yellow); }
+    .telem-kpi__value.blue { color: var(--throttle); }
+
+    /* Timing strip at hero bottom */
+    .hero__timing-strip {
+      border-top: 1px solid var(--border);
+      padding: 14px 0;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    .timing-cell {
+      flex: 1;
+      padding: 0 20px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .timing-cell:last-child { border-right: 0; }
+
+    .timing-cell__label {
+      font-family: var(--timing-font);
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--data-4);
+    }
+
+    .timing-cell__value {
+      font-family: var(--timing-font);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .timing-cell__value.fastest { color: var(--sector-purple); }
+    .timing-cell__value.improved { color: var(--sector-green); }
+    .timing-cell__value.slower { color: var(--sector-yellow); }
+
+    /* =======================================================
+       SECTION: TELEMETRY CHANNELS
+    ======================================================= */
+    .section {
+      padding: clamp(4rem, 8vw, 8rem) 0;
+      position: relative;
+    }
+
+    .section--bordered {
+      border-top: 1px solid var(--border);
+    }
+
+    .sector-header {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 24px;
+      align-items: start;
+      margin-bottom: clamp(2rem, 4vw, 4rem);
+    }
+
+    .sector-number {
+      font-family: var(--timing-font);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--sector-purple);
+      padding: 6px 10px;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      background: var(--glow-purple);
+    }
+
+    /* =======================================================
+       CHANNEL GRID: F1 PIT-WALL DATA PANELS
+    ======================================================= */
+    .channel-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .channel {
+      background: var(--carbon-1);
+      padding: 28px 24px;
+      position: relative;
+      transition: background 200ms var(--ease);
+    }
+
+    .channel:hover { background: var(--carbon-2); }
+
+    .channel__status {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sector-green);
+      box-shadow: 0 0 6px var(--sector-green);
+    }
+
+    .channel__id {
+      font-family: var(--timing-font);
+      font-size: 0.62rem;
+      color: var(--data-4);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .channel__title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .channel__desc {
+      font-size: 0.88rem;
+      color: var(--data-2);
+      line-height: 1.55;
+    }
+
+    .channel__metric {
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .channel__metric-label {
+      font-family: var(--timing-font);
+      font-size: 0.65rem;
+      color: var(--data-4);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .channel__metric-value {
+      font-family: var(--timing-font);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--sector-green);
+    }
+
+    /* =======================================================
+       RACE STRATEGY: ARCHITECTURE SECTION
+    ======================================================= */
+    .strategy-layout {
+      display: grid;
+      grid-template-columns: 0.4fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      min-height: 520px;
+    }
+
+    .strategy-sidebar {
+      background: var(--carbon-1);
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+    }
+
+    .strategy-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      font-family: var(--timing-font);
+      font-size: 0.78rem;
+      color: var(--data-3);
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all 160ms var(--ease);
+    }
+
+    .strategy-item:hover { color: var(--data-1); background: var(--carbon-2); }
+    .strategy-item.active {
+      color: var(--sector-purple);
+      border-left-color: var(--sector-purple);
+      background: var(--glow-purple);
+    }
+
+    .strategy-item__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 2px solid currentColor;
+    }
+
+    .strategy-main {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .strategy-main__layers {
+      display: grid;
+      gap: 8px;
+    }
+
+    .arch-layer {
+      padding: 14px 20px;
+      border: 1px solid var(--border);
+      background: var(--carbon-2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: border-color 160ms var(--ease);
+    }
+
+    .arch-layer:hover { border-color: var(--sector-purple); }
+
+    .arch-layer__name {
+      font-family: var(--timing-font);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .arch-layer__latency {
+      font-family: var(--timing-font);
+      font-size: 0.72rem;
+      color: var(--sector-green);
+    }
+
+    /* =======================================================
+       PIT STOP TIMELINE
+    ======================================================= */
+    .pit-timeline {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .pit-stop {
+      background: var(--carbon-1);
+      padding: 28px 20px;
+      position: relative;
+    }
+
+    .pit-stop::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--sector-purple), transparent);
+      opacity: 0;
+      transition: opacity 200ms var(--ease);
+    }
+
+    .pit-stop:hover::before { opacity: 1; }
+
+    .pit-stop__number {
+      font-family: var(--timing-font);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--carbon-4);
+      margin-bottom: 12px;
+    }
+
+    .pit-stop__title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .pit-stop__desc {
+      font-size: 0.82rem;
+      color: var(--data-3);
+      line-height: 1.5;
+    }
+
+    .pit-stop__time {
+      margin-top: 14px;
+      font-family: var(--timing-font);
+      font-size: 0.72rem;
+      color: var(--sector-purple);
+    }
+
+    /* =======================================================
+       TELEMETRY DASHBOARD PREVIEW
+    ======================================================= */
+    .dashboard-frame {
+      border: 1px solid var(--border);
+      background: var(--carbon-1);
+      overflow: hidden;
+    }
+
+    .dashboard-frame__top {
+      display: flex;
+      align-items: center;
+      height: 32px;
+      padding: 0 12px;
+      background: var(--carbon-2);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--timing-font);
+      font-size: 0.65rem;
+      color: var(--data-4);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      gap: 12px;
+    }
+
+    .dashboard-frame__body {
+      display: grid;
+      grid-template-columns: 200px 1fr 260px;
+      min-height: 420px;
+    }
+
+    .dash-sidebar {
+      border-right: 1px solid var(--border);
+      padding: 12px 0;
+    }
+
+    .dash-nav-item {
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      color: var(--data-3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dash-nav-item.active { color: var(--sector-purple); background: var(--glow-purple); }
+
+    .dash-main {
+      padding: 20px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 16px;
+    }
+
+    .dash-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .dash-stat {
+      padding: 12px;
+      border: 1px solid var(--border);
+      background: var(--carbon-2);
+    }
+
+    .dash-stat__label {
+      font-family: var(--timing-font);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--data-4);
+    }
+
+    .dash-stat__value {
+      font-family: var(--timing-font);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .dash-chart {
+      border: 1px solid var(--border);
+      background: var(--carbon-2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dash-chart svg { width: 100%; height: 100%; }
+
+    .dash-right {
+      border-left: 1px solid var(--border);
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .dash-event {
+      padding: 10px;
+      border: 1px solid var(--border);
+      background: var(--carbon-2);
+      font-size: 0.78rem;
+    }
+
+    .dash-event__time {
+      font-family: var(--timing-font);
+      font-size: 0.65rem;
+      color: var(--data-4);
+    }
+
+    /* =======================================================
+       SECTOR COMPARISON: ENTERPRISE DIFFERENTIATOR
+    ======================================================= */
+    .comparison-strip {
+      display: grid;
+      grid-template-columns: 1.2fr repeat(3, 0.8fr);
+      border: 1px solid var(--border);
+    }
+
+    .comparison-strip__header {
+      background: var(--carbon-2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .comparison-strip__row {
+      display: contents;
+    }
+
+    .comparison-strip__cell {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .comparison-strip__cell:last-child { border-right: 0; }
+
+    .comparison-strip__cell.head {
+      background: var(--carbon-2);
+      font-family: var(--timing-font);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--data-3);
+    }
+
+    .comparison-strip__cell.vectral {
+      color: var(--sector-purple);
+      font-weight: 600;
+    }
+
+    .dot-yes {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--sector-green);
+      box-shadow: 0 0 6px var(--sector-green);
+    }
+
+    .dot-no {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--data-4);
+      opacity: 0.3;
+    }
+
+    /* =======================================================
+       PERFORMANCE TELEMETRY
+    ======================================================= */
+    .perf-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .perf-cell {
+      background: var(--carbon-1);
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .perf-cell__value {
+      font-family: var(--timing-font);
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--sector-purple);
+    }
+
+    .perf-cell__label {
+      font-family: var(--timing-font);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--data-3);
+      margin-top: 8px;
+    }
+
+    .perf-cell__delta {
+      font-family: var(--timing-font);
+      font-size: 0.72rem;
+      color: var(--sector-green);
+      margin-top: 4px;
+    }
+
+    /* =======================================================
+       PRICING: RACE STRATEGY TIERS
+    ======================================================= */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .price-tier {
+      background: var(--carbon-1);
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .price-tier.featured {
+      background: var(--carbon-2);
+      border-top: 3px solid var(--sector-purple);
+    }
+
+    .price-tier__badge {
+      font-family: var(--timing-font);
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--sector-purple);
+      margin-bottom: 8px;
+    }
+
+    .price-tier__name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .price-tier__desc {
+      font-size: 0.82rem;
+      color: var(--data-3);
+      margin-bottom: 20px;
+    }
+
+    .price-tier__amount {
+      font-family: var(--timing-font);
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 4px;
+    }
+
+    .price-tier__period {
+      font-size: 0.78rem;
+      color: var(--data-3);
+      margin-bottom: 24px;
+    }
+
+    .price-tier__features {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      margin-bottom: 28px;
+      flex: 1;
+    }
+
+    .price-tier__features li {
+      font-size: 0.85rem;
+      color: var(--data-2);
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .price-tier__features li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 6px;
+      height: 6px;
+      background: var(--sector-green);
+    }
+
+    /* =======================================================
+       FOOTER: STEWARD PANEL
+    ======================================================= */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0 24px;
+    }
+
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.2fr repeat(3, 0.8fr);
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+
+    .footer__brand {
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    .footer__tagline {
+      font-size: 0.88rem;
+      color: var(--data-3);
+      max-width: 32ch;
+    }
+
+    .footer__col-title {
+      font-family: var(--timing-font);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--data-4);
+      margin-bottom: 12px;
+    }
+
+    .footer__links {
+      display: grid;
+      gap: 8px;
+    }
+
+    .footer__links a {
+      font-size: 0.85rem;
+      color: var(--data-2);
+      transition: color 140ms var(--ease);
+    }
+
+    .footer__links a:hover { color: var(--data-0); }
+
+    .footer__bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--data-4);
+    }
+
+    .footer__status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--timing-font);
+      font-size: 0.72rem;
+    }
+
+    .footer__status::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--sector-green);
+      box-shadow: 0 0 6px var(--sector-green);
+    }
+
+    /* =======================================================
+       REVEAL
+    ======================================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* =======================================================
+       RESPONSIVE
+    ======================================================= */
+    @media (max-width: 1100px) {
+      .hero__content { grid-template-columns: 1fr; }
+      .hero__telemetry { min-height: 360px; }
+      .channel-grid { grid-template-columns: repeat(2, 1fr); }
+      .strategy-layout { grid-template-columns: 1fr; }
+      .strategy-sidebar { display: none; }
+      .dashboard-frame__body { grid-template-columns: 1fr; }
+      .dash-sidebar, .dash-right { display: none; }
+      .comparison-strip { grid-template-columns: 1fr; }
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .pitwall-nav__sectors, .pitwall-nav__telemetry { display: none; }
+      .channel-grid, .pit-timeline, .perf-grid, .pricing-grid { grid-template-columns: 1fr; }
+      .telem-overlay { grid-template-columns: repeat(2, 1fr); }
+      .dash-stats { grid-template-columns: repeat(2, 1fr); }
+      .hero__timing-strip { display: none; }
+      .footer__grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation: Pit-Wall Command Strip -->
+  <nav class="pitwall-nav" aria-label="Primary navigation">
+    <div class="shell pitwall-nav__inner">
+      <a class="pitwall-nav__brand" href="#">
+        <div class="pitwall-nav__brand-mark" aria-hidden="true"></div>
+        <span>VECTRAL</span>
+      </a>
+
+      <div class="pitwall-nav__sectors">
+        <a class="pitwall-nav__sector active" href="#telemetry">TELEMETRY</a>
+        <a class="pitwall-nav__sector" href="#architecture">ARCHITECTURE</a>
+        <a class="pitwall-nav__sector" href="#performance">PERFORMANCE</a>
+        <a class="pitwall-nav__sector" href="#strategy">STRATEGY</a>
+        <a class="pitwall-nav__sector" href="#pricing">PRICING</a>
+      </div>
+
+      <div class="pitwall-nav__telemetry">
+        <div class="pitwall-nav__metric">
+          <span class="pitwall-nav__metric-label">UPTIME</span>
+          <span class="pitwall-nav__metric-value">99.997%</span>
+        </div>
+        <div class="pitwall-nav__metric">
+          <span class="pitwall-nav__metric-label">P99</span>
+          <span class="pitwall-nav__metric-value">42ms</span>
+        </div>
+        <a class="drs-btn" href="#deploy">DEPLOY NOW</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- HERO: Race Start Grid -->
+    <section class="hero">
+      <div class="hero__grid-lines" aria-hidden="true"></div>
+      <div class="shell hero__content">
+        <div class="hero__copy reveal">
+          <div class="hero__pre">
+            <span class="sector-tag">Race-grade AI infrastructure</span>
+          </div>
+          <h1 class="display hero__title">Enterprise intelligence at <span class="purple">qualifying pace</span>.</h1>
+          <p class="subhead">Vectral delivers millisecond decision-making, continuous business telemetry, and pit-wall operational clarity. Your competitors are still reading dashboards. Your system already moved.</p>
+          <div class="hero__actions">
+            <a class="btn-race btn-race--primary" href="#deploy">Enter the grid</a>
+            <a class="btn-race btn-race--ghost" href="#telemetry">View telemetry</a>
+          </div>
+        </div>
+
+        <div class="hero__telemetry reveal" aria-label="Live system telemetry preview">
+          <div class="telem-header">
+            <span class="telem-header__dot"></span>
+            <span>LIVE TELEMETRY</span>
+            <span style="margin-left: auto;">SESSION: 2032.07.11 | LAP 847</span>
+          </div>
+          <div class="telem-canvas">
+            <svg viewBox="0 0 800 400" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="throttleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="rgba(168, 85, 247, 0.4)" />
+                  <stop offset="100%" stop-color="rgba(168, 85, 247, 0)" />
+                </linearGradient>
+              </defs>
+              <!-- Grid -->
+              <g stroke="rgba(255,255,255,0.04)" stroke-width="1">
+                <line x1="0" y1="100" x2="800" y2="100" />
+                <line x1="0" y1="200" x2="800" y2="200" />
+                <line x1="0" y1="300" x2="800" y2="300" />
+                <line x1="200" y1="0" x2="200" y2="400" />
+                <line x1="400" y1="0" x2="400" y2="400" />
+                <line x1="600" y1="0" x2="600" y2="400" />
+              </g>
+              <!-- Telemetry trace -->
+              <path d="M0 280 C50 280, 80 120, 120 100 C160 80, 200 90, 240 140 C280 190, 320 60, 380 50 C440 40, 460 180, 520 200 C580 220, 620 80, 680 60 C740 40, 760 100, 800 120" fill="url(#throttleGrad)" stroke="none" opacity="0.6" />
+              <path d="M0 280 C50 280, 80 120, 120 100 C160 80, 200 90, 240 140 C280 190, 320 60, 380 50 C440 40, 460 180, 520 200 C580 220, 620 80, 680 60 C740 40, 760 100, 800 120" fill="none" stroke="#a855f7" stroke-width="2" />
+              <!-- Secondary trace -->
+              <path d="M0 320 C60 300, 100 240, 160 260 C220 280, 280 180, 340 160 C400 140, 440 220, 520 240 C600 260, 640 140, 720 120 C760 110, 780 160, 800 180" fill="none" stroke="#22c55e" stroke-width="1.5" opacity="0.7" />
+            </svg>
+          </div>
+          <div class="telem-overlay">
+            <div class="telem-kpi"><div class="telem-kpi__label">DECISIONS/SEC</div><div class="telem-kpi__value">12,847</div></div>
+            <div class="telem-kpi"><div class="telem-kpi__label">CONFIDENCE</div><div class="telem-kpi__value purple">97.3%</div></div>
+            <div class="telem-kpi"><div class="telem-kpi__label">LATENCY P95</div><div class="telem-kpi__value yellow">38ms</div></div>
+            <div class="telem-kpi"><div class="telem-kpi__label">ACTIVE LANES</div><div class="telem-kpi__value blue">64</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="shell hero__timing-strip">
+        <div class="timing-cell"><span class="timing-cell__label">SECTOR 1</span><span class="timing-cell__value fastest">-0.142s</span></div>
+        <div class="timing-cell"><span class="timing-cell__label">SECTOR 2</span><span class="timing-cell__value improved">-0.087s</span></div>
+        <div class="timing-cell"><span class="timing-cell__label">SECTOR 3</span><span class="timing-cell__value improved">-0.203s</span></div>
+        <div class="timing-cell"><span class="timing-cell__label">OVERALL</span><span class="timing-cell__value fastest">-0.432s vs industry</span></div>
+        <div class="timing-cell"><span class="timing-cell__label">DRS</span><span class="timing-cell__value fastest">ENABLED</span></div>
+      </div>
+    </section>
+
+    <!-- TELEMETRY CHANNELS -->
+    <section id="telemetry" class="section section--bordered">
+      <div class="shell">
+        <div class="sector-header reveal">
+          <div class="sector-number">S1</div>
+          <div>
+            <h2 class="headline">Six telemetry channels. One unified race intelligence.</h2>
+            <p class="subhead" style="margin-top: 12px;">Every operational signal feeds into a single reasoning engine that scores, routes, and verifies enterprise decisions before the competition finishes their standup.</p>
+          </div>
+        </div>
+
+        <div class="channel-grid reveal">
+          <article class="channel"><span class="channel__status"></span><div class="channel__id">CH-01 SIGNAL INTAKE</div><h3 class="channel__title">Event Correlation</h3><p class="channel__desc">Streams from CRM, infrastructure, payments, and support unified into one causal graph.</p><div class="channel__metric"><span class="channel__metric-label">THROUGHPUT</span><span class="channel__metric-value">9.3B/day</span></div></article>
+          <article class="channel"><span class="channel__status"></span><div class="channel__id">CH-02 REASONING</div><h3 class="channel__title">Decision Assembly</h3><p class="channel__desc">Retrieval, memory, policy evaluation, and simulation composed before any action fires.</p><div class="channel__metric"><span class="channel__metric-label">MEDIAN</span><span class="channel__metric-value">42ms</span></div></article>
+          <article class="channel"><span class="channel__status"></span><div class="channel__id">CH-03 EXECUTION</div><h3 class="channel__title">Guided Automation</h3><p class="channel__desc">Workflows run within confidence bands, approval chains, and reversible action envelopes.</p><div class="channel__metric"><span class="channel__metric-label">AUTO-RATE</span><span class="channel__metric-value">78.4%</span></div></article>
+          <article class="channel"><span class="channel__status"></span><div class="channel__id">CH-04 GOVERNANCE</div><h3 class="channel__title">Trust Fabric</h3><p class="channel__desc">Every model output, routing decision, and escalation stays inspectable and audit-safe.</p><div class="channel__metric"><span class="channel__metric-label">CONTINUITY</span><span class="channel__metric-value">99.99%</span></div></article>
+          <article class="channel"><span class="channel__status"></span><div class="channel__id">CH-05 LEARNING</div><h3 class="channel__title">Outcome Loops</h3><p class="channel__desc">Business results retrain routing thresholds, confidence bands, and escalation logic.</p><div class="channel__metric"><span class="channel__metric-label">LIFT/QTR</span><span class="channel__metric-value">+23%</span></div></article>
+          <article class="channel"><span class="channel__status"></span><div class="channel__id">CH-06 COMMAND</div><h3 class="channel__title">Operator Surface</h3><p class="channel__desc">Executives see ranked decisions, not alert noise. Operators act from clarity, not panic.</p><div class="channel__metric"><span class="channel__metric-label">ADOPTION</span><span class="channel__metric-value">94%</span></div></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE: RACE STRATEGY -->
+    <section id="architecture" class="section section--bordered">
+      <div class="shell">
+        <div class="sector-header reveal">
+          <div class="sector-number">S2</div>
+          <div>
+            <h2 class="headline">Race strategy is just architecture with higher stakes.</h2>
+            <p class="subhead" style="margin-top: 12px;">The platform stack is layered for independent evolution. Swap models, upgrade policies, redesign surfaces, without touching the core intelligence fabric.</p>
+          </div>
+        </div>
+
+        <div class="strategy-layout reveal">
+          <div class="strategy-sidebar">
+            <div class="strategy-item active"><span class="strategy-item__dot"></span>Experience</div>
+            <div class="strategy-item"><span class="strategy-item__dot"></span>Reasoning</div>
+            <div class="strategy-item"><span class="strategy-item__dot"></span>Execution</div>
+            <div class="strategy-item"><span class="strategy-item__dot"></span>Trust</div>
+            <div class="strategy-item"><span class="strategy-item__dot"></span>Foundation</div>
+          </div>
+          <div class="strategy-main">
+            <div class="strategy-main__layers">
+              <div class="arch-layer"><span class="arch-layer__name">Experience Layer</span><span class="arch-layer__latency">12ms render</span></div>
+              <div class="arch-layer"><span class="arch-layer__name">Reasoning Layer</span><span class="arch-layer__latency">42ms eval</span></div>
+              <div class="arch-layer"><span class="arch-layer__name">Execution Layer</span><span class="arch-layer__latency">8ms route</span></div>
+              <div class="arch-layer"><span class="arch-layer__name">Trust Layer</span><span class="arch-layer__latency">3ms check</span></div>
+              <div class="arch-layer"><span class="arch-layer__name">Foundation Layer</span><span class="arch-layer__latency">1ms read</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PIT STOP WORKFLOW -->
+    <section class="section section--bordered">
+      <div class="shell">
+        <div class="sector-header reveal">
+          <div class="sector-number">S3</div>
+          <div>
+            <h2 class="headline">A pit stop that takes 1.8 seconds was designed with zero wasted motion.</h2>
+            <p class="subhead" style="margin-top: 12px;">Vectral compresses enterprise operations into a directional sequence. Each phase completes before the next begins. No handoff confusion. No process bloat.</p>
+          </div>
+        </div>
+
+        <div class="pit-timeline reveal">
+          <article class="pit-stop"><div class="pit-stop__number">01</div><h3 class="pit-stop__title">Signal Lock</h3><p class="pit-stop__desc">Capture events from apps, infra, and operators.</p><div class="pit-stop__time">~4ms intake</div></article>
+          <article class="pit-stop"><div class="pit-stop__number">02</div><h3 class="pit-stop__title">Confidence Eval</h3><p class="pit-stop__desc">Score urgency, risk, business weight, reversibility.</p><div class="pit-stop__time">~42ms reason</div></article>
+          <article class="pit-stop"><div class="pit-stop__number">03</div><h3 class="pit-stop__title">Action Route</h3><p class="pit-stop__desc">Send to human approval or run in autonomy band.</p><div class="pit-stop__time">~8ms route</div></article>
+          <article class="pit-stop"><div class="pit-stop__number">04</div><h3 class="pit-stop__title">Policy Gate</h3><p class="pit-stop__desc">Verify against compliance, permissions, and rollback safety.</p><div class="pit-stop__time">~3ms verify</div></article>
+          <article class="pit-stop"><div class="pit-stop__number">05</div><h3 class="pit-stop__title">Outcome Feed</h3><p class="pit-stop__desc">Results improve future routing, thresholds, and scoring.</p><div class="pit-stop__time">continuous</div></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD PREVIEW -->
+    <section id="strategy" class="section section--bordered">
+      <div class="shell">
+        <div class="sector-header reveal">
+          <div class="sector-number">S4</div>
+          <div>
+            <h2 class="headline">The pit wall shows what matters. Nothing else.</h2>
+            <p class="subhead" style="margin-top: 12px;">Race engineers don't look at 400 metrics. They look at 6. Vectral gives executives the same surgical focus over enterprise operations.</p>
+          </div>
+        </div>
+
+        <div class="dashboard-frame reveal">
+          <div class="dashboard-frame__top">
+            <span class="telem-header__dot"></span>
+            <span>COMMAND SURFACE</span>
+            <span style="margin-left: auto;">SESSION ACTIVE | 32 LIVE LANES</span>
+          </div>
+          <div class="dashboard-frame__body">
+            <div class="dash-sidebar">
+              <div class="dash-nav-item active">◇ Overview</div>
+              <div class="dash-nav-item">◇ Decisions</div>
+              <div class="dash-nav-item">◇ Workflows</div>
+              <div class="dash-nav-item">◇ Models</div>
+              <div class="dash-nav-item">◇ Governance</div>
+              <div class="dash-nav-item">◇ Operators</div>
+            </div>
+            <div class="dash-main">
+              <div class="dash-stats">
+                <div class="dash-stat"><div class="dash-stat__label">DECISIONS TODAY</div><div class="dash-stat__value" style="color: var(--sector-purple);">1,284</div></div>
+                <div class="dash-stat"><div class="dash-stat__label">AUTO-RESOLVED</div><div class="dash-stat__value" style="color: var(--sector-green);">491</div></div>
+                <div class="dash-stat"><div class="dash-stat__label">ESCALATED</div><div class="dash-stat__value" style="color: var(--sector-yellow);">62</div></div>
+                <div class="dash-stat"><div class="dash-stat__label">CONFIDENCE AVG</div><div class="dash-stat__value" style="color: var(--throttle);">94.2%</div></div>
+              </div>
+              <div class="dash-chart">
+                <svg viewBox="0 0 600 200" preserveAspectRatio="none">
+                  <path d="M0 160 C40 140, 80 100, 120 110 C160 120, 200 60, 260 50 C320 40, 360 80, 420 70 C480 60, 520 30, 580 20 L600 20 L600 200 L0 200 Z" fill="rgba(168, 85, 247, 0.15)" />
+                  <path d="M0 160 C40 140, 80 100, 120 110 C160 120, 200 60, 260 50 C320 40, 360 80, 420 70 C480 60, 520 30, 580 20" fill="none" stroke="#a855f7" stroke-width="2" />
+                </svg>
+              </div>
+            </div>
+            <div class="dash-right">
+              <div class="dash-event"><div class="dash-event__time">14:32:08</div><strong>Revenue risk detected</strong> — Account #4891 churn signal elevated</div>
+              <div class="dash-event"><div class="dash-event__time">14:31:44</div><strong>Auto-resolved</strong> — Payment retry successful for batch #2847</div>
+              <div class="dash-event"><div class="dash-event__time">14:31:12</div><strong>Model rotated</strong> — Switched reasoning to lower-latency variant</div>
+              <div class="dash-event"><div class="dash-event__time">14:30:56</div><strong>Policy gate passed</strong> — Automation #672 verified compliant</div>
+              <div class="dash-event"><div class="dash-event__time">14:30:21</div><strong>Escalation routed</strong> — Security anomaly forwarded to SOC team</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PERFORMANCE METRICS -->
+    <section id="performance" class="section section--bordered">
+      <div class="shell">
+        <div class="sector-header reveal">
+          <div class="sector-number">S5</div>
+          <div>
+            <h2 class="headline">Lap records are set by compound marginal gains.</h2>
+            <p class="subhead" style="margin-top: 12px;">Every millisecond, every decision, every feedback loop compounds into operational advantage your competitors cannot replicate by buying more software.</p>
+          </div>
+        </div>
+
+        <div class="perf-grid reveal">
+          <article class="perf-cell"><div class="perf-cell__value">42ms</div><div class="perf-cell__label">REASONING P95</div><div class="perf-cell__delta">-61% vs Q1</div></article>
+          <article class="perf-cell"><div class="perf-cell__value">9.3B</div><div class="perf-cell__label">DAILY EVENTS</div><div class="perf-cell__delta">+340% capacity</div></article>
+          <article class="perf-cell"><div class="perf-cell__value">5.8x</div><div class="perf-cell__label">CYCLE SPEED</div><div class="perf-cell__delta">vs manual process</div></article>
+          <article class="perf-cell"><div class="perf-cell__value">99.99%</div><div class="perf-cell__label">AUDIT CONTINUITY</div><div class="perf-cell__delta">zero gaps</div></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing" class="section section--bordered">
+      <div class="shell">
+        <div class="sector-header reveal">
+          <div class="sector-number">S6</div>
+          <div>
+            <h2 class="headline">Strategy is allocated by what you're trying to win.</h2>
+            <p class="subhead" style="margin-top: 12px;">Pricing is based on operational depth, not vanity seat counts.</p>
+          </div>
+        </div>
+
+        <div class="pricing-grid reveal">
+          <article class="price-tier">
+            <div class="price-tier__badge">QUALIFYING</div>
+            <h3 class="price-tier__name">Growth</h3>
+            <p class="price-tier__desc">For teams proving one high-value decision lane.</p>
+            <div class="price-tier__amount">$8,000</div>
+            <div class="price-tier__period">/ month platform minimum</div>
+            <ul class="price-tier__features">
+              <li>Single orchestration lane</li>
+              <li>Up to 500K events/day</li>
+              <li>Standard reasoning latency</li>
+              <li>Basic governance controls</li>
+              <li>Email support</li>
+            </ul>
+            <a class="btn-race btn-race--ghost" href="#deploy" style="text-align: center; justify-content: center;">ENTER QUALIFYING</a>
+          </article>
+          <article class="price-tier featured">
+            <div class="price-tier__badge">RACE PACE</div>
+            <h3 class="price-tier__name">Enterprise</h3>
+            <p class="price-tier__desc">For organizations replacing fragmented ops tooling.</p>
+            <div class="price-tier__amount">Custom</div>
+            <div class="price-tier__period">based on lanes, volume, governance scope</div>
+            <ul class="price-tier__features">
+              <li>Unlimited orchestration lanes</li>
+              <li>Unlimited event throughput</li>
+              <li>Priority reasoning (sub-50ms)</li>
+              <li>Full governance and audit suite</li>
+              <li>Dedicated race engineer (CSM)</li>
+              <li>Custom model routing</li>
+            </ul>
+            <a class="btn-race btn-race--primary" href="#deploy" style="text-align: center; justify-content: center;">TALK TO ENGINEERING</a>
+          </article>
+          <article class="price-tier">
+            <div class="price-tier__badge">CHAMPIONSHIP</div>
+            <h3 class="price-tier__name">Sovereign</h3>
+            <p class="price-tier__desc">For regulated and jurisdiction-heavy environments.</p>
+            <div class="price-tier__amount">Private</div>
+            <div class="price-tier__period">custom deployment architecture</div>
+            <ul class="price-tier__features">
+              <li>Private cloud or on-premise</li>
+              <li>Regional data sovereignty</li>
+              <li>Custom compliance posture</li>
+              <li>Dedicated infrastructure</li>
+              <li>SLA with penalty clauses</li>
+            </ul>
+            <a class="btn-race btn-race--ghost" href="#deploy" style="text-align: center; justify-content: center;">REVIEW DEPLOYMENT</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section id="deploy" class="section section--bordered">
+      <div class="shell" style="text-align: center;">
+        <div class="reveal" style="max-width: 680px; margin: 0 auto;">
+          <span class="sector-tag" style="margin-bottom: 24px; display: inline-flex;">DRS zone open</span>
+          <h2 class="headline" style="margin-bottom: 16px; max-width: none;">The gap to P1 is closing. The question is which side you're on.</h2>
+          <p class="subhead" style="margin: 0 auto 32px; text-align: center;">If you're serious about enterprise intelligence, stop assembling a pit crew from different race teams. Deploy one system built for speed, trust, and compound advantage.</p>
+          <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+            <a class="btn-race btn-race--primary" href="mailto:grid@vectral.ai">BOOK GRID POSITION</a>
+            <a class="btn-race btn-race--ghost" href="mailto:engineering@vectral.ai">SPEAK TO RACE ENGINEERING</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER: STEWARD PANEL -->
+  <footer class="footer">
+    <div class="shell">
+      <div class="footer__grid reveal">
+        <div>
+          <div class="footer__brand">VECTRAL</div>
+          <p class="footer__tagline">Race-grade enterprise intelligence. Built for organizations that treat operational speed as competitive advantage.</p>
+        </div>
+        <div>
+          <div class="footer__col-title">PLATFORM</div>
+          <div class="footer__links"><a href="#telemetry">Telemetry</a><a href="#architecture">Architecture</a><a href="#performance">Performance</a><a href="#">Security</a><a href="#">API Docs</a></div>
+        </div>
+        <div>
+          <div class="footer__col-title">COMPANY</div>
+          <div class="footer__links"><a href="#pricing">Pricing</a><a href="#">Customers</a><a href="#">Careers</a><a href="#">Press</a></div>
+        </div>
+        <div>
+          <div class="footer__col-title">CONNECT</div>
+          <div class="footer__links"><a href="mailto:grid@vectral.ai">grid@vectral.ai</a><a href="mailto:engineering@vectral.ai">engineering@vectral.ai</a><a href="#">GitHub</a><a href="#">Status</a></div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2032 Vectral Systems. All systems nominal.</span>
+        <div class="footer__status">ALL SYSTEMS OPERATIONAL</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* Reveal on scroll */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    /* Active nav tracking */
+    const sections = document.querySelectorAll('section[id]');
+    const navSectors = document.querySelectorAll('.pitwall-nav__sector');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach((section) => {
+        if (window.scrollY >= section.offsetTop - 120) {
+          current = section.id;
+        }
+      });
+      navSectors.forEach((link) => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+      });
+    }, { passive: true });
+
+    /* Telemetry animation: subtle pulse on KPIs */
+    const kpis = document.querySelectorAll('.telem-kpi__value');
+    setInterval(() => {
+      kpis.forEach((kpi) => {
+        const original = kpi.textContent;
+        if (original.includes(',')) {
+          const num = parseInt(original.replace(/,/g, ''));
+          const delta = Math.floor(Math.random() * 20) - 10;
+          kpi.textContent = (num + delta).toLocaleString();
+        }
+      });
+    }, 2000);
+  </script>
+</body>
+</html>

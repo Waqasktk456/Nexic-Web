@@ -1,0 +1,390 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nexus | The Future of Work</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <div class="bg-noise"></div>
+    <div class="bg-grid"></div>
+
+    <nav class="navbar" data-magnetic-target>
+        <div class="nav-container">
+            <a href="#" class="logo" data-magnetic>
+                <div class="logo-icon"></div>
+                <span>Nexus</span>
+            </a>
+            <div class="nav-links">
+                <a href="#features" class="nav-link" data-magnetic>Features</a>
+                <a href="#dashboard" class="nav-link" data-magnetic>Platform</a>
+                <a href="#ai" class="nav-link" data-magnetic>AI</a>
+                <a href="#pricing" class="nav-link" data-magnetic>Pricing</a>
+            </div>
+            <div class="nav-actions">
+                <a href="#" class="btn btn-ghost" data-magnetic>Sign In</a>
+                <a href="#" class="btn btn-primary" data-magnetic>Get Started</a>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+
+            <!-- HERO SECTION -->
+            <section id="hero" class="hero-section">
+                <div class="container hero-container">
+                    <div class="hero-badge" data-magnetic>
+                        <span class="badge-dot"></span>
+                        Nexus 2.0 is now live — See what's new <i class="ph ph-arrow-right"></i>
+                    </div>
+                    <h1 class="hero-title">
+                        <span class="title-line">Manage less.</span>
+                        <span class="title-line text-gradient">Create more.</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        The ultra-fast, intelligent platform that brings your team's workflow, tools, and ideas into one unified space. Built for scale.
+                    </p>
+                    <div class="hero-cta">
+                        <a href="#" class="btn btn-primary btn-large" data-magnetic>Start for free</a>
+                        <a href="#" class="btn btn-secondary btn-large" data-magnetic><i class="ph-fill ph-play-circle"></i> Watch demo</a>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="dashboard-mockup">
+                            <div class="mockup-header">
+                                <div class="mockup-dots"><span></span><span></span><span></span></div>
+                                <div class="mockup-search"></div>
+                            </div>
+                            <div class="mockup-body">
+                                <div class="mockup-sidebar">
+                                    <div class="ms-item active"></div>
+                                    <div class="ms-item"></div>
+                                    <div class="ms-item"></div>
+                                    <div class="ms-item"></div>
+                                </div>
+                                <div class="mockup-content">
+                                    <div class="mc-header">
+                                        <div class="mc-title"></div>
+                                        <div class="mc-actions"></div>
+                                    </div>
+                                    <div class="mc-grid">
+                                        <div class="mc-card span-2">
+                                            <div class="mc-chart"></div>
+                                        </div>
+                                        <div class="mc-card"></div>
+                                        <div class="mc-card"></div>
+                                        <div class="mc-card span-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="glow-orb orb-1"></div>
+                            <div class="glow-orb orb-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FEATURES SECTION (BENTO GRID) -->
+            <section id="features" class="features-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Everything you need, <br><span class="text-gradient">nothing you don't.</span></h2>
+                        <p class="section-desc">Carefully crafted tools designed to stay out of your way while giving you absolute control.</p>
+                    </div>
+                    
+                    <div class="bento-grid">
+                        <div class="bento-card span-2 card-hover">
+                            <div class="card-content">
+                                <i class="ph-fill ph-lightning card-icon"></i>
+                                <h3>Lightning Fast</h3>
+                                <p>Built on a modern rust-based architecture, Nexus responds in milliseconds, making your workflow completely frictionless.</p>
+                            </div>
+                            <div class="card-visual visual-speed">
+                                <div class="speed-bar"></div>
+                                <div class="speed-bar fill"></div>
+                                <div class="speed-bar"></div>
+                            </div>
+                        </div>
+                        <div class="bento-card card-hover">
+                            <div class="card-content">
+                                <i class="ph-fill ph-lock-key card-icon"></i>
+                                <h3>Enterprise Security</h3>
+                                <p>Bank-grade encryption by default.</p>
+                            </div>
+                        </div>
+                        <div class="bento-card card-hover">
+                            <div class="card-content">
+                                <i class="ph-fill ph-users-three card-icon"></i>
+                                <h3>Real-time Sync</h3>
+                                <p>Collaborate instantly.</p>
+                            </div>
+                        </div>
+                        <div class="bento-card span-2 card-hover">
+                            <div class="card-content">
+                                <i class="ph-fill ph-graph card-icon"></i>
+                                <h3>Advanced Analytics</h3>
+                                <p>Visualize your progress with stunning, real-time interactive charts that connect directly to your database.</p>
+                            </div>
+                            <div class="card-visual visual-graph">
+                                <svg viewBox="0 0 100 40" class="graph-svg">
+                                    <path d="M0,40 Q10,30 20,35 T40,20 T60,25 T80,10 T100,5 L100,40 Z" class="graph-path-fill"></path>
+                                    <path d="M0,40 Q10,30 20,35 T40,20 T60,25 T80,10 T100,5" class="graph-path-line"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI SECTION -->
+            <section id="ai" class="ai-section">
+                <div class="container ai-container">
+                    <div class="ai-content">
+                        <div class="ai-badge">Nexus AI</div>
+                        <h2 class="section-title">Automate the invisible.</h2>
+                        <p class="section-desc">Our intelligent engine learns your patterns, organizing tasks and drafting responses before you even ask.</p>
+                        <ul class="ai-features">
+                            <li><i class="ph-fill ph-check-circle"></i> Predictive task routing</li>
+                            <li><i class="ph-fill ph-check-circle"></i> Automated document summarization</li>
+                            <li><i class="ph-fill ph-check-circle"></i> Smart scheduling conflicts resolution</li>
+                        </ul>
+                        <a href="#" class="btn btn-secondary" data-magnetic>Explore AI Features</a>
+                    </div>
+                    <div class="ai-visual">
+                        <div class="ai-card">
+                            <div class="ai-card-border"></div>
+                            <div class="ai-prompt">
+                                <div class="ai-avatar"><i class="ph-fill ph-sparkle"></i></div>
+                                <div class="ai-text">Summarize the Q3 marketing report and create tasks for the design team.</div>
+                            </div>
+                            <div class="ai-response">
+                                <div class="ai-line pulse"></div>
+                                <div class="ai-line"></div>
+                                <div class="ai-task-mockup"></div>
+                                <div class="ai-task-mockup short"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TESTIMONIALS -->
+            <section id="testimonials" class="testimonials-section">
+                <div class="container">
+                    <div class="section-header center">
+                        <h2 class="section-title">Loved by elite teams.</h2>
+                    </div>
+                </div>
+                <div class="testimonial-slider">
+                    <div class="testimonial-track">
+                        <!-- Cards repeated for infinite scroll effect -->
+                        <div class="test-card">
+                            <div class="stars"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                            <p>"Nexus completely transformed how our engineering team ships. The interface is gorgeous and it never lags."</p>
+                            <div class="author">
+                                <div class="avatar av-1"></div>
+                                <div>
+                                    <h4>Sarah Jenkins</h4>
+                                    <span>CTO at TechFlow</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="test-card">
+                            <div class="stars"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                            <p>"Finally, a tool that looks like Apple designed it but functions with the power of an enterprise suite."</p>
+                            <div class="author">
+                                <div class="avatar av-2"></div>
+                                <div>
+                                    <h4>Marcus Ray</h4>
+                                    <span>Design Lead, StudioX</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="test-card">
+                            <div class="stars"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                            <p>"The AI features alone save me 10 hours a week. It's not just a tool, it's a team member."</p>
+                            <div class="author">
+                                <div class="avatar av-3"></div>
+                                <div>
+                                    <h4>Emily Chen</h4>
+                                    <span>Operations Director</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="test-card">
+                            <div class="stars"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+                            <p>"Nexus completely transformed how our engineering team ships. The interface is gorgeous and it never lags."</p>
+                            <div class="author">
+                                <div class="avatar av-1"></div>
+                                <div>
+                                    <h4>Sarah Jenkins</h4>
+                                    <span>CTO at TechFlow</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRICING -->
+            <section id="pricing" class="pricing-section">
+                <div class="container">
+                    <div class="section-header center">
+                        <h2 class="section-title">Simple, transparent pricing.</h2>
+                        <div class="pricing-toggle">
+                            <span class="active">Monthly</span>
+                            <div class="toggle-switch"></div>
+                            <span>Annually <span class="discount">-20%</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="pricing-grid">
+                        <div class="pricing-card">
+                            <div class="p-header">
+                                <h3>Starter</h3>
+                                <div class="price">$0<span>/mo</span></div>
+                                <p>Perfect for individuals trying out Nexus.</p>
+                            </div>
+                            <a href="#" class="btn btn-secondary w-100" data-magnetic>Get Started</a>
+                            <ul class="p-features">
+                                <li><i class="ph ph-check"></i> Up to 3 projects</li>
+                                <li><i class="ph ph-check"></i> Basic analytics</li>
+                                <li><i class="ph ph-check"></i> 24-hour support SLA</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="pricing-card popular">
+                            <div class="popular-badge">Most Popular</div>
+                            <div class="p-header">
+                                <h3>Pro</h3>
+                                <div class="price">$29<span>/mo</span></div>
+                                <p>For professionals and growing teams.</p>
+                            </div>
+                            <a href="#" class="btn btn-primary w-100" data-magnetic>Start Free Trial</a>
+                            <ul class="p-features">
+                                <li><i class="ph ph-check"></i> Unlimited projects</li>
+                                <li><i class="ph ph-check"></i> Advanced AI features</li>
+                                <li><i class="ph ph-check"></i> Custom domains</li>
+                                <li><i class="ph ph-check"></i> 1-hour support SLA</li>
+                            </ul>
+                        </div>
+
+                        <div class="pricing-card">
+                            <div class="p-header">
+                                <h3>Enterprise</h3>
+                                <div class="price">Custom</div>
+                                <p>For large organizations needing control.</p>
+                            </div>
+                            <a href="#" class="btn btn-secondary w-100" data-magnetic>Contact Sales</a>
+                            <ul class="p-features">
+                                <li><i class="ph ph-check"></i> SSO & SAML</li>
+                                <li><i class="ph ph-check"></i> Dedicated success manager</li>
+                                <li><i class="ph ph-check"></i> Custom SLA</li>
+                                <li><i class="ph ph-check"></i> On-premise options</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ -->
+            <section id="faq" class="faq-section">
+                <div class="container faq-container">
+                    <h2 class="section-title">Frequently asked questions</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <button class="faq-question">How does the 14-day trial work? <i class="ph ph-caret-down"></i></button>
+                            <div class="faq-answer">
+                                <p>You get full access to all Pro features for 14 days. No credit card required. If you choose not to upgrade, you'll be automatically downgraded to our free Starter plan.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question">Can I switch plans later? <i class="ph ph-caret-down"></i></button>
+                            <div class="faq-answer">
+                                <p>Absolutely. You can upgrade or downgrade your plan at any time. Prorated charges or credits will be applied automatically to your account.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question">Do you offer discounts for non-profits? <i class="ph ph-caret-down"></i></button>
+                            <div class="faq-answer">
+                                <p>Yes, we offer a 50% discount for qualified non-profit organizations and educational institutions. Contact our support team to apply.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FOOTER -->
+            <footer class="footer">
+                <div class="container">
+                    <div class="footer-top">
+                        <div class="footer-brand">
+                            <a href="#" class="logo">
+                                <div class="logo-icon"></div>
+                                <span>Nexus</span>
+                            </a>
+                            <p>Building the future of work, one pixel at a time.</p>
+                            <div class="social-links">
+                                <a href="#" data-magnetic><i class="ph-fill ph-twitter-logo"></i></a>
+                                <a href="#" data-magnetic><i class="ph-fill ph-github-logo"></i></a>
+                                <a href="#" data-magnetic><i class="ph-fill ph-discord-logo"></i></a>
+                            </div>
+                        </div>
+                        <div class="footer-links">
+                            <div class="link-group">
+                                <h4>Product</h4>
+                                <a href="#">Features</a>
+                                <a href="#">Integrations</a>
+                                <a href="#">Pricing</a>
+                                <a href="#">Changelog</a>
+                            </div>
+                            <div class="link-group">
+                                <h4>Company</h4>
+                                <a href="#">About</a>
+                                <a href="#">Blog</a>
+                                <a href="#">Careers</a>
+                                <a href="#">Contact</a>
+                            </div>
+                            <div class="link-group">
+                                <h4>Legal</h4>
+                                <a href="#">Privacy Policy</a>
+                                <a href="#">Terms of Service</a>
+                                <a href="#">Cookie Policy</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; 2026 Nexus Technologies, Inc. All rights reserved.</p>
+                        <div class="footer-status">
+                            <span class="status-dot"></span> All systems operational
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="style.js"></script>
+</body>
+</html>

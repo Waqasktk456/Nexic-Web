@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA | Precision Luxury Footwear</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+
+        :root {
+            --bg: #0a0a0a;
+            --surface: #121212;
+            --text: #ffffff;
+            --text-dim: #a0a0a0;
+            --accent: #ffffff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --sale-color: #ff3b30;
+        }
+
+        body.light-mode {
+            --bg: #f5f5f7;
+            --surface: #ffffff;
+            --text: #1d1d1f;
+            --text-dim: #86868b;
+            --accent: #000000;
+            --glass: rgba(0, 0, 0, 0.02);
+            --border: rgba(0, 0, 0, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); transition: background 0.5s ease; overflow-x: hidden; }
+        
+        /* --- LOADING UI --- */
+        #loader { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center; transition: opacity 0.8s ease; }
+        .logo-load { font-family: 'Playfair Display'; font-size: 2rem; letter-spacing: 10px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* --- NAVBAR --- */
+        nav { position: fixed; top: 0; width: 100%; padding: 25px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; transition: var(--transition); border-bottom: 1px solid transparent; }
+        nav.scrolled { background: var(--glass); backdrop-filter: blur(20px); padding: 15px 5%; border-bottom: 1px solid var(--border); }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { text-transform: uppercase; font-size: 11px; letter-spacing: 2px; text-decoration: none; color: var(--text); opacity: 0.6; transition: 0.3s; cursor: pointer; }
+        .nav-links a:hover { opacity: 1; }
+        .logo { font-family: 'Playfair Display'; font-size: 1.5rem; font-weight: 700; letter-spacing: 4px; cursor: pointer; }
+
+        /* --- PAGE STRUCTURE --- */
+        .page { display: none; padding-top: 100px; animation: pageIn 0.8s ease forwards; min-height: 100vh; }
+        .page.active { display: block; }
+        @keyframes pageIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- HERO --- */
+        .hero { height: 90vh; display: flex; align-items: center; padding: 0 10%; position: relative; overflow: hidden; }
+        .hero-img { position: absolute; right: -5%; top: 50%; transform: translateY(-50%) rotate(-15deg); width: 60%; filter: drop-shadow(0 50px 100px rgba(0,0,0,0.5)); transition: var(--transition); z-index: 1; }
+        .hero:hover .hero-img { transform: translateY(-55%) rotate(-5deg) scale(1.05); }
+        .hero-text h1 { font-size: 6rem; line-height: 0.9; margin-bottom: 20px; font-family: 'Playfair Display'; }
+        .hero-text p { font-size: 1.2rem; color: var(--text-dim); max-width: 400px; margin-bottom: 40px; }
+
+        /* --- GRID & CARDS --- */
+        .section-header { padding: 60px 10% 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; padding: 0 10% 60px; }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px; transition: var(--transition); position: relative; cursor: pointer; overflow: hidden; }
+        .card:hover { transform: translateY(-10px); border-color: var(--text); }
+        .card img { width: 100%; border-radius: 12px; transition: var(--transition); aspect-ratio: 1/1; object-fit: cover; }
+        .card:hover img { transform: scale(1.05); }
+        .card-info { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .badge { position: absolute; top: 30px; left: 30px; background: var(--accent); color: var(--bg); padding: 5px 12px; border-radius: 30px; font-size: 10px; font-weight: 700; text-transform: uppercase; z-index: 2; }
+        .badge.hot { background: #ff3b30; color: white; }
+        .badge.sale { background: #34c759; color: white; }
+        .stock-status { font-size: 10px; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .discount { color: var(--sale-color); text-decoration: none; font-weight: 700; margin-left: 10px; }
+
+        /* --- BUTTONS --- */
+        .btn { padding: 18px 45px; background: var(--accent); color: var(--bg); border: none; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; border-radius: 4px; }
+        .btn:hover { opacity: 0.8; transform: scale(1.05); }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+
+        /* --- NEW SECTIONS STYLING --- */
+        .promo-banner { margin: 50px 10%; padding: 60px; background: var(--accent); color: var(--bg); border-radius: 30px; display: flex; align-items: center; justify-content: space-between; overflow: hidden; position: relative; }
+        .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; padding: 100px 10%; background: var(--glass); }
+        .feature-box { text-align: center; }
+        .feature-box i { font-size: 2rem; margin-bottom: 20px; }
+        
+        .filter-bar { padding: 20px 10%; display: flex; gap: 20px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid var(--border); }
+        .filter-group select { background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: 10px 20px; border-radius: 8px; outline: none; }
+
+        .recent-view-section { padding: 40px 10%; background: var(--surface); margin-top: 50px; }
+
+        footer { background: var(--surface); padding: 100px 10% 50px; border-top: 1px solid var(--border); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; }
+        .footer-link { display: block; margin-bottom: 15px; color: var(--text-dim); text-decoration: none; transition: 0.3s; font-size: 14px; }
+        .footer-link:hover { color: var(--text); transform: translateX(5px); }
+
+        @media (max-width: 900px) {
+            .hero-text h1 { font-size: 3.5rem; }
+            .features-grid { grid-template-columns: 1fr 1fr; }
+            .promo-banner { flex-direction: column; text-align: center; gap: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader"><div class="logo-load">AURA</div></div>
+
+    <nav id="navbar">
+        <div class="logo" onclick="showPage('home')">AURA</div>
+        <div class="nav-links">
+            <a onclick="showPage('home')">Home</a>
+            <a onclick="showPage('shop')">Shop</a>
+            <a onclick="showPage('about')">Our Story</a>
+            <a onclick="showPage('contact')">Concierge</a>
+        </div>
+        <div class="nav-icons" style="display: flex; gap: 25px; align-items: center;">
+            <i class="fas fa-search" style="cursor: pointer;"></i>
+            <i class="fas fa-adjust" id="theme-toggle" style="cursor: pointer;"></i>
+            <div onclick="showPage('cart')" style="position: relative; cursor: pointer;">
+                <i class="fas fa-shopping-bag"></i>
+                <span id="cart-count" style="position: absolute; top: -10px; right: -10px; background: var(--text); color: var(--bg); font-size: 9px; padding: 2px 6px; border-radius: 10px;">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <main id="home" class="page active">
+        <section class="hero">
+            <div class="hero-text">
+                <div class="badge">Limited Edition</div>
+                <h1>Step Into<br>The Future.</h1>
+                <p>The AURA 01 combines architectural minimalism with aerospace performance technology.</p>
+                <button class="btn" onclick="showPage('shop')">Shop Collection</button>
+            </div>
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200" class="hero-img" alt="Shoe">
+        </section>
+
+        <section class="features-grid">
+            <div class="feature-box">
+                <i class="fas fa-shipping-fast"></i>
+                <h4>Global Express</h4>
+                <p style="font-size: 12px; color: var(--text-dim); margin-top: 10px;">Complimentary worldwide shipping</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-shield-alt"></i>
+                <h4>Lifetime Quality</h4>
+                <p style="font-size: 12px; color: var(--text-dim); margin-top: 10px;">Premium craftsmanship guarantee</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-sync-alt"></i>
+                <h4>Easy Returns</h4>
+                <p style="font-size: 12px; color: var(--text-dim); margin-top: 10px;">30-day effortless exchange</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-gem"></i>
+                <h4>Member Perks</h4>
+                <p style="font-size: 12px; color: var(--text-dim); margin-top: 10px;">Exclusive drops for members</p>
+            </div>
+        </section>
+
+        <div class="section-header"><h2>New Arrivals</h2></div>
+        <div class="grid" id="new-arrivals-grid"></div>
+
+        <section class="promo-banner">
+            <div>
+                <h2 style="font-family: 'Playfair Display'; font-size: 2.5rem;">Spring Collective Sale</h2>
+                <p>Up to 30% off selected luxury silhouettes. Limited time only.</p>
+            </div>
+            <button class="btn" style="background: var(--bg); color: var(--text);">Claim Offer</button>
+        </section>
+
+        <div class="section-header"><h2>Trending Now</h2></div>
+        <div class="grid" id="trending-grid"></div>
+
+        <div class="section-header"><h2>Best Sellers</h2></div>
+        <div class="grid" id="best-sellers-grid"></div>
+
+        <div class="section-header"><h2>Limited Edition</h2></div>
+        <div class="grid" id="limited-grid"></div>
+
+        <div class="section-header"><h2>Recommended For You</h2></div>
+        <div class="grid" id="recommended-grid"></div>
+    </main>
+
+    <main id="shop" class="page">
+        <div class="section-header">
+            <h1>The Collection</h1>
+        </div>
+        
+        <div class="filter-bar">
+            <div class="filter-group">
+                <select id="filter-category" onchange="applyFilters()">
+                    <option value="all">All Categories</option>
+                    <option value="Running">Performance</option>
+                    <option value="Lifestyle">Lifestyle</option>
+                    <option value="Elite">Elite</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <select id="sort-price" onchange="applyFilters()">
+                    <option value="default">Sort by</option>
+                    <option value="low">Price: Low to High</option>
+                    <option value="high">Price: High to Low</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid" id="shop-grid"></div>
+    </main>
+
+    <main id="product" class="page">
+        <div class="product-view" id="product-content" style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; padding: 100px 10%;">
+            </div>
+        
+        <div class="section-header"><h2>You May Also Like</h2></div>
+        <div class="grid" id="related-grid"></div>
+
+        <div class="recent-view-section">
+            <h3 style="margin-bottom: 30px;">Recently Viewed</h3>
+            <div class="grid" id="recently-viewed-grid" style="grid-template-columns: repeat(4, 1fr);"></div>
+        </div>
+    </main>
+
+    <main id="cart" class="page">
+        <div style="max-width: 900px; margin: 0 auto; padding: 0 10%;">
+            <h1 style="font-family: 'Playfair Display'; margin-bottom: 40px;">Your Bag</h1>
+            <div id="cart-list"></div>
+            <div id="cart-summary" style="margin-top: 50px; border-top: 2px solid var(--text); padding-top: 30px; display: flex; justify-content: space-between;">
+                <h3>Total Amount</h3>
+                <h3 id="cart-total">$0.00</h3>
+            </div>
+            <button class="btn" style="width: 100%; margin-top: 40px;">Secure Checkout</button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <div class="logo">AURA</div>
+                <p style="color: var(--text-dim); margin-top: 20px; font-size: 14px;">Elevating the everyday stride through innovation and aesthetic purity.</p>
+            </div>
+            <div>
+                <p style="margin-bottom: 20px; font-weight: 700;">Collections</p>
+                <a class="footer-link">Running</a><a class="footer-link">Lifestyle</a><a class="footer-link">Limited</a>
+            </div>
+            <div>
+                <p style="margin-bottom: 20px; font-weight: 700;">House</p>
+                <a class="footer-link">Our Story</a><a class="footer-link">Careers</a><a class="footer-link">Sustain</a>
+            </div>
+            <div>
+                <p style="margin-bottom: 20px; font-weight: 700;">Contact</p>
+                <a class="footer-link">Instagram</a><a class="footer-link">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const allProducts = [
+            { id: 1, name: "AURA Phantom", price: 450, img: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2", tag: "New", category: "Elite", stock: true, discount: 0 },
+            { id: 2, name: "AURA Zenith", price: 320, img: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519", tag: "Hot", category: "Lifestyle", stock: true, discount: 0 },
+            { id: 3, name: "Obsidian Core", price: 580, img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a", tag: "Limited", category: "Elite", stock: true, discount: 0 },
+            { id: 4, name: "AURA Frost", price: 290, img: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77", tag: "Sale", category: "Running", stock: true, discount: 50 },
+            { id: 5, name: "AURA Stealth", price: 410, img: "https://images.unsplash.com/photo-1584735175315-9d5df23860e6", tag: "Limited", category: "Elite", stock: false, discount: 0 },
+            { id: 6, name: "Vortex Runner", price: 375, img: "https://images.unsplash.com/photo-1605348532760-6753d2c43329", tag: "Hot", category: "Running", stock: true, discount: 0 },
+            { id: 7, name: "Solaris 01", price: 220, img: "https://images.unsplash.com/photo-1560769629-975ec94e6a86", tag: "New", category: "Lifestyle", stock: true, discount: 0 },
+            { id: 8, name: "Nova Glide", price: 310, img: "https://images.unsplash.com/photo-1543508282-6319a3e2621f", tag: "Hot", category: "Running", stock: true, discount: 0 },
+            { id: 9, name: "Luxe Knit", price: 520, img: "https://images.unsplash.com/photo-1595341888016-a392ef81b7de", tag: "Elite", category: "Elite", stock: true, discount: 0 },
+            { id: 10, name: "Carbon X", price: 600, img: "https://images.unsplash.com/photo-1491553895911-0055eca6402d", tag: "Limited", category: "Running", stock: true, discount: 0 },
+            { id: 11, name: "Urban Edge", price: 180, img: "https://images.unsplash.com/photo-1539185441755-769473a23570", tag: "Sale", category: "Lifestyle", stock: true, discount: 30 },
+            { id: 12, name: "Aura Gravity", price: 480, img: "https://images.unsplash.com/photo-1512374382149-233c42b6a83b", tag: "New", category: "Elite", stock: true, discount: 0 },
+            { id: 13, name: "Peak Performance", price: 340, img: "https://images.unsplash.com/photo-1514989940723-e8e51635b782", tag: "Hot", category: "Running", stock: true, discount: 0 },
+            { id: 14, name: "Titan Grey", price: 275, img: "https://images.unsplash.com/photo-1516478177764-9fe5bd7e9717", tag: "New", category: "Lifestyle", stock: true, discount: 0 },
+            { id: 15, name: "Velvet Walk", price: 410, img: "https://images.unsplash.com/photo-1511551203524-9a24350a5771", tag: "Sale", category: "Elite", stock: true, discount: 45 },
+            { id: 16, name: "Alpha Mesh", price: 210, img: "https://images.unsplash.com/photo-1556906781-9a412961c28c", tag: "Hot", category: "Running", stock: true, discount: 0 },
+            { id: 17, name: "Chrome Lux", price: 720, img: "https://images.unsplash.com/photo-1520639889313-7272170b1ca0", tag: "Limited", category: "Elite", stock: true, discount: 0 },
+            { id: 18, name: "Street Flow", price: 150, img: "https://images.unsplash.com/photo-1508170754725-6e9a5cfbcad1", tag: "New", category: "Lifestyle", stock: true, discount: 0 },
+            { id: 19, name: "Eco Strider", price: 230, img: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2", tag: "Sale", category: "Running", stock: true, discount: 20 },
+            { id: 20, name: "Gold Standard", price: 850, img: "https://images.unsplash.com/photo-1575537359676-fa6372079c7b", tag: "Elite", category: "Elite", stock: true, discount: 0 }
+        ];
+
+        let cart = [];
+        let recentlyViewed = [];
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.onload = () => {
+            setTimeout(() => { document.getElementById('loader').style.opacity = '0'; 
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 800);
+            }, 1000);
+            renderAllSections();
+        };
+
+        function createProductCard(p) {
+            return `
+                <div class="card" onclick="viewProduct(${p.id})">
+                    ${p.tag ? `<div class="badge ${p.tag.toLowerCase()}">${p.tag}</div>` : ''}
+                    <img src="${p.img}?q=80&w=600" alt="${p.name}">
+                    <div class="card-info">
+                        <div>
+                            <h4 style="font-weight: 600;">${p.name}</h4>
+                            <p class="stock-status" style="color: ${p.stock ? '#34c759' : '#ff3b30'}">
+                                ${p.stock ? 'In Stock' : 'Out of Stock'}
+                            </p>
+                        </div>
+                        <div style="text-align: right">
+                            <p style="font-weight: 700;">$${p.price - p.discount}</p>
+                            ${p.discount > 0 ? `<span style="font-size:10px; opacity:0.5; text-decoration:line-through">$${p.price}</span>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAllSections() {
+            document.getElementById('new-arrivals-grid').innerHTML = allProducts.filter(p => p.tag === 'New').slice(0, 4).map(createProductCard).join('');
+            document.getElementById('trending-grid').innerHTML = allProducts.filter(p => p.tag === 'Hot').slice(0, 4).map(createProductCard).join('');
+            document.getElementById('best-sellers-grid').innerHTML = allProducts.slice(8, 12).map(createProductCard).join('');
+            document.getElementById('limited-grid').innerHTML = allProducts.filter(p => p.tag === 'Limited').map(createProductCard).join('');
+            document.getElementById('recommended-grid').innerHTML = allProducts.sort(() => 0.5 - Math.random()).slice(0, 4).map(createProductCard).join('');
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const cat = document.getElementById('filter-category').value;
+            const sort = document.getElementById('sort-price').value;
+            
+            let filtered = [...allProducts];
+            if(cat !== 'all') filtered = filtered.filter(p => p.category === cat);
+            
+            if(sort === 'low') filtered.sort((a,b) => (a.price-a.discount) - (b.price-b.discount));
+            if(sort === 'high') filtered.sort((a,b) => (b.price-b.discount) - (a.price-a.discount));
+
+            document.getElementById('shop-grid').innerHTML = filtered.map(createProductCard).join('');
+        }
+
+        window.viewProduct = (id) => {
+            const product = allProducts.find(p => p.id === id);
+            
+            // Recently Viewed Logic
+            if(!recentlyViewed.find(p => p.id === id)) {
+                recentlyViewed.unshift(product);
+                if(recentlyViewed.length > 4) recentlyViewed.pop();
+            }
+
+            const content = document.getElementById('product-content');
+            content.innerHTML = `
+                <div class="gallery"><img src="${product.img}?q=80&w=1200" style="width:100%; border-radius:30px;"></div>
+                <div class="info">
+                    <h1 style="font-size: 3.5rem; font-family:'Playfair Display';">${product.name}</h1>
+                    <p style="font-size: 2rem; margin: 20px 0;">$${product.price - product.discount}.00</p>
+                    <p style="color: var(--text-dim); line-height: 1.8; margin-bottom: 40px;">Professional luxury silhouette featuring handcrafted leather and adaptive cushioning.</p>
+                    <button class="btn" ${!product.stock ? 'disabled' : ''} onclick="addToCart(${product.id})">
+                        ${product.stock ? 'Add to Bag' : 'Sold Out'}
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('related-grid').innerHTML = allProducts.filter(p => p.category === product.category && p.id !== id).slice(0, 4).map(createProductCard).join('');
+            document.getElementById('recently-viewed-grid').innerHTML = recentlyViewed.map(createProductCard).join('');
+            
+            showPage('product');
+        }
+
+        window.addToCart = (id) => {
+            const product = allProducts.find(p => p.id === id);
+            cart.push(product);
+            document.getElementById('cart-count').innerText = cart.length;
+            updateCartUI();
+            showPage('cart');
+        }
+
+        function updateCartUI() {
+            const list = document.getElementById('cart-list');
+            list.innerHTML = cart.map((item, idx) => `
+                <div class="cart-row" style="display:flex; justify-content:space-between; align-items:center; padding:20px; border-bottom:1px solid var(--border)">
+                    <img src="${item.img}" width="60" style="border-radius:8px">
+                    <h4>${item.name}</h4>
+                    <p>$${item.price - item.discount}</p>
+                    <i class="fas fa-trash" onclick="cart.splice(${idx},1); updateCartUI();" style="cursor:pointer"></i>
+                </div>
+            `).join('');
+            const sum = cart.reduce((a, b) => a + (b.price - b.discount), 0);
+            document.getElementById('cart-total').innerText = `$${sum.toFixed(2)}`;
+            document.getElementById('cart-count').innerText = cart.length;
+        }
+
+        const nav = document.getElementById('navbar');
+        window.onscroll = () => {
+            if (window.scrollY > 50) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        };
+
+        document.getElementById('theme-toggle').onclick = () => {
+            document.body.classList.toggle('light-mode');
+        };
+    </script>
+</body>
+</html>

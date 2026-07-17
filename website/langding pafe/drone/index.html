@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKYFORGE | Premium AI Drone Technology</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-deep: #030508;
+            --neon-blue: #00f3ff;
+            --neon-violet: #bc13fe;
+            --glass-bg: rgba(10, 15, 25, 0.4);
+            --glass-border: rgba(0, 243, 255, 0.15);
+            --text-main: #e0e6ed;
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+        }
+
+        /* GLOBALS & RESETS */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4, h5, h6, .hud-text { font-family: var(--font-display); text-transform: uppercase; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; padding: 0; }
+
+        /* GRID BACKGROUND & SCANLINES */
+        .bg-grid {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: 
+                linear-gradient(to right, rgba(0,243,255,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0,243,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -2;
+            pointer-events: none;
+        }
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0.15;
+        }
+
+        /* CUSTOM UI ELEMENTS */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s ease;
+        }
+        .glass-panel:hover {
+            border-color: rgba(0, 243, 255, 0.4);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+        }
+        .btn-premium {
+            background: transparent;
+            color: var(--neon-blue);
+            font-family: var(--font-display);
+            font-weight: 700;
+            padding: 12px 30px;
+            border: 1px solid var(--neon-blue);
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 1;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+        }
+        .btn-premium::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.4), transparent);
+            transition: 0.5s; z-index: -1;
+        }
+        .btn-premium:hover::before { left: 100%; }
+        .btn-premium:hover { background: rgba(0, 243, 255, 0.1); box-shadow: 0 0 25px rgba(0, 243, 255, 0.4); text-shadow: 0 0 8px var(--neon-blue); color: #fff;}
+        
+        .btn-violet { border-color: var(--neon-violet); color: var(--neon-violet); box-shadow: 0 0 10px rgba(188, 19, 254, 0.2); }
+        .btn-violet::before { background: linear-gradient(90deg, transparent, rgba(188, 19, 254, 0.4), transparent); }
+        .btn-violet:hover { background: rgba(188, 19, 254, 0.1); box-shadow: 0 0 25px rgba(188, 19, 254, 0.4); text-shadow: 0 0 8px var(--neon-violet); }
+
+        .text-neon { color: var(--neon-blue); text-shadow: 0 0 10px rgba(0,243,255,0.5); }
+        .text-violet { color: var(--neon-violet); text-shadow: 0 0 10px rgba(188,19,254,0.5); }
+        .hud-crosshair { position: absolute; width: 20px; height: 20px; border: 1px solid var(--neon-blue); opacity: 0.5; }
+
+        /* 1. PRELOADER */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; transition: opacity 0.8s ease-out;
+        }
+        .radar-spinner {
+            width: 100px; height: 100px; border-radius: 50%;
+            border: 2px solid rgba(0, 243, 255, 0.1);
+            border-top-color: var(--neon-blue);
+            animation: spin 1s linear infinite, pulseGlow 2s ease-in-out infinite;
+        }
+        .preloader-text { margin-top: 20px; font-family: var(--font-display); letter-spacing: 5px; color: var(--neon-blue); animation: glitch 1.5s infinite; }
+
+        /* 2. NAVBAR */
+        .navbar-glass {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(3, 5, 8, 0.7); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+            padding: 15px 0; transition: 0.4s;
+        }
+        .navbar-brand { font-family: var(--font-display); font-weight: 900; font-size: 1.5rem; letter-spacing: 3px; color: #fff !important; }
+        .nav-link { font-family: var(--font-display); font-size: 0.85rem; letter-spacing: 2px; color: #aaa !important; transition: 0.3s; position: relative; }
+        .nav-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0%; height: 2px; background: var(--neon-blue); transition: 0.3s; box-shadow: 0 0 8px var(--neon-blue);}
+        .nav-link:hover { color: #fff !important; }
+        .nav-link:hover::after { width: 100%; }
+
+        /* 3. HERO SECTION */
+        #hero {
+            height: 100vh; position: relative; display: flex; align-items: center;
+            background: radial-gradient(circle at center, rgba(0,243,255,0.1) 0%, transparent 60%);
+            overflow: hidden;
+        }
+        .hero-drone {
+            max-width: 90%; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8));
+            animation: floatDrone 6s ease-in-out infinite; z-index: 2; position: relative;
+        }
+        .hero-title { font-size: 5vw; font-weight: 900; line-height: 1.1; margin-bottom: 20px; text-shadow: 0 0 40px rgba(0, 243, 255, 0.3); }
+        .hero-subtitle { font-size: 1.2rem; color: #a0aab5; max-width: 600px; margin-bottom: 40px; }
+        .ambient-light {
+            position: absolute; width: 60vw; height: 60vw; border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,243,255,0.15) 0%, transparent 70%);
+            top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; filter: blur(50px);
+        }
+        .particles { position: absolute; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+
+        /* 4. DRONE SHOWCASE (3D CARDS) */
+        .showcase-card {
+            padding: 40px 20px; text-align: center; cursor: pointer;
+            transform-style: preserve-3d; transform: perspective(1000px);
+        }
+        .showcase-img { max-width: 100%; height: auto; transform: translateZ(50px); transition: 0.5s; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); margin-bottom: 20px; }
+        .showcase-card:hover .showcase-img { transform: translateZ(80px) scale(1.1); filter: drop-shadow(0 20px 25px rgba(0,243,255,0.3)); }
+        .card-title { font-size: 1.5rem; letter-spacing: 2px; margin-bottom: 10px; transform: translateZ(30px); }
+        .card-specs { font-size: 0.85rem; color: #888; transform: translateZ(20px); }
+
+        /* 5. ADVANCED FEATURES */
+        .feature-icon { font-size: 2.5rem; color: var(--neon-blue); margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(0,243,255,0.4)); transition: 0.3s; }
+        .feature-box:hover .feature-icon { transform: scale(1.1); color: #fff; filter: drop-shadow(0 0 15px var(--neon-blue)); }
+
+        /* 6. CINEMATIC VIDEO */
+        #video-section {
+            position: relative; height: 80vh; background: url('https://images.unsplash.com/photo-1579822606822-1d7c3bbdd3d2?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
+            display: flex; align-items: center; justify-content: center; background-attachment: fixed;
+        }
+        #video-section::before { content: ''; position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(3,5,8,0.8); }
+        .play-btn {
+            width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--neon-blue);
+            display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--neon-blue);
+            cursor: pointer; z-index: 2; transition: 0.3s; position: relative;
+        }
+        .play-btn::before {
+            content: ''; position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border-radius: 50%; border: 1px solid rgba(0,243,255,0.3); animation: pulseRing 2s infinite;
+        }
+        .play-btn:hover { background: rgba(0,243,255,0.2); box-shadow: 0 0 30px var(--neon-blue); color: #fff; transform: scale(1.1); }
+
+        /* 7. WHY SKYFORGE (STATS) */
+        .stat-number { font-size: 4rem; font-weight: 900; color: #fff; text-shadow: 0 0 20px rgba(188,19,254,0.4); margin-bottom: 0; }
+        .stat-label { font-family: var(--font-display); letter-spacing: 2px; color: var(--neon-violet); font-size: 0.9rem; }
+        .hud-circle {
+            width: 150px; height: 150px; margin: 0 auto; border-radius: 50%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border: 2px dashed rgba(188,19,254,0.3); position: relative;
+        }
+        .hud-circle::after {
+            content:''; position:absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border-radius: 50%; border: 1px solid var(--neon-violet); border-left-color: transparent; border-right-color: transparent;
+            animation: spin 6s linear infinite;
+        }
+
+        /* 8. GALLERY */
+        .gallery-img { width: 100%; height: 300px; object-fit: cover; border-radius: 4px; filter: grayscale(80%) sepia(20%) hue-rotate(180deg) brightness(0.7); transition: 0.5s; cursor: pointer; }
+        .gallery-item:hover .gallery-img { filter: grayscale(0%) brightness(1.1); box-shadow: 0 0 20px rgba(0,243,255,0.3); transform: scale(1.02); }
+
+        /* 9. CONTROL CENTER UI */
+        .dashboard-ui { background: rgba(5,8,12,0.8); border: 1px solid rgba(0,243,255,0.2); border-radius: 12px; padding: 20px; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
+        .radar-box { width: 100%; padding-top: 100%; position: relative; border-radius: 50%; border: 1px solid var(--neon-blue); overflow: hidden; background: radial-gradient(circle, rgba(0,243,255,0.1) 0%, transparent 60%); }
+        .radar-sweep { position: absolute; top: 50%; left: 50%; width: 50%; height: 2px; background: linear-gradient(90deg, transparent, var(--neon-blue)); transform-origin: 0 0; animation: radarSweep 3s linear infinite; }
+        .data-bar { height: 6px; background: rgba(255,255,255,0.1); margin-bottom: 15px; border-radius: 3px; position: relative; overflow: hidden; }
+        .data-fill { position: absolute; top:0; left:0; height:100%; background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
+
+        /* 10. PROCESS TIMELINE */
+        .timeline { position: relative; border-left: 2px solid rgba(0,243,255,0.2); padding-left: 30px; margin-left: 20px; }
+        .timeline-item { position: relative; margin-bottom: 40px; opacity: 0.3; transition: 0.5s; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -37px; top: 0; width: 12px; height: 12px;
+            border-radius: 50%; background: var(--bg-deep); border: 2px solid var(--neon-blue); transition: 0.3s;
+        }
+        .timeline-item.active { opacity: 1; }
+        .timeline-item.active::before { background: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); }
+
+        /* 11. TESTIMONIALS */
+        .avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--neon-violet); object-fit: cover; margin-bottom: 15px; }
+        
+        /* 12. MASSIVE CTA */
+        #cta { background: radial-gradient(circle at center, rgba(0,243,255,0.15) 0%, var(--bg-deep) 70%); position: relative; overflow: hidden; padding: 150px 0; }
+        .cta-drone { position: absolute; right: -10%; top: 20%; max-width: 60%; opacity: 0.3; filter: blur(3px); animation: floatDrone 8s infinite alternate; pointer-events: none;}
+        .cta-heading { font-size: 4rem; text-shadow: 0 0 30px rgba(0,243,255,0.5); }
+
+        /* 13. FOOTER */
+        footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 60px 0 20px; background: #010203; }
+        .social-icons a { display: inline-flex; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.05); align-items: center; justify-content: center; margin-right: 10px; transition: 0.3s; border: 1px solid transparent; }
+        .social-icons a:hover { background: rgba(0,243,255,0.1); border-color: var(--neon-blue); color: var(--neon-blue); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,243,255,0.3); }
+
+        /* ANIMATIONS */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 10px var(--neon-blue); } 50% { box-shadow: 0 0 30px var(--neon-blue); } }
+        @keyframes pulseRing { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+        @keyframes glitch { 0% { transform: translate(0) } 20% { transform: translate(-2px, 1px) } 40% { transform: translate(-1px, -1px) } 60% { transform: translate(2px, 1px) } 80% { transform: translate(1px, -1px) } 100% { transform: translate(0) } }
+        @keyframes floatDrone { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(1deg); } }
+        @keyframes radarSweep { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* SCROLL REVEAL UTILITY */
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* RESPONSIVE OVERRIDES */
+        @media (max-width: 991px) {
+            .hero-title { font-size: 3rem; }
+            .stat-number { font-size: 2.5rem; }
+            .cta-heading { font-size: 2.5rem; }
+
+        }
+
+#video-section{
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    background:#000;
+}
+
+.bg-video{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:1;
+}
+
+.video-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    z-index:2;
+}
+
+#video-section .z-3{
+    z-index:3;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- 1. PRELOADER -->
+    <div id="preloader">
+        <div class="radar-spinner"></div>
+        <div class="preloader-text">SYS.BOOT // SKYFORGE_AI</div>
+    </div>
+
+    <!-- BACKGROUND ELEMENTS -->
+    <div class="bg-grid"></div>
+    <div class="scanlines"></div>
+
+    <!-- 2. PREMIUM NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-glass">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fa-solid fa-plane-up text-neon me-2"></i>SKYFORGE
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border:none;">
+                <span class="fa-solid fa-bars text-neon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="#fleet">FLEET</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#features">TECHNOLOGY</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#dashboard">COMMAND</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#specs">SPECS</a></li>
+                </ul>
+                <a href="#cta" class="btn-premium">Launch Mission</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 3. HERO SECTION -->
+    <section id="hero">
+        <div class="ambient-light"></div>
+        <div class="container h-100 position-relative z-3">
+            <div class="row h-100 align-items-center">
+                <div class="col-lg-6">
+                    <div class="hud-text text-neon mb-3" style="font-size: 0.9rem; letter-spacing: 4px;">// SYSTEM ONLINE : AUTONOMOUS PROTOCOL</div>
+                    <h1 class="hero-title">TAKE CONTROL <br>OF THE <span class="text-neon">SKY</span></h1>
+                    <p class="hero-subtitle">Advanced AI-powered drone systems engineered for cinematic aerial precision, military-grade stability, and absolute dominance.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#fleet" class="btn-premium">Explore Fleet</a>
+                        <a href="#dashboard" class="btn-premium btn-violet"><i class="fa-solid fa-satellite-dish me-2"></i> Uplink</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center position-relative">
+                    <!-- Parallax wrapper -->
+                    <div class="parallax-element" data-speed="0.05">
+                        <img src="https://images.unsplash.com/photo-1527977966376-1c8408f9f108?q=80&w=1000&auto=format&fit=crop" alt="Advanced Drone" class="hero-drone rounded-circle" style="mix-blend-mode: screen; filter: brightness(1.2) contrast(1.2);">
+                    </div>
+                    <!-- HUD Crosshairs -->
+                    <div class="hud-crosshair" style="top: 10%; left: 10%; border-top: 2px solid var(--neon-blue); border-left: 2px solid var(--neon-blue); border-bottom: none; border-right: none;"></div>
+                    <div class="hud-crosshair" style="bottom: 10%; right: 10%; border-bottom: 2px solid var(--neon-blue); border-right: 2px solid var(--neon-blue); border-top: none; border-left: none;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. DRONE SHOWCASE -->
+    <section id="fleet" class="py-5 mt-5">
+        <div class="container reveal">
+            <div class="text-center mb-5">
+                <div class="hud-text text-violet mb-2">// 01. ACTIVE FLEET</div>
+                <h2>AEROSPACE <span class="text-neon">ARSENAL</span></h2>
+            </div>
+            <div class="row g-4">
+                <!-- Card 1 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="glass-panel showcase-card tilt-card">
+                        <img src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=800&auto=format&fit=crop" alt="Cinematic X1" class="showcase-img rounded">
+                        <h3 class="card-title text-neon">CINEMATIC X1</h3>
+                        <p class="card-specs">8K HDR • 45 Min Flight • AI Tracking</p>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="glass-panel showcase-card tilt-card">
+                        <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=800&auto=format&fit=crop" alt="Falcon Pro" class="showcase-img rounded">
+                        <h3 class="card-title text-violet">FALCON PRO AI</h3>
+                        <p class="card-specs">Tactical Recon • 120mph • Thermal Vision</p>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="col-lg-4 col-md-6 mx-auto">
+                    <div class="glass-panel showcase-card tilt-card">
+                        <img src="https://st2.depositphotos.com/1000291/11781/i/450/depositphotos_117810946-stock-photo-man-operating-of-flying-drone.jpg" alt="Stealth V8" class="showcase-img rounded">
+                        <h3 class="card-title text-neon">STEALTH V8</h3>
+                        <p class="card-specs">Zero Noise • Nano Sensors • Ghost Protocol</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. ADVANCED FEATURES -->
+    <section id="features" class="py-5 mt-5 bg-darker" style="background: rgba(0,0,0,0.5);">
+        <div class="container reveal">
+            <div class="text-center mb-5">
+                <div class="hud-text text-neon mb-2">// 02. CORE TECHNOLOGIES</div>
+                <h2>NEXT-GEN <span class="text-neon">CAPABILITIES</span></h2>
+            </div>
+            <div class="row g-4 text-center">
+                <div class="col-lg-4 col-md-6">
+                    <div class="glass-panel p-4 feature-box h-100">
+                        <i class="fa-solid fa-microchip feature-icon"></i>
+                        <h4>AI STABILIZATION</h4>
+                        <p class="text-muted font-monospace small">Neural network flight controller ensuring zero-jitter cinematic capture in category 5 winds.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="glass-panel p-4 feature-box h-100">
+                        <i class="fa-solid fa-camera-retro feature-icon text-violet"></i>
+                        <h4 class="text-violet">8K OPTICS</h4>
+                        <p class="text-muted font-monospace small">Military-grade interchangeable lens system with active thermal and night vision overlay.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="glass-panel p-4 feature-box h-100">
+                        <i class="fa-solid fa-route feature-icon"></i>
+                        <h4>AUTONOMOUS NAV</h4>
+                        <p class="text-muted font-monospace small">LiDAR-based environment scanning for completely hands-free complex environment traversal.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+<!-- 6. CINEMATIC VIDEO SECTION -->
+<section id="video-section" class="mt-5 reveal position-relative overflow-hidden">
+
+    <!-- Background Video -->
+    <video id="bgVideo" muted loop playsinline class="bg-video">
+        <source src="vdeio.mp4" type="video/mp4">
+    </video>
+
+    <!-- Click Button (Start Video) -->
+    <div class="text-center z-3 position-relative">
+
+        <div class="play-btn mx-auto mb-4" onclick="document.getElementById('bgVideo').play()">
+            <i class="fa-solid fa-play"></i>
+        </div>
+
+        <h2 class="text-white"
+            style="letter-spacing: 4px; text-shadow: 0 0 20px #000;">
+            EXPERIENCE ABSOLUTE CONTROL
+        </h2>
+
+        <div class="hud-text text-neon">
+            WATCH LAUNCH TRAILER
+        </div>
+
+    </div>
+
+</section>
+
+    <!-- 7. WHY SKYFORGE (STATS) -->
+    <section id="specs" class="py-5 mt-5">
+        <div class="container reveal">
+            <div class="row text-center g-5">
+                <div class="col-md-3 col-6">
+                    <div class="hud-circle">
+                        <h3 class="stat-number counter" data-target="20">0</h3>
+                        <div class="stat-label">KM RANGE</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="hud-circle" style="border-color: rgba(0,243,255,0.3);">
+                        <h3 class="stat-number counter text-neon" data-target="120" style="text-shadow: 0 0 20px rgba(0,243,255,0.4);">0</h3>
+                        <div class="stat-label text-neon">MPH MAX SPEED</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="hud-circle">
+                        <h3 class="stat-number counter" data-target="45">0</h3>
+                        <div class="stat-label">MIN FLIGHT</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="hud-circle" style="border-color: rgba(0,243,255,0.3);">
+                        <h3 class="stat-number counter text-neon" data-target="8" style="text-shadow: 0 0 20px rgba(0,243,255,0.4);">0</h3>
+                        <div class="stat-label text-neon">K RESOLUTION</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. CONTROL CENTER / DASHBOARD -->
+    <section id="dashboard" class="py-5 mt-5">
+        <div class="container reveal">
+            <div class="text-center mb-5">
+                <div class="hud-text text-neon mb-2">// 03. MISSION CONTROL</div>
+                <h2>TACTICAL <span class="text-violet">DASHBOARD</span></h2>
+            </div>
+            <div class="dashboard-ui">
+                <div class="row">
+                    <div class="col-lg-3 border-end border-info border-opacity-25 p-3">
+                        <div class="hud-text text-muted mb-3">TELEMETRY DATA</div>
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between small font-monospace mb-1"><span>ALTITUDE</span> <span class="text-neon">420m</span></div>
+                            <div class="data-bar"><div class="data-fill" style="width: 70%;"></div></div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between small font-monospace mb-1"><span>BATTERY</span> <span class="text-violet">84%</span></div>
+                            <div class="data-bar"><div class="data-fill bg-violet" style="width: 84%; background: var(--neon-violet); box-shadow: 0 0 10px var(--neon-violet);"></div></div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between small font-monospace mb-1"><span>SIGNAL</span> <span class="text-neon">99%</span></div>
+                            <div class="data-bar"><div class="data-fill" style="width: 99%;"></div></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 p-3 position-relative d-flex align-items-center justify-content-center" style="min-height: 300px; background: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000&auto=format&fit=crop') center/cover; border-radius: 8px;">
+                        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-75 rounded"></div>
+                        <div class="z-2 text-center">
+                            <i class="fa-solid fa-crosshairs text-neon" style="font-size: 3rem; animation: pulseGlow 2s infinite;"></i>
+                            <div class="hud-text text-neon mt-2">TARGET LOCKED</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 border-start border-info border-opacity-25 p-3 d-flex flex-column align-items-center">
+                        <div class="hud-text text-muted mb-3">LIVE RADAR</div>
+                        <div class="radar-box">
+                            <div class="radar-sweep"></div>
+                            <!-- blips -->
+                            <div class="position-absolute rounded-circle bg-white" style="width:4px;height:4px;top:30%;left:40%;box-shadow:0 0 10px #fff;animation: pulseRing 2s infinite;"></div>
+                            <div class="position-absolute rounded-circle bg-danger" style="width:4px;height:4px;top:70%;left:60%;box-shadow:0 0 10px red;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. PROCESS TIMELINE -->
+    <section class="py-5 mt-5">
+        <div class="container reveal">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=800&auto=format&fit=crop" class="img-fluid rounded glass-panel" style="mix-blend-mode: luminosity;" alt="Drone Process">
+                </div>
+                <div class="col-lg-6 pl-lg-5">
+                    <div class="hud-text text-violet mb-2">// LAUNCH SEQUENCE</div>
+                    <h2 class="mb-5">AUTONOMOUS <span class="text-neon">PROTOCOL</span></h2>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item timeline-trigger">
+                            <h5 class="text-neon">01. INITIALIZE</h5>
+                            <p class="text-muted font-monospace small">AI core boot and connection to satellite uplink.</p>
+                        </div>
+                        <div class="timeline-item timeline-trigger">
+                            <h5 class="text-neon">02. SCAN ENVIRONMENT</h5>
+                            <p class="text-muted font-monospace small">360° LiDAR mapping of surrounding topography.</p>
+                        </div>
+                        <div class="timeline-item timeline-trigger">
+                            <h5 class="text-neon">03. MISSION EXECUTION</h5>
+                            <p class="text-muted font-monospace small">Pre-programmed flight path engaged with dynamic obstacle avoidance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. MASSIVE CTA -->
+    <section id="cta" class="mt-5 text-center reveal">
+        <img src="https://images.unsplash.com/photo-1527977966376-1c8408f9f108?q=80&w=1000&auto=format&fit=crop" class="cta-drone" alt="Drone Silhouette">
+        <div class="container position-relative z-3">
+            <div class="hud-text text-violet mb-3">// SECURE YOUR AIRSPACE</div>
+            <h1 class="cta-heading mb-4">DOMINATE THE <span class="text-neon">SKY</span></h1>
+            <p class="lead text-muted mx-auto mb-5 font-monospace" style="max-width: 600px;">Deploy the world's most advanced autonomous aerial systems. Contact our tactical division for fleet pricing.</p>
+            <a href="#" class="btn-premium px-5 py-3" style="font-size: 1.2rem;">INITIATE ORDER</a>
+        </div>
+    </section>
+
+    <!-- 13. FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4">
+                    <h4 class="navbar-brand mb-3"><i class="fa-solid fa-plane-up text-neon me-2"></i>SKYFORGE</h4>
+                    <p class="text-muted font-monospace small">Leading the revolution in autonomous aerial cinematography and tactical observation systems.</p>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h6 class="text-white mb-3 font-display">MODELS</h6>
+                    <ul class="text-muted font-monospace small lh-lg">
+                        <li><a href="#" class="nav-link p-0">Cinematic X1</a></li>
+                        <li><a href="#" class="nav-link p-0">Falcon Pro</a></li>
+                        <li><a href="#" class="nav-link p-0">Stealth V8</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h6 class="text-white mb-3 font-display">COMPANY</h6>
+                    <ul class="text-muted font-monospace small lh-lg">
+                        <li><a href="#" class="nav-link p-0">About Us</a></li>
+                        <li><a href="#" class="nav-link p-0">Technology</a></li>
+                        <li><a href="#" class="nav-link p-0">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h6 class="text-white mb-3 font-display">ENCRYPTED COMM LINK</h6>
+                    <div class="social-icons">
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#"><i class="fa-brands fa-github"></i></a>
+                        <a href="#"><i class="fa-brands fa-discord"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-top border-secondary pt-3 text-center text-muted font-monospace small">
+                &copy; 2026 SKYFORGE AEROSPACE. ALL SYSTEMS NOMINAL.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Vanilla JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Preloader Logic
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                preloader.style.opacity = '0';
+                setTimeout(() => { preloader.style.display = 'none'; }, 800);
+            }, 2000);
+
+            // 2. Parallax Effect for Hero
+            document.addEventListener('mousemove', (e) => {
+                const elements = document.querySelectorAll('.parallax-element');
+                const x = (window.innerWidth - e.pageX);
+                const y = (window.innerHeight - e.pageY);
+
+                elements.forEach(el => {
+                    const speed = el.getAttribute('data-speed');
+                    el.style.transform = `translateX(${x * speed}px) translateY(${y * speed}px)`;
+                });
+            });
+
+            // 3. Scroll Reveal & Navbar Glass Effect
+            const reveals = document.querySelectorAll('.reveal');
+            const timelineItems = document.querySelectorAll('.timeline-trigger');
+            const navbar = document.querySelector('.navbar-glass');
+
+            const scrollOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, scrollOptions);
+
+            reveals.forEach(el => scrollObserver.observe(el));
+            timelineItems.forEach((el, index) => {
+                // Staggered activation for timeline
+                setTimeout(() => scrollObserver.observe(el), index * 200);
+            });
+
+            window.addEventListener('scroll', () => {
+                // Navbar background tighten on scroll
+                if (window.scrollY > 50) {
+                    navbar.style.background = 'rgba(3, 5, 8, 0.95)';
+                    navbar.style.borderBottom = '1px solid rgba(0, 243, 255, 0.3)';
+                } else {
+                    navbar.style.background = 'rgba(3, 5, 8, 0.7)';
+                    navbar.style.borderBottom = '1px solid rgba(0, 243, 255, 0.1)';
+                }
+            });
+
+            // 4. 3D Tilt Effect on Showcase Cards
+            const tiltCards = document.querySelectorAll('.tilt-card');
+            tiltCards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -10;
+                    const rotateY = ((x - centerX) / centerX) * 10;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+                    card.style.transition = `transform 0.5s ease`;
+                });
+                
+                card.addEventListener('mouseenter', () => {
+                    card.style.transition = `none`;
+                });
+            });
+
+            // 5. Animated Counters
+            const counters = document.querySelectorAll('.counter');
+            const counterObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = +entry.target.getAttribute('data-target');
+                        let count = 0;
+                        const updateCount = () => {
+                            const inc = target / 50; 
+                            if (count < target) {
+                                count += inc;
+                                entry.target.innerText = Math.ceil(count);
+                                setTimeout(updateCount, 40);
+                            } else {
+                                entry.target.innerText = target;
+                            }
+                        };
+                        updateCount();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            counters.forEach(counter => counterObserver.observe(counter));
+        });
+    </script>
+</body>
+</html>

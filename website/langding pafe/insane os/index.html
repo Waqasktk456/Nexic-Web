@@ -1,0 +1,344 @@
+<!-- /index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS // Cyber Luxury Agency</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <!-- Background Systems -->
+    <div class="system-noise"></div>
+    <div class="cyber-grid"></div>
+    <div class="ambient-glows">
+        <div class="glow glow-cyan"></div>
+        <div class="glow glow-purple"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <div class="nav-brand">NEXUS_OS<span class="blink">_</span></div>
+        <div class="nav-links">
+            <a href="#services" class="hover-target" data-hover="SERVICES">SERVICES</a>
+            <a href="#portfolio" class="hover-target" data-hover="SYSTEM">SYSTEM</a>
+            <a href="#pricing" class="hover-target" data-hover="ACCESS">ACCESS</a>
+        </div>
+        <div class="nav-status">SYS.ONLINE <div class="status-dot"></div></div>
+    </nav>
+
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+
+            <!-- 1. FUTURISTIC HERO EXPERIENCE -->
+            <section id="hero" class="hero-section">
+                <div class="holographic-rings">
+                    <div class="ring ring-1"></div>
+                    <div class="ring ring-2"></div>
+                    <div class="ring ring-3"></div>
+                </div>
+                <div class="hero-content">
+                    <p class="hero-label tracking-in">INITIATING CREATIVE PROTOCOL v2.4</p>
+                    <h1 class="hero-title glitch-text" data-text="NEXT_GEN">NEXT_GEN</h1>
+                    <h1 class="hero-title stroke-text">EXPERIENCES</h1>
+                    <p class="hero-desc fade-in-up">Merging Cyberpunk aesthetics with Apple Vision spatial computing. Building the architectural foundations of tomorrow's digital reality.</p>
+                    <div class="cta-group fade-in-up">
+                        <button class="cyber-btn hover-target">
+                            <span class="btn-text">INITIALIZE PROJECT</span>
+                            <span class="btn-glitch"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="scroll-indicator">
+                    <div class="mouse">
+                        <div class="wheel"></div>
+                    </div>
+                    <span>SCROLL TO DECRYPT</span>
+                </div>
+            </section>
+
+            <!-- 2. INTERACTIVE AGENCY TERMINAL -->
+            <section id="terminal" class="terminal-section">
+                <div class="glass-panel terminal-window">
+                    <div class="terminal-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        <span class="term-title">nexus@admin: ~/core/systems</span>
+                    </div>
+                    <div class="terminal-body" id="term-output">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. SERVICES AS FLOATING MODULES -->
+            <section id="services" class="services-section">
+                <div class="section-header">
+                    <h2>CORE <span class="neon-text">MODULES</span></h2>
+                    <p>Executing high-level digital directives.</p>
+                </div>
+                <div class="services-orbit">
+                    <div class="center-core">
+                        <div class="core-pulse"></div>
+                        <span>NEXUS_CORE</span>
+                    </div>
+                    <!-- Modules populated by JS for precise orbit calculations -->
+                    <div class="service-module hover-target" data-title="Brand Systems">01 // BRAND</div>
+                    <div class="service-module hover-target" data-title="AI Experiences">02 // AI_EXP</div>
+                    <div class="service-module hover-target" data-title="Motion Graphics">03 // MOTION</div>
+                    <div class="service-module hover-target" data-title="3D Web Design">04 // 3D_WEB</div>
+                    <div class="service-module hover-target" data-title="Development">05 // DEV</div>
+                    <div class="service-module hover-target" data-title="Digital Strategy">06 // STRAT</div>
+                </div>
+            </section>
+
+            <!-- 4. IMMERSIVE PORTFOLIO SYSTEM -->
+            <section id="portfolio" class="portfolio-section">
+                <div class="section-header fixed-header">
+                    <h2>ARCHIVED <span class="neon-text">REALITIES</span></h2>
+                </div>
+                <div class="portfolio-scroll-wrapper">
+                    <div class="portfolio-track">
+                        <div class="portfolio-item hover-target">
+                            <div class="p-image img-1"></div>
+                            <div class="p-content glass-panel">
+                                <h3>NEURAL NET</h3>
+                                <p>AI Dashboard Interface</p>
+                            </div>
+                        </div>
+                        <div class="portfolio-item hover-target">
+                            <div class="p-image img-2"></div>
+                            <div class="p-content glass-panel">
+                                <h3>SYNTH CITY</h3>
+                                <p>Immersive 3D Experience</p>
+                            </div>
+                        </div>
+                        <div class="portfolio-item hover-target">
+                            <div class="p-image img-3"></div>
+                            <div class="p-content glass-panel">
+                                <h3>VOID COMMERCE</h3>
+                                <p>Next-Gen Retail Platform</p>
+                            </div>
+                        </div>
+                        <div class="portfolio-item hover-target">
+                            <div class="p-image img-4"></div>
+                            <div class="p-content glass-panel">
+                                <h3>HOLO_BRAND</h3>
+                                <p>Spatial Identity System</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. AI CONTROL CENTER -->
+            <section id="ai-center" class="ai-section">
+                <div class="dashboard-grid">
+                    <div class="dash-panel glass-panel span-2">
+                        <h4>NEURAL_TRAFFIC</h4>
+                        <div class="graph-container">
+                            <svg class="data-line" viewBox="0 0 500 100" preserveAspectRatio="none">
+                                <path d="M0,50 Q50,10 100,50 T200,50 T300,20 T400,80 T500,40" fill="none" stroke="url(#cyan-grad)" stroke-width="3"/>
+                                <defs>
+                                    <linearGradient id="cyan-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#00f3ff" stop-opacity="0.2" />
+                                        <stop offset="50%" stop-color="#00f3ff" stop-opacity="1" />
+                                        <stop offset="100%" stop-color="#bd00ff" stop-opacity="1" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="dash-panel glass-panel">
+                        <h4>SYSTEM_LOAD</h4>
+                        <div class="circular-progress">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" class="bg-circle"/>
+                                <circle cx="50" cy="50" r="40" class="progress-circle"/>
+                            </svg>
+                            <span class="prog-text">84%</span>
+                        </div>
+                    </div>
+                    <div class="dash-panel glass-panel">
+                        <h4>ACTIVE_NODES</h4>
+                        <ul class="node-list">
+                            <li><span>TOKYO_01</span> <span class="status green">ON</span></li>
+                            <li><span>NY_CORE</span> <span class="status green">ON</span></li>
+                            <li><span>LDN_SUB</span> <span class="status yellow">SYNC</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. IMMERSIVE STORYTELLING SECTION -->
+            <section id="storytelling" class="story-section">
+                <div class="story-container">
+                    <div class="story-text-wrap">
+                        <div class="story-line">We do not build websites.</div>
+                        <div class="story-line">We architect <span class="neon-text">digital dimensions</span>.</div>
+                        <div class="story-line">Forged in the intersection of</div>
+                        <div class="story-line">design, code, and <span class="purple-text">cybernetics</span>.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. TEAM SECTION -->
+            <section id="team" class="team-section">
+                <div class="section-header">
+                    <h2>OPERATIVES</h2>
+                </div>
+                <div class="team-grid">
+                    <div class="team-card glass-panel hover-target">
+                        <div class="scanline"></div>
+                        <div class="t-image t-1"></div>
+                        <div class="t-info">
+                            <h4>K. VOLT</h4>
+                            <p>LEAD_ARCHITECT</p>
+                            <div class="cyber-barcode">||| || ||| | ||</div>
+                        </div>
+                    </div>
+                    <div class="team-card glass-panel hover-target">
+                        <div class="scanline"></div>
+                        <div class="t-image t-2"></div>
+                        <div class="t-info">
+                            <h4>R. SYNTH</h4>
+                            <p>HOLO_DESIGNER</p>
+                            <div class="cyber-barcode">| ||| | || |||</div>
+                        </div>
+                    </div>
+                    <div class="team-card glass-panel hover-target">
+                        <div class="scanline"></div>
+                        <div class="t-image t-3"></div>
+                        <div class="t-info">
+                            <h4>J. NEON</h4>
+                            <p>MOTION_ENGINEER</p>
+                            <div class="cyber-barcode">|| ||| | ||| |</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. TESTIMONIALS -->
+            <section id="testimonials" class="testimonials-section">
+                <div class="testimonial-track">
+                    <div class="test-card glass-panel">
+                        <div class="quote-mark">"</div>
+                        <p>NEXUS transformed our platform into a spatial computing masterpiece. The metrics are off the charts.</p>
+                        <h5>- CORP_DIR_01</h5>
+                    </div>
+                    <div class="test-card glass-panel">
+                        <div class="quote-mark">"</div>
+                        <p>An entirely new paradigm of web interaction. They delivered a future we didn't know was possible.</p>
+                        <h5>- OMEGA_FOUNDER</h5>
+                    </div>
+                    <div class="test-card glass-panel">
+                        <div class="quote-mark">"</div>
+                        <p>The only agency operating on a 2040 wavelength. Exceptional cyber-luxury execution.</p>
+                        <h5>- NOVA_CEO</h5>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. PRICING SYSTEM -->
+            <section id="pricing" class="pricing-section">
+                <div class="section-header">
+                    <h2>ACCESS <span class="neon-text">TIERS</span></h2>
+                </div>
+                <div class="pricing-grid">
+                    <div class="price-card glass-panel hover-target">
+                        <h3>STANDARD_NODE</h3>
+                        <div class="price">$15K</div>
+                        <ul>
+                            <li>Advanced UI/UX</li>
+                            <li>WebGL Intro</li>
+                            <li>GSAP Motion Core</li>
+                        </ul>
+                        <button class="cyber-btn-outline">SELECT</button>
+                    </div>
+                    <div class="price-card glass-panel premium hover-target">
+                        <div class="glow-border"></div>
+                        <h3>CYBER_LUXURY</h3>
+                        <div class="price">$45K</div>
+                        <ul>
+                            <li>Spatial 3D Experiences</li>
+                            <li>Custom Shader Development</li>
+                            <li>Full Cinematic Motion</li>
+                            <li>AI Integrations</li>
+                        </ul>
+                        <button class="cyber-btn">SELECT</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 10. CONTACT EXPERIENCE -->
+            <section id="contact" class="contact-section">
+                <div class="contact-wrapper glass-panel">
+                    <h2>ESTABLISH <span class="purple-text">UPLINK</span></h2>
+                    <form class="cyber-form">
+                        <div class="input-group">
+                            <input type="text" required placeholder=" ">
+                            <label>YOUR_IDENTIFIER</label>
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="input-group">
+                            <input type="email" required placeholder=" ">
+                            <label>COMM_CHANNEL</label>
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="input-group">
+                            <textarea required placeholder=" " rows="4"></textarea>
+                            <label>DATA_PAYLOAD</label>
+                            <div class="input-line"></div>
+                        </div>
+                        <button type="submit" class="cyber-btn hover-target">TRANSMIT DATA</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 11. MASSIVE FUTURISTIC FOOTER -->
+            <footer id="footer" class="footer-section">
+                <div class="footer-grid">
+                    <div class="f-col">
+                        <h3>NEXUS_OS</h3>
+                        <p>Architecting the digital future, one pixel at a time.</p>
+                    </div>
+                    <div class="f-col">
+                        <h4>SYSTEM_LINKS</h4>
+                        <a href="#" class="hover-target">INDEX</a>
+                        <a href="#" class="hover-target">MODULES</a>
+                        <a href="#" class="hover-target">DATABANKS</a>
+                    </div>
+                    <div class="f-col">
+                        <h4>ENCRYPTED_COMMS</h4>
+                        <a href="#" class="hover-target">TWITTER / X</a>
+                        <a href="#" class="hover-target">INSTAGRAM</a>
+                        <a href="#" class="hover-target">DISCORD</a>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <h1 class="giant-footer-text stroke-text">SYSTEM_HALTED</h1>
+                    <div class="footer-meta">
+                        <span>© 2040 NEXUS DIGITAL AGENCY. ALL RIGHTS RESERVED.</span>
+                        <span>LAT_45.92 // LONG_12.44</span>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+
+    <!-- GSAP & Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+</body>
+</html>

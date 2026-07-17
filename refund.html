@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refund Policy | Nexic Web</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables - Unified Nexic Web Design System */
+        :root {
+            --bg-base: #05050A;
+            --text-primary: #F3F4F6;
+            --text-secondary: #9CA3AF;
+            --accent-cyan: #00F0FF;
+            --accent-purple: #8A2BE2;
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.06);
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Gradients */
+        .bg-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: -1;
+            animation: float 20s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
+
+        .glow-cyan {
+            background: var(--accent-cyan);
+            top: -10%;
+            left: -10%;
+        }
+
+        .glow-purple {
+            background: var(--accent-purple);
+            bottom: -10%;
+            right: -10%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100px, 100px) scale(1.2); }
+        }
+
+        /* Layout & Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .last-updated {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(0, 240, 255, 0.05);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--accent-cyan);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* Content Sections & Glassmorphism */
+        .policy-content {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            padding-bottom: 100px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: var(--glass-hover);
+            border-color: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5),
+                        0 0 20px rgba(0, 240, 255, 0.05);
+        }
+
+        .glass-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .glass-card:hover h2 {
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card h2::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover h2::before {
+            background: var(--accent-purple);
+            box-shadow: 0 0 10px var(--accent-purple);
+        }
+
+        .glass-card p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .glass-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .glass-card ul {
+            list-style-type: none;
+            margin-top: 16px;
+        }
+
+        .glass-card ul li {
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .glass-card ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+            font-size: 0.9rem;
+        }
+
+        .link-text {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .link-text:hover {
+            border-bottom-color: var(--accent-cyan);
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--glass-border);
+            padding: 40px 0;
+            text-align: center;
+            background: rgba(5, 5, 10, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .copyright {
+            color: #6B7280;
+            font-size: 0.875rem;
+        }
+
+        /* Scroll Animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .glass-card { padding: 30px 24px; }
+            .hero { padding: 80px 0 40px; }
+            .footer-links { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow glow-cyan"></div>
+    <div class="bg-glow glow-purple"></div>
+
+    <div class="container">
+        <header class="hero fade-up">
+            <h1>Refund Policy</h1>
+            <p>Transparent and fair refund guidelines for Nexic Web products and services.</p>
+            <div class="last-updated">Last Updated: June 2026</div>
+        </header>
+
+        <main class="policy-content">
+            
+            <section class="glass-card fade-up">
+                <h2>1. Eligibility for Refund</h2>
+                <p>At Nexic Web, we maintain a standard of uncompromising quality. Due to the digital and instantly accessible nature of our premium templates and design assets, refunds are only issued under highly specific, qualified conditions. Buyers must demonstrate that the product contains a critical structural or technical flaw that prevents its advertised usage.</p>
+            </section>
+
+            <section class="glass-card fade-up">
+                <h2>2. Non-Refundable Items</h2>
+                <p>To protect our intellectual property and maintain fairness, the following purchases are strictly non-refundable:</p>
+                <ul>
+                    <li><strong>Downloaded Templates:</strong> Any digital template, UI kit, or asset file that has been successfully downloaded.</li>
+                    <li><strong>Custom Agency Work:</strong> Milestone payments for bespoke web design or development services that have already been executed and delivered.</li>
+                    <li><strong>Used Digital Assets:</strong> Products that have already been deployed onto a live server, modified, or integrated into a commercial project.</li>
+                    <li><strong>Change of Mind:</strong> Purchases made by mistake or situations where the buyer no longer needs the product after downloading.</li>
+                </ul>
+            </section>
+
+            <section class="glass-card fade-up">
+                <h2>3. Refund Process</h2>
+                <p>If you believe your purchase meets our refund eligibility criteria, you must initiate a formal request. Our resolution process is designed to be fair and transparent:</p>
+                <ul>
+                    <li>Contact our support team within 14 days of your initial purchase.</li>
+                    <li>Provide your order number, receipt, and detailed technical reasoning (including screenshots or logs) outlining why the product is defective.</li>
+                    <li>Our engineering team will review the claim and attempt to resolve the issue within <strong>3 to 7 business days</strong>. If the defect cannot be rectified, a full refund will be authorized.</li>
+                </ul>
+            </section>
+
+            <section class="glass-card fade-up">
+                <h2>4. Exceptions</h2>
+                <p>We recognize that isolated system anomalies can occur. Nexic Web will automatically grant a full refund, circumventing the standard review process, in the following scenarios:</p>
+                <ul>
+                    <li><strong>Duplicate Payments:</strong> If our payment gateway accidentally charges you multiple times for a single transaction.</li>
+                    <li><strong>Complete File Corruption:</strong> If the provided download link yields an empty or fundamentally corrupted `.zip` archive, and our team cannot provide a working copy within 48 hours.</li>
+                </ul>
+            </section>
+
+            <section class="glass-card fade-up">
+                <h2>5. Chargebacks Policy</h2>
+                <p>We view unauthorized chargebacks as a severe breach of trust. Filing a fraudulent chargeback or dispute with your bank or credit card provider, without first attempting to resolve the issue through our official support channels, will result in immediate consequences.</p>
+                <p>Nexic Web reserves the right to permanently terminate your account, revoke all active product licenses, and block your IP address from future purchases across our network.</p>
+            </section>
+
+            <section class="glass-card fade-up">
+                <h2>6. Contact Support</h2>
+                <p>Our priority is ensuring your success with our premium digital products. If you are experiencing technical difficulties, please reach out directly—our team is here to help before a refund becomes necessary.</p>
+                <ul>
+                    <li><strong>Email Support:</strong> <a href="mailto:support@nexicweb.com" class="link-text">support@nexicweb.com</a></li>
+                    <li><strong>WhatsApp Resolution Center:</strong> <a href="#" class="link-text">+1 (555) 019-2026</a></li>
+                </ul>
+            </section>
+
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Careers</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <div class="copyright">
+            &copy; 2026 Nexic Web. All rights reserved. Premium Digital Agency.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const fadeElements = document.querySelectorAll('.fade-up');
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            fadeElements.forEach(element => observer.observe(element));
+        });
+    </script>
+</body>
+</html>

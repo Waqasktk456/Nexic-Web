@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS PRO // Ultimate SaaS Infrastructure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/comic-sans');
+
+        :root {
+            --neon-purple: #a855f7;
+            --neon-cyan: #22d3ee;
+            --neon-pink: #f472b6;
+            --glass: rgba(13, 12, 24, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            background-color: #050508;
+            color: #ffffff;
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* MASSIVE ANIMATED BACKGROUND */
+        .bg-engine {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(168, 85, 247, 0.15), transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(34, 211, 238, 0.15), transparent 40%),
+                        radial-gradient(circle at 50% 50%, rgba(244, 114, 182, 0.05), transparent 50%);
+            z-index: -1;
+        }
+
+        /* GRID OVERLAY */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+        }
+
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .glass:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .nav-link {
+            @apply flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-400 transition-all duration-300 relative overflow-hidden;
+        }
+
+        .nav-link.active {
+            @apply text-white bg-white/5 border border-white/10;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+        }
+
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 20%; bottom: 20%; width: 4px;
+            background: var(--neon-purple);
+            border-radius: 0 4px 4px 0;
+            box-shadow: 0 0 15px var(--neon-purple);
+        }
+
+        /* PAGE ENGINE */
+        .page-view {
+            display: none;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .page-view.active { display: block; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .neon-text-purple { text-shadow: 0 0 10px rgba(168, 85, 247, 0.5); }
+        .neon-text-cyan { text-shadow: 0 0 10px rgba(34, 211, 238, 0.5); }
+    </style>
+</head>
+<body>
+    <div class="bg-engine"></div>
+    <div class="bg-grid"></div>
+
+    <div class="flex h-screen overflow-hidden p-4 gap-4">
+        
+        <!-- SIDEBAR: ULTRA PREMIUM 3D STYLE -->
+        <aside class="w-80 glass flex flex-col p-6 h-full">
+            <div class="flex items-center gap-4 mb-12 px-2">
+                <div class="w-12 h-12 bg-gradient-to-br from-purple-600 via-pink-500 to-cyan-400 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/20 rotate-3">
+                    <i data-lucide="layers" class="text-white w-7 h-7"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black tracking-tighter leading-none">NEXUS<span class="text-purple-500">.</span></h1>
+                    <p class="text-[10px] text-gray-500 font-bold tracking-[0.2em] uppercase">Enterprise OS</p>
+                </div>
+            </div>
+
+            <nav class="space-y-2 flex-1 overflow-y-auto pr-2" id="main-nav">
+                <button onclick="router('dash')" class="nav-link active w-full" data-target="dash"><i data-lucide="layout-grid"></i> <span>Dashboard</span></button>
+                <button onclick="router('stats')" class="nav-link w-full" data-target="stats"><i data-lucide="activity"></i> <span>Live Analytics</span></button>
+                <button onclick="router('inventory')" class="nav-link w-full" data-target="inventory"><i data-lucide="package"></i> <span>Order Hub</span></button>
+                <button onclick="router('users')" class="nav-link w-full" data-target="users"><i data-lucide="user-plus"></i> <span>Customer Grid</span></button>
+                <button onclick="router('messages')" class="nav-link w-full" data-target="messages"><i data-lucide="message-square"></i> <span>Neural Chat</span></button>
+                <button onclick="router('config')" class="nav-link w-full" data-target="config"><i data-lucide="sliders"></i> <span>Global Config</span></button>
+            </nav>
+
+            <div class="mt-8 pt-6 border-t border-white/5">
+                <a href="https://wa.me/1234567890?text=Premium%20Membership%20Inquiry" target="_blank" 
+                   class="group flex items-center justify-center gap-3 w-full py-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 rounded-2xl text-cyan-400 hover:scale-[1.02] transition-all duration-300">
+                    <i data-lucide="zap" class="fill-cyan-400 group-hover:animate-pulse"></i>
+                    <span class="font-black text-xs uppercase tracking-widest">Upgrade to Pro</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN VIEWPORT -->
+        <div class="flex-1 flex flex-col gap-4 overflow-hidden">
+            
+            <!-- TOP NAV -->
+            <header class="h-24 glass w-full flex items-center justify-between px-10 shrink-0">
+                <div class="flex flex-col">
+                    <h2 id="view-title" class="text-2xl font-black uppercase tracking-tight neon-text-purple">System Overview</h2>
+                    <p id="view-subtitle" class="text-xs text-gray-500 font-bold">Node: Bangladesh-Alpha-01 // Latency: 14ms</p>
+                </div>
+
+                <div class="flex items-center gap-8">
+                    <div class="hidden xl:flex items-center gap-4 bg-white/5 px-6 py-3 rounded-2xl border border-white/5">
+                        <i data-lucide="search" class="text-gray-500" size="18"></i>
+                        <input type="text" placeholder="Command Search..." class="bg-transparent border-none focus:outline-none text-sm w-48 font-bold">
+                    </div>
+                    <div class="flex items-center gap-4 border-l border-white/10 pl-8">
+                        <div class="text-right">
+                            <p class="text-xs font-black uppercase">Zayn Malik</p>
+                            <span class="text-[9px] bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded border border-purple-500/30 uppercase font-black">Super Admin</span>
+                        </div>
+                        <div class="w-12 h-12 rounded-2xl overflow-hidden border-2 border-purple-500/30 p-1">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="w-full h-full rounded-xl bg-white/5" alt="Avatar">
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT ENGINE -->
+            <div class="flex-1 overflow-y-auto pr-2 custom-scroll">
+                
+                <!-- 1. DASHBOARD -->
+                <div id="page-dash" class="page-view active space-y-6 pb-10">
+                    <!-- Stat Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="glass p-8 relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity"><i data-lucide="trending-up" size="64"></i></div>
+                            <p class="text-gray-500 text-xs font-black uppercase tracking-widest">Gross Volume</p>
+                            <h3 class="text-4xl font-black mt-2 text-gradient font-sans">$842,150</h3>
+                            <div class="flex items-center gap-2 mt-4 text-emerald-400 font-bold text-xs">
+                                <i data-lucide="arrow-up-right" size="14"></i> +24% from baseline
+                            </div>
+                        </div>
+                        <div class="glass p-8 border-cyan-500/10">
+                            <p class="text-gray-500 text-xs font-black uppercase tracking-widest">Active Threads</p>
+                            <h3 class="text-4xl font-black mt-2 neon-text-cyan">1,204</h3>
+                            <div class="mt-4 flex gap-1">
+                                <div class="h-1 flex-1 bg-cyan-500 rounded-full shadow-[0_0_10px_#22d3ee]"></div>
+                                <div class="h-1 flex-1 bg-cyan-500 rounded-full opacity-50"></div>
+                                <div class="h-1 flex-1 bg-white/10 rounded-full"></div>
+                            </div>
+                        </div>
+                        <div class="glass p-8">
+                            <p class="text-gray-500 text-xs font-black uppercase tracking-widest">Neural Load</p>
+                            <h3 class="text-4xl font-black mt-2">82<span class="text-lg">%</span></h3>
+                            <div class="mt-4 flex items-center gap-2 text-pink-400 font-bold text-xs">
+                                <i data-lucide="alert-circle" size="14"></i> High demand detected
+                            </div>
+                        </div>
+                        <div class="glass p-8">
+                            <p class="text-gray-500 text-xs font-black uppercase tracking-widest">Uptime Score</p>
+                            <h3 class="text-4xl font-black mt-2">99.9</h3>
+                            <p class="text-gray-500 text-[10px] mt-4 font-bold uppercase">Node: Cluster-7 High-Availability</p>
+                        </div>
+                    </div>
+
+                    <!-- Complex Charts -->
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                        <div class="glass p-8 xl:col-span-2">
+                            <div class="flex justify-between items-center mb-8">
+                                <h4 class="font-black uppercase tracking-widest">Network Growth</h4>
+                                <div class="flex gap-4">
+                                    <div class="flex items-center gap-2 text-[10px] uppercase font-bold text-gray-500">
+                                        <span class="w-3 h-3 rounded-full bg-purple-500"></span> Inbound
+                                    </div>
+                                    <div class="flex items-center gap-2 text-[10px] uppercase font-bold text-gray-500">
+                                        <span class="w-3 h-3 rounded-full bg-cyan-400"></span> Outbound
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="h-[400px] w-full">
+                                <canvas id="chartMain"></canvas>
+                            </div>
+                        </div>
+                        <div class="glass p-8 flex flex-col">
+                            <h4 class="font-black uppercase tracking-widest mb-8 text-center">Global Reach</h4>
+                            <div class="flex-1 flex items-center justify-center">
+                                <div class="relative w-56 h-56 rounded-full border border-white/5 flex items-center justify-center p-8">
+                                    <div class="absolute inset-0 border-2 border-dashed border-purple-500/20 rounded-full animate-[spin_20s_linear_infinite]"></div>
+                                    <canvas id="chartRadial"></canvas>
+                                </div>
+                            </div>
+                            <div class="mt-8 space-y-4">
+                                <div class="flex justify-between text-[10px] font-bold uppercase">
+                                    <span>North America</span>
+                                    <span class="text-cyan-400">62%</span>
+                                </div>
+                                <div class="flex justify-between text-[10px] font-bold uppercase">
+                                    <span>Asia Pacific</span>
+                                    <span class="text-purple-400">28%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. ANALYTICS -->
+                <div id="page-stats" class="page-view space-y-6">
+                    <div class="glass p-10 text-center">
+                        <div class="w-24 h-24 bg-cyan-500/10 rounded-full mx-auto flex items-center justify-center mb-6">
+                            <i data-lucide="radio" class="text-cyan-400 w-12 h-12"></i>
+                        </div>
+                        <h3 class="text-3xl font-black uppercase tracking-widest mb-4">Neural Data Stream</h3>
+                        <p class="text-gray-500 max-w-lg mx-auto mb-8">Full packet inspection and real-time behavioral analytics. Connecting to decentralized nodes...</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
+                            <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                <p class="text-[10px] uppercase text-gray-500 font-bold">Packets/Sec</p>
+                                <p class="text-xl font-black">4.2m</p>
+                            </div>
+                            <div class="bg-white/5 p-4 rounded-xl border border-white/5">
+                                <p class="text-[10px] uppercase text-gray-500 font-bold">Encryption</p>
+                                <p class="text-xl font-black text-emerald-400">AES-256</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. INVENTORY/ORDERS -->
+                <div id="page-inventory" class="page-view space-y-6">
+                    <div class="glass overflow-hidden">
+                        <table class="w-full text-left">
+                            <thead class="bg-white/5 border-b border-white/10 uppercase text-[10px] font-black tracking-widest text-gray-500">
+                                <tr>
+                                    <th class="p-6">Transaction ID</th>
+                                    <th class="p-6">Entity</th>
+                                    <th class="p-6">Type</th>
+                                    <th class="p-6">Severity</th>
+                                    <th class="p-6 text-right">Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <tr class="border-b border-white/5 hover:bg-white/5 transition-all group">
+                                    <td class="p-6 font-mono text-purple-400">#TXN-9981-A</td>
+                                    <td class="p-6 font-bold">Cloud-Flare API Proxy</td>
+                                    <td class="p-6 text-gray-500">Subscription</td>
+                                    <td class="p-6"><span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 rounded-full text-[10px] font-black uppercase border border-emerald-500/20">Operational</span></td>
+                                    <td class="p-6 text-right font-black text-lg">$450.00</td>
+                                </tr>
+                                <tr class="border-b border-white/5 hover:bg-white/5 transition-all">
+                                    <td class="p-6 font-mono text-purple-400">#TXN-9982-B</td>
+                                    <td class="p-6 font-bold">DDoS Mitigation Layer</td>
+                                    <td class="p-6 text-gray-500">Security Purchase</td>
+                                    <td class="p-6"><span class="px-3 py-1 bg-pink-500/10 text-pink-400 rounded-full text-[10px] font-black uppercase border border-pink-500/20">Critical</span></td>
+                                    <td class="p-6 text-right font-black text-lg">$1,299.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 4. USERS -->
+                <div id="page-users" class="page-view">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        <!-- User Card -->
+                        <div class="glass p-6 text-center group">
+                            <div class="relative w-24 h-24 mx-auto mb-4">
+                                <div class="absolute inset-0 bg-gradient-to-tr from-purple-500 to-cyan-400 rounded-full animate-pulse opacity-20"></div>
+                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user1" class="w-full h-full rounded-full border-2 border-white/10 relative z-10" alt="">
+                            </div>
+                            <h4 class="font-black text-lg">Elon Tusk</h4>
+                            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Enterprise Dev</p>
+                            <div class="mt-6 flex justify-center gap-2">
+                                <button class="p-2 bg-white/5 rounded-lg border border-white/5 text-gray-400 hover:text-white transition-all"><i data-lucide="mail" size="16"></i></button>
+                                <button class="p-2 bg-white/5 rounded-lg border border-white/5 text-gray-400 hover:text-white transition-all"><i data-lucide="shield" size="16"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        // ROUTER ENGINE
+        function router(target) {
+            // Update Sidebar
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if(link.getAttribute('data-target') === target) link.classList.add('active');
+            });
+
+            // Switch Page
+            document.querySelectorAll('.page-view').forEach(page => {
+                page.classList.remove('active');
+            });
+            const activePage = document.getElementById(`page-${target}`);
+            if(activePage) activePage.classList.add('active');
+
+            // Update UI Labels
+            const titles = {
+                'dash': 'System Overview',
+                'stats': 'Neural Data Stream',
+                'inventory': 'Financial Transaction Ledger',
+                'users': 'Entity Directory',
+                'messages': 'Secure Neural Link',
+                'config': 'Core Kernel Settings'
+            };
+            document.getElementById('view-title').innerText = titles[target];
+        }
+
+        // CHARTS ENGINE
+        Chart.defaults.color = '#64748b';
+        Chart.defaults.font.family = 'Comic Sans MS';
+
+        // Main Growth Chart
+        const mainCtx = document.getElementById('chartMain').getContext('2d');
+        const purpleGrad = mainCtx.createLinearGradient(0, 0, 0, 400);
+        purpleGrad.addColorStop(0, 'rgba(168, 85, 247, 0.4)');
+        purpleGrad.addColorStop(1, 'rgba(168, 85, 247, 0)');
+
+        new Chart(mainCtx, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                datasets: [{
+                    label: 'Inbound',
+                    data: [65, 59, 80, 81, 56, 95],
+                    borderColor: '#a855f7',
+                    borderWidth: 4,
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: purpleGrad,
+                    pointBackgroundColor: '#a855f7'
+                }, {
+                    label: 'Outbound',
+                    data: [28, 48, 40, 19, 86, 27],
+                    borderColor: '#22d3ee',
+                    borderWidth: 4,
+                    tension: 0.4,
+                    pointBackgroundColor: '#22d3ee'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { color: 'rgba(255,255,255,0.02)' }, border: { display: false } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Radial Reach Chart
+        new Chart(document.getElementById('chartRadial').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [62, 28, 10],
+                    backgroundColor: ['#22d3ee', '#a855f7', '#f472b6'],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                cutout: '85%',
+                responsive: true,
+                plugins: { legend: { display: false } }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cinematic Portfolio</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=Helvetica+Neue:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ========================================
+       GLOBAL & VARIABLES
+       ======================================== */
+    :root {
+      --primary-red: #3b0000;
+      --accent-cream: #f5e6d3;
+      --shadow-dark: #120000;
+      --bg-color: #050000;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--accent-cream);
+      overflow-x: hidden;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Selection Color */
+    ::selection {
+      background: #7a0000;
+      color: var(--accent-cream);
+    }
+
+    /* Typography Utilities */
+    .font-editorial { font-family: 'Bodoni Moda', serif; }
+    .font-sans { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    
+    .text-bloom { text-shadow: 0 0 20px rgba(245, 230, 211, 0.2); }
+    .tracking-widest { letter-spacing: 0.2em; }
+    .tracking-tighter { letter-spacing: -0.05em; }
+
+    /* Cinematic Effects */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 30px 60px rgba(18, 0, 0, 0.8);
+      transform: translateZ(0); /* GPU Acceleration */
+    }
+
+    .hover-glow {
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hover-glow:hover {
+      box-shadow: 0 0 40px rgba(255, 0, 0, 0.15), inset 0 0 20px rgba(160, 0, 0, 0.1);
+      border-color: rgba(160, 0, 0, 0.3);
+    }
+
+    .bg-radial-cinematic {
+      background: radial-gradient(circle at 50% 50%, #3b0000 0%, #120000 40%, #050000 100%);
+    }
+
+    /* ========================================
+       LAYOUT & SECTIONS
+       ======================================== */
+    .container {
+      max-w-width: 1400px;
+      margin: 0 auto;
+      padding: 0 5%;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .grain {
+      position: absolute;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
+      opacity: 0.03;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png');
+    }
+
+    .hero-bg-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 0;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+
+    .hero-bg-text h1 {
+      font-size: 18vw;
+      line-height: 1;
+      color: #1a0000;
+      font-weight: 700;
+    }
+
+    .vertical-labels {
+      position: absolute;
+      left: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      font-size: 0.875rem;
+      letter-spacing: 0.3em;
+      color: var(--accent-cream);
+    }
+
+    .vertical-labels span {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      opacity: 0; /* Animated by GSAP */
+    }
+
+    .hero-center {
+      position: relative;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .split-text {
+      position: absolute;
+      font-size: 8vw;
+      font-weight: 400;
+      z-index: 30;
+      will-change: transform;
+    }
+    .split-text.left { left: 5%; z-index: 10; }
+    .split-text.right { right: 5%; z-index: 30; }
+
+    .portrait-wrapper {
+      position: relative;
+      width: 450px;
+      height: 650px;
+      z-index: 20;
+      will-change: transform, filter, opacity;
+    }
+
+    @media (max-width: 768px) {
+      .portrait-wrapper { width: 320px; height: 480px; }
+      .split-text { display: none; }
+    }
+
+    .portrait-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 40px;
+      filter: drop-shadow(0 20px 50px rgba(59,0,0,0.5));
+      position: relative;
+      z-index: 10;
+    }
+
+    .portrait-shadow-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, var(--bg-color), transparent);
+      z-index: 15;
+      mix-blend-mode: multiply;
+      border-radius: 40px;
+    }
+
+    .portrait-bloom {
+      position: absolute;
+      inset: -40px;
+      background: #7a0000;
+      opacity: 0.2;
+      filter: blur(80px);
+      border-radius: 50%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 30;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: rgba(245, 230, 211, 0.5);
+    }
+
+    /* ABOUT SECTION */
+    .section-spacing {
+      padding: 8rem 0;
+      position: relative;
+      z-index: 20;
+    }
+
+    .philosophy-text {
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.1;
+      margin-bottom: 6rem;
+      max-width: 66%;
+    }
+    @media (max-width: 768px) { .philosophy-text { max-width: 100%; } }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .process-card {
+      padding: 2.5rem;
+      border-radius: 32px;
+      position: relative;
+      overflow: hidden;
+      cursor: crosshair;
+    }
+
+    .process-card .hover-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom right, rgba(59,0,0,0), rgba(122,0,0,0.1));
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    .process-card:hover .hover-bg { opacity: 1; }
+
+    .process-card svg { width: 24px; height: 24px; stroke: #a00000; margin-bottom: 1.5rem; }
+    .process-card h4 { font-size: 1.25rem; font-weight: 500; margin-bottom: 1rem; }
+    .process-card p { font-size: 0.875rem; color: rgba(245, 230, 211, 0.6); line-height: 1.6; }
+
+    /* WORK SECTION (Bento Grid) */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: 400px;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .bento-grid { grid-template-columns: 1fr; grid-auto-rows: 350px; }
+    }
+
+    .work-card {
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .work-card.large { grid-column: span 8; }
+    .work-card.medium { grid-column: span 4; }
+    .work-card.full { grid-column: span 12; height: 500px; justify-content: center; }
+
+    @media (max-width: 768px) {
+      .work-card.large, .work-card.medium, .work-card.full { grid-column: span 1; }
+    }
+
+    .work-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 0;
+    }
+    .work-card:hover img { transform: scale(1.05); }
+
+    .work-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, #050000, transparent);
+      z-index: 10;
+      transition: background 0.7s;
+    }
+    .work-card.full .work-overlay { background: rgba(5,0,0,0.6); }
+    .work-card.full:hover .work-overlay { background: rgba(5,0,0,0.3); }
+
+    .work-content {
+      position: relative;
+      z-index: 20;
+      padding: 2.5rem;
+    }
+    .work-card.full .work-content { padding-left: 4rem; max-width: 500px; }
+
+    .tag {
+      color: #a00000;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .work-title { font-size: clamp(2rem, 3vw, 3rem); margin-bottom: 0.5rem; }
+    .work-card.full .work-title { font-size: clamp(2.5rem, 4vw, 4rem); margin-bottom: 1rem; }
+
+    .btn-explore {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      border-radius: 9999px;
+      color: var(--accent-cream);
+      text-decoration: none;
+      font-size: 0.875rem;
+      margin-top: 1.5rem;
+    }
+    .btn-explore svg { width: 16px; height: 16px; }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      padding-top: 8rem;
+      padding-bottom: 4rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      overflow: hidden;
+    }
+
+    .footer-glow {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 900px;
+      height: 400px;
+      background: #5c0000;
+      opacity: 0.2;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 20;
+    }
+
+    @media (max-width: 768px) {
+      .footer-content { flex-direction: column; text-align: center; gap: 3rem; }
+    }
+
+    .cta-text { font-size: clamp(3rem, 6vw, 6rem); line-height: 1; margin-bottom: 1.5rem; }
+    
+    .contact-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 1.25rem;
+      text-decoration: none;
+      color: var(--accent-cream);
+    }
+    .contact-email .icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.5s;
+    }
+    .contact-email:hover .icon-box { background: #a00000; }
+
+    .qr-box {
+      width: 256px;
+      height: 256px;
+      border-radius: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .qr-pattern {
+      width: 128px;
+      height: 128px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+      margin-bottom: 1rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 4px;
+      padding: 12px;
+    }
+    .qr-dot { background: var(--accent-cream); }
+
+    .bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245, 230, 211, 0.4);
+      position: relative;
+      z-index: 20;
+    }
+    .bottom-bar a { color: inherit; text-decoration: none; transition: color 0.3s; margin-left: 2rem; }
+    .bottom-bar a:hover { color: #a00000; }
+    @media (max-width: 768px) {
+      .bottom-bar { flex-direction: column; gap: 1rem; }
+      .bottom-bar a { margin: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <!-- ========================================
+         1. HERO SECTION
+         ======================================== -->
+    <section class="hero bg-radial-cinematic" id="hero-section">
+      <div class="grain"></div>
+      
+      <!-- Parallax BG Text -->
+      <div class="hero-bg-text gs-bg-text">
+        <h1 class="font-editorial">PORTFOLIO</h1>
+      </div>
+
+      <!-- Vertical Labels -->
+      <div class="vertical-labels">
+        <span class="gs-label">UX</span>
+        <span class="gs-label">UI</span>
+        <span class="gs-label">WEB</span>
+      </div>
+
+      <!-- Center Content -->
+      <div class="hero-center">
+        <div class="split-text left font-editorial text-bloom gs-split-left">DESI</div>
+        
+        <div class="portrait-wrapper gs-portrait">
+          <div class="portrait-bloom"></div>
+          <div class="portrait-shadow-overlay"></div>
+          <img src="https://images.unsplash.com/photo-1600600423621-70c9f4416ae9?q=80&w=1964&auto=format&fit=crop" alt="Cinematic Portrait" />
+        </div>
+
+        <div class="split-text right font-editorial text-bloom gs-split-right">GNER</div>
+      </div>
+
+      <div class="scroll-indicator gs-scroll-ind">SCROLL TO EXPLORE</div>
+    </section>
+
+    <!-- ========================================
+         2. ABOUT & PROCESS
+         ======================================== -->
+    <section class="section-spacing container">
+      <div class="gs-about-text">
+        <div class="tag" style="margin-bottom: 1.5rem;">The Philosophy</div>
+        <p class="philosophy-text font-editorial text-bloom">
+          Designing digital ecosystems that merge <span class="font-editorial" style="color:#a00000; font-style: italic;">luxury aesthetics</span> with relentless functional precision.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <!-- Card 1 -->
+        <div class="process-card glass-panel hover-glow gs-process-card">
+          <div class="hover-bg"></div>
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" /></svg>
+          <h4 class="font-sans">Strategy & UX</h4>
+          <p class="font-sans">Deep architectural mapping and psychological flow optimization.</p>
+        </div>
+        <!-- Card 2 -->
+        <div class="process-card glass-panel hover-glow gs-process-card">
+          <div class="hover-bg"></div>
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+          <h4 class="font-sans">Visual Direction</h4>
+          <p class="font-sans">Cinematic moodboarding, typography scaling, and editorial styling.</p>
+        </div>
+        <!-- Card 3 -->
+        <div class="process-card glass-panel hover-glow gs-process-card">
+          <div class="hover-bg"></div>
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" /></svg>
+          <h4 class="font-sans">Motion & Polish</h4>
+          <p class="font-sans">120FPS GPU-accelerated micro-interactions and glassmorphic depth.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================
+         3. WORK SHOWCASE
+         ======================================== -->
+    <section class="section-spacing container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem;">
+        <h2 class="font-editorial text-bloom" style="font-size: clamp(3rem, 6vw, 5rem);">Selected Work</h2>
+        <span class="font-sans tag" style="margin-bottom: 1rem;">2024—2026</span>
+      </div>
+
+      <div class="bento-grid">
+        <!-- Netflix -->
+        <div class="work-card large glass-panel gs-work-card">
+          <div class="work-overlay"></div>
+          <img src="https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=2070&auto=format&fit=crop" alt="Netflix Redesign" />
+          <div class="work-content">
+            <span class="tag">Web Platform</span>
+            <h3 class="font-editorial work-title text-bloom">Cinematic VOD Redesign</h3>
+          </div>
+        </div>
+
+        <!-- Mobile App -->
+        <div class="work-card medium glass-panel gs-work-card">
+          <div class="work-overlay" style="background: linear-gradient(to bottom, transparent, rgba(59,0,0,0.9));"></div>
+          <img src="https://images.unsplash.com/photo-1616423640778-28d1b53229bd?q=80&w=1974&auto=format&fit=crop" alt="Mobile App" style="opacity: 0.7;" />
+          <div class="work-content">
+            <span class="tag" style="color: rgba(245,230,211,0.6);">iOS Application</span>
+            <h3 class="font-editorial work-title text-bloom">Luxury Fintech</h3>
+          </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="work-card full glass-panel gs-work-card">
+          <div class="work-overlay"></div>
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Dashboard UI" style="object-position: top;" />
+          <div class="work-content">
+            <span class="tag">Enterprise SaaS</span>
+            <h3 class="font-editorial work-title text-bloom">Dark Mode Analytics</h3>
+            <p class="font-sans" style="color: rgba(245,230,211,0.7); margin-bottom: 2rem;">A highly optimized data visualization dashboard built for high-frequency traders.</p>
+            <a href="#" class="btn-explore glass-panel hover-glow">
+              Explore Project 
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================
+         4. FOOTER
+         ======================================== -->
+    <footer>
+      <div class="footer-glow"></div>
+      
+      <div class="container footer-content">
+        <!-- CTA -->
+        <div>
+          <h2 class="font-editorial cta-text text-bloom">
+            Let's create <br />
+            <span class="font-editorial" style="color: #a00000; font-style: italic;">masterpieces.</span>
+          </h2>
+          <a href="mailto:hello@studio.com" class="contact-email font-sans">
+            <div class="icon-box glass-panel">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+            </div>
+            hello@studio.com
+          </a>
+        </div>
+
+        <!-- QR Block -->
+        <div class="qr-box glass-panel hover-glow gs-qr">
+          <div class="qr-pattern" id="qr-grid">
+            <!-- JS will populate random dots here -->
+          </div>
+          <span class="tag">Scan to Connect</span>
+        </div>
+      </div>
+
+      <div class="container bottom-bar">
+        <p>© 2026 Designer Portfolio.</p>
+        <div>
+          <a href="#">Behance</a>
+          <a href="#">Awwwards</a>
+          <a href="#">Twitter</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- ========================================
+       SCRIPTS (GSAP + Lenis)
+       ======================================== -->
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <script>
+    // 1. Initialize Smooth Scroll (Lenis) - 120FPS Feel
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+    });
+
+    // Integrate Lenis with GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
+
+    // Register GSAP Plugin
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 2. Initial Load Animations (Hero Section)
+    const tlLoad = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    // Blur to focus on portrait
+    gsap.set(".gs-portrait", { scale: 0.9, opacity: 0, filter: "blur(10px)" });
+    tlLoad.to(".gs-portrait", {
+      scale: 1, opacity: 1, filter: "blur(0px)", duration: 1.5, ease: "power4.out"
+    }, 0);
+
+    // Stagger in the vertical side text
+    tlLoad.to(".gs-label", {
+      opacity: 1, x: 0, duration: 0.8, stagger: 0.2
+    }, 0.5);
+
+    // Scroll indicator floating animation
+    gsap.to(".gs-scroll-ind", {
+      y: 10, repeat: -1, yoyo: true, duration: 1.5, ease: "power1.inOut"
+    });
+
+    // 3. Scroll Parallax Animations
+    // Background Massive Text
+    gsap.to(".gs-bg-text", {
+      yPercent: 30, opacity: 0, ease: "none",
+      scrollTrigger: {
+        trigger: "#hero-section", start: "top top", end: "bottom top", scrub: true
+      }
+    });
+
+    // Portrait moving down slightly
+    gsap.to(".gs-portrait", {
+      yPercent: 15, ease: "none",
+      scrollTrigger: {
+        trigger: "#hero-section", start: "top top", end: "bottom top", scrub: true
+      }
+    });
+
+    // Split text moving up
+    gsap.to(".gs-split-left", {
+      yPercent: -20, ease: "none",
+      scrollTrigger: { trigger: "#hero-section", start: "top top", end: "bottom top", scrub: true }
+    });
+    gsap.to(".gs-split-right", {
+      yPercent: -30, ease: "none",
+      scrollTrigger: { trigger: "#hero-section", start: "top top", end: "bottom top", scrub: true }
+    });
+
+    // 4. Section Entrance Animations
+    // About Text
+    gsap.fromTo(".gs-about-text", 
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 1, ease: "power3.out",
+        scrollTrigger: { trigger: ".gs-about-text", start: "top 85%" }
+      }
+    );
+
+    // Process Cards Stagger
+    gsap.fromTo(".gs-process-card",
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power3.out",
+        scrollTrigger: { trigger: ".gs-process-card", start: "top 85%" }
+      }
+    );
+
+    // Work Cards (Bento Grid)
+    gsap.utils.toArray(".gs-work-card").forEach((card, i) => {
+      gsap.fromTo(card,
+        { opacity: 0, scale: 0.95 },
+        { opacity: 1, scale: 1, duration: 1, ease: "power3.out",
+          scrollTrigger: { trigger: card, start: "top 85%" }
+        }
+      );
+    });
+
+    // Footer QR Animation
+    gsap.fromTo(".gs-qr",
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 1, ease: "power3.out",
+        scrollTrigger: { trigger: "footer", start: "top 80%" }
+      }
+    );
+
+    // 5. Generate Fake QR dots pattern dynamically
+    const qrGrid = document.getElementById('qr-grid');
+    for (let i = 0; i < 16; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'qr-dot';
+      // Randomize shape and opacity to look like an abstract QR
+      dot.style.borderRadius = Math.random() > 0.5 ? '2px' : '50%';
+      dot.style.opacity = Math.random() * 0.8 + 0.2;
+      qrGrid.appendChild(dot);
+    }
+  </script>
+</body>
+</html>

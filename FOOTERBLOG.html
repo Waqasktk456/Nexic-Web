@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexicWeb Insights | Premium Web Agency Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Color System */
+            --bg-body: #000000;
+            --bg-surface: #0a0a0a;
+            --bg-elevated: #111111;
+            --bg-glass: rgba(10, 10, 10, 0.7);
+            
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #71717a;
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.15);
+            
+            --accent-primary: #00e5ff;
+            --accent-gradient: linear-gradient(135deg, #00e5ff 0%, #0072ff 100%);
+            --accent-glow: rgba(0, 114, 255, 0.15);
+            
+            /* Spacing Rhythm */
+            --sp-xs: 4px;
+            --sp-sm: 8px;
+            --sp-md: 18px;
+            --sp-lg: 28px;
+            --sp-xl: 48px;
+            --sp-2xl: 80px;
+            
+            /* Border Radius */
+            --br-md: 8px;
+            --br-lg: 12px;
+            --br-xl: 18px;
+            --br-pill: 99px;
+            
+            /* Typography */
+            --font-main: 'Inter', sans-serif;
+            
+            /* Animation */
+            --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-fast: 0.2s ease;
+        }
+
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* Layout Utilities */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Typography */
+        .text-gradient {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--br-pill);
+            color: var(--text-secondary);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: var(--br-pill);
+            transition: all var(--transition-smooth);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg-body);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border-strong);
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: var(--sp-lg) 0;
+            transition: all var(--transition-smooth);
+            border-bottom: 1px solid transparent;
+        }
+
+        .navbar.scrolled {
+            padding: 16px 0;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            z-index: 101;
+            position: relative;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--sp-xl);
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            position: relative;
+            padding: 8px 0;
+            transition: color var(--transition-fast);
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--text-primary);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform var(--transition-smooth);
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--sp-md);
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 101;
+            padding: 8px;
+        }
+
+        .mobile-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: var(--transition-smooth);
+            border-radius: 2px;
+        }
+
+        .mobile-toggle.active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .mobile-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .mobile-toggle.active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* Mobile Drawer */
+        .mobile-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 100;
+            padding: 120px 24px 40px;
+            display: flex;
+            flex-direction: column;
+            transition: right var(--transition-smooth);
+        }
+
+        .mobile-drawer.active {
+            right: 0;
+        }
+
+        .mobile-drawer-links {
+            display: flex;
+            flex-direction: column;
+            gap: var(--sp-lg);
+            margin-bottom: var(--sp-xl);
+        }
+
+        .mobile-drawer-links a {
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .mobile-drawer-links a.active {
+            color: var(--text-primary);
+        }
+
+        /* View Manager */
+        .view {
+            display: none;
+            opacity: 0;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .view.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 200px 0 100px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .hero-title {
+            font-size: clamp(40px, 6vw, 72px);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: var(--sp-lg);
+            max-width: 900px;
+            margin-inline: auto;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(16px, 2vw, 20px);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-inline: auto;
+            margin-bottom: var(--sp-xl);
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--sp-md);
+            margin-bottom: var(--sp-2xl);
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 24px 16px 56px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--br-pill);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            font-size: 16px;
+            transition: all var(--transition-fast);
+        }
+
+        .search-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--border-strong);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: var(--text-secondary);
+        }
+
+        /* Blog Section */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--sp-xl);
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        /* Featured Post */
+        .featured-post {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--sp-xl);
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--br-xl);
+            padding: var(--sp-lg);
+            margin-bottom: var(--sp-2xl);
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .featured-post:hover {
+            border-color: var(--border-strong);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 40px var(--accent-glow);
+        }
+
+        .featured-img-wrap {
+            border-radius: var(--br-lg);
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 16/10;
+        }
+
+        .featured-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .featured-post:hover .featured-img-wrap img {
+            transform: scale(1.05);
+        }
+
+        .featured-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--sp-md);
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--sp-md);
+            margin-bottom: var(--sp-md);
+            font-size: 14px;
+            color: var(--text-tertiary);
+        }
+
+        .featured-title {
+            font-size: clamp(24px, 3vw, 40px);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--sp-md);
+        }
+
+        .featured-excerpt {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-bottom: var(--sp-lg);
+        }
+
+        /* Blog Grid */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: var(--sp-xl);
+            margin-bottom: var(--sp-2xl);
+        }
+
+        .blog-card {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--br-xl);
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card:hover {
+            border-color: var(--border-strong);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 229, 255, 0.05);
+        }
+
+        .card-img-wrap {
+            position: relative;
+            aspect-ratio: 16/10;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .card-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .blog-card:hover .card-img-wrap img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: var(--sp-lg);
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+            margin-bottom: var(--sp-sm);
+        }
+
+        .card-excerpt {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: var(--sp-lg);
+            flex-grow: 1;
+        }
+
+        /* Newsletter Section */
+        .newsletter-section {
+            background: linear-gradient(180deg, var(--bg-surface) 0%, transparent 100%);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--br-xl);
+            padding: 64px 24px;
+            text-align: center;
+            margin-bottom: var(--sp-2xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .newsletter-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 2px;
+            background: var(--accent-gradient);
+            opacity: 0.5;
+        }
+
+        .newsletter-title {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--sp-sm);
+        }
+
+        .newsletter-desc {
+            color: var(--text-secondary);
+            margin-bottom: var(--sp-xl);
+            font-size: 16px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .newsletter-input {
+            flex-grow: 1;
+            padding: 14px 24px;
+            background: var(--bg-body);
+            border: 1px solid var(--border-subtle);
+            border-right: none;
+            border-radius: var(--br-pill) 0 0 var(--br-pill);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            font-size: 15px;
+            transition: var(--transition-fast);
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--border-strong);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .newsletter-btn {
+            padding: 14px 32px;
+            background: var(--text-primary);
+            color: var(--bg-body);
+            border: none;
+            border-radius: 0 var(--br-pill) var(--br-pill) 0;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .newsletter-btn:hover {
+            background: #e4e4e7;
+        }
+
+        /* Post Page View */
+        .post-header {
+            padding: 160px 0 60px;
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: var(--sp-2xl);
+        }
+
+        .post-header-inner {
+            max-width: 750px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: var(--sp-lg);
+            transition: color var(--transition-fast);
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
+        }
+
+        .post-title {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin: var(--sp-md) 0;
+        }
+
+        .post-author-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: var(--sp-lg);
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .post-date {
+            font-size: 14px;
+            color: var(--text-tertiary);
+        }
+
+        .post-layout {
+            display: grid;
+            grid-template-columns: 1fr 250px;
+            gap: 64px;
+            max-width: 1064px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
+
+        .post-content {
+            max-width: 750px;
+            font-size: 18px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .post-content h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 48px 0 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .post-content h3 {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 32px 0 16px;
+        }
+
+        .post-content p {
+            margin-bottom: 24px;
+        }
+
+        .post-content pre {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--br-lg);
+            padding: 24px;
+            overflow-x: auto;
+            margin: 32px 0;
+            font-family: monospace;
+            font-size: 14px;
+            color: #e4e4e7;
+        }
+
+        .post-content blockquote {
+            border-left: 2px solid var(--text-primary);
+            padding-left: 24px;
+            margin: 32px 0;
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 20px;
+        }
+
+        /* Sidebar / TOC */
+        .sidebar {
+            position: sticky;
+            top: 120px;
+            height: max-content;
+        }
+
+        .toc-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-tertiary);
+            margin-bottom: var(--sp-md);
+        }
+
+        .toc-list li {
+            margin-bottom: 12px;
+        }
+
+        .toc-list a {
+            font-size: 14px;
+            color: var(--text-secondary);
+            transition: color var(--transition-fast);
+        }
+
+        .toc-list a:hover {
+            color: var(--text-primary);
+        }
+
+        .share-section {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .share-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .share-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .share-btn:hover {
+            background: var(--text-primary);
+            color: var(--bg-body);
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border-subtle);
+            padding: 80px 0 40px;
+            background: var(--bg-surface);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 64px;
+        }
+
+        .footer-brand {
+            max-width: 320px;
+        }
+
+        .footer-desc {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-top: 16px;
+        }
+
+        .footer-heading {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            font-size: 14px;
+            transition: color var(--transition-fast);
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-subtle);
+            font-size: 14px;
+            color: var(--text-tertiary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .post-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-actions .btn-secondary {
+                display: none;
+            }
+            .mobile-toggle {
+                display: flex;
+            }
+            .featured-post {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .newsletter-form {
+                flex-direction: column;
+                border-radius: var(--br-lg);
+                overflow: hidden;
+            }
+            .newsletter-input, .newsletter-btn {
+                border-radius: 0;
+                width: 100%;
+                border-right: 1px solid var(--border-subtle);
+            }
+            .post-title {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar" id="navbar">
+        <div class="container nav-inner">
+            <a href="#" class="nav-brand" onclick="navigateTo('home')">NexicWeb</a>
+            
+            <nav class="nav-links">
+                <a href="#" class="nav-link" onclick="navigateTo('home')">Home</a>
+                <a href="#" class="nav-link">Services</a>
+                <a href="#" class="nav-link active" onclick="navigateTo('home')">Blog</a>
+                <a href="#" class="nav-link">About</a>
+                <a href="#" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button class="btn btn-secondary">View Work</button>
+                <button class="btn btn-primary">Get Started</button>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-drawer" id="mobileDrawer">
+        <nav class="mobile-drawer-links">
+            <a href="#" onclick="closeMenu(); navigateTo('home')">Home</a>
+            <a href="#" onclick="closeMenu()">Services</a>
+            <a href="#" class="active" onclick="closeMenu(); navigateTo('home')">Blog</a>
+            <a href="#" onclick="closeMenu()">About</a>
+            <a href="#" onclick="closeMenu()">Contact</a>
+        </nav>
+        <button class="btn btn-primary" style="width: 100%; margin-top: auto;">Get Started</button>
+    </div>
+
+    <main>
+
+        <div id="view-home" class="view active">
+            
+            <section class="hero container">
+                <h1 class="hero-title">Build, Learn & Scale with <span class="text-gradient">NexicWeb Insights</span></h1>
+                <p class="hero-subtitle">Premium web design systems, modern UI engineering, and high-performance digital strategies for global brands.</p>
+                
+                <div class="hero-actions">
+                    <button class="btn btn-primary" onclick="document.getElementById('blog-grid').scrollIntoView({behavior: 'smooth'})">Explore Blog</button>
+                    <button class="btn btn-secondary">Get Templates</button>
+                </div>
+
+                <div class="search-container">
+                    <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <input type="text" class="search-input" placeholder="Search insights, technical guides, or business strategy...">
+                </div>
+            </section>
+
+            <section class="container" id="blog-grid">
+                
+                <div class="section-header">
+                    <h2 class="section-title">Featured Publication</h2>
+                </div>
+
+                <article class="featured-post" onclick="navigateTo('post')">
+                    <div class="featured-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Code interface">
+                    </div>
+                    <div class="featured-content">
+                        <div class="post-meta">
+                            <span class="badge">Engineering</span>
+                            <span>8 min read</span>
+                            <span>•</span>
+                            <span>Oct 14, 2026</span>
+                        </div>
+                        <h3 class="featured-title">The Future of Serverless Architecture in Enterprise Edge</h3>
+                        <p class="featured-excerpt">How we migrated a global SaaS product to edge infrastructure, achieving sub-50ms latency worldwide while reducing operational costs by 40%. A deep dive into modern DevOps systems.</p>
+                        <div style="margin-top: auto;">
+                            <span class="text-gradient" style="font-weight: 600;">Read Article &rarr;</span>
+                        </div>
+                    </div>
+                </article>
+
+                <div class="section-header">
+                    <h2 class="section-title">Latest Articles</h2>
+                    <div class="nav-links" style="gap: 16px;">
+                        <a href="#" class="badge" style="color: var(--text-primary); border-color: var(--text-primary);">All</a>
+                        <a href="#" class="badge">Design</a>
+                        <a href="#" class="badge">Business</a>
+                    </div>
+                </div>
+
+                <div class="blog-grid">
+                    <article class="blog-card" onclick="navigateTo('post')">
+                        <div class="card-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Design UI">
+                        </div>
+                        <div class="card-content">
+                            <div class="post-meta">
+                                <span class="badge">Design System</span>
+                                <span>5 min read</span>
+                            </div>
+                            <h3 class="card-title">Mastering Micro-Interactions in Web UI</h3>
+                            <p class="card-excerpt">Discover how subtle animations and state changes bridge the gap between static interfaces and premium software experiences.</p>
+                        </div>
+                    </article>
+
+                    <article class="blog-card" onclick="navigateTo('post')">
+                        <div class="card-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Analytics">
+                        </div>
+                        <div class="card-content">
+                            <div class="post-meta">
+                                <span class="badge">Business</span>
+                                <span>6 min read</span>
+                            </div>
+                            <h3 class="card-title">Scaling B2B SaaS from $1M to $10M ARR</h3>
+                            <p class="card-excerpt">The exact product design and conversion rate optimization frameworks we utilized to scale our enterprise clients.</p>
+                        </div>
+                    </article>
+
+                    <article class="blog-card" onclick="navigateTo('post')">
+                        <div class="card-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Code">
+                        </div>
+                        <div class="card-content">
+                            <div class="post-meta">
+                                <span class="badge">Development</span>
+                                <span>4 min read</span>
+                            </div>
+                            <h3 class="card-title">Type-Safe Routing in Modern Frameworks</h3>
+                            <p class="card-excerpt">Implementing strict type safety across your entire application stack, eliminating runtime errors in client navigation.</p>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="newsletter-section">
+                    <h3 class="newsletter-title">Get NexicWeb Insights Weekly</h3>
+                    <p class="newsletter-desc">Join 10,000+ developers, designers, and founders reading our premium engineering and business insights.</p>
+                    
+                    <form class="newsletter-form" id="newsletterForm">
+                        <input type="email" class="newsletter-input" placeholder="Enter your work email address" required id="emailInput">
+                        <button type="submit" class="newsletter-btn">Subscribe</button>
+                    </form>
+                    <p id="formStatus" style="display: none; margin-top: 16px; font-size: 14px; color: var(--accent-primary);"></p>
+                </div>
+
+            </section>
+        </div>
+
+        <div id="view-post" class="view">
+            
+            <header class="post-header container">
+                <div class="post-header-inner">
+                    <div class="back-link" onclick="navigateTo('home')">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                        Back to Insights
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <span class="badge">Engineering</span>
+                    </div>
+
+                    <h1 class="post-title">The Future of Serverless Architecture in Enterprise Edge</h1>
+                    
+                    <div class="post-author-meta">
+                        <div class="author-avatar"></div>
+                        <div class="author-info">
+                            <span class="author-name">Alex Rivera, Head of Engineering</span>
+                            <span class="post-date">October 14, 2026 • 8 min read</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="post-layout container">
+                <article class="post-content">
+                    <p>The paradigm of global web applications is shifting. For years, we relied on centralized servers to process data, format responses, and deliver content. Today, the demand for instant interaction requires pushing compute as close to the user as possible. At NexicWeb, this is how we engineer the modern edge.</p>
+
+                    <h2>The Bottleneck of Centralized Compute</h2>
+                    <p>Traditional monolithic architectures route global traffic to specific regional centers. If your server is in Virginia, your users in Tokyo experience inherent physical latency. While Content Delivery Networks (CDNs) solved this for static assets, dynamic application logic remained bound to the origin.</p>
+
+                    <blockquote>"Performance is no longer just a technical metric; it is the core foundation of user trust and enterprise conversion rates."</blockquote>
+
+                    <h2>Implementing Edge Middleware</h2>
+                    <p>By utilizing edge functions, we can execute lightweight JavaScript directly on the CDN nodes. This allows for instant authentication checks, localized A/B testing, and dynamic routing before the request ever hits a database.</p>
+
+                    <pre><code>// Edge Middleware Authentication Example
+export async function middleware(request) {
+  const sessionToken = request.cookies.get('nx_session');
+  
+  if (!sessionToken) {
+    // Instant redirect at the edge
+    return Response.redirect(new URL('/login', request.url));
+  }
+
+  // Verify JWT without hitting origin database
+  const user = await verifyEdgeToken(sessionToken);
+  
+  if (user.role === 'enterprise') {
+    return NextResponse.rewrite(new URL('/app/enterprise', request.url));
+  }
+  
+  return NextResponse.next();
+}</code></pre>
+
+                    <h2>State Synchronization and Global Databases</h2>
+                    <p>Moving compute to the edge introduces the challenge of data. If compute is everywhere, but data is in one place, latency returns. The solution lies in globally replicated database models. Read replicas distributed across regions ensure that edge functions fetch data with sub-10ms latency.</p>
+
+                    <h3>Key Takeaways for CTOs</h3>
+                    <p>Transitioning to an edge-first architecture is an investment in scale. It requires decoupling monolithic APIs, rethinking state management, and adopting modern deployment pipelines. The result, however, is a resilient, globally fast application that feels premium to every user, regardless of their geography.</p>
+                </article>
+
+                <aside class="sidebar">
+                    <h4 class="toc-title">Table of Contents</h4>
+                    <ul class="toc-list">
+                        <li><a href="#">The Bottleneck of Centralized Compute</a></li>
+                        <li><a href="#">Implementing Edge Middleware</a></li>
+                        <li><a href="#">State Synchronization</a></li>
+                        <li><a href="#">Key Takeaways for CTOs</a></li>
+                    </ul>
+
+                    <div class="share-section">
+                        <h4 class="toc-title">Share Article</h4>
+                        <div class="share-icons">
+                            <div class="share-btn">X</div>
+                            <div class="share-btn">in</div>
+                            <div class="share-btn">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h2 class="nav-brand">NexicWeb</h2>
+                    <p class="footer-desc">A premium digital studio building elite web applications, global SaaS platforms, and enterprise design systems.</p>
+                </div>
+                
+                <div>
+                    <h4 class="footer-heading">Agency</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Services & Capabilities</a></li>
+                        <li><a href="#">Our Work</a></li>
+                        <li><a href="#">About NexicWeb</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-heading">Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Insights Blog</a></li>
+                        <li><a href="#">UI Templates</a></li>
+                        <li><a href="#">Design System</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 NexicWeb Agency. All rights reserved.</p>
+                <div style="display: flex; gap: 24px;">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Menu Logic
+        const mobileToggle = document.getElementById('mobileToggle');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+
+        mobileToggle.addEventListener('click', () => {
+            mobileToggle.classList.toggle('active');
+            mobileDrawer.classList.toggle('active');
+            document.body.style.overflow = mobileDrawer.classList.contains('active') ? 'hidden' : '';
+        });
+
+        function closeMenu() {
+            mobileToggle.classList.remove('active');
+            mobileDrawer.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // View Navigation (SPA Simulation)
+        function navigateTo(viewName) {
+            // Hide all views
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.remove('active');
+            });
+            
+            // Show target view
+            document.getElementById(`view-${viewName}`).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Newsletter Lead Gen Logic
+        const form = document.getElementById('newsletterForm');
+        const statusMsg = document.getElementById('formStatus');
+        
+        function handleSubscribe(email) {
+            // Integration Placeholder Logic
+            console.log(`Subscribing lead: ${email} to NexicWeb CRM`);
+            return new Promise((resolve) => setTimeout(resolve, 800));
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('emailInput').value;
+            const btn = form.querySelector('.newsletter-btn');
+            
+            if (email) {
+                btn.textContent = 'Joining...';
+                btn.style.opacity = '0.7';
+                
+                await handleSubscribe(email);
+                
+                form.style.display = 'none';
+                statusMsg.textContent = 'Welcome to NexicWeb Insights. Check your inbox.';
+                statusMsg.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

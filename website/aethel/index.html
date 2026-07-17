@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AETHEL | Premium Botanical Studio</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <img src="backgraund.webp" alt="Forest Background" class="bg-layer-image">
+    <div class="bg-layer-gradient"></div>
+    <div class="bg-vignette"></div>
+
+    <nav class="navbar" id="navbar">
+        <div class="brand-logo" onclick="app.navigate('home')">Aethel</div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="app.navigate('home')">Home</a></li>
+            <li><a href="#collection">Collection</a></li>
+            <li><a href="#studio">Studio</a></li>
+            <li><a href="#journal">Journal</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+            <i class="ph ph-magnifying-glass"></i>
+            <i class="ph ph-user"></i>
+            <i class="ph ph-shopping-bag"></i>
+        </div>
+    </nav>
+
+    <main id="view-home" class="view-section is-active">
+        
+        <section class="hero">
+            <div class="hero-content">
+                <span class="hero-label label">E S T . 2 0 2 1</span>
+                <h1 class="hero-title">Architectural Nature</h1>
+                <p class="hero-desc">Curating rare botanical specimens housed in museum-grade frosted glass domes. Where high-end design meets organic life.</p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary" onclick="app.scrollTo('collection')">View Collection</button>
+                    <button class="btn btn-ghost" onclick="app.scrollTo('studio')">The Process</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-dome-wrapper">
+                    <div class="glass-dome">
+                        <img src="plan21.webp" alt="Featured Monstera Albo" class="hero-plant">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="collection" class="collection-section">
+            <div class="section-header">
+                <h2>The Signature Archive</h2>
+                <p class="section-subtitle">LIMITED EDITION 2026 SERIES</p>
+            </div>
+            
+            <div class="grid-container" id="product-grid">
+                </div>
+            
+            <div class="section-footer">
+                <button class="btn btn-ghost">Load More</button>
+            </div>
+        </section>
+        
+        <section id="ar" class="ar-section">
+            <div class="ar-grid">
+                <div class="ar-visual">
+                    <div class="phone-frame glass-panel">
+                        <img src="plant2.png" alt="AR view on phone" class="ar-screenshot">
+                    </div>
+                </div>
+                <div class="ar-content">
+                    <span class="label">Innovation</span>
+                    <h2>Aethel Vist</h2>
+                    <p>Experience our botanical sculptures in your own space before acquisition. Our proprietary AR tool renders true-to-life lighting and reflections on the glass casing.</p>
+                    <button class="btn btn-glass"><i class="ph ph-cube"></i> Try AR View</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="studio" class="studio-section glass-panel">
+            <div class="studio-grid">
+                <div class="studio-text">
+                    <span class="label">The Process</span>
+                    <h2>Atmospheric Control Lab</h2>
+                    <p>Every specimen is ethically sourced, nurtured in controlled environments, and encased in artisanal glass to preserve its structural elegance.</p>
+                    <ul class="feat-list">
+                        <li><i class="ph ph-drop"></i> Auto-Regulating Humidity</li>
+                        <li><i class="ph ph-thermometer"></i> Thermal Stability Casing</li>
+                        <li><i class="ph ph-sun"></i> UV-Filtered low-iron Glass</li>
+                    </ul>
+                </div>
+                <div class="studio-visual">
+                    <img src="plant3.png" alt="Botanical laboratory process" class="studio-image">
+                </div>
+            </div>
+        </section>
+
+        <section id="journal" class="journal-section">
+            <div class="section-header">
+                <h2>The Botanical Journal</h2>
+                <p class="section-subtitle">INSIGHTS ON BIO-DESIGN & INTERIORS</p>
+            </div>
+            <div class="journal-grid">
+                <div class="journal-card glass-panel">
+                    <img src="plant3.png">
+                    <div class="journal-meta"><span>DESIGN</span> / <span>OCT 12</span></div>
+                    <h3>Organic Minimalism: The New Interior Language</h3>
+                </div>
+                <div class="journal-card glass-panel">
+                    <img src="plant5.png" alt="Interiors article">
+                    <div class="journal-meta"><span>CARE</span> / <span>OCT 05</span></div>
+                    <h3>Preserving Variegation in Aethel Domes</h3>
+                </div>
+                <div class="journal-card glass-panel">
+                    <img src="plant5.png" alt="Interiors article">
+                    <div class="journal-meta"><span>STUDIO</span> / <span>SEP 28</span></div>
+                    <h3>Behind the Glass: artisanal Blowing</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="eco" class="eco-section">
+            <div class="divider"></div>
+            <h2>Rooted in Purity</h2>
+            <p>At Aeris, we believe nature is the ultimate luxury. Every specimen is ethically sourced, zero-impact cultivated, and preserved in sustainable bio-substrates to ensure its quiet elegance lasts for years.</p>
+        </section>
+    </main>
+
+    <main id="view-product" class="view-section">
+        <div class="detail-page">
+            <div class="back-nav">
+                <button class="back-btn" onclick="app.navigate('home')">
+                    <i class="ph ph-arrow-left"></i> Return to Archive
+                </button>
+            </div>
+            
+            <div class="detail-grid">
+                <div class="detail-visual">
+                    <div class="glass-dome">
+                        <img id="pd-image" src="" alt="Product Detail" class="detail-plant" style="mix-blend-mode: screen;">
+                    </div>
+                </div>
+                
+                <div class="detail-info glass-panel">
+                    <h1 id="pd-title" class="detail-title">Plant Name</h1>
+                    <div id="pd-price" class="detail-price">$0.00</div>
+                    <p id="pd-desc" class="detail-desc">Product description goes here.</p>
+                    
+                    <div class="detail-actions">
+                        <button class="btn btn-filled-green">Inquire to Acquire</button>
+                        <button class="btn btn-glass"><i class="ph ph-heart"></i> Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer id="contact" class="footer glass-panel">
+        <div class="footer-main">
+            <div class="footer-brand">
+                <div class="logo">AETHEL</div>
+                <p>Bringing architectural botanical luxury to modern interiors.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Collections</h4>
+                <ul>
+                    <li><a href="#">Monstera Archive</a></li>
+                    <li><a href="#">Anthurium Series</a></li>
+                    <li><a href="#">Terrarium Domes</a></li>
+                    <li><a href="#">Rare Fenestrations</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Studio</h4>
+                <ul>
+                    <li><a href="#studio">Our Process</a></li>
+                    <li><a href="#eco">Philosophy</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#journal">Journal</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Care Guides</a></li>
+                    <li><a href="#">Shipping</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Aethel Zurich. All rights reserved. Worldwide shipping.</span>
+            <div class="socials">
+                <i class="ph ph-instagram-logo"></i>
+                <i class="ph ph-pinterest-logo"></i>
+                <i class="ph ph-linkedin-logo"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script src="style.js"></script>
+</body>
+</html>

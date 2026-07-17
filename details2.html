@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum SaaS Premium Marketplace Detail</title>
+    <style>
+        /* --- DESIGN SYSTEM & TOKENS --- */
+        :root {
+            --bg-dark: #030014;
+            --bg-card: rgba(255, 255, 255, 0.02);
+            --bg-card-hover: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(139, 92, 246, 0.3);
+            
+            --primary: #8B5CF6;
+            --secondary-glow: #A855F7;
+            --accent-glow: rgba(168, 85, 247, 0.15);
+            
+            --text-primary: #F4F4F5;
+            --text-secondary: #A1A1AA;
+            --text-muted: #71717A;
+            
+            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --transition-premium: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            --radius-lg: 16px;
+            --radius-sm: 8px;
+        }
+
+        /* --- RESET & BASE STYLES --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- BACKGROUND AURORA GLOW EFFECTS --- */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .aurora-glow-1 {
+            position: absolute;
+            top: -20%;
+            left: -10%;
+            width: 60vw;
+            height: 60vh;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            filter: blur(100px);
+            animation: floatGlow 12s infinite alternate ease-in-out;
+        }
+
+        .aurora-glow-2 {
+            position: absolute;
+            top: 40%;
+            right: -10%;
+            width: 50vw;
+            height: 50vh;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+            filter: blur(120px);
+            animation: floatGlow 18s infinite alternate-reverse ease-in-out;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(5%, 8%) scale(1.1); }
+        }
+
+        /* --- GLOBAL LAYOUT CONTAINERS --- */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+        }
+
+        /* --- SECTION 1: PRODUCT HERO SHOWCASE --- */
+        .hero-section {
+            padding: 120px 0 80px 0;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 48px;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+        }
+
+        /* Left Side: Preview Area */
+        .preview-wrapper {
+            position: relative;
+        }
+
+        .luxury-frame {
+            position: relative;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
+            overflow: hidden;
+            transition: var(--transition-premium);
+        }
+
+        .luxury-frame::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: 0.75s;
+        }
+
+        .luxury-frame:hover::before {
+            transform: translateX(100%);
+        }
+
+        .luxury-frame:hover {
+            border-color: rgba(168, 85, 247, 0.4);
+            box-shadow: 0 40px 80px -20px rgba(139, 92, 246, 0.15), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .inner-preview {
+            position: relative;
+            aspect-ratio: 16 / 10;
+            background: #0d0b21;
+            border-radius: calc(var(--radius-lg) - 4px);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Mock UI Window Details */
+        .inner-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-premium);
+        }
+
+        .luxury-frame:hover .inner-preview img {
+            transform: scale(1.02);
+        }
+
+        .live-preview-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(3, 0, 20, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition-premium);
+            z-index: 2;
+        }
+
+        .luxury-frame:hover .live-preview-overlay {
+            opacity: 1;
+        }
+
+        .live-preview-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 14px 28px;
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+            transition: var(--transition-premium);
+        }
+
+        .live-preview-btn:hover {
+            background: var(--text-primary);
+            color: var(--bg-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.25);
+        }
+
+        /* Badges Styling */
+        .badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .premium-badge {
+            background: rgba(139, 92, 246, 0.06);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            color: #A855F7;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Right Side: Sticky Product Card */
+        .sticky-card-container {
+            position: sticky;
+            top: 40px;
+        }
+
+        .product-sales-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.7);
+        }
+
+        .meta-category {
+            color: var(--primary);
+            font-size: 13px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .product-title {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #D4D4D8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .rating-sales-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 24px;
+            margin-bottom: 24px;
+        }
+
+        .rating-stars {
+            color: #FBBF24;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .rating-stars span {
+            color: var(--text-secondary);
+            margin-left: 4px;
+        }
+
+        .sales-count {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .sales-count strong {
+            color: var(--text-primary);
+        }
+
+        /* Dynamic License Select Dropdown */
+        .license-selector-label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+
+        .custom-dropdown {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .dropdown-selected {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 16px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition-premium);
+        }
+
+        .dropdown-selected:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .dropdown-selected::after {
+            content: '▼';
+            font-size: 10px;
+            color: var(--text-secondary);
+            transition: var(--transition-premium);
+        }
+
+        .custom-dropdown.open .dropdown-selected::after {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-options {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: #0b091c;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition-premium);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        .custom-dropdown.open .dropdown-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-option {
+            padding: 16px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s ease;
+        }
+
+        .dropdown-option:hover {
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .dropdown-option .opt-price {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Realtime Price Display */
+        .price-container {
+            margin-bottom: 24px;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .current-price {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: #fff;
+        }
+
+        .price-period {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        /* Purchase Area Checklist & Action Buttons */
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .checklist-item svg {
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .action-button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-primary-luxury {
+            background: linear-gradient(90deg, #8B5CF6 0%, #A855F7 100%);
+            border: none;
+            color: #fff;
+            padding: 18px;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3);
+            transition: var(--transition-premium);
+            text-decoration: none;
+        }
+
+        .btn-primary-luxury:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-secondary-luxury {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 18px;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: var(--transition-premium);
+            text-decoration: none;
+        }
+
+        .btn-secondary-luxury:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Tech Meta Information Footer */
+        .card-meta-footer {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            font-size: 13px;
+        }
+
+        .meta-footer-item {
+            color: var(--text-muted);
+        }
+
+        .meta-footer-item strong {
+            color: var(--text-secondary);
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* --- SECTION 2: GLOBAL TRUST BAR --- */
+        .trust-bar-section {
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(3, 0, 20, 0.4);
+            padding: 32px 0;
+            position: relative;
+        }
+
+        .trust-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 32px;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .trust-icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .trust-text-box h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .trust-text-box p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 900px) {
+            .trust-flex { display: grid; grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+            .trust-flex { grid-template-columns: 1fr; }
+        }
+
+        /* --- SECTION 3: PRODUCT OVERVIEW --- */
+        .overview-section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            margin-bottom: 48px;
+            max-width: 600px;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 960px) {
+            .overview-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 640px) {
+            .overview-grid { grid-template-columns: 1fr; }
+        }
+
+        .overview-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-premium);
+        }
+
+        .overview-card:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(139, 92, 246, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px -15px rgba(139, 92, 246, 0.1);
+        }
+
+        .overview-card-icon {
+            color: var(--primary);
+            margin-bottom: 24px;
+            display: inline-block;
+        }
+
+        .overview-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .overview-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* --- SECTION 4: FEATURES GRID (3D Lift & Glow) --- */
+        .features-section {
+            padding: 100px 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(139, 92, 246, 0.02) 50%, transparent 100%);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 550px) {
+            .features-grid { grid-template-columns: 1fr; }
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            position: relative;
+            transition: var(--transition-premium);
+            perspective: 1000px;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(168, 85, 247, 0.4);
+            transform: translateY(-8px) rotateX(2deg) rotateY(2deg);
+            box-shadow: 0 40px 80px -20px rgba(168, 85, 247, 0.15);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .feature-card-glow {
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-lg);
+            background: radial-gradient(800px circle at var(--x, 0px) var(--y, 0px), rgba(139, 92, 246, 0.08), transparent 40%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .feature-card:hover .feature-card-glow {
+            opacity: 1;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            margin-top: 16px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* --- SECTION 5: SOCIAL PROOF (TESTIMONIALS) --- */
+        .testimonials-section {
+            padding: 100px 0;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .testimonial-grid { grid-template-columns: 1fr; }
+        }
+
+        .testimonial-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .testimonial-stars {
+            color: #FBBF24;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 2px;
+        }
+
+        .testimonial-text {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-primary);
+            margin-bottom: 32px;
+            font-style: italic;
+        }
+
+        .testimonial-user {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .user-info-meta {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+            background: #27272a;
+        }
+
+        .user-details h5 {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .user-details p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .verified-badge {
+            background: rgba(16, 185, 129, 0.06);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #10B981;
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* --- SECTION 6: FAQ ACCORDION --- */
+        .faq-section {
+            padding: 100px 0;
+        }
+
+        .faq-max-width {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: var(--transition-premium);
+        }
+
+        .faq-trigger {
+            width: 100%;
+            padding: 24px;
+            background: transparent;
+            border: none;
+            text-align: left;
+            color: var(--text-primary);
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-trigger:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .faq-icon {
+            font-size: 14px;
+            color: var(--text-secondary);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 0 24px;
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Active states for accordion managed via JS class */
+        .faq-item.active {
+            border-color: rgba(139, 92, 246, 0.4);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-item.active .faq-content {
+            padding-bottom: 24px;
+        }
+
+        /* --- SECTION 7: FINAL CTA BANNER --- */
+        .cta-section {
+            padding: 100px 0 160px 0;
+        }
+
+        .cta-banner {
+            position: relative;
+            background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 80px 40px;
+            text-align: center;
+            overflow: hidden;
+            box-shadow: 0 60px 100px -30px rgba(0,0,0,0.8);
+        }
+
+        /* Banner Specific Glow Area */
+        .cta-banner::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background: var(--secondary-glow);
+            filter: blur(120px);
+            opacity: 0.25;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .cta-content-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-banner h2 {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #A1A1AA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cta-banner p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .cta-btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        @media (max-width: 480px) {
+            .cta-btn-group { flex-direction: column; }
+        }
+
+        /* --- ANIMATIONS / SCROLL REVEAL CLASS --- */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-on-scroll.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Glow Ecosystem Background -->
+    <div class="aurora-bg">
+        <div class="aurora-glow-1"></div>
+        <div class="aurora-glow-2"></div>
+    </div>
+
+    <main>
+        <!-- SECTION 1: PRODUCT HERO SHOWCASE -->
+        <section class="hero-section">
+            <div class="container hero-grid">
+                
+                <!-- Left Side: Interactive Glass Image Showcase -->
+                <div class="preview-wrapper">
+                    <div class="luxury-frame">
+                        <div class="inner-preview">
+                            <!-- Visual Frame Content Base -->
+                          <img src= "image/land4.png", alt="Premium Website Preview Grid">
+                            <div class="live-preview-overlay">
+                                <a href="https://bank-wealth.netlify.app/" target="_blank" class="live-preview-btn">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    Live Preview
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="badge-container">
+                        <span class="premium-badge">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg>
+                            Premium Template
+                        </span>
+                        <span class="premium-badge">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                            Responsive Design
+                        </span>
+                        <span class="premium-badge">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            SEO Optimized
+                        </span>
+                        <span class="premium-badge">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                            Fast Loading
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Right Side: Sales Engine Sticky Block -->
+                <div class="sticky-card-container">
+                    <div class="product-sales-card">
+                        <span class="meta-category">SaaS Website Architecture</span>
+                        <h1 class="product-title">AuraPro Digital Marketplace Ecosystem</h1>
+                        
+                        <div class="rating-sales-row">
+                            <div class="rating-stars">
+                                ★★★★★ <span>5.0 (48 reviews)</span>
+                            </div>
+                            <div class="sales-count">
+                                <span>Sales: </span><strong>1,420+</strong>
+                            </div>
+                        </div>
+
+                        <!-- Real-time Interactive Selector UI -->
+                        <div class="license-selector-container">
+                            <span class="license-selector-label">Choose Target License Style</span>
+                            <div class="custom-dropdown" id="licenseDropdown">
+                                <div class="dropdown-selected" id="dropdownSelected">Professional License</div>
+                                <div class="dropdown-options">
+                                    <div class="dropdown-option" data-price="$49" data-license="Starter" data-desc="Single site personal deployment architecture">
+                                        <span>Starter License</span>
+                                        <span class="opt-price">$49</span>
+                                    </div>
+                                    <div class="dropdown-option" data-price="$99" data-license="Professional" data-desc="Complete lifetime access & unlimited custom site optimization">
+                                        <span>Professional License</span>
+                                        <span class="opt-price">$99</span>
+                                    </div>
+                                    <div class="dropdown-option" data-price="$299" data-license="Agency" data-desc="Full client deployment, white-label usage permission system">
+                                        <span>Agency License</span>
+                                        <span class="opt-price">$299</span>
+                                    </div>
+                                    <div class="dropdown-option" data-price="Included" data-license="Membership" data-desc="Instant access via continuous ecosystem cloud pass subscription">
+                                        <span>Membership Access</span>
+                                        <span class="opt-price">Included</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Matrix Price Layout -->
+                        <div class="price-container">
+                            <span class="current-price" id="dynamicPrice">$99</span>
+                            <span class="price-period" id="dynamicPeriod">/ lifetime</span>
+                        </div>
+
+                        <!-- Technical Purchase Check Grid -->
+                        <div class="checklist-grid">
+                            <div class="checklist-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                <span id="licenseDesc">Complete lifetime access & unlimited custom site optimization</span>
+                            </div>
+                            <div class="checklist-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                Commercial deployment permission
+                            </div>
+                            <div class="checklist-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                100% unminified production-ready source code
+                            </div>
+                            <div class="checklist-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                Continuous technical deployment support architecture
+                            </div>
+                        </div>
+
+                        <!-- Conversion Dynamic Buttons -->
+                        <div class="action-button-group">
+                            <button class="btn-primary-luxury" onclick="scrollToSection('overview')">
+                                Explore Website Specifications
+                            </button>
+                            <button class="btn-secondary-luxury" onclick="scrollToSection('ctaBanner')">
+                                Get Ultimate Membership Pass
+                            </button>
+                        </div>
+
+                        <!-- Architectural Technical Meta Footer -->
+                        <div class="card-meta-footer">
+                            <div class="meta-footer-item">
+                                Last Updated
+                                <strong>June 2026</strong>
+                            </div>
+                            <div class="meta-footer-item">
+                                Architecture Version
+                                <strong>v2.4.0 Production</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 2: GLOBAL TRUST BAR -->
+        <section class="trust-bar-section">
+            <div class="container trust-flex">
+                <div class="trust-item">
+                    <div class="trust-icon-box">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <div class="trust-text-box">
+                        <h4>10,000+ Active Users</h4>
+                        <p>Global developers & agencies</p>
+                    </div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon-box">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                    <div class="trust-text-box">
+                        <h4>99% User Satisfaction</h4>
+                        <p>Highly rated architectural assets</p>
+                    </div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon-box">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                    </div>
+                    <div class="trust-text-box">
+                        <h4>Lifetime Updates</h4>
+                        <p>Always stay synchronized</p>
+                    </div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon-box">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                    <div class="trust-text-box">
+                        <h4>Secure Checkout</h4>
+                        <p>Encrypted luxury payment infrastructure</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: PRODUCT OVERVIEW -->
+        <section id="overview" class="overview-section reveal-on-scroll">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Engineered for High-End Conversion</h2>
+                    <p>AuraPro blends clean architectural execution with deep modern performance standards to ensure maximum trust conversion metrics.</p>
+                </div>
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <div class="overview-card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+                        </div>
+                        <h3>Ecosystem Overview</h3>
+                        <p>Fully holistic visual strategy engineered directly to match premium digital marketplaces, optimized for clean product sales pipelines.</p>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polygon points="2 17 12 22 22 17"/><polygon points="2 12 12 17 22 12"/></svg>
+                        </div>
+                        <h3>Modern Tech Stack</h3>
+                        <p>Vanilla standard structural delivery ensuring zero framework dependency lock-ins, simple adjustments, and instant high-speed deployment.</p>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        </div>
+                        <h3>Performance Matrix</h3>
+                        <p>Guaranteed 100/100 Lighthouse performance metrics with optimized global rendering logic built perfectly for immediate asset execution.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: FEATURES GRID -->
+        <section class="features-section reveal-on-scroll">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Advanced Architectural Features</h2>
+                    <p>Every element is handcrafted to fit inside high-end ecosystem designs with micro interactions that mirror $100M SaaS brands.</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-card-glow"></div>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="var(--primary)"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        <h3>Responsive Matrix</h3>
+                        <p>Fluid adaptive grids tailored meticulously for luxury visual stability across all modern viewports.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-glow"></div>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="var(--primary)"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <h3>Fast Loading Engine</h3>
+                        <p>Optimized image styling and clean modular styling structures guarantee frictionless content delivery.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-glow"></div>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="var(--primary)"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        <h3>SEO Ready Baseline</h3>
+                        <p>Valid semantic structure optimized precisely for search crawl visibility rankings and fast indexing pipelines.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-glow"></div>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="var(--primary)"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+                        <h3>Modern UI Aesthetics</h3>
+                        <p>Bespoke luxury glassmorphism patterns configured natively using high-end CSS parameters.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: SOCIAL PROOF (TESTIMONIALS) -->
+        <section class="testimonials-section reveal-on-scroll">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Validated by Leading Creative Minds</h2>
+                    <p>See how world-class agencies use our digital structures to expedite premium client handoffs.</p>
+                </div>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card">
+                        <div>
+                            <div class="testimonial-stars">★★★★★</div>
+                            <p class="testimonial-text">"The visual depth of AuraPro drastically transformed our client deployment workflows. The clean code architecture feels incredibly responsive and native to modern premium standards."</p>
+                        </div>
+                        <div class="testimonial-user">
+                            <div class="user-info-meta">
+                                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'><circle cx='25' cy='25' r='25' fill='%238B5CF6'/></svg>" alt="User Avatar" class="user-avatar">
+                                <div class="user-details">
+                                    <h5>Marcus Vance</h5>
+                                    <p>Principal Director, Lumina Labs</p>
+                                </div>
+                            </div>
+                            <span class="verified-badge">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                Verified Purchase
+                            </span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div>
+                            <div class="testimonial-stars">★★★★★</div>
+                            <p class="testimonial-text">"Deploying this was effortless. The glassmorphism layers render beautifully at 60fps on mobile. Absolutely worth the premium investment for any modern high-end startup."</p>
+                        </div>
+                        <div class="testimonial-user">
+                            <div class="user-info-meta">
+                                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'><circle cx='25' cy='25' r='25' fill='%23A855F7'/></svg>" alt="User Avatar" class="user-avatar">
+                                <div class="user-details">
+                                    <h5>Sienna Brooks</h5>
+                                    <p>Lead Creative, Vanguard UI</p>
+                                </div>
+                            </div>
+                            <span class="verified-badge">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                Verified Purchase
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: FAQ ACCORDION -->
+        <section class="faq-section reveal-on-scroll">
+            <div class="container faq-max-width">
+                <div class="section-header" style="text-align: center; margin-left: auto; margin-right: auto;">
+                    <h2>Frequently Answered Mechanics</h2>
+                    <p>Clear transparent technical operational guidelines for enterprise integration pipelines.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-trigger">
+                        <span>Can I edit this website architecture easily?</span>
+                        <span class="faq-icon">▼</span>
+                    </button>
+                    <div class="faq-content">
+                        <p>Yes, the entire workspace layout is designed using pure vanilla parameters. Standard utility variable bindings enable global modification of brand colors, layouts, and typography setups within seconds.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-trigger">
+                        <span>Is full source code included within delivery?</span>
+                        <span class="faq-icon">▼</span>
+                    </button>
+                    <div class="faq-content">
+                        <p>Absolutely. You receive the complete, unminified source code immediately upon purchase confirmation, including structured components and animations logic files.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-trigger">
+                        <span>Can I utilize this framework for commercial assets?</span>
+                        <span class="faq-icon">▼</span>
+                    </button>
+                    <div class="faq-content">
+                        <p>Yes, all tiers above the Starter plan include comprehensive commercial deployment permissions for both internal corporate SaaS systems and external paid client products.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-trigger">
+                        <span>Do I receive automatic technical ecosystem updates?</span>
+                        <span class="faq-icon">▼</span>
+                    </button>
+                    <div class="faq-content">
+                        <p>Yes. Lifetime access models sync directly with our distribution system, meaning every structural refinement or animation patch is instantly ready for download at no secondary cost.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: FINAL CTA BANNER -->
+        <section id="ctaBanner" class="cta-section reveal-on-scroll">
+            <div class="container">
+                <div class="cta-banner">
+                    <div class="cta-content-wrapper">
+                        <h2>Ready To Launch Faster?</h2>
+                        <p>Join thousands of fast-growing businesses scaling their presentation layouts with luxury production-grade digital architecture.</p>
+                        <div class="cta-btn-group">
+                            <a href="https://example.com" target="_blank" class="btn-primary-luxury">
+                                Instant Live Preview
+                            </a>
+                            <button class="btn-secondary-luxury" style="background: rgba(255,255,255,0.08)" onclick="scrollToSection('licenseDropdown')">
+                                Purchase Assets Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- --- JAVASCRIPT ARCHITECTURE INTERACTION LOGIC --- -->
+    <script>
+        /* --- LICENSE SELECTOR INTERACTION SCRIPT --- */
+        const dropdown = document.getElementById('licenseDropdown');
+        const selectedText = document.getElementById('dropdownSelected');
+        const priceDisplay = document.getElementById('dynamicPrice');
+        const periodDisplay = document.getElementById('dynamicPeriod');
+        const descDisplay = document.getElementById('licenseDesc');
+
+        dropdown.addEventListener('click', (e) => {
+            dropdown.classList.toggle('open');
+            e.stopPropagation();
+        });
+
+        document.querySelectorAll('.dropdown-option').forEach(option => {
+            option.addEventListener('click', (e) => {
+                const targetPrice = option.getAttribute('data-price');
+                const targetLicense = option.getAttribute('data-license');
+                const targetDesc = option.getAttribute('data-desc');
+
+                selectedText.textContent = `${targetLicense} License`;
+                priceDisplay.textContent = targetPrice;
+                
+                // Adjust period display depending on membership style selection
+                if(targetPrice === 'Included') {
+                    periodDisplay.textContent = 'with membership pass';
+                } else {
+                    periodDisplay.textContent = '/ lifetime';
+                }
+
+                descDisplay.textContent = targetDesc;
+            });
+        });
+
+        document.addEventListener('click', () => {
+            dropdown.classList.remove('open');
+        });
+
+        /* --- LUXURY SCROLL SMOOTH ANCHOR PASS --- */
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                const offset = 60; // Adjust spacing structure dynamically
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = element.getBoundingClientRect().top;
+                const elementPosition = elementRect - bodyRect;
+                const offsetPosition = elementPosition - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        /* --- FAQ ACCORDION TRANSITION SCRIPT --- */
+        document.querySelectorAll('.faq-trigger').forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const parent = trigger.parentElement;
+                const content = trigger.nextElementSibling;
+                const isActive = parent.classList.contains('active');
+
+                // Close existing items cleanly
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                    item.querySelector('.faq-content').style.maxHeight = null;
+                });
+
+                if (!isActive) {
+                    parent.classList.add('active');
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+
+        /* --- MOUSE MOVEMENT INTERACTIVE SPOTLIGHT HOVER FOR FEATURES --- */
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
+            });
+        });
+
+        /* --- PREMIUM SCROLL REVEAL OBSERVER ENGINE --- */
+        const revealOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target); // Optimize performance metrics
+                }
+            });
+        }, revealOptions);
+
+        document.querySelectorAll('.reveal-on-scroll').forEach(element => {
+            revealObserver.observe(element);
+        });
+    </script>
+</body>
+</html>

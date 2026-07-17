@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAX COLOR | Cinematic Luxury Automotive Customization</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-main: #050505;
+            --bg-sec: #0B0B0B;
+            --accent: #2563FF;
+            --accent-glow: rgba(37, 99, 255, 0.45);
+            --text-main: #FFFFFF;
+            --text-sec: #9CA3AF;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            
+            --font-head: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        /* Global Reset & Setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Custom cursor */
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6, .brand-font {
+            font-family: var(--font-head);
+            text-transform: uppercase;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--accent-glow);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* Ambient Background Glow */
+        .ambient-glow {
+            position: fixed;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, var(--accent-glow) 0%, rgba(5,5,5,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            filter: blur(80px);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* Loader */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-main);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .loader-text {
+            font-size: 4rem;
+            font-family: var(--font-head);
+            letter-spacing: 0.5rem;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+        .loader-text span {
+            display: inline-block;
+            transform: translateY(100%);
+        }
+        .loader-progress {
+            margin-top: 2rem;
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+        .neon-sweep {
+            position: absolute;
+            top: 50%;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
+            z-index: -1;
+        }
+
+        /* Navbar */
+        .glass-nav {
+            background: rgba(5, 5, 5, 0.4);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-glass);
+            transition: all 0.4s ease;
+        }
+        .navbar-brand {
+            font-family: var(--font-head);
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--text-main) !important;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+        .nav-link {
+            color: var(--text-sec) !important;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            position: relative;
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: var(--text-main) !important;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Cinematic Hero */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://images.unsplash.com/photo-1614200187524-dc4b892acf16?q=80&w=2560&auto=format&fit=crop') center/cover no-repeat;
+            opacity: 0.4;
+            z-index: -2;
+            transform: scale(1.05);
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent 0%, var(--bg-main) 100%);
+            z-index: -1;
+        }
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+        .hero-title .char {
+            display: inline-block;
+            transform: translateY(100%);
+        }
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-sec);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            text-align: center;
+            opacity: 0;
+        }
+        .btn-glow {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--accent);
+            padding: 1rem 2.5rem;
+            font-family: var(--font-head);
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(37, 99, 255, 0.1);
+        }
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: var(--accent);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+        .btn-glow:hover::before {
+            left: 0;
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 30px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+        }
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .scroll-line::after {
+            content: '';
+            position: absolute;
+            top: -100%; left: 0; width: 100%; height: 100%;
+            background: var(--accent);
+            animation: scrollDown 2s infinite ease-in-out;
+        }
+
+        @keyframes scrollDown {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+
+        /* Sections General */
+        section {
+            padding: 120px 0;
+            position: relative;
+            z-index: 1;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .section-subtitle {
+            color: var(--accent);
+            font-family: var(--font-head);
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+        }
+
+        /* Glass Cards (Services & Testimonials) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(37,99,255,0.1), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(37, 99, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(37,99,255,0.1);
+        }
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+        .card-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Why Choose Us - Features */
+        .feature-block {
+            border-left: 2px solid var(--border-glass);
+            padding-left: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .feature-block:hover {
+            border-left-color: var(--accent);
+        }
+        .feature-block::before {
+            content: '';
+            position: absolute;
+            left: -6px; top: 0;
+            width: 10px; height: 10px;
+            background: var(--bg-main);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .feature-block:hover::before {
+            opacity: 1;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        /* Showcase Slider (CSS Mock) */
+        .showcase-container {
+            width: 100%;
+            height: 70vh;
+            background: url('https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?q=80&w=2560&auto=format&fit=crop') center/cover no-repeat;
+            position: relative;
+            border-top: 1px solid var(--border-glass);
+            border-bottom: 1px solid var(--border-glass);
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
+        }
+        .showcase-overlay {
+            position: absolute;
+            bottom: 10%;
+            left: 5%;
+        }
+        .showcase-overlay h2 {
+            font-size: 4rem;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.8);
+        }
+
+        /* Timeline */
+        .timeline-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-glass);
+            transform: translateX(-50%);
+        }
+        .timeline-progress {
+            position: absolute;
+            left: 0; top: 0; width: 100%; height: 0%;
+            background: var(--accent);
+            box-shadow: 0 0 15px var(--accent);
+        }
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        .timeline-content {
+            width: 45%;
+            background: rgba(255,255,255,0.02);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(10px);
+        }
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: var(--bg-sec);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            z-index: 2;
+        }
+        
+        /* Stats */
+        .stat-number {
+            font-size: 5rem;
+            font-family: var(--font-head);
+            font-weight: 700;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--text-main);
+            position: relative;
+        }
+        .stat-number::before {
+            content: attr(data-val);
+            position: absolute;
+            left: 0; top: 0; width: 0%; height: 100%;
+            color: var(--accent);
+            -webkit-text-stroke: 0px;
+            overflow: hidden;
+            transition: width 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+            text-shadow: 0 0 20px rgba(37,99,255,0.5);
+        }
+        .stat-item.is-visible .stat-number::before {
+            width: 100%;
+        }
+
+        /* CTA */
+        .cta-section {
+            background: radial-gradient(circle at center, rgba(37,99,255,0.15) 0%, var(--bg-main) 70%);
+            padding: 150px 0;
+            text-align: center;
+            border-top: 1px solid rgba(37,99,255,0.2);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-glass);
+            background: var(--bg-sec);
+            padding: 80px 0 30px;
+        }
+        .footer-logo {
+            font-size: 2rem;
+            font-family: var(--font-head);
+            color: var(--text-main);
+            letter-spacing: 2px;
+        }
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px; height: 45px;
+            border: 1px solid var(--border-glass);
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+        .social-icons a:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: translateY(-3px);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 3.5rem; }
+            .timeline-line { left: 20px; }
+            .timeline-item { flex-direction: column !important; align-items: flex-start; padding-left: 50px; }
+            .timeline-content { width: 100%; }
+            .timeline-dot { left: 20px; transform: translate(-50%, -50%); }
+            .ambient-glow { width: 100vw; height: 100vw; }
+            .cursor-dot, .cursor-outline { display: none; } /* Disable custom cursor on mobile */
+            * { cursor: auto !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Ambient Lighting -->
+    <div class="ambient-glow" id="ambientGlow"></div>
+
+    <!-- Loader -->
+    <div class="loader">
+        <div class="neon-sweep"></div>
+        <div class="loader-text" id="loaderText">MAX COLOR</div>
+        <div class="loader-progress"><span id="counter">0</span>%</div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top glass-nav">
+        <div class="container">
+            <a class="navbar-brand" href="#">MAX COLOR</a>
+            <button class="navbar-toggler btn-glow" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="padding: 0.5rem; border-color: var(--border-glass);">
+                <i class="bi bi-list" style="color: white; font-size: 1.5rem;"></i>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item ms-4"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item ms-4"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item ms-4"><a class="nav-link" href="#showcase">Showcase</a></li>
+                    <li class="nav-item ms-4"><a class="btn btn-glow ms-2" href="#contact">Book Now</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-overlay"></div>
+        <div class="container position-relative z-3">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-10">
+                    <h1 class="hero-title" id="heroTitle">TURN THE COLOR<br>TO THE MAXIMUM</h1>
+                    <p class="hero-subtitle" id="heroSubtitle">We offer elite-level custom automotive painting with futuristic precision and cinematic quality.</p>
+                    <div class="text-center hero-btns" style="opacity: 0;">
+                        <a href="#services" class="btn btn-glow me-3">Explore Services</a>
+                        <a href="#contact" class="btn btn-glow" style="background: var(--text-main); color: var(--bg-main);">Book Consultation</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator" id="scrollInd">
+            <span class="brand-font" style="font-size: 0.8rem; margin-bottom: 10px; letter-spacing: 2px;">SCROLL</span>
+            <div class="scroll-line"></div>
+        </div>
+    </header>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="container">
+            <div class="section-header gsap-fade">
+                <span class="section-subtitle">01 // PREMIUM EXPERTISE</span>
+                <h2 class="section-title mt-2">ELITE CUSTOMIZATION</h2>
+            </div>
+            <div class="row g-4">
+                <!-- Service Card 1 -->
+                <div class="col-md-6 col-lg-3 gsap-fade">
+                    <div class="glass-card">
+                        <i class="bi bi-palette-fill card-icon"></i>
+                        <h4 class="mb-3">Full Car Painting</h4>
+                        <p class="text-secondary">Transform your vehicle completely with state-of-the-art paint technology and robotic precision.</p>
+                    </div>
+                </div>
+                <!-- Service Card 2 -->
+                <div class="col-md-6 col-lg-3 gsap-fade">
+                    <div class="glass-card">
+                        <i class="bi bi-layers-fill card-icon"></i>
+                        <h4 class="mb-3">Matte Finish</h4>
+                        <p class="text-secondary">Achieve a stealth, aggressive look with our proprietary ultra-durable matte compounds.</p>
+                    </div>
+                </div>
+                <!-- Service Card 3 -->
+                <div class="col-md-6 col-lg-3 gsap-fade">
+                    <div class="glass-card">
+                        <i class="bi bi-shield-check card-icon"></i>
+                        <h4 class="mb-3">Ceramic Coating</h4>
+                        <p class="text-secondary">Lock in the perfection. Diamond-grade ceramic protection spanning up to 10 years.</p>
+                    </div>
+                </div>
+                <!-- Service Card 4 -->
+                <div class="col-md-6 col-lg-3 gsap-fade">
+                    <div class="glass-card">
+                        <i class="bi bi-record-circle-fill card-icon"></i>
+                        <h4 class="mb-3">Brake Calipers</h4>
+                        <p class="text-secondary">High-heat resistant neon and metallic finishes for the ultimate detailed stance.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section id="features" class="bg-sec" style="background: var(--bg-sec);">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 mb-5 mb-lg-0 gsap-fade">
+                    <span class="section-subtitle">02 // THE MAX DIFFERENCE</span>
+                    <h2 class="section-title mt-2">ENGINEERED<br>FOR PERFECTION</h2>
+                    <p class="text-secondary mb-4">We do not just paint cars. We meticulously craft visual identities for luxury and exotic vehicles using aerospace-grade environmental controls.</p>
+                    <a href="#" class="btn btn-glow">Learn Our Process</a>
+                </div>
+                <div class="col-lg-6 offset-lg-1">
+                    <div class="feature-block gsap-fade">
+                        <h4>AI Color Matching</h4>
+                        <p class="text-secondary mb-0">Sub-micron accuracy using advanced spectrophotometers mapped to digital AI databases.</p>
+                    </div>
+                    <div class="feature-block gsap-fade">
+                        <h4>Exact Budget Matching</h4>
+                        <p class="text-secondary mb-0">Transparent, elite-tier pricing structures scaling with material exoticness.</p>
+                    </div>
+                    <div class="feature-block gsap-fade">
+                        <h4>Lifetime Visual Impact</h4>
+                        <p class="text-secondary mb-0">Our clear coats contain UV-reactive elements preventing fade for a lifetime.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cinematic Showcase -->
+    <section id="showcase" class="p-0">
+        <div class="showcase-container d-flex align-items-end">
+            <div class="showcase-overlay gsap-fade">
+                <span class="section-subtitle" style="color: white; background: var(--accent); padding: 5px 15px;">MCLAREN 720S // MIDNIGHT COBALT</span>
+                <h2 class="mt-3 text-white">PURE KINETIC<br>ENERGY</h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Process -->
+    <section id="timeline">
+        <div class="container">
+            <div class="section-header gsap-fade">
+                <span class="section-subtitle">03 // THE JOURNEY</span>
+                <h2 class="section-title mt-2">PROCESS TIMELINE</h2>
+            </div>
+            
+            <div class="timeline-container">
+                <div class="timeline-line">
+                    <div class="timeline-progress" id="timelineProgress"></div>
+                </div>
+                
+                <div class="timeline-item gsap-fade">
+                    <div class="timeline-content">
+                        <h4>1. Consultation</h4>
+                        <p class="text-secondary mb-0">In-studio 3D rendering and physical swatch selection over espresso.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content" style="opacity:0; visibility:hidden;"></div>
+                </div>
+                
+                <div class="timeline-item gsap-fade">
+                    <div class="timeline-content">
+                        <h4>2. Surface Prep</h4>
+                        <p class="text-secondary mb-0">Micron-level sanding, dent removal, and complete chemical decontamination.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content" style="opacity:0; visibility:hidden;"></div>
+                </div>
+                
+                <div class="timeline-item gsap-fade">
+                    <div class="timeline-content">
+                        <h4>3. Precision Painting</h4>
+                        <p class="text-secondary mb-0">Multi-stage base and pearl application in our climate-controlled downdraft booth.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content" style="opacity:0; visibility:hidden;"></div>
+                </div>
+                
+                <div class="timeline-item gsap-fade">
+                    <div class="timeline-content">
+                        <h4>4. Final Delivery</h4>
+                        <p class="text-secondary mb-0">Cinematic reveal in our studio, complete with professional photography package.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content" style="opacity:0; visibility:hidden;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="stats" style="background: var(--bg-sec);">
+        <div class="container">
+            <div class="row text-center g-5">
+                <div class="col-md-3 stat-item gsap-fade">
+                    <div class="stat-number" data-val="12K+">12K+</div>
+                    <div class="brand-font text-secondary mt-2">Cars Customized</div>
+                </div>
+                <div class="col-md-3 stat-item gsap-fade">
+                    <div class="stat-number" data-val="08">08</div>
+                    <div class="brand-font text-secondary mt-2">Years Experience</div>
+                </div>
+                <div class="col-md-3 stat-item gsap-fade">
+                    <div class="stat-number" data-val="99%">99%</div>
+                    <div class="brand-font text-secondary mt-2">Satisfaction</div>
+                </div>
+                <div class="col-md-3 stat-item gsap-fade">
+                    <div class="stat-number" data-val="150+">150+</div>
+                    <div class="brand-font text-secondary mt-2">Luxury Partners</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials">
+        <div class="container">
+            <div class="section-header gsap-fade">
+                <span class="section-subtitle">04 // REPUTATION</span>
+                <h2 class="section-title mt-2">CLIENT VOICES</h2>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4 gsap-fade">
+                    <div class="glass-card">
+                        <div class="text-warning mb-3">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="mb-4">"Absolutely insane level of detail. My GT3 RS looks like it drove straight out of a Cyberpunk movie. The neon blue finish is flawless."</p>
+                        <div class="d-flex align-items-center">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background: #333; margin-right: 15px;"></div>
+                            <div>
+                                <h6 class="mb-0">Marcus V.</h6>
+                                <small class="text-secondary">Porsche GT3 RS Owner</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- More testimonials can be added here following the same structure -->
+                <div class="col-md-4 gsap-fade">
+                    <div class="glass-card">
+                        <div class="text-warning mb-3">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="mb-4">"The team at Max Color treats cars like fine art. The matte obsidian finish on my Urus turns heads at every single intersection."</p>
+                        <div class="d-flex align-items-center">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background: #333; margin-right: 15px;"></div>
+                            <div>
+                                <h6 class="mb-0">Elena S.</h6>
+                                <small class="text-secondary">Lamborghini Urus Owner</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 gsap-fade">
+                    <div class="glass-card">
+                        <div class="text-warning mb-3">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="mb-4">"Unmatched cinematic quality. From the lighting in their bay to the final ceramic coat, the entire process felt ultra-premium."</p>
+                        <div class="d-flex align-items-center">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background: #333; margin-right: 15px;"></div>
+                            <div>
+                                <h6 class="mb-0">James T.</h6>
+                                <small class="text-secondary">BMW M4 Competition</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contact">
+        <div class="container gsap-fade">
+            <h2 class="hero-title" style="font-size: clamp(2rem, 5vw, 5rem);">STAND OUT FROM THE CROWD<br>WITH MAX COLOR</h2>
+            <p class="text-secondary mb-5 fs-5">Secure your build slot. Very limited availability for Q3.</p>
+            <a href="#" class="btn btn-glow" style="padding: 1.5rem 4rem; font-size: 1.2rem; background: var(--text-main); color: var(--bg-main);">Start Your Transformation</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <div class="footer-logo mb-3">MAX COLOR</div>
+                    <p class="text-secondary">Elite-level custom automotive painting with futuristic precision. Located globally, servicing the world's most exclusive vehicles.</p>
+                </div>
+                <div class="col-md-2 offset-md-2 mb-4 mb-md-0">
+                    <h6 class="text-white mb-4 brand-font">Explore</h6>
+                    <ul class="list-unstyled text-secondary line-height-lg">
+                        <li class="mb-2"><a href="#services" class="nav-link d-inline">Services</a></li>
+                        <li class="mb-2"><a href="#features" class="nav-link d-inline">Process</a></li>
+                        <li class="mb-2"><a href="#showcase" class="nav-link d-inline">Showcase</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="text-white mb-4 brand-font">Connect</h6>
+                    <div class="social-icons mb-4">
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-youtube"></i></a>
+                        <a href="#"><i class="bi bi-twitter-x"></i></a>
+                    </div>
+                    <p class="text-secondary mb-0">contact@maxcolor.elite</p>
+                    <p class="text-secondary">+1 (800) MAX-COLOR</p>
+                </div>
+            </div>
+            <div class="row pt-4" style="border-top: 1px solid var(--border-glass);">
+                <div class="col-md-6 text-center text-md-start">
+                    <small class="text-secondary">&copy; 2026 MAX COLOR Elite Automotive. All Rights Reserved.</small>
+                </div>
+                <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
+                    <small class="text-secondary">Designed for the Future.</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- GSAP & Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <script>
+        // Custom Cursor
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const ambientGlow = document.getElementById('ambientGlow');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // Move cursor
+            gsap.to(cursorDot, { x: posX, y: posY, duration: 0.1 });
+            gsap.to(cursorOutline, { x: posX, y: posY, duration: 0.15 });
+            
+            // Move ambient background glow slightly for parallax
+            gsap.to(ambientGlow, {
+                x: (posX - window.innerWidth / 2) * 0.1,
+                y: (posY - window.innerHeight / 2) * 0.1,
+                duration: 1,
+                ease: "power2.out"
+            });
+        });
+
+        // Hover effects for cursor
+        document.querySelectorAll('a, button, .glass-card').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                cursorOutline.style.width = '60px';
+                cursorOutline.style.height = '60px';
+                cursorOutline.style.backgroundColor = 'rgba(37,99,255,0.1)';
+            });
+            link.addEventListener('mouseleave', () => {
+                cursorOutline.style.width = '40px';
+                cursorOutline.style.height = '40px';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // Split text function for animations
+        function splitText(selector) {
+            const el = document.querySelector(selector);
+            if(!el) return;
+            const text = el.innerText;
+            el.innerHTML = text.split('').map(char => char === ' ' ? '&nbsp;' : `<span class="char">${char}</span>`).join('');
+        }
+
+        // Initialize Lenis Smooth Scroll
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Register GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Preloader & Intro Sequence
+        splitText('#loaderText');
+        splitText('#heroTitle');
+
+        const tl = gsap.timeline();
+
+        // Loader Counter
+        let counterObj = { val: 0 };
+        tl.to(counterObj, {
+            val: 100,
+            duration: 2.5,
+            ease: "power4.inOut",
+            onUpdate: function() {
+                document.getElementById('counter').innerText = Math.round(counterObj.val);
+            }
+        }, 0);
+
+        // Neon sweep
+        tl.to('.neon-sweep', {
+            left: '100%',
+            duration: 2,
+            ease: "power2.inOut"
+        }, 0);
+
+        // Loader text reveal
+        tl.to('#loaderText .char', {
+            y: 0,
+            stagger: 0.05,
+            duration: 0.8,
+            ease: "power4.out"
+        }, 0.5);
+
+        // Hide Loader
+        tl.to('.loader', {
+            yPercent: -100,
+            duration: 1,
+            ease: "power4.inOut",
+            delay: 0.5
+        });
+
+        // Hero Reveal
+        tl.fromTo('.hero-bg', 
+            { scale: 1.2, filter: 'blur(10px)' }, 
+            { scale: 1.05, filter: 'blur(0px)', duration: 2, ease: "power3.out" }, 
+            "-=0.5"
+        );
+        
+        tl.to('#heroTitle .char', {
+            y: 0,
+            stagger: 0.02,
+            duration: 1,
+            ease: "power4.out"
+        }, "-=1.5");
+
+        tl.to(['#heroSubtitle', '.hero-btns', '#scrollInd'], {
+            opacity: 1,
+            y: -20,
+            stagger: 0.2,
+            duration: 1,
+            ease: "power3.out"
+        }, "-=1");
+
+        // Scroll Animations
+
+        // Hero Parallax
+        gsap.to('.hero-bg', {
+            yPercent: 30,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".hero",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // General Fade Ups
+        const fadeElements = document.querySelectorAll('.gsap-fade');
+        fadeElements.forEach(el => {
+            gsap.fromTo(el, 
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+        // Timeline Scroll Progress
+        gsap.to('#timelineProgress', {
+            height: '100%',
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".timeline-container",
+                start: "top center",
+                end: "bottom center",
+                scrub: 1
+            }
+        });
+
+        // Stats Counter Animation
+        const statItems = document.querySelectorAll('.stat-item');
+        statItems.forEach(item => {
+            ScrollTrigger.create({
+                trigger: item,
+                start: "top 80%",
+                onEnter: () => item.classList.add('is-visible')
+            });
+        });
+
+        // Navbar blur on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.glass-nav');
+            if(window.scrollY > 50) {
+                nav.style.background = 'rgba(5, 5, 5, 0.8)';
+                nav.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
+            } else {
+                nav.style.background = 'rgba(5, 5, 5, 0.4)';
+                nav.style.boxShadow = 'none';
+            }
+        });
+
+    </script>
+</body>
+</html>

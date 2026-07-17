@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cinematic Fashion Designer Portfolio | Luxury</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,800;1,6..96,400&family=Helvetica+Neue:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- GSAP & Lenis -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* ========================================================
+           GLOBAL VARIABLES & PERFORMANCE OPTIMIZATION
+        ======================================================== */
+        :root {
+            /* Color Palette */
+            --bg-color: #050000;
+            --primary-1: #140000;
+            --primary-2: #2a0000;
+            --primary-3: #450000;
+            --primary-4: #6d0000;
+            --primary-5: #990000;
+            
+            --accent-cream: #f5e8d8;
+            --accent-peach: #ffdfc7;
+            
+            --glow-red: rgba(255, 0, 0, 0.25);
+            --shadow-dark: #0a0000;
+
+            /* Spacing */
+            --section-gap: 15vmax;
+            --container: 90vw;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { font-size: 16px; background: var(--bg-color); }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--accent-cream);
+            font-family: 'Helvetica Neue', Helvetica, sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        ::selection {
+            background: var(--primary-5);
+            color: var(--accent-cream);
+        }
+
+        /* Typography Classes */
+        .font-serif { font-family: 'Bodoni Moda', serif; }
+        .font-sans { font-family: 'Helvetica Neue', sans-serif; text-transform: uppercase; letter-spacing: 0.15em; }
+        
+        .text-massive { font-size: clamp(4rem, 15vw, 15rem); line-height: 0.85; font-weight: 800; letter-spacing: -0.04em; }
+        .text-huge { font-size: clamp(3rem, 8vw, 8rem); line-height: 0.9; font-weight: 600; letter-spacing: -0.02em; }
+        .text-large { font-size: clamp(2rem, 5vw, 4rem); line-height: 1.1; font-weight: 400; }
+        .text-body { font-size: clamp(1rem, 1.2vw, 1.5rem); line-height: 1.6; color: rgba(245, 232, 216, 0.7); }
+        
+        .text-bloom { text-shadow: 0 0 30px rgba(245, 232, 216, 0.3); }
+
+        /* Hardware Acceleration & Utility */
+        .gpu { transform: translate3d(0, 0, 0); will-change: transform; }
+        .container { width: var(--container); max-width: 1800px; margin: 0 auto; position: relative; }
+        .flex-center { display: flex; align-items: center; justify-content: center; }
+        
+        /* Glassmorphism & UI Layers */
+        .glass {
+            background: rgba(255, 255, 255, 0.015);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 40px 80px rgba(10, 0, 0, 0.8), inset 0 0 40px rgba(255, 255, 255, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass::after {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(109, 0, 0, 0.15), transparent 70%);
+            opacity: 0; transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+        .glass:hover::after { opacity: 1; }
+
+        /* Ambient Backgrounds */
+        .bg-noise {
+            position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.04;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png');
+        }
+        
+        .bg-cinematic {
+            position: fixed; inset: 0; z-index: -1; pointer-events: none;
+            background: radial-gradient(circle at 50% 30%, var(--primary-2) 0%, var(--primary-1) 40%, var(--bg-color) 100%);
+        }
+
+        .ambient-glow {
+            position: absolute; border-radius: 50%; filter: blur(120px); z-index: 0; pointer-events: none;
+        }
+
+        /* ========================================================
+           SECTIONS CSS
+        ======================================================== */
+
+        /* 1. Hero Section */
+        .hero { height: 100vh; width: 100%; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .hero-bg-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1; pointer-events: none; color: rgba(20, 0, 0, 0.8); }
+        .hero-labels { position: absolute; left: 3vw; top: 50%; transform: translateY(-50%); z-index: 10; display: flex; flex-direction: column; gap: 4rem; color: var(--accent-cream); opacity: 0.5; font-size: 0.8rem; }
+        .hero-labels span { writing-mode: vertical-rl; transform: rotate(180deg); }
+        
+        .hero-center { position: relative; z-index: 5; display: flex; align-items: center; justify-content: center; width: 100%; max-width: 1400px; }
+        .hero-split-text { position: absolute; z-index: 10; font-family: 'Bodoni Moda'; mix-blend-mode: screen; white-space: nowrap; pointer-events: none;}
+        .hero-split-text.left { left: 0; transform: translateX(-10%); }
+        .hero-split-text.right { right: 0; transform: translateX(10%); }
+
+        .hero-portrait { width: 35vw; height: 70vh; min-width: 320px; position: relative; z-index: 5; border-radius: 200px; overflow: hidden; box-shadow: 0 30px 100px rgba(0,0,0,1); }
+        .hero-portrait img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) saturate(0.9); }
+        .hero-portrait::after { content:''; position: absolute; inset: 0; background: inset 0 0 50px rgba(0,0,0,0.8), linear-gradient(to top, var(--bg-color) 0%, transparent 40%); mix-blend-mode: multiply; }
+
+        /* 2. Luxury About */
+        .section-padding { padding: var(--section-gap) 0; position: relative; z-index: 10; }
+        .about-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 6rem; align-items: center; }
+        @media (max-width: 1024px) { .about-grid { grid-template-columns: 1fr; } }
+        .stat-box { padding: 4rem 3rem; border-radius: 40px; display: flex; flex-direction: column; gap: 1rem; }
+        
+        /* 3. Fashion Portfolio Gallery (Masonry) */
+        .masonry-grid { column-count: 3; column-gap: 2rem; margin-top: 5rem; }
+        @media (max-width: 1024px) { .masonry-grid { column-count: 2; } }
+        @media (max-width: 768px) { .masonry-grid { column-count: 1; } }
+        .masonry-item { break-inside: avoid; margin-bottom: 2rem; position: relative; border-radius: 24px; overflow: hidden; cursor: crosshair; }
+        .masonry-item img { width: 100%; height: auto; display: block; transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); filter: brightness(0.8); }
+        .masonry-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,0,0,0.9), transparent); opacity: 0; transition: opacity 0.5s; display: flex; flex-direction: column; justify-content: flex-end; padding: 2.5rem; }
+        .masonry-item:hover img { transform: scale(1.05); filter: brightness(1); }
+        .masonry-item:hover .masonry-overlay { opacity: 1; }
+
+        /* 4. Cinematic Work Showcase (Horizontal / Stacked) */
+        .cinematic-showcase { display: flex; flex-direction: column; gap: 10rem; margin-top: 10rem; }
+        .showcase-card { width: 100%; height: 80vh; border-radius: 40px; position: relative; overflow: hidden; display: flex; align-items: center; }
+        .showcase-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+        .showcase-content { position: relative; z-index: 10; padding: 6rem; width: 50%; background: linear-gradient(to right, rgba(5,0,0,0.9), transparent); height: 100%; display: flex; flex-direction: column; justify-content: center; }
+
+        /* 5. Designer Storytelling */
+        .story-section { display: flex; gap: 5rem; align-items: flex-start; }
+        .story-text { flex: 1; }
+        .story-text p { margin-bottom: 2rem; font-size: clamp(1.2rem, 1.5vw, 1.8rem); line-height: 1.6; }
+        .drop-cap { float: left; font-size: 8rem; line-height: 0.8; padding-right: 1.5rem; color: var(--primary-5); font-family: 'Bodoni Moda'; }
+        .story-image { flex: 1; border-radius: 30px; overflow: hidden; height: 80vh; }
+        .story-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* 6. Fashion Editorial Gallery */
+        .editorial-track { display: flex; gap: 2rem; width: max-content; padding: 5rem 0; }
+        .editorial-poster { width: 25vw; min-width: 350px; height: 40vw; min-height: 500px; border-radius: 20px; overflow: hidden; position: relative; }
+        .editorial-poster img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* 7. Interactive Case Studies */
+        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: 400px; gap: 2rem; }
+        .bento-card { border-radius: 40px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 3rem; }
+        .bento-card.large { grid-column: span 8; }
+        .bento-card.small { grid-column: span 4; }
+        .bento-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; filter: brightness(0.6) saturate(0.8); transition: filter 0.5s, transform 1s; }
+        .bento-card:hover img { filter: brightness(0.9) saturate(1.1); transform: scale(1.03); }
+        .bento-content { position: relative; z-index: 10; }
+
+        /* 8. Motion Showcase */
+        .motion-wrapper { width: 100%; height: 90vh; border-radius: 40px; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; }
+        .motion-wrapper img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(5px) brightness(0.4); }
+        .play-btn { width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; position: relative; z-index: 10; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.3s, background 0.3s; }
+        .play-btn:hover { background: rgba(153, 0, 0, 0.4); transform: scale(1.1); }
+        .play-btn svg { width: 40px; height: 40px; fill: var(--accent-cream); margin-left: 5px; }
+
+        /* 9. Premium Services */
+        .service-list { display: flex; flex-direction: column; border-top: 1px solid rgba(255,255,255,0.1); }
+        .service-item { padding: 4rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: padding 0.5s; position: relative; overflow: hidden;}
+        .service-item::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(153,0,0,0.1), transparent); transform: translateX(-100%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); z-index: 0; }
+        .service-item:hover::before { transform: translateX(0); }
+        .service-item:hover { padding-left: 2rem; padding-right: 2rem; }
+        .service-item h3 { font-size: clamp(2rem, 4vw, 4rem); position: relative; z-index: 1; }
+
+        /* 10. Awards & 11. Clients */
+        .awards-table { width: 100%; border-collapse: collapse; margin-top: 4rem; }
+        .awards-table td { padding: 2rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: clamp(1rem, 1.5vw, 1.5rem); }
+        .awards-table tr:hover td { color: var(--primary-5); }
+        .clients-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 5rem; text-align: center; opacity: 0.5; font-family: 'Bodoni Moda'; font-size: 2rem; }
+
+        /* 12, 13, 14, 15. Footer, Collaboration, QR */
+        .footer-section { padding: 10rem 0 4rem; position: relative; overflow: hidden; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-bottom-glow { position: absolute; bottom: -20vh; left: 50%; transform: translateX(-50%); width: 80vw; height: 50vh; background: var(--primary-5); opacity: 0.15; filter: blur(150px); pointer-events: none; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 5rem; align-items: end; }
+        @media (max-width: 1024px) { .footer-grid { grid-template-columns: 1fr; gap: 4rem;} }
+        
+        .huge-link { font-size: clamp(3rem, 7vw, 7rem); font-family: 'Bodoni Moda'; color: var(--accent-cream); text-decoration: none; display: inline-block; position: relative; }
+        .huge-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: var(--primary-5); transform: scaleX(0); transform-origin: right; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .huge-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+        .qr-card { width: 250px; height: 250px; border-radius: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; float: right; }
+        .qr-pattern { width: 100px; height: 100px; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 4px; opacity: 0.8; }
+        .qr-dot { background: var(--accent-cream); border-radius: 2px; }
+
+        .footer-meta { display: flex; justify-content: space-between; margin-top: 10rem; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.4; }
+        
+        /* Utils */
+        .tag { font-family: 'Helvetica Neue'; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--primary-5); margin-bottom: 1rem; display: block; font-weight: 700; }
+        .line-mask { overflow: hidden; display: block; }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Effects -->
+    <div class="bg-cinematic"></div>
+    <div class="bg-noise"></div>
+
+    <!-- 1. Giant Hero Section -->
+    <section class="hero gpu" id="hero">
+        <div class="ambient-glow" style="background: var(--primary-4); width: 60vw; height: 60vw; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.15;"></div>
+        
+        <div class="hero-bg-text font-serif text-massive" data-speed="0.8">PORTFOLIO</div>
+        
+        <div class="hero-labels font-sans" data-speed="1.1">
+            <span>EDITORIAL</span>
+            <span>WEB</span>
+            <span>UI</span>
+            <span>UX</span>
+        </div>
+
+        <div class="hero-center">
+            <h1 class="hero-split-text left text-huge text-bloom" data-speed="1.3">FASHION</h1>
+            
+            <div class="hero-portrait glass" data-speed="0.95">
+                <!-- Extremely cinematic, red-haired, transparent glasses fashion portrait placeholder -->
+                <img src="https://images.unsplash.com/photo-1611558709798-e009c8fd7706?q=80&w=2000&auto=format&fit=crop" alt="Luxury Fashion Designer Portrait">
+            </div>
+
+            <h1 class="hero-split-text right text-huge text-bloom" data-speed="1.3">DESIGNER</h1>
+        </div>
+    </section>
+
+    <!-- 2. Luxury About Section -->
+    <section class="section-padding container">
+        <span class="tag gs-reveal">The Philosophy</span>
+        <div class="about-grid">
+            <h2 class="font-serif text-large text-bloom gs-reveal-text">
+                Designing digital ecosystems that merge <i style="color: var(--primary-5)">luxury aesthetics</i> with relentless functional precision.
+            </h2>
+            <div class="stat-box glass gs-reveal">
+                <span class="font-sans" style="font-size: 0.8rem; opacity: 0.6">Current Status</span>
+                <h3 class="font-serif" style="font-size: 3rem; color: var(--accent-peach);">Award Winning</h3>
+                <p class="text-body mt-4">Independent creative director specializing in high-fashion digital experiences and immersive editorial UI/UX.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Fashion Portfolio Gallery -->
+    <section class="section-padding container">
+        <span class="tag gs-reveal">01 / Curated Collection</span>
+        <h2 class="font-serif text-huge gs-reveal-text">Editorial Showcase</h2>
+        
+        <div class="masonry-grid">
+            <!-- Item 1 -->
+            <div class="masonry-item glass gs-reveal">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop" alt="Editorial 1">
+                <div class="masonry-overlay">
+                    <span class="tag">Vogue Digital</span>
+                    <h3 class="font-serif text-large">Autumn Collection UI</h3>
+                </div>
+            </div>
+            <!-- Item 2 -->
+            <div class="masonry-item glass gs-reveal">
+                <img src="https://i.pinimg.com/474x/b2/d6/f8/b2d6f85e182bb57e911c72ddeb7327c7.jpg" alt="Editorial 2">
+                <div class="masonry-overlay">
+                    <span class="tag">E-Commerce</span>
+                    <h3 class="font-serif text-large">Minimalist Core</h3>
+                </div>
+            </div>
+            <!-- Item 3 -->
+            <div class="masonry-item glass gs-reveal">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1000&auto=format&fit=crop" alt="Editorial 3">
+                <div class="masonry-overlay">
+                    <span class="tag">Branding</span>
+                    <h3 class="font-serif text-large">Crimson Identity</h3>
+                </div>
+            </div>
+            <!-- Item 4 -->
+            <div class="masonry-item glass gs-reveal">
+                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop" alt="Editorial 4">
+                <div class="masonry-overlay">
+                    <span class="tag">Web Platform</span>
+                    <h3 class="font-serif text-large">Maison Margiela Concept</h3>
+                </div>
+            </div>
+             <!-- Item 5 -->
+            <div class="masonry-item glass gs-reveal">
+                <img src="https://st3.depositphotos.com/12760300/33812/i/450/depositphotos_338128336-stock-photo-beautiful-young-woman-without-clothes.jpg" alt="Editorial 5">
+                <div class="masonry-overlay">
+                    <span class="tag">App Design</span>
+                    <h3 class="font-serif text-large">Runway Tracker</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Cinematic Work Showcase -->
+    <section class="section-padding container">
+        <span class="tag gs-reveal">02 / Deep Dives</span>
+        <h2 class="font-serif text-huge gs-reveal-text">Featured Works</h2>
+
+        <div class="cinematic-showcase">
+            <div class="showcase-card glass gs-reveal">
+                <img src="https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=2070&auto=format&fit=crop" alt="Project 1" class="gs-parallax-img">
+                <div class="showcase-content">
+                    <span class="tag">Web Architecture</span>
+                    <h3 class="font-serif text-huge mb-6">Cinematic VOD Redesign</h3>
+                    <p class="text-body">A fully immersive, motion-heavy redesign for a premium fashion streaming platform.</p>
+                </div>
+            </div>
+
+            <div class="showcase-card glass gs-reveal">
+                <img src="https://images.unsplash.com/photo-1616423640778-28d1b53229bd?q=80&w=1974&auto=format&fit=crop" alt="Project 2" class="gs-parallax-img">
+                <div class="showcase-content">
+                    <span class="tag">iOS Application</span>
+                    <h3 class="font-serif text-huge mb-6">Luxury Fintech</h3>
+                    <p class="text-body">Bridging the gap between high-end fashion purchasing power and elegant financial data visualization.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Designer Storytelling Section -->
+    <section class="section-padding container">
+        <span class="tag gs-reveal">03 / The Narrative</span>
+        <div class="story-section">
+            <div class="story-text gs-reveal">
+                <span class="drop-cap">A</span>
+                <p>esthetics driven by raw emotion and relentless precision. My approach to digital design transcends mere pixels; it is about constructing a digital atmosphere that breathes life into the brand.</p>
+                <p>Drawing inspiration from brutalist architecture, avant-garde fashion campaigns, and cinematic color grading, I craft interfaces that don't just communicate information—they provoke a visceral reaction.</p>
+                <p>Every shadow is calculated. Every interaction is choreographed at 120 frames per second. It is the pursuit of absolute perfection.</p>
+            </div>
+            <div class="story-image glass gs-reveal">
+                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1000&auto=format&fit=crop" alt="Story" class="gs-parallax-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Fashion Editorial Gallery (Horizontal Scroll/Track) -->
+    <section class="section-padding" style="overflow: hidden;">
+        <div class="container"><span class="tag gs-reveal">04 / Posters & Layouts</span></div>
+        <div class="editorial-track gs-horizontal-track">
+            <div class="editorial-poster glass"><img src="https://s.alicdn.com/@sc04/kf/H04f1a5aead4448e88353332460668567u/Trending-Dress-2024-New-Arrival-Club-Dresses-Sexy-Mini-Bodycon-Sexy-Girl-Without-Bra-in-Transparent-Dress.jpeg" alt="Poster"></div>
+            <div class="editorial-poster glass"><img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=800&auto=format&fit=crop" alt="Poster"></div>
+            <div class="editorial-poster glass"><img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=800&auto=format&fit=crop" alt="Poster"></div>
+            <div class="editorial-poster glass"><img src="https://us.123rf.com/450wm/deagreez/deagreez2201/deagreez220103450/180819831-full-body-photo-of-nice-brown-hairdo-lady-sit-hug-herself-without-clothes-isolated-on-blue-color.jpg?ver=6" alt="Poster"></div>
+            <div class="editorial-poster glass"><img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=800&auto=format&fit=crop" alt="Poster"></div>
+        </div>
+    </section>
+
+    <!-- 7. Interactive Case Studies (Bento) -->
+    <section class="section-padding container">
+        <span class="tag gs-reveal">05 / UI Architecture</span>
+        <h2 class="font-serif text-huge gs-reveal-text mb-10">System Design</h2>
+        
+        <div class="bento-grid">
+            <div class="bento-card large glass gs-reveal">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Dashboard">
+                <div class="bento-content">
+                    <span class="tag">SaaS Dashboard</span>
+                    <h3 class="font-serif text-large">Dark Mode Analytics</h3>
+                </div>
+            </div>
+            <div class="bento-card small glass gs-reveal">
+                <img src="https://images.unsplash.com/photo-1522252234503-e356532cafd5?q=80&w=1000&auto=format&fit=crop" alt="Mobile">
+                <div class="bento-content">
+                    <span class="tag">Mobile Component</span>
+                    <h3 class="font-serif text-large">Haptic Flows</h3>
+                </div>
+            </div>
+            <div class="bento-card small glass gs-reveal">
+                <img src="https://images.unsplash.com/photo-1607252656733-fd7420b56182?q=80&w=1000&auto=format&fit=crop" alt="Typography">
+                <div class="bento-content">
+                    <span class="tag">Design System</span>
+                    <h3 class="font-serif text-large">Type Hierarchy</h3>
+                </div>
+            </div>
+            <div class="bento-card large glass gs-reveal">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop" alt="Wireframes">
+                <div class="bento-content">
+                    <span class="tag">Strategy</span>
+                    <h3 class="font-serif text-large">Architectural Mapping</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Motion Showcase -->
+    <section class="section-padding container">
+        <span class="tag gs-reveal">06 / Motion Dynamics</span>
+        <div class="motion-wrapper glass gs-reveal">
+            <img src="https://images.unsplash.com/photo-1558865869-c93f6f8482af?q=80&w=2000&auto=format&fit=crop" alt="Motion Graphic bg">
+            <div class="play-btn">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. Premium Service Section -->
+    <section class="section-padding container">
+        <span class="tag gs-reveal">07 / Expertise</span>
+        <div class="service-list">
+            <div class="service-item gs-reveal">
+                <h3 class="font-serif text-bloom">Creative Direction</h3>
+                <span class="font-sans">01</span>
+            </div>
+            <div class="service-item gs-reveal">
+                <h3 class="font-serif text-bloom">Editorial UI/UX Design</h3>
+                <span class="font-sans">02</span>
+            </div>
+            <div class="service-item gs-reveal">
+                <h3 class="font-serif text-bloom">Cinematic Motion Graphics</h3>
+                <span class="font-sans">03</span>
+            </div>
+            <div class="service-item gs-reveal">
+                <h3 class="font-serif text-bloom">Luxury Brand Architecture</h3>
+                <span class="font-sans">04</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. Designer Awards & 11. Clients -->
+    <section class="section-padding container">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;">
+            <div>
+                <span class="tag gs-reveal">08 / Recognition</span>
+                <table class="awards-table gs-reveal">
+                    <tr><td>Awwwards</td><td>Site of the Month</td><td>2025</td></tr>
+                    <tr><td>Behance</td><td>Featured Graphic Design</td><td>2025</td></tr>
+                    <tr><td>FWA</td><td>FWA of the Day</td><td>2024</td></tr>
+                    <tr><td>Webby</td><td>Best Fashion UI</td><td>2024</td></tr>
+                </table>
+            </div>
+            <div>
+                <span class="tag gs-reveal">09 / Selected Clients</span>
+                <div class="clients-grid gs-reveal">
+                    <div>LVMH</div>
+                    <div>VOGUE</div>
+                    <div>PRADA</div>
+                    <div>BALENCIAGA</div>
+                    <div>APPLE</div>
+                    <div>NETFLIX</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12, 13, 14, 15. Footer & Contact -->
+    <footer class="footer-section">
+        <div class="footer-bottom-glow"></div>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <span class="tag gs-reveal">10 / Collaboration</span>
+                    <h2 class="font-serif text-massive gs-reveal-text" style="font-size: clamp(3rem, 8vw, 10rem); margin-bottom: 2rem;">
+                        Let's create <br><i style="color: var(--primary-5)">masterpieces.</i>
+                    </h2>
+                    <a href="mailto:hello@studio.com" class="huge-link gs-reveal">hello@studio.com</a>
+                </div>
+                
+                <div class="qr-card glass gs-reveal">
+                    <div class="qr-pattern" id="qr-grid">
+                        <!-- JS populated dots -->
+                    </div>
+                    <span class="font-sans" style="font-size: 0.7rem; letter-spacing: 0.3em; color: var(--primary-5);">SCAN TO CONNECT</span>
+                </div>
+            </div>
+
+            <div class="footer-meta gs-reveal">
+                <div>© 2026 LUXURY DESIGNER PORTFOLIO. ALL RIGHTS RESERVED.</div>
+                <div style="display: flex; gap: 2rem;">
+                    <a href="#" style="color: inherit; text-decoration: none;">INSTAGRAM</a>
+                    <a href="#" style="color: inherit; text-decoration: none;">TWITTER</a>
+                    <a href="#" style="color: inherit; text-decoration: none;">BEHANCE</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================================
+         JAVASCRIPT & GSAP ANIMATIONS
+    ======================================================== -->
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            // 1. Lenis Smooth Scroll Initialization (120FPS feel)
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                orientation: 'vertical',
+                gestureOrientation: 'vertical',
+                smoothWheel: true,
+                wheelMultiplier: 1,
+                touchMultiplier: 2,
+            });
+
+            lenis.on('scroll', ScrollTrigger.update);
+
+            gsap.ticker.add((time) => {
+                lenis.raf(time * 1000);
+            });
+            gsap.ticker.lagSmoothing(0);
+
+            // 2. Generate Abstract QR Code pattern
+            const qrGrid = document.getElementById('qr-grid');
+            for(let i=0; i<16; i++) {
+                let dot = document.createElement('div');
+                dot.className = 'qr-dot';
+                dot.style.opacity = Math.random() * 0.7 + 0.3;
+                if(Math.random() > 0.5) dot.style.borderRadius = '50%';
+                qrGrid.appendChild(dot);
+            }
+
+            // 3. GSAP Animations
+
+            // Hero Parallax Elements
+            gsap.to(".hero-bg-text", {
+                yPercent: 30, opacity: 0, ease: "none",
+                scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+            });
+
+            gsap.to(".hero-portrait", {
+                yPercent: 15, ease: "none",
+                scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+            });
+
+            gsap.to(".hero-split-text.left", {
+                xPercent: -30, opacity: 0, ease: "none",
+                scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+            });
+
+            gsap.to(".hero-split-text.right", {
+                xPercent: 30, opacity: 0, ease: "none",
+                scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+            });
+
+            gsap.to(".hero-labels", {
+                yPercent: -50, opacity: 0, ease: "none",
+                scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+            });
+
+            // Global Reveal Fade-Up
+            const revealElements = gsap.utils.toArray('.gs-reveal');
+            revealElements.forEach((elem) => {
+                gsap.fromTo(elem, 
+                    { y: 50, opacity: 0, filter: "blur(10px)" },
+                    { 
+                        y: 0, opacity: 1, filter: "blur(0px)", 
+                        duration: 1.2, ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: elem,
+                            start: "top 85%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // Advanced Text Reveal (Line by line wrapping effect simulation)
+            const textElements = gsap.utils.toArray('.gs-reveal-text');
+            textElements.forEach((text) => {
+                // Wrap text in a span for masking
+                const content = text.innerHTML;
+                text.innerHTML = `<span class="line-mask" style="display:block; overflow:hidden;"><span style="display:block;">${content}</span></span>`;
+                const inner = text.querySelector('span > span');
+                
+                gsap.fromTo(inner,
+                    { yPercent: 100, opacity: 0, rotateZ: 2 },
+                    {
+                        yPercent: 0, opacity: 1, rotateZ: 0,
+                        duration: 1.5, ease: "power4.out",
+                        scrollTrigger: {
+                            trigger: text,
+                            start: "top 85%"
+                        }
+                    }
+                );
+            });
+
+            // Image Parallax inside cards
+            const parallaxImages = gsap.utils.toArray('.gs-parallax-img');
+            parallaxImages.forEach((img) => {
+                gsap.fromTo(img,
+                    { yPercent: -10, scale: 1.1 },
+                    {
+                        yPercent: 10, scale: 1,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: img.parentElement,
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    }
+                );
+            });
+
+            // Horizontal Scroll Section (Editorial)
+            const track = document.querySelector('.gs-horizontal-track');
+            if (track) {
+                gsap.to(track, {
+                    x: () => -(track.scrollWidth - window.innerWidth + (window.innerWidth * 0.1)),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: track.parentElement,
+                        start: "center center",
+                        end: () => "+=" + track.scrollWidth,
+                        pin: true,
+                        scrub: 1,
+                        invalidateOnRefresh: true
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

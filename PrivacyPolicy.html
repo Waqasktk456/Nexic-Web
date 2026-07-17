@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | Nexic Web</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables */
+        :root {
+            --bg-base: #05050A;
+            --text-primary: #F3F4F6;
+            --text-secondary: #9CA3AF;
+            --accent-cyan: #00F0FF;
+            --accent-purple: #8A2BE2;
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Gradients */
+        .bg-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: -1;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+
+        .glow-cyan {
+            background: var(--accent-cyan);
+            top: -10%;
+            left: -10%;
+        }
+
+        .glow-purple {
+            background: var(--accent-purple);
+            bottom: -10%;
+            right: -10%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100px, 100px) scale(1.2); }
+        }
+
+        /* Layout & Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .last-updated {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(0, 240, 255, 0.05);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--accent-cyan);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* Content Sections & Glassmorphism */
+        .policy-content {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            padding-bottom: 100px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: var(--glass-hover);
+            border-color: rgba(138, 43, 226, 0.2);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5),
+                        0 0 20px rgba(0, 240, 255, 0.05);
+        }
+
+        .glass-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .glass-card:hover h2 {
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card h2::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        .glass-card p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .glass-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .glass-card ul {
+            list-style-type: none;
+            margin-top: 16px;
+        }
+
+        .glass-card ul li {
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .glass-card ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-purple);
+            font-size: 0.9rem;
+        }
+
+        .link-text {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .link-text:hover {
+            border-bottom-color: var(--accent-cyan);
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--glass-border);
+            padding: 40px 0;
+            text-align: center;
+            background: rgba(5, 5, 10, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .copyright {
+            color: #6B7280;
+            font-size: 0.875rem;
+        }
+
+        /* Scroll Animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .glass-card { padding: 30px 24px; }
+            .hero { padding: 80px 0 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Background Gradients -->
+    <div class="bg-glow glow-cyan"></div>
+    <div class="bg-glow glow-purple"></div>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <header class="hero fade-up">
+            <h1>Privacy Policy</h1>
+            <p>Your trust is our priority at Nexic Web.</p>
+            <div class="last-updated">Last Updated: June 2026</div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="policy-content">
+            
+            <section class="glass-card fade-up">
+                <h2>Information We Collect</h2>
+                <p>When you interact with Nexic Web, we collect data to provide you with the ultimate premium digital experience. The information we gather falls into two core categories:</p>
+                <ul>
+                    <li><strong>Personal Data:</strong> Name, email address, billing address, and payment information required for seamless checkout.</li>
+                    <li><strong>Technical Data:</strong> IP addresses, browser types, device identifiers, and navigational data across our templates.</li>
+                </ul>
+            </section>
+
+            <section class="glass-card fade-up">
+                <h2>How We Use Data</h2>
+                <p>Your data powers our digital infrastructure. We utilize collected information strictly to enhance your experience and deliver value:</p>
+                <ul>
+                    <li>To deliver, maintain, and secure the premium templates you purchase.</li>
+                    <li>To process transactions securely via our enterprise payment partners.</li>
+                    <li>To send critical updates, security alerts, and administrative notifications.</li>
+                    <li>To analyze usage metrics and continuously refine our UI/UX standards.</li>
+                </ul>
+            </section>
+
+            <section class="glass-card fade-up">
+                <h2>Cookies Policy</h2>
+                <p>Nexic Web utilizes advanced tracking technologies to ensure a frictionless browsing experience. These text files allow us to remember your preferences and cart contents across sessions.</p>
+                <p>You reserve the right to configure your browser to reject non-essential cookies; however, doing so may limit the functionality of certain premium features on our platform.</p>
+            </section>
+
+            <section class="glass-card fade-up">
+                <h2>Third-Party Services</h2>
+                <p>To operate at a global standard, we integrate with industry-leading third-party services. These partners are bound by strict confidentiality agreements:</p>
+                <ul>
+                    <li><strong>Payment Gateways:</strong> Processing handled securely via Stripe & PayPal.</li>
+                    <li><strong>Analytics:</strong> Usage diagnostics provided by Google Analytics and Vercel Analytics.</li>
+                    <li><strong>Hosting:</strong> Cloud infrastructure maintained by Amazon Web Services (AWS).</li>
+                </ul>
+            </section>
+
+            <section class="glass-card fade-up">
+                <h2>Data Protection</h2>
+                <p>Security is embedded in our DNA. We protect your data using military-grade AES-256 encryption both in transit and at rest. Our infrastructure undergoes regular penetration testing and vulnerability assessments to thwart unauthorized access, alteration, or data destruction.</p>
+            </section>
+
+            <section class="glass-card fade-up">
+                <h2>Data Sharing Policy</h2>
+                <p>We do not monetize your privacy. <strong>Nexic Web never sells, rents, or trades your personal information to third parties.</strong> Data is only shared when legally compelled by a court of law or when explicitly necessary to fulfill a service you requested (e.g., passing address details to a payment processor).</p>
+            </section>
+
+            <section class="glass-card fade-up">
+                <h2>User Rights</h2>
+                <p>You retain full sovereignty over your personal data. Under global privacy frameworks (GDPR, CCPA), you hold the right to:</p>
+                <ul>
+                    <li>Request a comprehensive export of all data we hold regarding your account.</li>
+                    <li>Rectify any inaccurate or incomplete personal information.</li>
+                    <li>Request total erasure of your digital footprint from our servers ("Right to be Forgotten").</li>
+                </ul>
+            </section>
+
+            <section class="glass-card fade-up">
+                <h2>Policy Updates</h2>
+                <p>The digital landscape evolves, and so do our policies. We reserve the right to modify this Privacy Policy at our discretion. Significant changes will be communicated via email to registered users and prominently highlighted on this page via the "Last Updated" timestamp.</p>
+            </section>
+
+            <section class="glass-card fade-up">
+                <h2>Contact Information</h2>
+                <p>For data inquiries, compliance questions, or to exercise your privacy rights, please reach out to our dedicated legal team:</p>
+                <ul>
+                    <li>Email: <a href="mailto:privacy@nexicweb.com" class="link-text">privacy@nexicweb.com</a></li>
+                    <li>Address: Nexic Web Digital HQ, 128 Design Avenue, NY 10001, USA</li>
+                </ul>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Cookie Preferences</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <div class="copyright">
+            &copy; 2026 Nexic Web. All rights reserved. Premium Digital Agency.
+        </div>
+    </footer>
+
+    <!-- Scroll Animation Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const fadeElements = document.querySelectorAll('.fade-up');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // Run animation only once
+                    }
+                });
+            }, observerOptions);
+
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>

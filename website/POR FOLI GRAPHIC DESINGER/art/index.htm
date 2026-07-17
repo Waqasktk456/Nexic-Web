@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist | Luxury Portfolio</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Google Fonts & Fontshare -->
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           VARIABLES & CORE STYLES
+        ========================================== */
+        :root {
+            --bg-color: #070707;
+            --text-main: #f5f5f7;
+            --text-muted: #86868b;
+            --accent-gold: #d4af37;
+            --accent-glow: rgba(212, 175, 55, 0.15);
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            cursor: none; /* Custom cursor */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Clash Display', sans-serif;
+            font-weight: 600;
+        }
+
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        /* ==========================================
+           CUSTOM CURSOR & EFFECTS
+        ========================================== */
+        #cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            transition: width 0.3s, height 0.3s;
+            mix-blend-mode: screen;
+        }
+
+        .custom-cursor {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-gold);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            transition: transform 0.1s ease;
+        }
+
+        /* ==========================================
+           UTILITIES & ANIMATIONS
+        ========================================== */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+        }
+
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-padding { padding: 120px 0; }
+        .text-gold { color: var(--accent-gold); }
+        .text-muted-luxury { color: var(--text-muted); }
+
+        /* ==========================================
+           1. NAVBAR
+        ========================================== */
+        .navbar-luxury {
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            transition: var(--transition);
+            padding: 20px 0;
+        }
+        .navbar-luxury.scrolled {
+            background: rgba(7, 7, 7, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 10px 0;
+        }
+        .nav-link {
+            color: var(--text-main) !important;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            padding: 5px 0 !important;
+            margin: 0 15px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent-gold);
+            transition: var(--transition);
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        /* ==========================================
+           2. HERO SECTION
+        ========================================== */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 7rem);
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+        }
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 500px;
+        }
+        .hero-image-wrapper {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.5s ease;
+        }
+        .hero-image-wrapper:hover {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+        .hero-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(30%) contrast(1.1);
+        }
+        .btn-luxury {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--glass-border);
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-luxury:hover {
+            background: var(--text-main);
+            color: var(--bg-color);
+            border-color: var(--text-main);
+        }
+
+        /* ==========================================
+           3. ABOUT SECTION
+        ========================================== */
+        .about-text {
+            font-size: 1.8rem;
+            line-height: 1.5;
+            font-family: 'Playfair Display', serif;
+        }
+        .counter-box {
+            border-left: 2px solid var(--accent-gold);
+            padding-left: 20px;
+            margin-top: 30px;
+        }
+        .counter-num {
+            font-size: 3rem;
+            font-family: 'Clash Display', sans-serif;
+            color: var(--text-main);
+        }
+
+        /* ==========================================
+           4. FEATURED WORKS (BENTO)
+        ========================================== */
+        .work-card {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            display: block;
+        }
+        .work-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            filter: brightness(0.8);
+        }
+        .work-card:hover .work-img {
+            transform: scale(1.05);
+            filter: brightness(1);
+        }
+        .work-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .work-card:hover .work-info {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* ==========================================
+           5. PROCESS
+        ========================================== */
+        .process-card {
+            padding: 40px;
+            transition: var(--transition);
+            height: 100%;
+        }
+        .process-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px var(--accent-glow);
+            border-color: rgba(255,255,255,0.1);
+        }
+        .process-num {
+            font-size: 4rem;
+            color: var(--glass-border);
+            font-family: 'Playfair Display', serif;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            transition: var(--transition);
+        }
+        .process-card:hover .process-num {
+            color: var(--accent-gold);
+        }
+
+        /* ==========================================
+           6. SERVICES
+        ========================================== */
+        .service-item {
+            border-bottom: 1px solid var(--glass-border);
+            padding: 30px 0;
+            transition: var(--transition);
+        }
+        .service-item:hover {
+            padding-left: 20px;
+            border-bottom-color: var(--accent-gold);
+        }
+        .service-title {
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        /* ==========================================
+           7. EXPERIENCE TIMELINE
+        ========================================== */
+        .timeline-row {
+            display: flex;
+            border-bottom: 1px solid var(--glass-border);
+            padding: 40px 0;
+            transition: var(--transition);
+        }
+        .timeline-row:hover { background: var(--glass-bg); padding-left: 20px; }
+        .timeline-year { width: 150px; color: var(--accent-gold); font-family: 'Clash Display'; }
+        
+        /* ==========================================
+           8. TESTIMONIALS & 9. GALLERY
+        ========================================== */
+        .testimonial-card {
+            padding: 40px;
+            text-align: center;
+        }
+        .gallery-img {
+            border-radius: 12px;
+            width: 100%;
+            margin-bottom: 24px;
+            transition: var(--transition);
+        }
+        .gallery-img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        /* ==========================================
+           10. CONTACT & 11. FOOTER
+        ========================================== */
+        .contact-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--glass-border);
+            color: var(--text-main);
+            border-radius: 0;
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+        .contact-input:focus {
+            background: transparent;
+            color: var(--text-main);
+            box-shadow: none;
+            border-color: var(--accent-gold);
+        }
+        .footer-title {
+            font-size: clamp(4rem, 10vw, 10rem);
+            text-align: center;
+            opacity: 0.1;
+            font-family: 'Clash Display', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero-section { text-align: center; padding-top: 100px; height: auto; }
+            .hero-image-wrapper { margin-top: 40px; }
+            .timeline-row { flex-direction: column; }
+            .service-title { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div id="cursor-glow"></div>
+    <div class="custom-cursor"></div>
+
+    <!-- 1. NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-luxury">
+        <div class="container">
+            <a class="navbar-brand text-white fw-bold fs-4" href="#" style="font-family: 'Clash Display', sans-serif;">AURA.</a>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="bi bi-list text-white fs-1"></i>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#works">Works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. HERO SECTION -->
+    <header id="home" class="hero-section container-fluid">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7 reveal-up active">
+                    <p class="text-gold text-uppercase letter-spacing mb-3">Creative Director & Digital Artist</p>
+                    <h1 class="hero-title">Shaping <br><span class="font-playfair text-muted-luxury">digital</span> realities.</h1>
+                    <p class="hero-subtitle mb-5 mt-4">Crafting cinematic, award-winning digital experiences for luxury brands and modern visionaries worldwide.</p>
+                    <div class="d-flex gap-4">
+                        <a href="#works" class="btn-luxury text-decoration-none">Explore Works</a>
+                        <a href="#contact" class="btn-luxury text-decoration-none border-0 text-muted-luxury">Let's Talk <i class="bi bi-arrow-right ms-2"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-5 d-none d-lg-block reveal-up active" style="transition-delay: 0.2s;">
+                    <div class="hero-image-wrapper glass-panel p-2">
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop" alt="Artist Portrait" class="img-fluid rounded-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 3. ABOUT SECTION -->
+    <section id="about" class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 reveal-up">
+                    <h2 class="mb-5 text-uppercase fs-6 text-gold">The Philosophy</h2>
+                    <p class="about-text">Design is not just what it looks like and feels like. <span class="font-playfair text-muted-luxury">Design is how it works.</span> I merge minimalist aesthetics with powerful cinematic storytelling to elevate digital presence.</p>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-md-4 reveal-up">
+                    <div class="counter-box">
+                        <div class="counter-num">10+</div>
+                        <div class="text-muted-luxury text-uppercase small mt-2">Years Experience</div>
+                    </div>
+                </div>
+                <div class="col-md-4 reveal-up" style="transition-delay: 0.1s;">
+                    <div class="counter-box">
+                        <div class="counter-num">150</div>
+                        <div class="text-muted-luxury text-uppercase small mt-2">Projects Delivered</div>
+                    </div>
+                </div>
+                <div class="col-md-4 reveal-up" style="transition-delay: 0.2s;">
+                    <div class="counter-box">
+                        <div class="counter-num">12</div>
+                        <div class="text-muted-luxury text-uppercase small mt-2">Design Awards</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. FEATURED WORKS -->
+    <section id="works" class="section-padding bg-dark bg-opacity-10">
+        <div class="container">
+            <h2 class="display-4 mb-5 reveal-up">Selected <span class="font-playfair text-muted-luxury">Works</span></h2>
+            
+            <div class="row g-4">
+                <!-- Project 1 (Large) -->
+                <div class="col-lg-8 reveal-up">
+                    <a href="#" class="work-card text-decoration-none h-100">
+                        <img src="https://images.unsplash.com/photo-1600132806370-bf17e65e942f?q=80&w=1200&auto=format&fit=crop" alt="Project" class="work-img">
+                        <div class="work-info">
+                            <p class="text-gold mb-1 small text-uppercase">Branding • 2023</p>
+                            <h3 class="text-white mb-0">Lumina Essence</h3>
+                        </div>
+                    </a>
+                </div>
+                <!-- Project 2 -->
+                <div class="col-lg-4 reveal-up">
+                    <a href="#" class="work-card text-decoration-none h-100">
+                        <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=800&auto=format&fit=crop" alt="Project" class="work-img">
+                        <div class="work-info">
+                            <p class="text-gold mb-1 small text-uppercase">Digital Art • 2023</p>
+                            <h3 class="text-white mb-0">Noir Aesthetic</h3>
+                        </div>
+                    </a>
+                </div>
+                <!-- Project 3 -->
+                <div class="col-lg-4 reveal-up">
+                    <a href="#" class="work-card text-decoration-none h-100">
+                        <img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=800&auto=format&fit=crop" alt="Project" class="work-img">
+                        <div class="work-info">
+                            <p class="text-gold mb-1 small text-uppercase">UI/UX • 2024</p>
+                            <h3 class="text-white mb-0">Genesis Platform</h3>
+                        </div>
+                    </a>
+                </div>
+                <!-- Project 4 (Large) -->
+                <div class="col-lg-8 reveal-up">
+                    <a href="#" class="work-card text-decoration-none h-100">
+                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200&auto=format&fit=crop" alt="Project" class="work-img">
+                        <div class="work-info">
+                            <p class="text-gold mb-1 small text-uppercase">Motion Design • 2024</p>
+                            <h3 class="text-white mb-0">Kinetic Flow</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. CREATIVE PROCESS -->
+    <section id="process" class="section-padding">
+        <div class="container">
+            <h2 class="display-4 mb-5 text-center reveal-up">Creative <span class="font-playfair text-muted-luxury">Process</span></h2>
+            
+            <div class="row g-4 mt-4">
+                <div class="col-md-4 reveal-up">
+                    <div class="process-card glass-panel position-relative">
+                        <span class="process-num">01</span>
+                        <h4 class="mb-3 mt-4">Discovery</h4>
+                        <p class="text-muted-luxury small">Understanding the brand identity, core values, and the cinematic vision needed to establish a digital presence.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 reveal-up" style="transition-delay: 0.1s;">
+                    <div class="process-card glass-panel position-relative">
+                        <span class="process-num">02</span>
+                        <h4 class="mb-3 mt-4">Concept</h4>
+                        <p class="text-muted-luxury small">Drafting wireframes, defining the typography structure, and establishing the mood and visual direction.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 reveal-up" style="transition-delay: 0.2s;">
+                    <div class="process-card glass-panel position-relative">
+                        <span class="process-num">03</span>
+                        <h4 class="mb-3 mt-4">Execution</h4>
+                        <p class="text-muted-luxury small">Bringing the concept to life with pixel-perfect design, smooth motion, and high-end technical implementation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. SERVICES -->
+    <section id="services" class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 reveal-up">
+                    <h2 class="display-5 mb-4">Areas of <br><span class="font-playfair text-muted-luxury">Expertise</span></h2>
+                    <p class="text-muted-luxury">Delivering comprehensive digital solutions for modern brands.</p>
+                </div>
+                <div class="col-lg-8">
+                    <div class="service-item reveal-up d-flex justify-content-between align-items-center">
+                        <h3 class="service-title">Creative Direction</h3>
+                        <i class="bi bi-arrow-up-right fs-3 text-gold"></i>
+                    </div>
+                    <div class="service-item reveal-up d-flex justify-content-between align-items-center">
+                        <h3 class="service-title">UI/UX Design</h3>
+                        <i class="bi bi-arrow-up-right fs-3 text-gold"></i>
+                    </div>
+                    <div class="service-item reveal-up d-flex justify-content-between align-items-center">
+                        <h3 class="service-title">Brand Identity</h3>
+                        <i class="bi bi-arrow-up-right fs-3 text-gold"></i>
+                    </div>
+                    <div class="service-item reveal-up d-flex justify-content-between align-items-center">
+                        <h3 class="service-title">Motion Graphics</h3>
+                        <i class="bi bi-arrow-up-right fs-3 text-gold"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. EXPERIENCE TIMELINE -->
+    <section id="experience" class="section-padding bg-dark bg-opacity-10">
+        <div class="container">
+            <h2 class="display-5 mb-5 reveal-up">Experience</h2>
+            <div class="timeline-container">
+                <div class="timeline-row reveal-up">
+                    <div class="timeline-year fs-4">2021 - Present</div>
+                    <div class="timeline-content">
+                        <h4 class="mb-1">Independent Art Director</h4>
+                        <p class="text-muted-luxury mb-0">Working globally with premium brands and agencies.</p>
+                    </div>
+                </div>
+                <div class="timeline-row reveal-up">
+                    <div class="timeline-year fs-4">2018 - 2021</div>
+                    <div class="timeline-content">
+                        <h4 class="mb-1">Lead Designer @ Studio X</h4>
+                        <p class="text-muted-luxury mb-0">Led digital product design for top-tier e-commerce clients.</p>
+                    </div>
+                </div>
+                <div class="timeline-row reveal-up">
+                    <div class="timeline-year fs-4">2015 - 2018</div>
+                    <div class="timeline-content">
+                        <h4 class="mb-1">Senior UI Designer @ CreativeSpace</h4>
+                        <p class="text-muted-luxury mb-0">Award-winning web experiences and interaction design.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. GALLERY SECTION (Masonry concept) -->
+    <section id="gallery" class="section-padding">
+        <div class="container">
+            <h2 class="display-5 mb-5 text-center reveal-up">Visual <span class="font-playfair text-muted-luxury">Journal</span></h2>
+            <div class="row masonry-row">
+                <div class="col-md-4 reveal-up">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=600&auto=format&fit=crop" class="gallery-img" alt="Gallery">
+                    <img src="https://i.pinimg.com/736x/9c/41/84/9c41840ca89debb626434699e285fb33.jpg" class="gallery-img mt-4" alt="Gallery">
+                </div>
+                <div class="col-md-4 reveal-up" style="transition-delay: 0.1s; padding-top: 40px;">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop" class="gallery-img" alt="Gallery">
+                    <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=600&auto=format&fit=crop" class="gallery-img mt-4" alt="Gallery">
+                </div>
+                <div class="col-md-4 reveal-up" style="transition-delay: 0.2s;">
+                    <img src="https://images.unsplash.com/photo-1600132806370-bf17e65e942f?q=80&w=600&auto=format&fit=crop" class="gallery-img" alt="Gallery">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600&auto=format&fit=crop" class="gallery-img mt-4" alt="Gallery">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. CONTACT SECTION -->
+    <section id="contact" class="section-padding bg-dark bg-opacity-10 relative">
+        <div class="container glass-panel p-5">
+            <div class="row">
+                <div class="col-lg-6 reveal-up">
+                    <h2 class="display-3 mb-4">Let's create <br><span class="font-playfair text-gold">together.</span></h2>
+                    <p class="text-muted-luxury mb-5">Open for collaborative projects, art direction, and digital innovations.</p>
+                    
+                    <div class="d-flex flex-column gap-3 mb-5">
+                        <a href="mailto:hello@studio.com" class="text-white text-decoration-none fs-5"><i class="bi bi-envelope me-3 text-gold"></i>hello@aura-studio.com</a>
+                        <span class="text-white fs-5"><i class="bi bi-geo-alt me-3 text-gold"></i>New York / Global</span>
+                    </div>
+                </div>
+                <div class="col-lg-6 reveal-up">
+                    <form>
+                        <div class="mb-4">
+                            <input type="text" class="form-control contact-input" placeholder="Your Name" required>
+                        </div>
+                        <div class="mb-4">
+                            <input type="email" class="form-control contact-input" placeholder="Email Address" required>
+                        </div>
+                        <div class="mb-5">
+                            <textarea class="form-control contact-input" rows="4" placeholder="Project Details" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-luxury w-100">Send Inquiry</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. FOOTER -->
+    <footer class="pt-5 pb-3">
+        <div class="container">
+            <div class="footer-title reveal-up">AURA STUDIO</div>
+            <div class="d-flex justify-content-between align-items-center mt-5 flex-wrap reveal-up">
+                <p class="text-muted-luxury mb-0">&copy; 2026 Aura Studio. All rights reserved.</p>
+                <div class="d-flex gap-4">
+                    <a href="#" class="text-white text-decoration-none">Twitter</a>
+                    <a href="#" class="text-white text-decoration-none">Behance</a>
+                    <a href="#" class="text-white text-decoration-none">Instagram</a>
+                    <a href="#" class="text-white text-decoration-none">Dribbble</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap & JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Custom Cursor Logic
+            const cursorGlow = document.getElementById('cursor-glow');
+            const customCursor = document.querySelector('.custom-cursor');
+
+            document.addEventListener('mousemove', (e) => {
+                const x = e.clientX;
+                const y = e.clientY;
+                
+                // Fast dot
+                customCursor.style.left = x + 'px';
+                customCursor.style.top = y + 'px';
+
+                // Smooth glow follower
+                cursorGlow.animate({
+                    left: `${x}px`,
+                    top: `${y}px`
+                }, { duration: 500, fill: "forwards" });
+            });
+
+            // Hover effects on links/buttons for cursor
+            const hoverElements = document.querySelectorAll('a, button, .work-card, .service-item');
+            hoverElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursorGlow.style.width = '400px';
+                    cursorGlow.style.height = '400px';
+                    customCursor.style.transform = 'translate(-50%, -50%) scale(2)';
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursorGlow.style.width = '300px';
+                    cursorGlow.style.height = '300px';
+                    customCursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                });
+            });
+
+            // Sticky Navbar
+            const navbar = document.querySelector('.navbar-luxury');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Scroll Reveal Animation (Intersection Observer)
+            const revealElements = document.querySelectorAll('.reveal-up');
+            const revealOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealObserver = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                });
+            }, revealOptions);
+
+            revealElements.forEach(el => {
+                revealObserver.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

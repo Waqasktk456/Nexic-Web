@@ -1,0 +1,677 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALEXIS VANE — Elite Creative Developer & Digital Architect</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Google Fonts: Plus Jakarta Sans for Headers, Inter for Body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+  
+   
+</head>
+<body>
+
+    <!-- Noise Texture Overlay Layer -->
+    <div class="noise-overlay"></div>
+
+    <!-- Mouse Tracker Ambient Light Gradient Orb -->
+    <div class="ambient-glow" id="mouseGlow"></div>
+
+    <!-- Premium Preloader UI -->
+    <div id="preloader">
+        <div class="loader-logo">ALEXIS VANE</div>
+        <div class="loader-bar-container">
+            <div class="loader-bar" id="loaderBar"></div>
+        </div>
+        <div class="loader-counter" id="loaderCounter">00%</div>
+    </div>
+
+    <!-- Luxury Navbar Framework -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">AV<span>.</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navSystem" aria-controls="navSystem" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="toggler-icon"></span>
+                <span class="toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navSystem">
+                <div class="navbar-nav gap-2 mt-4 mt-lg-0">
+                    <a class="nav-link active" href="#home">Home</a>
+                    <a class="nav-link" href="#about">About</a>
+                    <a class="nav-link" href="#services">Services</a>
+                    <a class="nav-link" href="#projects">Projects</a>
+                    <a class="nav-link" href="#experience">Experience</a>
+                    <a class="nav-link" href="#pricing">Pricing</a>
+                    <a class="nav-link" href="#contact">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Insane Hero Section Framework -->
+    <section class="hero-section" id="home">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-badge">
+                        <div class="pulse-dot"></div> Available for Global Commissions
+                    </div>
+                    <h1 class="hero-title">Architecting Elite Digital Artifacts.</h1>
+                    <p class="hero-desc">I engineered tailored high-fidelity web experiences for visionary global entities. Melding premium design structures with interactive deployment paradigms.</p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="#projects" class="btn btn-premium btn-premium-primary">View Masterpieces</a>
+                        <a href="#contact" class="btn btn-premium btn-premium-secondary">Initiate Inquiry</a>
+                    </div>
+                    <div class="d-flex gap-4 mt-5 pt-3 text-muted">
+                        <a href="#" class="text-reset fs-5"><i class="bi bi-github"></i></a>
+                        <a href="#" class="text-reset fs-5"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="text-reset fs-5"><i class="bi bi-dribbble"></i></a>
+                        <a href="#" class="text-reset fs-5"><i class="bi bi-twitter-x"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-composition">
+                        <div class="hero-main-sphere"></div>
+                        <div class="hero-glass-display">
+                            <div>
+                                <h5 class="mb-1 text-white">Interactive Production Mode</h5>
+                                <p class="text-muted small">FPS: 60 / Latency: 12ms</p>
+                            </div>
+                            <!-- Structural Mock Geometric Lines for Premium Aesthetic -->
+                            <svg viewBox="0 0 100 30" style="width:100%; fill:none; stroke:rgba(255,255,255,0.1); stroke-width:0.5;">
+                                <path d="M0,5 Q25,25 50,5 T100,25" />
+                                <path d="M0,15 Q25,5 50,25 T100,5" stroke="var(--accent-blue)" stroke-width="1"/>
+                            </svg>
+                            <div class="d-flex justify-content-between align-items-end">
+                                <div>
+                                    <span class="text-muted d-block small">Core System</span>
+                                    <span class="fw-bold">Active Grid Matrix</span>
+                                </div>
+                                <span class="badge bg-white text-dark rounded-pill px-3 py-2 small fw-bold">v3.4.1</span>
+                            </div>
+                        </div>
+                        <!-- Floating Glass Cards -->
+                        <div class="glass-card floating-card fc-1">
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="bi bi-award-fill text-warning fs-4"></i>
+                                <div>
+                                    <h6 class="mb-0 text-white">Awwwards Nominee</h6>
+                                    <small class="text-muted">Digital Artistry '25</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-card floating-card fc-2">
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="bi bi-lightning-charge-fill text-info fs-4"></i>
+                                <div>
+                                    <h6 class="mb-0 text-white">Elite Performance</h6>
+                                    <small class="text-muted">100% Core Web Vitals</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Editorial About Section Framework -->
+    <section class="section-padding" id="about">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5 scroll-reveal">
+                    <span class="section-tag">01 / Philosophy</span>
+                    <h2 class="section-title">Elevating Code into Premium Living Art.</h2>
+                    <p class="text-muted mb-4 lead">I believe that luxury web design is defined by invisible details—precise modern typography, meticulously timed transitions, and robust scalable engineering systems.</p>
+                    <p class="text-muted mb-5">For nearly a decade, I have collaborated with design agencies, enterprise SaaS teams, and high-fashion luxury boutiques to create unforgettable flagship web experiences that convert casual visitors into brand advocates.</p>
+                    <div class="row g-4">
+                        <div class="col-6">
+                            <div class="glass-card stat-box">
+                                <div class="stat-number">99%</div>
+                                <div class="text-muted small uppercase">Client Retention</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="glass-card stat-box">
+                                <div class="stat-number">40+</div>
+                                <div class="text-muted small uppercase">Global Awards</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 scroll-reveal">
+                    <div class="editorial-image-wrapper">
+                        <!-- High-contrast architectural premium photo asset representing editorial design -->
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80" alt="Alexis Vane Atelier" class="editorial-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Services Section Framework -->
+    <section class="section-padding" id="services">
+        <div class="container">
+            <div class="row justify-content-between align-items-end mb-5">
+                <div class="col-lg-6 scroll-reveal">
+                    <span class="section-tag">02 / Capabilities</span>
+                    <h2 class="section-title mb-0">Engineered Deliverables Built for Distinction.</h2>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 scroll-reveal">
+                    <div class="glass-card service-card">
+                        <i class="bi bi-layers service-icon"></i>
+                        <h4 class="mb-3 text-white">High-End UI/UX Design</h4>
+                        <p class="text-muted mb-0">Meticulous spatial design maps constructed in high-fidelity Figma files, ready to convert sophisticated audiences with pixel perfection.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 scroll-reveal">
+                    <div class="glass-card service-card">
+                        <i class="bi bi-code-slash service-icon"></i>
+                        <h4 class="mb-3 text-white">Elite Frontend Architecture</h4>
+                        <p class="text-muted mb-0">Ultra-clean, production-ready implementation optimizing absolute asset delivery, semantic systems, and lightweight modular code execution.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 scroll-reveal">
+                    <div class="glass-card service-card">
+                        <i class="bi bi-activity service-icon"></i>
+                        <h4 class="mb-3 text-white">Cinematic Motion Design</h4>
+                        <p class="text-muted mb-0">Interactive scroll dynamics, physics-based canvas micro-interactions, and spatial animation configurations engineered to delight customers.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 scroll-reveal">
+                    <div class="glass-card service-card">
+                        <i class="bi bi-gem service-icon"></i>
+                        <h4 class="mb-3 text-white">Luxury Brand Strategy</h4>
+                        <p class="text-muted mb-0">Aligning interactive design choices with global identity structures to project authority, commanding premium market positioning.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 scroll-reveal">
+                    <div class="glass-card service-card">
+                        <i class="bi bi-search service-icon"></i>
+                        <h4 class="mb-3 text-white">Enterprise SEO Audits</h4>
+                        <p class="text-muted mb-0">Advanced rendering structuring, structured schema mapping, and asset optimization pipelines built for organic visibility dominance.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 scroll-reveal">
+                    <div class="glass-card service-card">
+                        <i class="bi bi-compass service-icon"></i>
+                        <h4 class="mb-3 text-white">Creative Direction</h4>
+                        <p class="text-muted mb-0">Holistic digital concepts that elevate your platform above modern aesthetic homogeny, presenting bespoke visual storytelling.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Massive Projects Bento Grid Showcase Framework -->
+    <section class="section-padding" id="projects">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-6 scroll-reveal">
+                    <span class="section-tag">03 / Selected Artifacts</span>
+                    <h2 class="section-title">The Project Showcase Gallery.</h2>
+                </div>
+            </div>
+            
+            <div class="bento-grid">
+                <!-- Project 1: Large Bento Card -->
+                <div class="bento-item large scroll-reveal">
+                    <div class="project-img-bg" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80');"></div>
+                    <div class="project-arrow"><i class="bi bi-arrow-up-right"></i></div>
+                    <div class="project-meta">
+                        <span class="text-uppercase tracking-wider small text-white-50 d-block mb-2">Web3 Architecture / Ecosystem</span>
+                        <h3 class="text-white mb-2">Aether Financial Node</h3>
+                        <p class="text-muted small mb-0">HTML5 · Custom CSS Grids · Vanilla Micro-Animations</p>
+                    </div>
+                </div>
+
+                <!-- Project 2: Small Bento Card -->
+                <div class="bento-item small scroll-reveal">
+                    <div class="project-img-bg" style="background-image: url('https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="project-arrow"><i class="bi bi-arrow-up-right"></i></div>
+                    <div class="project-meta">
+                        <span class="text-uppercase tracking-wider small text-white-50 d-block mb-2">Creative Direction</span>
+                        <h3 class="text-white mb-2">Vesper Atelier</h3>
+                        <p class="text-muted small mb-0">Premium UI · Typographic Structure</p>
+                    </div>
+                </div>
+
+                <!-- Project 3: Small Bento Card -->
+                <div class="bento-item small scroll-reveal">
+                    <div class="project-img-bg" style="background-image: url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="project-arrow"><i class="bi bi-arrow-up-right"></i></div>
+                    <div class="project-meta">
+                        <span class="text-uppercase tracking-wider small text-white-50 d-block mb-2">E-Commerce Framework</span>
+                        <h3 class="text-white mb-2">Kallisto Maison</h3>
+                        <p class="text-muted small mb-0">Bootstrap 5 Elite · Performance Optimization</p>
+                    </div>
+                </div>
+
+                <!-- Project 4: Large Bento Card -->
+                <div class="bento-item large scroll-reveal">
+                    <div class="project-img-bg" style="background-image: url('https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=1000&q=80');"></div>
+                    <div class="project-arrow"><i class="bi bi-arrow-up-right"></i></div>
+                    <div class="project-meta">
+                        <span class="text-uppercase tracking-wider small text-white-50 d-block mb-2">Interactive Interface</span>
+                        <h3 class="text-white mb-2">Nexus Cybernetic Engine</h3>
+                        <p class="text-muted small mb-0">Vanilla Canvas API · Glassmorphism Core</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Experience Timeline Framework -->
+    <section class="section-padding" id="experience">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4 scroll-reveal">
+                    <span class="section-tag">04 / Trajectory</span>
+                    <h2 class="section-title">The Career Milestones Framework.</h2>
+                    <p class="text-muted">An archival record of strategic deployments, technical directorship roles, and institutional partnerships across global tech ecosystems.</p>
+                </div>
+                <div class="col-lg-8 scroll-reveal">
+                    <div class="timeline-container">
+                        <div class="timeline-item">
+                            <div class="timeline-date">2024 — PRESENT</div>
+                            <h4 class="text-white">Principal Interactive Engineer</h4>
+                            <h6 class="text-muted mb-3">Vanguard Digital Studio, Tokyo / Remote</h6>
+                            <p class="text-muted">Directing frontend development systems for luxury automotive pipelines and fashion conglomerates. Introduced performance optimizations that boosted asset rendering efficiencies by 40% nationwide.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2021 — 2024</div>
+                            <h4 class="text-white">Senior Digital Architect</h4>
+                            <h6 class="text-muted mb-3">Luminary SaaS Interface Agency, New York</h6>
+                            <p class="text-muted">Oversaw design-to-production conversion funnels for Fortune 500 financial ecosystems. Standardized custom semantic structural templates across global agile enterprise engineering units.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2018 — 2021</div>
+                            <h4 class="text-white">Lead Creative UX Developer</h4>
+                            <h6 class="text-muted mb-3">Aether Interactive Studios, London</h6>
+                            <p class="text-muted">Designed and launched multi-award winning marketing landing structures. Mastered complex standalone desktop and browser fluid layout motion models.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Ecosystem Integration Section -->
+    <section class="section-padding bg-darkest-block" id="skills">
+        <div class="container">
+            <div class="row mb-5 justify-content-center text-center">
+                <div class="col-lg-6 scroll-reveal">
+                    <span class="section-tag">05 / Matrix Core</span>
+                    <h2 class="section-title">Technical Competence Metrics.</h2>
+                </div>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <!-- Skill Node Entry 1 -->
+                <div class="col-lg-3 col-md-4 col-6 scroll-reveal">
+                    <div class="glass-card skill-node">
+                        <i class="bi bi-filetype-html text-danger"></i>
+                        <h6 class="mb-0 text-white">HTML5 Core Architecture</h6>
+                        <div class="progress-premium">
+                            <div class="progress-bar-premium" data-progress="95%"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Skill Node Entry 2 -->
+                <div class="col-lg-3 col-md-4 col-6 scroll-reveal">
+                    <div class="glass-card skill-node">
+                        <i class="bi bi-filetype-css text-primary"></i>
+                        <h6 class="mb-0 text-white">Advanced CSS3 / Less / SCSS</h6>
+                        <div class="progress-premium">
+                            <div class="progress-bar-premium" data-progress="92%"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Skill Node Entry 3 -->
+                <div class="col-lg-3 col-md-4 col-6 scroll-reveal">
+                    <div class="glass-card skill-node">
+                        <i class="bi bi-bootstrap-fill text-purple" style="color: #7952b3;"></i>
+                        <h6 class="mb-0 text-white">Bootstrap 5 Framework</h6>
+                        <div class="progress-premium">
+                            <div class="progress-bar-premium" data-progress="98%"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Skill Node Entry 4 -->
+                <div class="col-lg-3 col-md-4 col-6 scroll-reveal">
+                    <div class="glass-card skill-node">
+                        <i class="bi bi-filetype-js text-warning"></i>
+                        <h6 class="mb-0 text-white">Vanilla JS ESM / DOM API</h6>
+                        <div class="progress-premium">
+                            <div class="progress-bar-premium" data-progress="90%"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Skill Node Entry 5 -->
+                <div class="col-lg-3 col-md-4 col-6 scroll-reveal">
+                    <div class="glass-card skill-node">
+                        <i class="bi bi-vector-pen text-info"></i>
+                        <h6 class="mb-0 text-white">UI/UX Spatial Vectoring</h6>
+                        <div class="progress-premium">
+                            <div class="progress-bar-premium" data-progress="88%"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Skill Node Entry 6 -->
+                <div class="col-lg-3 col-md-4 col-6 scroll-reveal">
+                    <div class="glass-card skill-node">
+                        <i class="bi bi-git text-orange" style="color:#f05032;"></i>
+                        <h6 class="mb-0 text-white">Git / Advanced Versioning</h6>
+                        <div class="progress-premium">
+                            <div class="progress-bar-premium" data-progress="85%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Luxury Testimonial Carousel Section Framework -->
+    <section class="section-padding" id="testimonials">
+        <div class="container">
+            <div id="testimonialCarousel" class="carousel slide testimonial-carousel scroll-reveal" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="glass-card testimonial-card text-center">
+                            <i class="bi bi-quote quote-icon"></i>
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Client Executive" class="testimonial-avatar">
+                            <h4 class="mb-4 text-white">"Alexis transformed our identity into an absolute masterpiece. The platform's rendering optimization speeds and pristine responsiveness shattered our corporate KPI projections within weeks of deployment."</h4>
+                            <h6 class="mb-1 text-white">ELEANOR VANCE</h6>
+                            <small class="text-uppercase tracking-wider text-muted">Chief Technology Officer, Aether Corp</small>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="glass-card testimonial-card text-center">
+                            <i class="bi bi-quote quote-icon"></i>
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Client Executive" class="testimonial-avatar">
+                            <h4 class="mb-4 text-white">"Unparalleled attention to aesthetic detail. Alexis operates at a rarefied altitude of premium engineering skillsets that is exceptionally scarce in the contemporary agency space."</h4>
+                            <h6 class="mb-1 text-white">MARCUS THORNE</h6>
+                            <small class="text-uppercase tracking-wider text-muted">Creative Director, Vesper Maison</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <button class="btn btn-premium btn-premium-secondary py-2 px-3" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                        <i class="bi bi-arrow-left"></i>
+                    </button>
+                    <button class="btn btn-premium btn-premium-secondary py-2 px-3" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Tiered Pricing Models Framework -->
+    <section class="section-padding" id="pricing">
+        <div class="container">
+            <div class="row justify-content-center text-center mb-5">
+                <div class="col-lg-6 scroll-reveal">
+                    <span class="section-tag">06 / Strategic Investment</span>
+                    <h2 class="section-title">Transparent Engagement Tiers.</h2>
+                </div>
+            </div>
+            <div class="row g-4 align-items-center">
+                <!-- Tier 1 -->
+                <div class="col-lg-4 scroll-reveal">
+                    <div class="glass-card pricing-card">
+                        <span class="text-muted text-uppercase tracking-wider small d-block mb-2">Bespoke Launch</span>
+                        <h3 class="text-white">Flagship Presence</h3>
+                        <div class="pricing-price">$4,500 <span>/ Project</span></div>
+                        <p class="text-muted small mb-4">Perfect for premium independent boutiques seeking authoritative market positioning.</p>
+                        <hr class="border-secondary my-4">
+                        <ul class="list-unstyled d-flex flex-column gap-3 text-muted small mb-5">
+                            <li><i class="bi bi-check2 text-primary me-2"></i> Custom Visual Architecture Design</li>
+                            <li><i class="bi bi-check2 text-primary me-2"></i> 5 Bespoke Sub-Page Frameworks</li>
+                            <li><i class="bi bi-check2 text-primary me-2"></i> Core Fluid Motion Deployment</li>
+                            <li><i class="bi bi-check2 text-primary me-2"></i> Standard SEO Performance Auditing</li>
+                        </ul>
+                        <a href="#contact" class="btn btn-premium btn-premium-secondary w-100">Select Flagship Tier</a>
+                    </div>
+                </div>
+                <!-- Tier 2 (Featured Premium Tier) -->
+                <div class="col-lg-4 scroll-reveal">
+                    <div class="glass-card pricing-card featured">
+                        <span class="text-primary text-uppercase tracking-wider small d-block mb-2 fw-bold">Most Requested</span>
+                        <h3 class="text-white">Signature Experience</h3>
+                        <div class="pricing-price">$8,500 <span>/ Project</span></div>
+                        <p class="text-muted small mb-4">Comprehensive digital system tailored for high-growth enterprises and agencies.</p>
+                        <hr class="border-secondary my-4">
+                        <ul class="list-unstyled d-flex flex-column gap-3 text-white-50 small mb-5">
+                            <li><i class="bi bi-check2 text-primary me-2"></i> Complete Custom Component Library</li>
+                            <li><i class="bi bi-check2 text-primary me-2"></i> Up to 12 Production Layout Templates</li>
+                            <li><i class="bi bi-check2 text-primary me-2"></i> Advanced Canvas / Micro-Physics Engine</li>
+                            <li><i class="bi bi-check2 text-primary me-2"></i> Dedicated Strategy & Wireframe Pipeline</li>
+                            <li><i class="bi bi-check2 text-primary me-2"></i> Priority Source Verification Support</li>
+                        </ul>
+                        <a href="#contact" class="btn btn-premium btn-premium-primary w-100">Secure Signature Tier</a>
+                    </div>
+                </div>
+                <!-- Tier 3 -->
+                <div class="col-lg-4 scroll-reveal">
+                    <div class="glass-card pricing-card">
+                        <span class="text-muted text-uppercase tracking-wider small d-block mb-2">Enterprise Retainer</span>
+                        <h3 class="text-white">Elite Partnership</h3>
+                        <div class="pricing-price">$15,000 <span>/ Absolute Retainer</span></div>
+                        <p class="text-muted small mb-4">Continuous full-scale ongoing creative direction and custom production engineering assets.</p>
+                        <hr class="border-secondary my-4">
+                        <ul class="list-unstyled d-flex flex-column gap-3 text-muted small mb-5">
+                            <li><i class="bi bi-check2 text-primary me-2"></i> Dedicated Monthly Engineering Allocation</li>
+                            <li><i class="bi bi-check2 text-primary me-2"></i> Unlimited Strategic Iterative Scaling</li>
+                            <li><i class="bi bi-check2 text-primary me-2"></i> Continuous Security Optimization Integration</li>
+                            <li><i class="bi bi-check2 text-primary me-2"></i> Direct Internal Slack/Sync Comms Link</li>
+                        </ul>
+                        <a href="#contact" class="btn btn-premium btn-premium-secondary w-100">Initiate Corporate Council</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Elite Interactive Contact Framework Section -->
+    <section class="section-padding" id="contact">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-5 scroll-reveal">
+                    <span class="section-tag">07 / Transmission</span>
+                    <h2 class="section-title">Let’s Forge Something Monumental.</h2>
+                    <p class="text-muted mb-5">Have an upcoming premium venture or enterprise project requiring a high-fidelity execution? Connect via the encrypted pipeline or direct digital channels.</p>
+                    
+                    <div class="d-flex flex-column gap-4">
+                        <div>
+                            <span class="text-muted d-block small text-uppercase tracking-wider">Direct Encryption Mail</span>
+                            <a href="mailto:atelier@alexisvane.domain" class="contact-info-link">atelier@alexisvane.domain</a>
+                        </div>
+                        <div>
+                            <span class="text-muted d-block small text-uppercase tracking-wider">Global Operations Studio</span>
+                            <span class="fs-5 text-white">Tokyo / Geneva Workspace Hubs</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 scroll-reveal">
+                    <div class="glass-card p-5">
+                        <form id="contactSystemForm" onsubmit="event.preventDefault(); alert('Transmission Authenticated & Route Logged.');">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small uppercase">Identity Designation</label>
+                                    <input type="text" class="form-glass-input" placeholder="e.g. Julianne Sterling" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small uppercase">Secure Return Routing</label>
+                                    <input type="email" class="form-glass-input" placeholder="e.g. name@enterprise.com" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label text-muted small uppercase">Project Capitalization Range</label>
+                                    <select class="form-glass-input text-white" style="background:#111;">
+                                        <option>$4,500 — $8,500 Tier</option>
+                                        <option>$8,500 — $15,000 Tier</option>
+                                        <option>$15,000+ Enterprise Tier</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label text-muted small uppercase">Operational Scope Manifest</label>
+                                    <textarea class="form-glass-input" rows="5" placeholder="Detail the core functional metrics and timeline parameters of the commission..." required></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-premium btn-premium-primary w-100 mt-2">Transmit Project Brief</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cinematic Massive Footer Structure -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center scroll-reveal">
+                    <div class="footer-large-brand">ALEXIS VANE</div>
+                </div>
+            </div>
+            <div class="row g-4 justify-content-between text-muted small pt-5 border-top border-secondary">
+                <div class="col-md-4 text-center text-md-start">
+                    <p class="mb-0">&copy; 2026 ALEXIS VANE ATELIER. ALL RIGHTS RESERVED. HARMONIZED BY INTERACTIVE DESIGN PARADIGMS.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="d-flex justify-content-center justify-content-md-end gap-4">
+                        <a href="#home" class="footer-link">Top Architecture</a>
+                        <a href="#about" class="footer-link">Operational Philosophy</a>
+                        <a href="#projects" class="footer-link">Artifact Indexes</a>
+                        <a href="#contact" class="footer-link">Privacy Safeguards</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS containing Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Luxury Vanilla JavaScript Engineering Engine -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // 1. Premium Preloader Simulation Countdown Engine
+            const loaderBar = document.getElementById('loaderBar');
+            const loaderCounter = document.getElementById('loaderCounter');
+            const preloader = document.getElementById('preloader');
+            
+            let loadProgress = 0;
+            const counterInterval = setInterval(() => {
+                loadProgress += Math.floor(Math.random() * 12) + 4;
+                if (loadProgress >= 100) {
+                    loadProgress = 100;
+                    clearInterval(counterInterval);
+                    
+                    // Smoothly dismiss preloader mask
+                    setTimeout(() => {
+                        preloader.style.opacity = '0';
+                        preloader.style.visibility = 'hidden';
+                        // Trigger skills metrics render on load
+                        triggerSkillsAnimations();
+                    }, 400);
+                }
+                loaderBar.style.width = `${loadProgress}%`;
+                loaderCounter.innerText = `${loadProgress.toString().padStart(2, '0')}%`;
+            }, 60);
+
+            // 2. Interactive Ambient Mouse-Follow Light Glow Matrix Tracker
+            const mouseGlow = document.getElementById('mouseGlow');
+            let targetX = 0, targetY = 0;
+            let currentX = 0, currentY = 0;
+
+            window.addEventListener('mousemove', (e) => {
+                // Calculate position relative to viewport scroll offset
+                targetX = e.clientX - 300; 
+                targetY = e.clientY - 300;
+            });
+
+            // Fluid lerp animation function for premium lag tracking glow feel
+            function updateGlowPosition() {
+                currentX += (targetX - currentX) * 0.08;
+                currentY += (targetY - currentY) * 0.08;
+                mouseGlow.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+                requestAnimationFrame(updateGlowPosition);
+            }
+            updateGlowPosition();
+
+            // 3. Navbar High-Resolution Dynamic Scroll States
+            const navbar = document.querySelector('.navbar');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            window.addEventListener('scroll', () => {
+                // Background opacity injection
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+
+                // Dynamic Nav link highlight tracker logic
+                let activeSectionId = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 200;
+                    if (window.scrollY >= sectionTop) {
+                        activeSectionId = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${activeSectionId}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            // 4. Cinematic Intersection Observer Scroll-Reveal Matrix Engine
+            const revealElements = document.querySelectorAll('.scroll-reveal');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                    }
+                });
+            }, {
+                threshold: 0.08,
+                rootMargin: "0px 0px -40px 0px"
+            });
+
+            revealElements.forEach(element => {
+                revealObserver.observe(element);
+            });
+
+            // 5. Skills Grid Progress Node Render Target Engine
+            function triggerSkillsAnimations() {
+                const skillBars = document.querySelectorAll('.progress-bar-premium');
+                skillBars.forEach(bar => {
+                    const destinationProgress = bar.getAttribute('data-progress');
+                    bar.style.width = destinationProgress;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
+```
