@@ -40,7 +40,7 @@ const WEBSITES = [
 {
     id: "w30",
     title: "TITTAN-X. ",
-    image: "image/LAND.png",
+    image: "image/new/TITAN.png",
     description: "Transform operations with next-generation AI, intelligent workflows, and scalable autonomous technologies built for the digital era.",
     link: "https://autonomous-nexic.netlify.app/",
     category: "agency",
@@ -53,7 +53,7 @@ const WEBSITES = [
 {
     id: "w31",
     title: "nexos.",
-    image: "image/LAND.png",
+    image: "image/new/nexos-enterprise.png",
     description: "Empower your organization with enterprise-grade software, intelligent automation, cloud technologies, and secure digital solutions. Our mission is to help businesses innovate faster, streamline operations, improve productivity, and achieve sustainable growth with future-ready technology tailored for modern enterprises.",
     link: "https://nexos-enterprise.netlify.app/",
     category: "agency",
@@ -67,7 +67,7 @@ const WEBSITES = [
 {
     id: "w32",
     title: "RAVEN",
-    image: "image/LAND.png",
+    image: "image/new/creative-raven..png",
     description: "We transform ambitious ideas into impactful digital experiences through exceptional design, powerful branding, and modern technology—helping businesses stand out, connect, and grow with confidence.",
     link: "https://creative-raven.netlify.app/",
     category: "agency",
@@ -96,7 +96,7 @@ const WEBSITES = [
   {
     id: "w34",
     title: " VECTRAL",
-    image: "image/LAND.png",
+    image: "image/new/vectral.png",
     description: "Helping businesses embrace digital transformation through cutting-edge software, cloud infrastructure, and intelligent automation designed for long-term success.",
     link: "https://vectral-nexic.netlify.app/",
     category: "agency",
@@ -186,8 +186,8 @@ const WEBSITES = [
 
   {
     id: "w35",
-    title: " monolith",
-    image: "image/LAND.png",
+    title: " MONOLITH",
+    image: "image/new/monolith.png",
     description: "  We partner with ambitious organizations to create enterprise-grade digital experiences that simplify complexity, improve operational efficiency, and unlock new opportunities through modern technology and strategic innovation.",
     link: "https://monolith-nexic.netlify.app/",
     category: "Free",
@@ -271,7 +271,7 @@ const WEBSITES = [
 {
     id: "w38",
     title: "Aurix OS",
-    image: "",
+    image: "image/new/AurixOS.png",
     description: "Lucent Aurix OS combines enterprise-grade performance, AI-driven intelligence, cloud-native infrastructure, and advanced cybersecurity into one unified platform. Designed for organizations that demand reliability, flexibility, and innovation, it empowers businesses to transform operations, accelerate growth, and stay ahead in a rapidly evolving digital world.  ",
     link: " https://lucent-aurix-os.netlify.app/ ",
     category: "agency",
@@ -301,11 +301,6 @@ const WEBSITES = [
 
 
 
- 
-
-
-
-
   {
     id: "w13",
     title: "DESIGNER ",
@@ -322,8 +317,8 @@ const WEBSITES = [
 {
     id: "w36",
     title: " meridian",
-    image: "image/LAND.png",
-    description: "       We build what's next. We create digital experiences that inspire, engage, and convert. Our team of designers, developers, and strategists work together to craft innovative solutions that help businesses thrive in the digital age.      ",
+    image: "image/new/meridian.png",
+    description: " Meridian Nexic empowers organizations with enterprise-grade software, AI-driven automation, cloud technologies, and intelligent digital solutions that simplify operations and unlock new opportunities for growth. Built for modern businesses, our platform combines innovation, reliability, and scalability to help teams achieve long-term success with confidence. ",
     link: "https://meridian-nexic.netlify.app/",
     category: "agency",
     detailsPage: "w36detail.html"
@@ -383,17 +378,17 @@ const WEBSITES = [
   },
  
   
-  {
-    id: "w39",
-    title: "Atelier Voss",
-    image: "image/indonisia.png",
-    description: "We operate at the intersection of technology, culture, and business transformation. For organizations that refuse to be ordinary.🎨",
-    link: "https://indonisiya-travel.netlify.app/",
-    category: "agency",
-  detailsPage: "w39detail.html"
+  // {
+  //   id: "w39",
+  //   title: "Atelier Voss",
+  //   image: "image/indonisia.png",
+  //   description: "We operate at the intersection of technology, culture, and business transformation. For organizations that refuse to be ordinary.🎨",
+  //   link: "https://indonisiya-travel.netlify.app/",
+  //   category: "agency",
+  // detailsPage: "w39detail.html"
   
 
-  },
+  // },
  
 
 
@@ -475,8 +470,8 @@ const WEBSITES = [
 {
     id: "w37",
     title: "  DANCING NEXORA",
-    image: "image/LAND.png",
-    description: "   We build what's next. We create digital experiences that inspire, engage, and convert. Our team of designers, developers, and strategists work together to craft innovative solutions that help businesses thrive in the digital age.      ",
+    image: "image/new/DANCING-NEXORA.png",
+    description: "Dancing Nexora empowers businesses with premium branding, modern web experiences, creative strategy, and innovative digital solutions that elevate brand identity and accelerate growth. By combining bold creativity with cutting-edge technology, we help organizations create memorable experiences, strengthen customer connections, and achieve sustainable success in today's competitive digital landscape. ",
     link: "https://dancing-nexora.netlify.app/",
     category: "agency",
     detailsPage: "w37detail.html"
@@ -505,8 +500,8 @@ const WEBSITES = [
   {
     id: "w33",
     title: "Kael Ashford",
-    image: "image/LAND.png",
-    description: "      I architect products that define markets, craft experiences that inspire users, and build brands that resonate with audiences. My work is a fusion of strategy, design, and technology, aimed at creating impactful digital solutions that drive growth and engagement.",
+    image: "image/new/lustrous-asford.png",
+    description: "  Lustrous Asford empowers forward-thinking organizations with premium digital solutions that combine elegant design, intelligent technology, and scalable innovation. From enterprise platforms and brand experiences to strategic digital transformation, we help businesses create lasting value, strengthen customer trust, and achieve sustainable growth in a competitive global marketplace.",
     link: "https://lustrous-asford.netlify.app/",
     category: "agency",
     detailsPage: "w33detail.html"
