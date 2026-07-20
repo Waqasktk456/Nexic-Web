@@ -16,9 +16,13 @@ const supabase = createClient(
   process.env.SUPABASE_KEY
 );
 
+// Routes
 app.get('/', (req, res) => {
   res.json({ message: 'NexicWeb API is running', status: 'connected' });
 });
+
+// Auth Routes
+app.use('/api/auth', require('./routes/auth'));
 
 // Test Supabase Connection
 app.get('/test-db', async (req, res) => {

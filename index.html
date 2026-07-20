@@ -77,6 +77,7 @@ NexicWeb
           </a>
         </li>
         <li><a href="#" class="nav-link btn-login" id="open-auth">Login</a></li>
+        <li><span class="user-name" id="user-name" style="display:none;"></span></li>
       </ul>
       <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
     </div>
@@ -702,6 +703,8 @@ NexicWeb
   <!-- Toast Notification -->
   <div class="toast" id="toast"></div>
 
+  <!-- Config (must load first) -->
+  <script src="config.js"></script>
   <script src="app.js"></script>
 
 
@@ -765,14 +768,22 @@ document.getElementById("go-login").onclick = (e) => {
 signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const name = signupForm.querySelector('input[type="text"]').value;
-  const email = signupForm.querySelector('input[type="email"]').value;
+  const name = signupForm.querySelector('input[type="text"]').value.trim();
+  const email = signupForm.querySelector('input[type="email"]').value.trim();
   const password = signupForm.querySelector('input[type="password"]').value;
   const btn = signupForm.querySelector(".auth-submit");
+  
+  // Email validation regex
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   
   // Validation
   if (!name || !email || !password) {
     showToast("Please fill in all fields", "error");
+    return;
+  }
+  
+  if (!emailRegex.test(email)) {
+    showToast("Please enter a valid email address", "error");
     return;
   }
   
@@ -785,7 +796,7 @@ signupForm.addEventListener("submit", async (e) => {
   btn.disabled = true;
 
   try {
-    const res = await fetch("http://localhost:5000/api/auth/signup", {
+    const res = await fetch(API.AUTH.SIGNUP, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password }),
@@ -795,9 +806,12 @@ signupForm.addEventListener("submit", async (e) => {
 
     if (res.ok) {
       showToast("✓ " + data.message, "success");
-      signupForm.classList.add("hidden");
-      otpForm.classList.remove("hidden");
-      document.getElementById("otp-email").value = email;
+      signupForm.reset();
+      setTimeout(() => {
+        signupForm.classList.add("hidden");
+        otpForm.classList.remove("hidden");
+        document.getElementById("otp-email").value = data.email;
+      }, 1500);
     } else {
       showToast(data.message || "Signup failed", "error");
     }
@@ -811,15 +825,16 @@ signupForm.addEventListener("submit", async (e) => {
 });
 
 
+// OTP Verification
 otpForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const email = document.getElementById("otp-email").value;
-  const code = document.getElementById("otp-code").value;
+  const code = document.getElementById("otp-code").value.trim();
   const btn = otpForm.querySelector(".auth-submit");
 
   if (!code || code.length !== 6) {
-    showToast("Please enter a valid 6-digit OTP", "error");
+    showToast("Please enter a valid 6-digit code", "error");
     return;
   }
 
@@ -827,7 +842,7 @@ otpForm.addEventListener("submit", async (e) => {
   btn.disabled = true;
 
   try {
-    const res = await fetch("http://localhost:5000/api/auth/verify", {
+    const res = await fetch(API.AUTH.VERIFY, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, code }),
@@ -836,36 +851,53 @@ otpForm.addEventListener("submit", async (e) => {
     const data = await res.json();
 
     if (res.ok) {
-      showToast("✓ " + data.message, "success");
-      otpForm.classList.add("hidden");
-      loginForm.classList.remove("hidden");
+      showToast("✓ Email verified! Logging you in...", "success");
+      
+      // Store user data
+      localStorage.setItem("nexicweb_user", JSON.stringify(data.user));
+      
+      // Update auth button
+      if (typeof checkAuthStatus === 'function') {
+        checkAuthStatus();
+      }
+      
+      // Close modal after 1 second
+      setTimeout(() => {
+        const overlay = document.getElementById("auth-overlay");
+        overlay.classList.remove("open");
+        document.body.style.overflow = "";
+        
+        // Reset forms
+        otpForm.reset();
+        otpForm.classList.add("hidden");
+        document.querySelector(".auth-tabs").style.display = "flex";
+        document.getElementById("login-form").classList.remove("hidden");
+      }, 1000);
     } else {
       showToast(data.message || "Verification failed", "error");
     }
   } catch (error) {
     showToast("Network error. Please check your connection.", "error");
-    console.error("OTP verification error:", error);
+    console.error("Verification error:", error);
   } finally {
     btn.textContent = "Verify Account";
     btn.disabled = false;
   }
 });
 
-// Resend OTP functionality
+// Resend OTP
 document.getElementById("resend-otp").addEventListener("click", async (e) => {
   e.preventDefault();
   
   const email = document.getElementById("otp-email").value;
   
   if (!email) {
-    showToast("Email is required to resend OTP", "error");
+    showToast("Email is required", "error");
     return;
   }
   
   try {
-    showToast("Resending OTP...", "success");
-    
-    const res = await fetch("http://localhost:5000/api/auth/resend-otp", {
+    const res = await fetch(API.AUTH.RESEND_OTP, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
@@ -874,9 +906,9 @@ document.getElementById("resend-otp").addEventListener("click", async (e) => {
     const data = await res.json();
     
     if (res.ok) {
-      showToast("✓ OTP resent! Check your email.", "success");
+      showToast("✓ " + data.message, "success");
     } else {
-      showToast(data.message || "Failed to resend OTP", "error");
+      showToast(data.message || "Failed to resend code", "error");
     }
   } catch (error) {
     showToast("Network error. Please try again.", "error");

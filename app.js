@@ -852,8 +852,21 @@ function initAuth() {
   const goSignup = document.getElementById("go-signup");
   const goLogin = document.getElementById("go-login");
 
-  const openModal = () => { overlay.classList.add("open"); document.body.style.overflow = "hidden"; };
-  const closeModal = () => { overlay.classList.remove("open"); document.body.style.overflow = ""; };
+  const openModal = () => { 
+    overlay.classList.add("open"); 
+    document.body.style.overflow = "hidden"; 
+    // Remove all active navbar links when modal opens
+    document.querySelectorAll(".nav-link").forEach(link => link.classList.remove("active"));
+  };
+  
+  const closeModal = () => { 
+    overlay.classList.remove("open"); 
+    document.body.style.overflow = "";
+    // Reset to login tab view
+    document.querySelector(".auth-tabs").style.display = "flex";
+    otpForm.classList.add("hidden");
+    switchTab('login');
+  };
 
   openBtn.addEventListener("click", (e) => { e.preventDefault(); openModal(); });
   closeBtn.addEventListener("click", closeModal);
@@ -864,6 +877,7 @@ function initAuth() {
     tabSignup.classList.toggle("active", tab === "signup");
     loginForm.classList.toggle("hidden", tab !== "login");
     signupForm.classList.toggle("hidden", tab !== "signup");
+    otpForm.classList.add("hidden"); // Always hide OTP when switching tabs
   }
 
   tabLogin.addEventListener("click", () => switchTab("login"));
@@ -874,9 +888,12 @@ function initAuth() {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     
-    const email = loginForm.querySelector('input[type="email"]').value;
+    const email = loginForm.querySelector('input[type="email"]').value.trim();
     const password = loginForm.querySelector('input[type="password"]').value;
     const btn = loginForm.querySelector(".auth-submit");
+    
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
     // Validation
     if (!email || !password) {
@@ -884,11 +901,16 @@ function initAuth() {
       return;
     }
     
+    if (!emailRegex.test(email)) {
+      showToast("Please enter a valid email address", "error");
+      return;
+    }
+    
     btn.textContent = "Logging in...";
     btn.disabled = true;
     
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(API.AUTH.LOGIN, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -897,10 +919,11 @@ function initAuth() {
       const data = await res.json();
       
       if (res.ok) {
-        localStorage.setItem("webvault_token", data.token);
+        localStorage.setItem("nexicweb_user", JSON.stringify(data.user));
         showToast("✓ Logged in successfully!");
+        loginForm.reset();
         closeModal();
-        document.getElementById("open-auth").textContent = "My Account";
+        checkAuthStatus();
       } else {
         showToast(data.message || "Login failed", "error");
       }
@@ -916,14 +939,22 @@ function initAuth() {
   signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     
-    const name = signupForm.querySelector('input[type="text"]').value;
-    const email = signupForm.querySelector('input[type="email"]').value;
+    const name = signupForm.querySelector('input[type="text"]').value.trim();
+    const email = signupForm.querySelector('input[type="email"]').value.trim();
     const password = signupForm.querySelector('input[type="password"]').value;
     const btn = signupForm.querySelector(".auth-submit");
+    
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
     // Validation
     if (!name || !email || !password) {
       showToast("Please fill in all fields", "error");
+      return;
+    }
+    
+    if (!emailRegex.test(email)) {
+      showToast("Please enter a valid email address", "error");
       return;
     }
     
@@ -936,7 +967,7 @@ function initAuth() {
     btn.disabled = true;
     
     try {
-      const res = await fetch("http://localhost:5000/api/auth/signup", {
+      const res = await fetch(API.AUTH.SIGNUP, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
@@ -945,9 +976,13 @@ function initAuth() {
       const data = await res.json();
       
       if (res.ok) {
-        showToast("✓ Account created! Check your email for OTP.");
-        closeModal();
-        document.getElementById("open-auth").textContent = "My Account";
+        showToast("✓ " + data.message, "success");
+        // Hide tabs and show OTP form
+        document.querySelector(".auth-tabs").style.display = "none";
+        signupForm.classList.add("hidden");
+        loginForm.classList.add("hidden");
+        otpForm.classList.remove("hidden");
+        document.getElementById("otp-email").value = data.email;
       } else {
         showToast(data.message || "Signup failed", "error");
       }
@@ -1075,12 +1110,52 @@ function initCartEvents() {
 }
 
 // ============================================================
+// AUTH STATUS CHECK
+// ============================================================
+function checkAuthStatus() {
+  const user = JSON.parse(localStorage.getItem("nexicweb_user") || "null");
+  const authBtn = document.getElementById("open-auth");
+  const userName = document.getElementById("user-name");
+  
+  if (user) {
+    // User is logged in - show username and Logout button
+    userName.textContent = user.name;
+    userName.style.display = "flex";
+    
+    authBtn.textContent = "Logout";
+    authBtn.onclick = (e) => {
+      e.preventDefault();
+      logout();
+    };
+  } else {
+    // User is not logged in - hide username and show Login button
+    userName.style.display = "none";
+    
+    authBtn.textContent = "Login";
+    authBtn.onclick = (e) => {
+      e.preventDefault();
+      initAuth();
+      document.getElementById("auth-overlay").classList.add("open");
+      document.body.style.overflow = "hidden";
+      document.querySelectorAll(".nav-link").forEach(link => link.classList.remove("active"));
+    };
+  }
+}
+
+function logout() {
+  localStorage.removeItem("nexicweb_user");
+  showToast("✓ Logged out successfully");
+  checkAuthStatus();
+}
+
+// ============================================================
 // INIT
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
   renderWebsites();
   initSearch();
   initFilters();
+  checkAuthStatus();
   initAuth();
   initNavbar();
   initCartEvents();
