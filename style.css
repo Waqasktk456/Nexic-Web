@@ -259,6 +259,23 @@ html {
     0 0 50px rgba(124,92,252,.25);
 }
 
+/* ================= USER NAME ================= */
+
+.user-name{
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-name::before{
+  content: "👤";
+  font-size: 1rem;
+}
+
 /* ================= CART ================= */
 
 .cart-btn{
