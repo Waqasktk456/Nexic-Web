@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FRAME / MOTION — Cinematic Post-Production & Visual Storytelling</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- GSAP & ScrollTrigger CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              black: '#050507',
+              dark: '#0A0A0E',
+              card: '#101017',
+              border: 'rgba(255, 255, 255, 0.08)',
+              accent: '#38BDF8',
+              gold: '#D4AF37',
+              muted: '#8E8E9F'
+            }
+          },
+          fontFamily: {
+            syne: ['Syne', 'sans-serif'],
+            mono: ['Space Grotesk', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar & Selection */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #050507;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #222230;
+      border-radius: 2px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #38BDF8;
+    }
+    ::selection {
+      background: #38BDF8;
+      color: #050507;
+    }
+
+    /* Film Grain Canvas Overlay */
+    #grain-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.035;
+    }
+
+    /* Custom Cursor */
+    .custom-cursor {
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background-color 0.2s, opacity 0.2s;
+    }
+
+    /* Glassmorphism & Border Effects */
+    .cinematic-border {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .cinematic-border-glow:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.1);
+    }
+    .glass-panel {
+      background: rgba(16, 16, 23, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    /* Text Outline Effect */
+    .text-stroke {
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.25);
+      color: transparent;
+    }
+    .text-stroke:hover {
+      -webkit-text-stroke: 1px #38BDF8;
+      color: #ffffff;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Aspect Ratio Helper */
+    .aspect-cinema {
+      aspect-ratio: 21 / 9;
+    }
+    .aspect-reel {
+      aspect-ratio: 9 / 16;
+    }
+
+    /* Image / Video Zoom on Hover */
+    .img-zoom-container {
+      overflow: hidden;
+    }
+    .img-zoom-container img, .img-zoom-container video {
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .img-zoom-container:hover img, .img-zoom-container:hover video {
+      transform: scale(1.06);
+    }
+  </style>
+</head>
+<body class="bg-brand-black text-white font-mono antialiased selection:bg-brand-accent selection:text-brand-black overflow-x-hidden">
+
+  <!-- Real-time Film Grain Overlay -->
+  <canvas id="grain-canvas"></canvas>
+
+  <!-- Dynamic Custom Cursor (Desktop Only) -->
+  <div id="cursor" class="custom-cursor hidden md:flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md border border-white/40 w-6 h-6 text-[10px] font-bold text-white tracking-widest uppercase transition-all duration-300 pointer-events-none">
+    <span id="cursor-text" class="opacity-0 scale-75 transition-all"></span>
+  </div>
+
+  <!-- ==========================================
+       1. CINEMATIC LOADING SCREEN
+  =========================================== -->
+  <div id="loader" class="fixed inset-0 z-[10000] bg-brand-black flex flex-col justify-between p-8 md:p-16 select-none">
+    <div class="flex justify-between items-center text-xs tracking-widest text-brand-muted uppercase">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+        <span>REC — [FRAME / MOTION STUDIO]</span>
+      </div>
+      <div>POST-PRODUCTION / EDITORIAL</div>
+    </div>
+
+    <div class="my-auto max-w-4xl">
+      <h2 class="font-syne text-3xl md:text-6xl font-extrabold uppercase tracking-tight text-white mb-4">
+        LOADING THE NEXT FRAME
+      </h2>
+      <div class="w-full bg-white/10 h-[2px] relative overflow-hidden my-6">
+        <div id="loader-bar" class="absolute left-0 top-0 bottom-0 bg-brand-accent w-0 transition-all duration-100 ease-out"></div>
+      </div>
+      <div class="flex justify-between text-xs md:text-sm text-brand-muted uppercase font-mono tracking-widest">
+        <span>TIMECODE: <span id="loader-timecode">00:00:00:00</span></span>
+        <span id="loader-percent" class="text-brand-accent font-bold">00%</span>
+      </div>
+    </div>
+
+    <div class="flex justify-between items-end text-[10px] md:text-xs text-brand-muted uppercase tracking-widest border-t border-white/10 pt-4">
+      <div>COLOR: PRORES 4444 XQ</div>
+      <div>FRAME RATE: 24.00 FPS</div>
+      <div>4K MASTER READY</div>
+    </div>
+  </div>
+
+
+  <!-- ==========================================
+       2. GLOBAL NAVIGATION
+  =========================================== -->
+  <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 py-6 px-6 md:px-12">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="group flex items-center gap-3">
+        <div class="w-8 h-8 bg-white/10 border border-white/20 flex items-center justify-center rounded group-hover:border-brand-accent transition-colors">
+          <span class="font-syne font-black text-sm group-hover:text-brand-accent">F</span>
+        </div>
+        <span class="font-syne font-bold tracking-widest text-lg text-white group-hover:text-brand-accent transition-colors">
+          FRAME <span class="text-brand-muted font-normal">/</span> MOTION
+        </span>
+      </a>
+
+      <!-- Desktop Links -->
+      <div class="hidden lg:flex items-center gap-8 text-xs font-semibold tracking-widest uppercase">
+        <a href="#showreel" class="hover:text-brand-accent transition-colors">SHOWREEL</a>
+        <a href="#work" class="hover:text-brand-accent transition-colors">WORK</a>
+        <a href="#services" class="hover:text-brand-accent transition-colors">SERVICES</a>
+        <a href="#before-after" class="hover:text-brand-accent transition-colors">GRADES</a>
+        <a href="#process" class="hover:text-brand-accent transition-colors">PROCESS</a>
+        <a href="#about" class="hover:text-brand-accent transition-colors">ABOUT</a>
+      </div>
+
+      <!-- Header Action CTA -->
+      <div class="hidden sm:flex items-center gap-4">
+        <a href="#contact" class="magnetic-btn relative px-6 py-3 border border-white/20 rounded-full text-xs font-bold uppercase tracking-widest overflow-hidden group hover:border-brand-accent transition-all duration-300">
+          <span class="absolute inset-0 bg-brand-accent transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
+          <span class="relative z-10 group-hover:text-brand-black transition-colors duration-300 flex items-center gap-2">
+            START A PROJECT
+            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+          </span>
+        </a>
+      </div>
+
+      <!-- Mobile Menu Toggle Button -->
+      <button id="mobile-menu-toggle" class="lg:hidden p-2 text-white hover:text-brand-accent focus:outline-none" aria-label="Toggle Navigation">
+        <i data-lucide="menu" class="w-7 h-7"></i>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- Mobile Navigation Overlay -->
+  <div id="mobile-menu" class="fixed inset-0 z-40 bg-brand-black/95 backdrop-blur-2xl flex flex-col justify-between p-8 opacity-0 pointer-events-none transition-all duration-500">
+    <div class="flex justify-between items-center border-b border-white/10 pb-6">
+      <span class="font-syne font-bold text-lg tracking-widest text-white">NAVIGATION</span>
+      <button id="mobile-menu-close" class="p-2 text-white hover:text-brand-accent">
+        <i data-lucide="x" class="w-7 h-7"></i>
+      </button>
+    </div>
+
+    <div class="flex flex-col gap-6 text-2xl font-syne font-bold tracking-tight my-auto">
+      <a href="#showreel" class="mobile-link flex items-center justify-between hover:text-brand-accent transition-colors">
+        <span>01 / SHOWREEL</span>
+        <i data-lucide="arrow-right" class="w-5 h-5 text-brand-muted"></i>
+      </a>
+      <a href="#work" class="mobile-link flex items-center justify-between hover:text-brand-accent transition-colors">
+        <span>02 / SELECTED WORK</span>
+        <i data-lucide="arrow-right" class="w-5 h-5 text-brand-muted"></i>
+      </a>
+      <a href="#services" class="mobile-link flex items-center justify-between hover:text-brand-accent transition-colors">
+        <span>03 / SERVICES</span>
+        <i data-lucide="arrow-right" class="w-5 h-5 text-brand-muted"></i>
+      </a>
+      <a href="#before-after" class="mobile-link flex items-center justify-between hover:text-brand-accent transition-colors">
+        <span>04 / COMPARISON</span>
+        <i data-lucide="arrow-right" class="w-5 h-5 text-brand-muted"></i>
+      </a>
+      <a href="#process" class="mobile-link flex items-center justify-between hover:text-brand-accent transition-colors">
+        <span>05 / PROCESS</span>
+        <i data-lucide="arrow-right" class="w-5 h-5 text-brand-muted"></i>
+      </a>
+      <a href="#about" class="mobile-link flex items-center justify-between hover:text-brand-accent transition-colors">
+        <span>06 / ABOUT</span>
+        <i data-lucide="arrow-right" class="w-5 h-5 text-brand-muted"></i>
+      </a>
+    </div>
+
+    <div class="pt-6 border-t border-white/10 flex flex-col gap-4">
+      <a href="#contact" class="mobile-link w-full py-4 text-center font-bold text-sm tracking-widest uppercase bg-brand-accent text-brand-black rounded-lg">
+        START A PROJECT
+      </a>
+      <div class="text-center text-xs text-brand-muted font-mono tracking-widest">
+        AVAILABILITY: AVAILABLE FOR Q3/Q4
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ==========================================
+       3. HERO SECTION
+  =========================================== -->
+  <section class="relative min-h-screen flex items-center justify-center pt-28 pb-16 px-6 md:px-12 overflow-hidden">
+    
+    <!-- Hero Ambient Background Video / Poster Effect -->
+    <div class="absolute inset-0 z-0 opacity-20 pointer-events-none overflow-hidden">
+      <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=2000&auto=format&fit=crop" 
+           alt="Cinema background" 
+           class="w-full h-full object-cover scale-105 filter brightness-50 contrast-125">
+      <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/80 to-transparent"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto w-full">
+      
+      <!-- Meta Tags Line -->
+      <div class="flex flex-wrap items-center gap-3 mb-8 text-xs font-semibold tracking-widest text-brand-accent uppercase">
+        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-brand-accent animate-ping"></span>
+          VIDEO EDITOR
+        </span>
+        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full">MOTION DESIGNER</span>
+        <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full">VISUAL STORYTELLER</span>
+      </div>
+
+      <!-- Main Master Headline -->
+      <h1 class="font-syne text-4xl sm:text-6xl lg:text-8xl font-black uppercase tracking-tight leading-[0.95] text-white max-w-5xl mb-8">
+        I TURN RAW FOOTAGE INTO SOMETHING <span class="text-stroke">IMPOSSIBLE TO IGNORE.</span>
+      </h1>
+
+      <!-- Subtitle & Action CTAs -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-end pt-4">
+        <p class="md:col-span-7 text-base md:text-xl text-brand-muted font-normal leading-relaxed">
+          High-end editorial, visual effects, and bespoke color grading for global brands, elite creators, record labels, and visionary agencies.
+        </p>
+
+        <div class="md:col-span-5 flex flex-wrap items-center gap-4 md:justify-end">
+          <a href="#contact" class="px-8 py-4 bg-white text-brand-black font-bold text-xs uppercase tracking-widest rounded-full hover:bg-brand-accent transition-colors duration-300 shadow-xl">
+            START A PROJECT
+          </a>
+          <a href="#showreel" class="px-8 py-4 border border-white/20 text-white font-bold text-xs uppercase tracking-widest rounded-full hover:border-brand-accent hover:text-brand-accent transition-colors duration-300 flex items-center gap-2">
+            <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+            WATCH SHOWREEL
+          </a>
+        </div>
+      </div>
+
+      <!-- Footer Stats Preview Bar -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 pt-8 border-t border-white/10 text-xs font-mono text-brand-muted">
+        <div>
+          <span class="block text-white font-syne font-bold text-xl">200+</span>
+          <span>CUTS DELIVERED</span>
+        </div>
+        <div>
+          <span class="block text-white font-syne font-bold text-xl">150M+</span>
+          <span>ORGANIC VIEWS</span>
+        </div>
+        <div>
+          <span class="block text-white font-syne font-bold text-xl">40+</span>
+          <span>GLOBAL CLIENTS</span>
+        </div>
+        <div>
+          <span class="block text-brand-accent font-syne font-bold text-xl">PRORES 4444</span>
+          <span>MASTER PIPELINE</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       4. SHOWREEL SECTION (CUSTOM PLAYER)
+  =========================================== -->
+  <section id="showreel" class="py-24 px-6 md:px-12 bg-brand-dark relative border-y border-white/5">
+    <div class="max-w-7xl mx-auto">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <div>
+          <div class="text-xs font-bold text-brand-accent uppercase tracking-widest mb-2">[ 01 / THE SHOWREEL ]</div>
+          <h2 class="font-syne text-3xl md:text-5xl font-extrabold uppercase tracking-tight">
+            2026 CINEMATIC REEL.
+          </h2>
+        </div>
+        <div class="text-xs text-brand-muted font-mono tracking-widest">
+          RUN TIME: 01:45 — RESOLUTION: 4K UHD RAW
+        </div>
+      </div>
+
+      <!-- Video Showreel Player Container -->
+      <div class="relative w-full aspect-cinema bg-brand-black rounded-2xl overflow-hidden border border-white/10 group shadow-2xl cursor-pointer" id="reel-trigger">
+        
+        <!-- Video Poster Artwork -->
+        <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=2000&auto=format&fit=crop" 
+             alt="Showreel Poster" 
+             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-75">
+        
+        <!-- Subtle Video Overlay Gradient -->
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-black/40"></div>
+
+        <!-- Center Interactive Play Button -->
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="w-20 h-20 md:w-28 md:h-28 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-brand-accent group-hover:text-brand-black transition-all duration-300">
+            <i data-lucide="play" class="w-8 h-8 md:w-10 md:h-10 fill-current translate-x-0.5"></i>
+          </div>
+        </div>
+
+        <!-- Video Player Bottom UI Bar -->
+        <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex items-center justify-between text-xs font-mono tracking-widest z-10">
+          <div class="flex items-center gap-4">
+            <span class="px-2 py-1 bg-red-600 font-bold text-[10px] rounded uppercase">4K RAW</span>
+            <span class="hidden sm:inline text-white">DIRECTOR'S CUT EDIT</span>
+          </div>
+          <div class="flex items-center gap-3 text-brand-muted">
+            <i data-lucide="volume-2" class="w-4 h-4"></i>
+            <span>SOUND DESIGN: STEREO / ATMOS</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       5. FEATURED WORK (ASYMMETRIC GALLERY)
+  =========================================== -->
+  <section id="work" class="py-32 px-6 md:px-12 relative">
+    <div class="max-w-7xl mx-auto">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div>
+          <div class="text-xs font-bold text-brand-accent uppercase tracking-widest mb-2">[ 02 / SELECTED WORK ]</div>
+          <h2 class="font-syne text-4xl md:text-6xl font-black uppercase tracking-tight">
+            FEATURED PROJECTS.
+          </h2>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="flex flex-wrap gap-2 text-xs font-mono">
+          <button class="filter-btn active px-4 py-2 bg-white text-brand-black rounded-full font-bold uppercase transition-all" data-category="all">ALL</button>
+          <button class="filter-btn px-4 py-2 bg-white/5 border border-white/10 text-white rounded-full hover:border-brand-accent uppercase transition-all" data-category="commercial">COMMERCIAL</button>
+          <button class="filter-btn px-4 py-2 bg-white/5 border border-white/10 text-white rounded-full hover:border-brand-accent uppercase transition-all" data-category="music">MUSIC VIDEO</button>
+          <button class="filter-btn px-4 py-2 bg-white/5 border border-white/10 text-white rounded-full hover:border-brand-accent uppercase transition-all" data-category="doc">DOCUMENTARY</button>
+        </div>
+      </div>
+
+      <!-- Projects Grid (Asymmetric) -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8" id="projects-grid">
+        
+        <!-- Project 1: Full-width Hero Project -->
+        <div class="project-card md:col-span-12 group cursor-pointer" data-category="commercial" onclick="openCaseStudy('p1')">
+          <div class="relative aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden border border-white/10 bg-brand-card mb-6 img-zoom-container">
+            <img src="https://builtin.com/sites/www.builtin.com/files/styles/og/public/2023-02/brain-artificial-intelligence-ai-video-generator.png" 
+                 alt="Cyberpunk Commercial" 
+                 class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-transparent opacity-80"></div>
+            
+            <div class="absolute top-6 left-6 flex gap-2">
+              <span class="px-3 py-1 bg-black/60 backdrop-blur-md border border-white/20 rounded-full text-[10px] font-bold uppercase tracking-wider text-brand-accent">
+                COMMERCIAL
+              </span>
+              <span class="px-3 py-1 bg-black/60 backdrop-blur-md border border-white/20 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                2026
+              </span>
+            </div>
+
+            <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+              <div>
+                <p class="text-xs text-brand-muted font-mono mb-1">CLIENT: AURA AUTOMOTIVE</p>
+                <h3 class="font-syne text-2xl md:text-4xl font-extrabold uppercase text-white group-hover:text-brand-accent transition-colors">
+                  THE SILENT VELOCITY
+                </h3>
+              </div>
+              <div class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:bg-brand-accent group-hover:text-brand-black transition-all duration-300">
+                <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: Column Left -->
+        <div class="project-card md:col-span-7 group cursor-pointer" data-category="music" onclick="openCaseStudy('p2')">
+          <div class="relative aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 bg-brand-card mb-4 img-zoom-container">
+            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop" 
+                 alt="Music Video Edit" 
+                 class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-transparent opacity-80"></div>
+            
+            <div class="absolute top-6 left-6">
+              <span class="px-3 py-1 bg-black/60 backdrop-blur-md border border-white/20 rounded-full text-[10px] font-bold uppercase tracking-wider text-brand-accent">
+                MUSIC VIDEO
+              </span>
+            </div>
+
+            <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+              <div>
+                <p class="text-xs text-brand-muted font-mono mb-1">ARTIST: KAIRO & THE ECHO</p>
+                <h3 class="font-syne text-xl md:text-2xl font-bold uppercase text-white group-hover:text-brand-accent transition-colors">
+                  NEON ECLIPSE
+                </h3>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:bg-brand-accent group-hover:text-brand-black transition-all duration-300">
+                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3: Column Right -->
+        <div class="project-card md:col-span-5 group cursor-pointer" data-category="doc" onclick="openCaseStudy('p3')">
+          <div class="relative aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 bg-brand-card mb-4 img-zoom-container">
+            <img src="https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?q=80&w=1200&auto=format&fit=crop" 
+                 alt="Documentary Cut" 
+                 class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-transparent opacity-80"></div>
+            
+            <div class="absolute top-6 left-6">
+              <span class="px-3 py-1 bg-black/60 backdrop-blur-md border border-white/20 rounded-full text-[10px] font-bold uppercase tracking-wider text-brand-accent">
+                DOCUMENTARY
+              </span>
+            </div>
+
+            <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+              <div>
+                <p class="text-xs text-brand-muted font-mono mb-1">PRODUCED FOR: RED BULL FILMS</p>
+                <h3 class="font-syne text-xl md:text-2xl font-bold uppercase text-white group-hover:text-brand-accent transition-colors">
+                  DEPTH OF HORIZON
+                </h3>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:bg-brand-accent group-hover:text-brand-black transition-all duration-300">
+                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       6. DYNAMIC CASE STUDY MODAL / DRAWER
+  =========================================== -->
+  <div id="case-study-modal" class="fixed inset-0 z-[9000] bg-brand-black/95 backdrop-blur-2xl overflow-y-auto hidden opacity-0 transition-all duration-500">
+    <div class="max-w-5xl mx-auto py-12 px-6 md:px-12 relative">
+      
+      <!-- Close Modal Header -->
+      <button onclick="closeCaseStudy()" class="fixed top-8 right-8 p-4 bg-white/10 hover:bg-brand-accent hover:text-brand-black border border-white/20 rounded-full transition-all duration-300 z-50">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+
+      <div id="case-study-content">
+        <!-- Content injects dynamically via JS -->
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ==========================================
+       7. INTERACTIVE BEFORE / AFTER (COLOR GRADE & EDIT)
+  =========================================== -->
+  <section id="before-after" class="py-32 px-6 md:px-12 bg-brand-dark border-y border-white/5">
+    <div class="max-w-7xl mx-auto">
+      
+      <div class="max-w-3xl mb-16">
+        <div class="text-xs font-bold text-brand-accent uppercase tracking-widest mb-2">[ 03 / VISUAL TRANSFORMATION ]</div>
+        <h2 class="font-syne text-4xl md:text-6xl font-black uppercase tracking-tight mb-4">
+          THE DIFFERENCE IS IN THE CUT & GRADE.
+        </h2>
+        <p class="text-brand-muted text-base leading-relaxed">
+          Drag the interactive slider below to inspect the transformation from flat S-Log3 raw footage to full cinematic color master, visual cleanup, and sound design layer.
+        </p>
+      </div>
+
+      <!-- Before / After Interactive Container -->
+      <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/20 select-none shadow-2xl" id="ba-container">
+        
+        <!-- After Image (Color Graded) -->
+        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1800&auto=format&fit=crop" 
+             alt="Final Cut Color Graded" 
+             class="absolute inset-0 w-full h-full object-cover">
+        
+        <div class="absolute top-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 text-xs font-bold tracking-widest text-brand-accent">
+          FINAL GRADE (COLOR & FX)
+        </div>
+
+        <!-- Before Image (Flat RAW Log Overlay) -->
+        <div id="ba-before-wrapper" class="absolute top-0 bottom-0 left-0 w-1/2 overflow-hidden border-r-2 border-brand-accent">
+          <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1800&auto=format&fit=crop" 
+               alt="Raw Log Footage" 
+               class="absolute inset-0 w-full h-full object-cover max-w-none filter brightness-125 contrast-50 saturate-50"
+               id="ba-before-img">
+          
+          <div class="absolute top-6 left-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 text-xs font-bold tracking-widest text-white">
+            RAW S-LOG3 FOOTAGE
+          </div>
+        </div>
+
+        <!-- Interactive Slider Handle Bar -->
+        <div id="ba-handle" class="absolute top-0 bottom-0 left-1/2 -ml-5 w-10 flex items-center justify-center cursor-ew-resize z-20">
+          <div class="w-10 h-10 rounded-full bg-brand-accent text-brand-black flex items-center justify-center shadow-2xl">
+            <i data-lucide="chevrons-left-right" class="w-5 h-5"></i>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 text-xs font-mono text-brand-muted">
+        <div class="p-6 bg-brand-card rounded-xl border border-white/5">
+          <div class="text-white font-bold mb-1">01 / LOG RECOVERY</div>
+          <span>Deep color retrieval, luminance rebalancing & shadow curve restoration.</span>
+        </div>
+        <div class="p-6 bg-brand-card rounded-xl border border-white/5">
+          <div class="text-white font-bold mb-1">02 / ATMOSPHERIC GRAIN</div>
+          <span>35mm organic film grain overlay for modern cinematic texture.</span>
+        </div>
+        <div class="p-6 bg-brand-card rounded-xl border border-white/5">
+          <div class="text-white font-bold mb-1">03 / AUDIO ATMOSPHERE</div>
+          <span>Bespoke Foley sound effects, sub-bass impacts & clean dialog mix.</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       8. SERVICES ECOSYSTEM
+  =========================================== -->
+  <section id="services" class="py-32 px-6 md:px-12 relative">
+    <div class="max-w-7xl mx-auto">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div>
+          <div class="text-xs font-bold text-brand-accent uppercase tracking-widest mb-2">[ 04 / CAPABILITIES ]</div>
+          <h2 class="font-syne text-4xl md:text-6xl font-black uppercase tracking-tight">
+            POST-PRODUCTION ECOSYSTEM.
+          </h2>
+        </div>
+        <div class="text-xs text-brand-muted font-mono tracking-widest max-w-sm">
+          END-TO-END CREATIVE DIRECTION, EDITORIAL, MOTION GRAPHICS AND COLOR FINISHING.
+        </div>
+      </div>
+
+      <!-- Services Accordion / Grid -->
+      <div class="space-y-6">
+        
+        <!-- Service 1 -->
+        <div class="p-8 bg-brand-card rounded-2xl border border-white/10 hover:border-brand-accent/50 transition-all group">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            <span class="md:col-span-1 text-xs font-mono text-brand-accent font-bold">01</span>
+            <h3 class="md:col-span-4 font-syne text-2xl font-bold uppercase group-hover:text-brand-accent transition-colors">
+              COMMERCIAL & NARRATIVE EDITING
+            </h3>
+            <p class="md:col-span-5 text-sm text-brand-muted">
+              Pacing, rhythm, and narrative structure designed to hold viewers from frame one to final render. Commercial cuts, documentary features, and social hero edits.
+            </p>
+            <div class="md:col-span-2 flex md:justify-end">
+              <a href="#contact" class="px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-xs font-bold uppercase tracking-wider group-hover:bg-brand-accent group-hover:text-brand-black transition-all">
+                INQUIRE
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="p-8 bg-brand-card rounded-2xl border border-white/10 hover:border-brand-accent/50 transition-all group">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            <span class="md:col-span-1 text-xs font-mono text-brand-accent font-bold">02</span>
+            <h3 class="md:col-span-4 font-syne text-2xl font-bold uppercase group-hover:text-brand-accent transition-colors">
+              MOTION GRAPHICS & VFX
+            </h3>
+            <p class="md:col-span-5 text-sm text-brand-muted">
+              Title design, kinetic typography, 2D/3D visual integration, screen replacements, paint-outs, and high-impact lower thirds.
+            </p>
+            <div class="md:col-span-2 flex md:justify-end">
+              <a href="#contact" class="px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-xs font-bold uppercase tracking-wider group-hover:bg-brand-accent group-hover:text-brand-black transition-all">
+                INQUIRE
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="p-8 bg-brand-card rounded-2xl border border-white/10 hover:border-brand-accent/50 transition-all group">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            <span class="md:col-span-1 text-xs font-mono text-brand-accent font-bold">03</span>
+            <h3 class="md:col-span-4 font-syne text-2xl font-bold uppercase group-hover:text-brand-accent transition-colors">
+              COLOR GRADING & FINISHING
+            </h3>
+            <p class="md:col-span-5 text-sm text-brand-muted">
+              DaVinci Resolve studio workflow. Look development, log normalization, skin tone perfection, film emulation, and HDR master delivery.
+            </p>
+            <div class="md:col-span-2 flex md:justify-end">
+              <a href="#contact" class="px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-xs font-bold uppercase tracking-wider group-hover:bg-brand-accent group-hover:text-brand-black transition-all">
+                INQUIRE
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="p-8 bg-brand-card rounded-2xl border border-white/10 hover:border-brand-accent/50 transition-all group">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            <span class="md:col-span-1 text-xs font-mono text-brand-accent font-bold">04</span>
+            <h3 class="md:col-span-4 font-syne text-2xl font-bold uppercase group-hover:text-brand-accent transition-colors">
+              SOUND DESIGN & MIXING
+            </h3>
+            <p class="md:col-span-5 text-sm text-brand-muted">
+              Custom audio architecture, Foley layering, impact design, voice enhancement, and broadcast-compliant loudness normalization (-14 LUFS).
+            </p>
+            <div class="md:col-span-2 flex md:justify-end">
+              <a href="#contact" class="px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-xs font-bold uppercase tracking-wider group-hover:bg-brand-accent group-hover:text-brand-black transition-all">
+                INQUIRE
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       9. EDITING PROCESS TIMELINE
+  =========================================== -->
+  <section id="process" class="py-32 px-6 md:px-12 bg-brand-dark border-t border-white/5">
+    <div class="max-w-7xl mx-auto">
+      
+      <div class="max-w-2xl mb-20">
+        <div class="text-xs font-bold text-brand-accent uppercase tracking-widest mb-2">[ 05 / METHODOLOGY ]</div>
+        <h2 class="font-syne text-4xl md:text-6xl font-black uppercase tracking-tight">
+          THE SIX-STEP CUT.
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <div class="p-8 bg-brand-black rounded-2xl border border-white/10 relative overflow-hidden group">
+          <span class="text-5xl font-syne font-black text-white/10 absolute top-4 right-6 group-hover:text-brand-accent/20 transition-colors">01</span>
+          <h3 class="font-syne text-xl font-bold uppercase mb-3 text-brand-accent">01 / DISCOVER</h3>
+          <p class="text-sm text-brand-muted leading-relaxed">
+            Unpacking the narrative brief, key audience, visual references, moodboards, and pacing goals before touching footage.
+          </p>
+        </div>
+
+        <div class="p-8 bg-brand-black rounded-2xl border border-white/10 relative overflow-hidden group">
+          <span class="text-5xl font-syne font-black text-white/10 absolute top-4 right-6 group-hover:text-brand-accent/20 transition-colors">02</span>
+          <h3 class="font-syne text-xl font-bold uppercase mb-3 text-brand-accent">02 / ORGANIZE</h3>
+          <p class="text-sm text-brand-muted leading-relaxed">
+            Rigorous footage ingest, metadata tagging, multi-cam sync, audio cleaning, and selects timeline assembly.
+          </p>
+        </div>
+
+        <div class="p-8 bg-brand-black rounded-2xl border border-white/10 relative overflow-hidden group">
+          <span class="text-5xl font-syne font-black text-white/10 absolute top-4 right-6 group-hover:text-brand-accent/20 transition-colors">03</span>
+          <h3 class="font-syne text-xl font-bold uppercase mb-3 text-brand-accent">03 / STRUCTURE</h3>
+          <p class="text-sm text-brand-muted leading-relaxed">
+            Building the radio edit, narrative arc, and emotional beats. Establishing rhythm, velocity, and story density.
+          </p>
+        </div>
+
+        <div class="p-8 bg-brand-black rounded-2xl border border-white/10 relative overflow-hidden group">
+          <span class="text-5xl font-syne font-black text-white/10 absolute top-4 right-6 group-hover:text-brand-accent/20 transition-colors">04</span>
+          <h3 class="font-syne text-xl font-bold uppercase mb-3 text-brand-accent">04 / EDIT</h3>
+          <p class="text-sm text-brand-muted leading-relaxed">
+            Refining the picture lock cut. Adding speed ramps, precise cut timing, title placements, and visual pacing.
+          </p>
+        </div>
+
+        <div class="p-8 bg-brand-black rounded-2xl border border-white/10 relative overflow-hidden group">
+          <span class="text-5xl font-syne font-black text-white/10 absolute top-4 right-6 group-hover:text-brand-accent/20 transition-colors">05</span>
+          <h3 class="font-syne text-xl font-bold uppercase mb-3 text-brand-accent">05 / REFINE</h3>
+          <p class="text-sm text-brand-muted leading-relaxed">
+            DaVinci color grading, audio Foley design, sub-impact integration, graphic animation, and client feedback integration.
+          </p>
+        </div>
+
+        <div class="p-8 bg-brand-black rounded-2xl border border-white/10 relative overflow-hidden group">
+          <span class="text-5xl font-syne font-black text-white/10 absolute top-4 right-6 group-hover:text-brand-accent/20 transition-colors">06</span>
+          <h3 class="font-syne text-xl font-bold uppercase mb-3 text-brand-accent">06 / FINALIZE</h3>
+          <p class="text-sm text-brand-muted leading-relaxed">
+            Master export in ProRes 4444 XQ, Web-ready H.265/MP4 cutdowns, social aspect ratios (9:16 / 1:1), and archive delivery.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       10. ABOUT & CREATIVE PHILOSOPHY
+  =========================================== -->
+  <section id="about" class="py-32 px-6 md:px-12 relative">
+    <div class="max-w-7xl mx-auto">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+        
+        <!-- Left Editorial Column -->
+        <div class="lg:col-span-7">
+          <div class="text-xs font-bold text-brand-accent uppercase tracking-widest mb-2">[ 06 / PHILOSOPHY ]</div>
+          <h2 class="font-syne text-4xl md:text-6xl font-black uppercase tracking-tight mb-8">
+            THE EDIT IS WHERE THE STORY BECOMES REAL.
+          </h2>
+          
+          <div class="space-y-6 text-brand-muted text-base leading-relaxed">
+            <p>
+              Footage is just raw data until it passes through an editor who understands human psychology, rhythm, and tension. I don't simply cut clips to music—I craft immersive visual experiences designed to evoke visceral emotion.
+            </p>
+            <p>
+              Having cut campaigns for global brands, record-breaking content creators, and independent filmmakers, I bring an obsessive focus on detail to every single timeline frame.
+            </p>
+          </div>
+
+          <!-- Software Stack Badges -->
+          <div class="mt-10 pt-8 border-t border-white/10">
+            <div class="text-xs font-mono uppercase tracking-widest text-white mb-4">POST-PRODUCTION SUITE HARDWARE & SOFTWARE:</div>
+            <div class="flex flex-wrap gap-3">
+              <span class="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs font-bold text-white">ADOBE PREMIERE PRO</span>
+              <span class="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs font-bold text-brand-accent">DAVINCI RESOLVE STUDIO</span>
+              <span class="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs font-bold text-white">AFTER EFFECTS</span>
+              <span class="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs font-bold text-white">AUDITION</span>
+              <span class="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs font-bold text-white">PLUGINS: SAPPHIRE / BORIS FX / REVISION</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Visual Poster -->
+        <div class="lg:col-span-5">
+          <div class="relative rounded-2xl overflow-hidden border border-white/20 shadow-2xl">
+            <img src="https://images.unsplash.com/photo-1535016120720-40c646be5580?q=80&w=1000&auto=format&fit=crop" 
+                 alt="Video Editor Suite" 
+                 class="w-full h-auto object-cover filter contrast-125">
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-transparent"></div>
+            
+            <div class="absolute bottom-6 left-6 right-6 p-6 bg-black/60 backdrop-blur-md rounded-xl border border-white/10">
+              <p class="font-syne font-bold text-sm text-white uppercase mb-1">"RHYTHM CREATES EMOTION. SILENCE CREATES POWER."</p>
+              <p class="text-[10px] text-brand-accent font-mono">— FRAME / MOTION STATEMENT</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       11. TESTIMONIALS & RESULTS
+  =========================================== -->
+  <section class="py-32 px-6 md:px-12 bg-brand-dark border-y border-white/5">
+    <div class="max-w-7xl mx-auto">
+      
+      <div class="text-center max-w-3xl mx-auto mb-20">
+        <div class="text-xs font-bold text-brand-accent uppercase tracking-widest mb-2">[ 07 / REPUTATION ]</div>
+        <h2 class="font-syne text-3xl md:text-5xl font-extrabold uppercase tracking-tight">
+          BUILT FOR PEOPLE WHO CARE ABOUT THE DETAILS.
+        </h2>
+      </div>
+
+      <!-- Testimonial Quote Card -->
+      <div class="max-w-4xl mx-auto p-10 md:p-16 bg-brand-card rounded-3xl border border-white/10 relative">
+        <i data-lucide="quote" class="w-16 h-16 text-brand-accent/20 absolute top-8 left-8"></i>
+        
+        <div class="relative z-10 space-y-8">
+          <p class="font-syne text-xl md:text-3xl font-bold text-white leading-snug">
+            "Working with FRAME / MOTION completely changed how our story came together. The pacing, audio detail, and color grade transformed standard campaign footage into a cinematic masterpiece that generated 12M+ views."
+          </p>
+
+          <div class="flex items-center gap-4 pt-6 border-t border-white/10">
+            <div class="w-12 h-12 rounded-full bg-brand-accent/20 border border-brand-accent flex items-center justify-center font-bold font-syne text-brand-accent">
+              JD
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-sm font-syne">JULIAN DRAKE</h4>
+              <p class="text-xs text-brand-muted font-mono">CREATIVE DIRECTOR — APEX MEDIA GLOBAL</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       12. CONTACT / START A PROJECT
+  =========================================== -->
+  <section id="contact" class="py-32 px-6 md:px-12 relative">
+    <div class="max-w-7xl mx-auto">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+        
+        <!-- Contact Info Column -->
+        <div class="lg:col-span-5">
+          <div class="text-xs font-bold text-brand-accent uppercase tracking-widest mb-2">[ 08 / INITIATE ]</div>
+          <h2 class="font-syne text-4xl md:text-6xl font-black uppercase tracking-tight mb-6">
+            HAVE A STORY WORTH TELLING?
+          </h2>
+          <p class="text-brand-muted text-base leading-relaxed mb-8">
+            Tell me about your vision, upcoming project timeline, or post-production needs. Currently accepting selects for Q3 / Q4.
+          </p>
+
+          <div class="space-y-6 font-mono text-sm">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-brand-accent">
+                <i data-lucide="mail" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span class="block text-xs text-brand-muted">DIRECT INQUIRIES</span>
+                <a href="mailto:hello@framemotion.studio" class="text-white hover:text-brand-accent font-bold">hello@framemotion.studio</a>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-brand-accent">
+                <i data-lucide="map-pin" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span class="block text-xs text-brand-muted">STUDIO LOCATION</span>
+                <span class="text-white font-bold">LOS ANGELES / REMOTE GLOBAL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Form Column -->
+        <div class="lg:col-span-7">
+          <form id="project-form" onsubmit="handleFormSubmit(event)" class="p-8 md:p-12 bg-brand-card rounded-3xl border border-white/10 space-y-6">
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-xs font-mono text-brand-muted uppercase mb-2">YOUR NAME *</label>
+                <input type="text" required placeholder="Alex Mercer" class="w-full bg-brand-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-accent transition-colors">
+              </div>
+              <div>
+                <label class="block text-xs font-mono text-brand-muted uppercase mb-2">EMAIL ADDRESS *</label>
+                <input type="email" required placeholder="alex@brand.com" class="w-full bg-brand-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-accent transition-colors">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-xs font-mono text-brand-muted uppercase mb-2">COMPANY / BRAND</label>
+                <input type="text" placeholder="Apex Creative Studio" class="w-full bg-brand-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-accent transition-colors">
+              </div>
+              <div>
+                <label class="block text-xs font-mono text-brand-muted uppercase mb-2">ESTIMATED BUDGET TIER</label>
+                <select class="w-full bg-brand-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-accent transition-colors">
+                  <option value="5k-10k">$5,000 — $10,000</option>
+                  <option value="10k-25k" selected>$10,000 — $25,000</option>
+                  <option value="25k+">$25,000+</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-mono text-brand-muted uppercase mb-2">PROJECT TYPE</label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button type="button" class="form-tag p-3 bg-brand-black border border-white/10 rounded-xl text-xs font-mono hover:border-brand-accent focus:border-brand-accent focus:bg-brand-accent/10">COMMERCIAL</button>
+                <button type="button" class="form-tag p-3 bg-brand-black border border-white/10 rounded-xl text-xs font-mono hover:border-brand-accent focus:border-brand-accent focus:bg-brand-accent/10">MUSIC VIDEO</button>
+                <button type="button" class="form-tag p-3 bg-brand-black border border-white/10 rounded-xl text-xs font-mono hover:border-brand-accent focus:border-brand-accent focus:bg-brand-accent/10">DOCUMENTARY</button>
+                <button type="button" class="form-tag p-3 bg-brand-black border border-white/10 rounded-xl text-xs font-mono hover:border-brand-accent focus:border-brand-accent focus:bg-brand-accent/10">SOCIAL REEL</button>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-mono text-brand-muted uppercase mb-2">PROJECT DETAILS / FOOTAGE SPECS</label>
+              <textarea rows="4" placeholder="Tell me about raw footage format, deadline, target audience, and references..." class="w-full bg-brand-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-accent transition-colors"></textarea>
+            </div>
+
+            <button type="submit" id="submit-btn" class="w-full py-4 bg-brand-accent text-brand-black font-syne font-bold uppercase tracking-widest text-xs rounded-xl hover:bg-white transition-colors duration-300 flex items-center justify-center gap-2">
+              <span>TRANSMIT PROJECT BRIEF</span>
+              <i data-lucide="send" class="w-4 h-4"></i>
+            </button>
+
+            <!-- Success State Message -->
+            <div id="form-success" class="hidden p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-center text-xs font-mono text-emerald-400">
+              ✓ BRIEF TRANSMITTED SUCCESSFULLY. I WILL REVIEW AND RESPOND WITHIN 24 HOURS.
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==========================================
+       13. CINEMATIC FOOTER
+  =========================================== -->
+  <footer class="py-20 px-6 md:px-12 bg-brand-dark border-t border-white/10">
+    <div class="max-w-7xl mx-auto">
+      
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/10 pb-12 mb-12 gap-8">
+        <div>
+          <h2 class="font-syne text-3xl md:text-5xl font-black uppercase text-white mb-2">
+            SEE YOU IN THE NEXT FRAME.
+          </h2>
+          <p class="text-xs text-brand-muted font-mono tracking-widest">FRAME / MOTION STUDIO © 2026 — ALL RIGHTS RESERVED</p>
+        </div>
+
+        <a href="#" class="w-14 h-14 rounded-full bg-white/5 border border-white/20 flex items-center justify-center hover:border-brand-accent hover:text-brand-accent transition-all">
+          <i data-lucide="arrow-up" class="w-6 h-6"></i>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-xs font-mono text-brand-muted">
+        <div>
+          <span class="block text-white font-bold mb-3">SOCIAL REELS</span>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-brand-accent transition-colors">VIMEO / PRO</a></li>
+            <li><a href="#" class="hover:text-brand-accent transition-colors">YOUTUBE / SHORTS</a></li>
+            <li><a href="#" class="hover:text-brand-accent transition-colors">INSTAGRAM / REELS</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <span class="block text-white font-bold mb-3">SYSTEM STATUS</span>
+          <div class="flex items-center gap-2 text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>AVAILABLE Q3 / Q4</span>
+          </div>
+        </div>
+
+        <div>
+          <span class="block text-white font-bold mb-3">TIMEZONE</span>
+          <span id="utc-clock">UTC+00:00 00:00:00</span>
+        </div>
+
+        <div>
+          <span class="block text-white font-bold mb-3">BRAND IDENT</span>
+          <span>FRAME / MOTION STUDIO</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <!-- ==========================================
+       JAVASCRIPT ARCHITECTURE & INTERACTION
+  =========================================== -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // 1. Film Grain Realtime Canvas Generator
+    (function initGrain() {
+      const canvas = document.getElementById('grain-canvas');
+      const ctx = canvas.getContext('2d');
+      let w, h;
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      function loop() {
+        const imageData = ctx.createImageData(w, h);
+        const data = imageData.data;
+        for (let i = 0; i < data.length; i += 4) {
+          const noise = Math.random() * 255;
+          data[i] = noise;
+          data[i+1] = noise;
+          data[i+2] = noise;
+          data[i+3] = 18; // Opacity level
+        }
+        ctx.putImageData(imageData, 0, 0);
+        requestAnimationFrame(loop);
+      }
+      loop();
+    })();
+
+
+    // 2. Cinematic Preloader Sequence
+    window.addEventListener('DOMContentLoaded', () => {
+      let percent = 0;
+      const percentEl = document.getElementById('loader-percent');
+      const barEl = document.getElementById('loader-bar');
+      const timecodeEl = document.getElementById('loader-timecode');
+      const loader = document.getElementById('loader');
+
+      const interval = setInterval(() => {
+        percent += Math.floor(Math.random() * 8) + 2;
+        if (percent >= 100) {
+          percent = 100;
+          clearInterval(interval);
+
+          setTimeout(() => {
+            gsap.to(loader, {
+              yPercent: -100,
+              duration: 1,
+              ease: "power4.inOut",
+              onComplete: () => {
+                loader.style.display = 'none';
+                initGSAPAnimations();
+              }
+            });
+          }, 300);
+        }
+
+        percentEl.textContent = `${percent.toString().padStart(2, '0')}%`;
+        barEl.style.width = `${percent}%`;
+        
+        // Timecode ticker simulation
+        const frame = Math.floor((percent / 100) * 24);
+        timecodeEl.textContent = `00:00:04:${frame.toString().padStart(2, '0')}`;
+      }, 40);
+    });
+
+
+    // 3. Custom Inertia Magnet Cursor
+    const cursor = document.getElementById('cursor');
+    const cursorText = document.getElementById('cursor-text');
+
+    document.addEventListener('mousemove', (e) => {
+      gsap.to(cursor, {
+        x: e.clientX,
+        y: e.clientY,
+        duration: 0.15,
+        ease: "power2.out"
+      });
+    });
+
+    // Cursor Hover Triggers
+    document.querySelectorAll('a, button, .project-card, #reel-trigger').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.classList.add('w-16', 'h-16', 'bg-brand-accent/80', 'border-transparent');
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.classList.remove('w-16', 'h-16', 'bg-brand-accent/80', 'border-transparent');
+      });
+    });
+
+
+    // 4. Mobile Navigation Drawer Toggle
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuToggle.addEventListener('click', () => {
+      mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
+    });
+    mobileMenuClose.addEventListener('click', () => {
+      mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+    });
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+      });
+    });
+
+
+    // 5. Interactive Before/After Split Slider
+    const baContainer = document.getElementById('ba-container');
+    const baBeforeWrapper = document.getElementById('ba-before-wrapper');
+    const baBeforeImg = document.getElementById('ba-before-img');
+    const baHandle = document.getElementById('ba-handle');
+
+    let isDragging = false;
+
+    function updateBeforeAfter(x) {
+      const rect = baContainer.getBoundingClientRect();
+      let pos = (x - rect.left) / rect.width;
+      if (pos < 0) pos = 0;
+      if (pos > 1) pos = 1;
+
+      const percentage = pos * 100;
+      baBeforeWrapper.style.width = `${percentage}%`;
+      baHandle.style.left = `${percentage}%`;
+      baBeforeImg.style.width = `${rect.width}px`;
+    }
+
+    baContainer.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      updateBeforeAfter(e.clientX);
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      updateBeforeAfter(e.clientX);
+    });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+
+    // Touch support for mobile
+    baContainer.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      updateBeforeAfter(e.touches[0].clientX);
+    });
+    window.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      updateBeforeAfter(e.touches[0].clientX);
+    });
+    window.addEventListener('touchend', () => { isDragging = false; });
+
+
+    // 6. Dynamic Case Study Data & Launcher
+    const caseStudies = {
+      p1: {
+        title: "THE SILENT VELOCITY",
+        client: "AURA AUTOMOTIVE",
+        year: "2026",
+        category: "COMMERCIAL",
+        brief: "Craft a high-velocity, cinematic launch commercial for Aura's next-gen electric flagship hypercar. The emphasis was on silent power, speed ramping, and modern sound design.",
+        approach: "We used precision rhythm cuts locked to sub-bass audio hits, combined with custom optical glow filters and DaVinci S-Curve color grading to match the sleek dark metallic car body.",
+        image: "https://images.unsplash.com/photo-1518173946687-a4c8a383392e?q=80&w=1600&auto=format&fit=crop"
+      },
+      p2: {
+        title: "NEON ECLIPSE",
+        client: "KAIRO & THE ECHO",
+        year: "2026",
+        category: "MUSIC VIDEO",
+        brief: "Edit a cyberpunk aesthetic music video with complex kinetic typography and frame-by-frame visual glitch effects.",
+        approach: "Utilized Premiere multi-cam sync combined with After Effects custom displacement maps to create seamless light-burst transitions on beat cuts.",
+        image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop"
+      },
+      p3: {
+        title: "DEPTH OF HORIZON",
+        client: "RED BULL FILMS",
+        year: "2025",
+        category: "DOCUMENTARY",
+        brief: "Narrative documentary edit following deep-sea free divers pushing extreme physical limits.",
+        approach: "Focused on lingering long cuts, deep oceanic soundscapes, Foley breath integration, and soft film grain emulations to immerse the viewer in underwater isolation.",
+        image: "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?q=80&w=1200&auto=format&fit=crop"
+      }
+    };
+
+    function openCaseStudy(id) {
+      const data = caseStudies[id];
+      if (!data) return;
+
+      const modal = document.getElementById('case-study-modal');
+      const content = document.getElementById('case-study-content');
+
+      content.innerHTML = `
+        <div class="space-y-8">
+          <div class="flex gap-2 font-mono text-xs text-brand-accent">
+            <span>[ ${data.category} ]</span>
+            <span>— ${data.year}</span>
+          </div>
+
+          <h2 class="font-syne text-4xl md:text-6xl font-black uppercase text-white">${data.title}</h2>
+          
+          <div class="aspect-video w-full rounded-2xl overflow-hidden border border-white/10">
+            <img src="${data.image}" class="w-full h-full object-cover">
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-white/10">
+            <div>
+              <h3 class="font-syne text-xl font-bold uppercase text-white mb-2">THE BRIEF</h3>
+              <p class="text-brand-muted text-sm leading-relaxed">${data.brief}</p>
+            </div>
+            <div>
+              <h3 class="font-syne text-xl font-bold uppercase text-white mb-2">THE APPROACH</h3>
+              <p class="text-brand-muted text-sm leading-relaxed">${data.approach}</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+      }, 10);
+    }
+
+    function closeCaseStudy() {
+      const modal = document.getElementById('case-study-modal');
+      modal.classList.add('opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 500);
+    }
+
+
+    // 7. Category Filter System
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+          b.classList.remove('active', 'bg-white', 'text-brand-black');
+          b.classList.add('bg-white/5', 'text-white');
+        });
+        this.classList.add('active', 'bg-white', 'text-brand-black');
+        this.classList.remove('bg-white/5', 'text-white');
+
+        const category = this.getAttribute('data-category');
+        document.querySelectorAll('.project-card').forEach(card => {
+          if (category === 'all' || card.getAttribute('data-category') === category) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+
+    // 8. Form Submission Simulator
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      const success = document.getElementById('form-success');
+
+      btn.disabled = true;
+      btn.innerHTML = `<span>TRANSMITTING...</span>`;
+
+      setTimeout(() => {
+        btn.style.display = 'none';
+        success.classList.remove('hidden');
+      }, 1200);
+    }
+
+
+    // 9. UTC Clock Display
+    function updateClock() {
+      const now = new Date();
+      const utcString = now.toUTCString().split(' ')[4];
+      document.getElementById('utc-clock').textContent = `UTC ${utcString}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+
+    // 10. GSAP Scroll Trigger Animations Initializer
+    function initGSAPAnimations() {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero animations
+      gsap.from('h1', {
+        y: 60,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power4.out"
+      });
+
+      // Section triggers reveal
+      gsap.utils.toArray('section').forEach(section => {
+        gsap.from(section, {
+          opacity: 0,
+          y: 40,
+          duration: 1,
+          scrollTrigger: {
+            trigger: section,
+            start: "top 85%"
+          }
+        });
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+  const watermark = document.createElement("a");
+
+  watermark.href = "https://www.facebook.com/share/1JqiQ3zTVn/";
+  watermark.target = "_blank";
+  watermark.rel = "noopener noreferrer";
+
+  watermark.innerHTML = `
+    <span>✦</span>
+    <strong>MADE BY NEXIC WEB</strong>
+  `;
+
+  Object.assign(watermark.style, {
+    position: "fixed",
+    bottom: "14px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    zIndex: "999999",
+    color: "rgba(255,255,255,0.35)",
+    textDecoration: "none",
+    fontFamily: "Arial, sans-serif",
+    fontSize: "8px",
+    fontWeight: "600",
+    letterSpacing: "3px",
+    opacity: "0.7",
+    transition: "all 0.4s ease",
+    whiteSpace: "nowrap",
+    pointerEvents: "auto"
+  });
+
+  watermark.onmouseenter = () => {
+    watermark.style.color = "rgba(255,255,255,0.9)";
+    watermark.style.letterSpacing = "4px";
+    watermark.style.opacity = "1";
+  };
+
+  watermark.onmouseleave = () => {
+    watermark.style.color = "rgba(255,255,255,0.35)";
+    watermark.style.letterSpacing = "3px";
+    watermark.style.opacity = "0.7";
+  };
+
+  document.body.appendChild(watermark);
+});
+  </script>
+</body>
+</html>

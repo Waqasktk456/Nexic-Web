@@ -2185,3 +2185,1085 @@ body{
     max-width: none;
   }
 }
+/* =========================================================
+   NEXICWEB — PREMIUM MOBILE EXPERIENCE
+   CATEGORY SCROLL + CLEAN FULLSCREEN MENU
+   ADD AT THE VERY END OF style.css
+========================================================= */
+
+@media (max-width: 768px){
+
+  /* =====================================================
+     1. PREMIUM MOBILE NAVBAR
+  ===================================================== */
+
+  .navbar{
+    height:72px !important;
+    position:fixed !important;
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+    z-index:999999 !important;
+  }
+
+  .nav-inner{
+    height:72px !important;
+    padding:0 16px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+  }
+
+  /* Logo */
+  .nav-logo{
+    display:flex !important;
+    align-items:center !important;
+    position:relative !important;
+    z-index:1000001 !important;
+  }
+
+  .logo-icon{
+    font-size:22px !important;
+  }
+
+  .logo-text{
+    width:135px !important;
+    height:auto !important;
+  }
+
+
+  /* =====================================================
+     2. PREMIUM HAMBURGER ICON
+  ===================================================== */
+
+  .hamburger{
+    width:48px !important;
+    height:48px !important;
+
+    padding:0 !important;
+    margin:0 !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:5px !important;
+
+    border:1px solid rgba(255,255,255,.12) !important;
+    border-radius:15px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.10),
+        rgba(255,255,255,.035)
+      ) !important;
+
+    box-shadow:
+      0 10px 30px rgba(0,0,0,.25),
+      inset 0 1px 0 rgba(255,255,255,.08) !important;
+
+    cursor:pointer !important;
+    position:relative !important;
+    z-index:1000001 !important;
+
+    transition:
+      transform .3s ease,
+      background .3s ease,
+      border-color .3s ease !important;
+  }
+
+  /* Hide FontAwesome icon */
+  .hamburger i{
+    display:none !important;
+  }
+
+  /* 3 Premium Lines */
+  .hamburger::before,
+  .hamburger::after,
+  .hamburger span{
+    content:"" !important;
+
+    display:block !important;
+
+    width:22px !important;
+    height:2px !important;
+
+    border-radius:20px !important;
+
+    background:#ffffff !important;
+
+    transition:
+      transform .35s cubic-bezier(.68,-.55,.265,1.55),
+      opacity .25s ease,
+      width .3s ease !important;
+  }
+
+  /* Because your HTML has only <i>, create middle line */
+  .hamburger::before{
+    box-shadow:0 7px 0 #ffffff !important;
+  }
+
+  .hamburger::after{
+    display:none !important;
+  }
+
+  .hamburger:active{
+    transform:scale(.92) !important;
+  }
+
+
+  /* =====================================================
+     3. PREMIUM FULLSCREEN MOBILE MENU
+  ===================================================== */
+
+  .nav-links{
+
+    position:fixed !important;
+
+    top:72px !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+
+    width:100% !important;
+    height:calc(100dvh - 72px) !important;
+
+    margin:0 !important;
+    padding:28px 20px 40px !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+
+    gap:10px !important;
+
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+
+    background:
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(124,92,252,.16),
+        transparent 38%
+      ),
+      linear-gradient(
+        180deg,
+        #080810 0%,
+        #0b0b15 55%,
+        #08080f 100%
+      ) !important;
+
+    backdrop-filter:blur(30px) saturate(150%) !important;
+    -webkit-backdrop-filter:blur(30px) saturate(150%) !important;
+
+    transform:translateY(-20px) !important;
+    opacity:0 !important;
+    visibility:hidden !important;
+    pointer-events:none !important;
+
+    transition:
+      opacity .35s ease,
+      transform .4s cubic-bezier(.4,0,.2,1),
+      visibility .35s ease !important;
+
+    z-index:999998 !important;
+  }
+
+  /* Open menu */
+  .nav-links.open{
+
+    transform:translateY(0) !important;
+
+    opacity:1 !important;
+
+    visibility:visible !important;
+
+    pointer-events:auto !important;
+  }
+
+
+  /* =====================================================
+     4. MENU ITEM — CLEAN PREMIUM CARDS
+  ===================================================== */
+
+  .nav-links li{
+
+    width:100% !important;
+    max-width:390px !important;
+
+    margin:0 !important;
+    padding:0 !important;
+
+    list-style:none !important;
+
+    opacity:0 !important;
+    transform:translateY(15px) !important;
+
+    transition:
+      opacity .35s ease,
+      transform .35s ease !important;
+  }
+
+  .nav-links.open li{
+
+    opacity:1 !important;
+    transform:translateY(0) !important;
+  }
+
+  /* Stagger Animation */
+  .nav-links.open li:nth-child(1){transition-delay:.04s !important;}
+  .nav-links.open li:nth-child(2){transition-delay:.08s !important;}
+  .nav-links.open li:nth-child(3){transition-delay:.12s !important;}
+  .nav-links.open li:nth-child(4){transition-delay:.16s !important;}
+  .nav-links.open li:nth-child(5){transition-delay:.20s !important;}
+  .nav-links.open li:nth-child(6){transition-delay:.24s !important;}
+  .nav-links.open li:nth-child(7){transition-delay:.28s !important;}
+
+
+  .nav-link{
+
+    width:100% !important;
+    max-width:none !important;
+
+    min-height:58px !important;
+
+    padding:16px 20px !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    font-size:16px !important;
+    font-weight:600 !important;
+
+    letter-spacing:.2px !important;
+
+    color:#d8d8e8 !important;
+
+    text-align:center !important;
+
+    border-radius:17px !important;
+
+    border:1px solid rgba(255,255,255,.075) !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255,255,255,.075),
+        rgba(255,255,255,.025)
+      ) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.05),
+      0 8px 25px rgba(0,0,0,.16) !important;
+
+    transition:
+      transform .25s ease,
+      background .25s ease,
+      border-color .25s ease,
+      color .25s ease !important;
+  }
+
+  .nav-link:active{
+    transform:scale(.97) !important;
+  }
+
+  .nav-link:hover,
+  .nav-link.active{
+
+    color:#ffffff !important;
+
+    border-color:rgba(124,92,252,.55) !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(124,92,252,.28),
+        rgba(124,92,252,.10)
+      ) !important;
+
+    box-shadow:
+      0 0 25px rgba(124,92,252,.20),
+      inset 0 1px 0 rgba(255,255,255,.08) !important;
+  }
+
+
+  /* =====================================================
+     5. CART BUTTON
+  ===================================================== */
+
+  .cart-btn{
+
+    width:58px !important;
+    min-height:58px !important;
+
+    margin:2px auto !important;
+
+    font-size:18px !important;
+  }
+
+  .cart-badge{
+    position:absolute !important;
+    top:7px !important;
+    right:7px !important;
+  }
+
+
+  /* =====================================================
+     6. LOGIN — PREMIUM CTA
+  ===================================================== */
+
+  .btn-login{
+
+    margin-top:6px !important;
+
+    color:#ffffff !important;
+
+    border-color:rgba(124,92,252,.55) !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(124,92,252,.35),
+        rgba(90,60,220,.18)
+      ) !important;
+
+    box-shadow:
+      0 12px 35px rgba(124,92,252,.22),
+      inset 0 1px 0 rgba(255,255,255,.10) !important;
+  }
+
+
+  /* =====================================================
+     7. CATEGORY — ONE LINE PREMIUM HORIZONTAL SCROLL
+  ===================================================== */
+
+
+  
+  .filter-tab{
+
+    flex:0 0 auto !important;
+
+    display:inline-flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    min-height:40px !important;
+
+    padding:10px 20px !important;
+
+    white-space:nowrap !important;
+
+    font-size:13px !important;
+    font-weight:600 !important;
+
+    border-radius:999px !important;
+
+    border:1px solid rgba(255,255,255,.10) !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255,255,255,.065),
+        rgba(255,255,255,.025)
+      ) !important;
+
+    transition:
+      transform .25s ease,
+      background .25s ease,
+      box-shadow .25s ease !important;
+  }
+
+  .filter-tab:active{
+    transform:scale(.94) !important;
+  }
+
+  .filter-tab.active{
+
+    color:#ffffff !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        #8b63ff,
+        #6740df
+      ) !important;
+
+    border-color:transparent !important;
+
+    box-shadow:
+      0 8px 25px rgba(124,92,252,.35) !important;
+  }
+
+
+  /* =====================================================
+     8. SEARCH
+  ===================================================== */
+
+  .search-box{
+    width:100% !important;
+    max-width:none !important;
+  }
+
+  .search-box input{
+    width:100% !important;
+    min-height:50px !important;
+  }
+
+
+  /* =====================================================
+     9. HERO BUTTONS
+  ===================================================== */
+
+  .hero-btns{
+    width:100% !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+
+    gap:12px !important;
+  }
+
+  .hero-btns .btn-primary,
+  .hero-btns .btn-outline{
+
+    width:100% !important;
+    min-height:54px !important;
+
+    justify-content:center !important;
+  }
+
+}
+
+
+/* =========================================================
+   DESKTOP SAFETY
+   Keep original desktop navigation untouched
+========================================================= */
+
+@media (min-width:769px){
+
+  .hamburger{
+    display:none !important;
+  }
+
+}
+
+
+/* =========================================
+   NEXICWEB — FINAL PREMIUM MOBILE CATEGORY BAR
+   ADD AT THE VERY END OF style.css
+   ========================================= */
+
+@media (max-width: 768px){
+
+  .filter-tabs{
+    position:relative !important;
+
+    display:flex !important;
+    align-items:center !important;
+
+    width:100% !important;
+    max-width:100% !important;
+
+    flex-wrap:nowrap !important;
+
+    gap:10px !important;
+
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+
+    padding:6px 18px 14px 0 !important;
+
+    scroll-behavior:smooth !important;
+    -webkit-overflow-scrolling:touch !important;
+
+    scrollbar-width:none !important;
+
+    /* NO MASK — prevents black block over buttons */
+    mask-image:none !important;
+    -webkit-mask-image:none !important;
+  }
+
+  .filter-tabs::-webkit-scrollbar{
+    display:none !important;
+  }
+
+  .filter-tab{
+    flex:0 0 auto !important;
+
+    min-width:max-content !important;
+
+    white-space:nowrap !important;
+
+    padding:12px 20px !important;
+
+    font-size:14px !important;
+
+    line-height:1 !important;
+
+    border-radius:999px !important;
+
+    transform:none !important;
+
+    transition:
+      .3s ease !important;
+  }
+
+  /* Premium active button */
+  .filter-tab.active{
+    transform:scale(1.02) !important;
+
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,.12),
+      0 8px 25px rgba(124,92,252,.28) !important;
+  }
+
+  /* Make the whole search/filter area clean */
+  .search-filter-bar{
+    width:100% !important;
+    overflow:hidden !important;
+  }
+
+}/* =========================================
+   NEXICWEB — FINAL PREMIUM MOBILE CATEGORY BAR
+   ADD AT THE VERY END OF style.css
+   ========================================= */
+
+@media (max-width: 768px){
+
+  .filter-tabs{
+    position:relative !important;
+
+    display:flex !important;
+    align-items:center !important;
+
+    width:100% !important;
+    max-width:100% !important;
+
+    flex-wrap:nowrap !important;
+
+    gap:10px !important;
+
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+
+    padding:6px 18px 14px 0 !important;
+
+    scroll-behavior:smooth !important;
+    -webkit-overflow-scrolling:touch !important;
+
+    scrollbar-width:none !important;
+
+    /* NO MASK — prevents black block over buttons */
+    mask-image:none !important;
+    -webkit-mask-image:none !important;
+  }
+
+  .filter-tabs::-webkit-scrollbar{
+    display:none !important;
+  }
+
+  .filter-tab{
+    flex:0 0 auto !important;
+
+    min-width:max-content !important;
+
+    white-space:nowrap !important;
+
+    padding:12px 20px !important;
+
+    font-size:14px !important;
+
+    line-height:1 !important;
+
+    border-radius:999px !important;
+
+    transform:none !important;
+
+    transition:
+      .3s ease !important;
+  }
+
+  /* Premium active button */
+  .filter-tab.active{
+    transform:scale(1.02) !important;
+
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,.12),
+      0 8px 25px rgba(124,92,252,.28) !important;
+  }
+
+  /* Make the whole search/filter area clean */
+  .search-filter-bar{
+    width:100% !important;
+    overflow:hidden !important;
+  }
+
+}
+
+
+/* =========================================
+   NEXICWEB — MOBILE LOGIN MODAL FIX
+   ========================================= */
+
+@media (max-width: 768px){
+
+  /* Login click করলে mobile menu automatically hide */
+  body:has(#auth-overlay.active) .nav-links,
+  body:has(#auth-overlay.show) .nav-links,
+  body:has(#auth-overlay.open) .nav-links{
+    transform: translateX(100%) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+
+  /* Hamburger normal state */
+  body:has(#auth-overlay.active) .hamburger,
+  body:has(#auth-overlay.show) .hamburger,
+  body:has(#auth-overlay.open) .hamburger{
+    background: rgba(255,255,255,.06) !important;
+  }
+
+  /* Modal always above mobile menu */
+  #auth-overlay{
+    z-index: 999999 !important;
+  }
+
+  .auth-modal{
+    z-index: 1000000 !important;
+  }
+}
+
+
+/* =========================================
+   NEXICWEB — PREMIUM PASSWORD REVEAL UI
+   ========================================= */
+
+.input-group{
+  position:relative;
+}
+
+.nx-password-toggle{
+  position:absolute;
+  right:16px;
+  top:50%;
+  transform:translateY(-50%);
+
+  width:28px;
+  height:20px;
+
+  cursor:pointer;
+  z-index:10;
+
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:50% 50% 50% 50%;
+
+  transition:.4s cubic-bezier(.2,.8,.2,1);
+}
+
+.nx-password-toggle::before{
+  content:"";
+  position:absolute;
+  inset:3px 0;
+
+  border:1.5px solid #777793;
+  border-radius:50%;
+
+  transform:rotate(0deg);
+  transition:.4s ease;
+}
+
+.nx-eye-core{
+  position:absolute;
+  width:6px;
+  height:6px;
+
+  left:50%;
+  top:50%;
+
+  transform:translate(-50%,-50%);
+
+  border-radius:50%;
+  background:#777793;
+
+  box-shadow:0 0 0 rgba(124,92,252,0);
+
+  transition:.4s ease;
+}
+
+.nx-eye-line{
+  position:absolute;
+  width:32px;
+  height:1px;
+
+  left:50%;
+  top:50%;
+
+  transform:translate(-50%,-50%) rotate(35deg);
+
+  background:#777793;
+  opacity:1;
+
+  transition:.4s ease;
+}
+
+/* HOVER */
+.nx-password-toggle:hover{
+  transform:translateY(-50%) scale(1.15);
+}
+
+.nx-password-toggle:hover .nx-eye-core{
+  background:#a78bfa;
+  box-shadow:0 0 14px #7c5cfc;
+}
+
+/* REVEALED */
+.nx-password-toggle.revealed{
+  border-color:rgba(124,92,252,.5);
+  box-shadow:
+    0 0 15px rgba(124,92,252,.25),
+    inset 0 0 12px rgba(124,92,252,.12);
+}
+
+.nx-password-toggle.revealed::before{
+  transform:scaleY(.65);
+  border-color:#a78bfa;
+}
+
+.nx-password-toggle.revealed .nx-eye-line{
+  opacity:0;
+  transform:translate(-50%,-50%) rotate(0deg) scaleX(0);
+}
+
+.nx-password-toggle.revealed .nx-eye-core{
+  background:#a78bfa;
+  box-shadow:
+    0 0 8px #7c5cfc,
+    0 0 18px rgba(124,92,252,.8);
+}
+
+/* PASSWORD TEXT REVEAL ANIMATION */
+.nx-password-pulse{
+  animation:nxPasswordReveal .45s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes nxPasswordReveal{
+
+  0%{
+    opacity:.35;
+    filter:blur(5px);
+    transform:translateX(8px);
+  }
+
+  60%{
+    opacity:1;
+    filter:blur(0);
+    transform:translateX(-2px);
+  }
+
+  100%{
+    transform:translateX(0);
+  }
+
+}
+
+/* =====================================================
+   NEXICWEB — FINAL PREMIUM MOBILE GLASS MENU
+   ===================================================== */
+
+@media (max-width:768px){
+
+  /* =========================================
+     PREMIUM GLASS MOBILE MENU
+     ========================================= */
+
+  .nav-links{
+
+    background:
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(124,92,252,.14),
+        transparent 45%
+      ),
+      linear-gradient(
+        135deg,
+        rgba(10,10,20,.78),
+        rgba(18,18,32,.72)
+      ) !important;
+
+    backdrop-filter:
+      blur(35px)
+      saturate(150%) !important;
+
+    -webkit-backdrop-filter:
+      blur(35px)
+      saturate(150%) !important;
+
+    border-left:1px solid rgba(255,255,255,.08) !important;
+
+    box-shadow:
+      -25px 0 80px rgba(0,0,0,.45),
+      inset 1px 0 rgba(255,255,255,.05) !important;
+
+    transition:
+      transform .6s cubic-bezier(.22,1,.36,1),
+      opacity .4s ease,
+      visibility .4s ease !important;
+  }
+
+
+  /* =========================================
+     GLASS LIGHT EFFECT ON MENU
+     ========================================= */
+
+  .nav-links::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+    right:0;
+
+    height:1px;
+
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.35),
+        transparent
+      );
+
+    opacity:.6;
+
+    pointer-events:none;
+  }
+
+
+  /* =========================================
+     PREMIUM GLASS BUTTONS
+     ========================================= */
+
+  .nav-link{
+
+    position:relative !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255,255,255,.055),
+        rgba(255,255,255,.018)
+      ) !important;
+
+    backdrop-filter:blur(18px) !important;
+    -webkit-backdrop-filter:blur(18px) !important;
+
+    border:1px solid rgba(255,255,255,.08) !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.06),
+      0 8px 25px rgba(0,0,0,.12) !important;
+
+    transition:
+      transform .35s cubic-bezier(.2,.8,.2,1),
+      background .35s ease,
+      border .35s ease,
+      box-shadow .35s ease !important;
+  }
+
+
+  /* Hover / Active */
+  .nav-link:hover,
+  .nav-link.active{
+
+    transform:translateY(-2px) !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(124,92,252,.16),
+        rgba(255,255,255,.045)
+      ) !important;
+
+    border-color:
+      rgba(167,139,250,.35) !important;
+
+    box-shadow:
+      0 12px 35px rgba(124,92,252,.16),
+      inset 0 1px rgba(255,255,255,.12) !important;
+  }
+
+
+  /* =========================================
+     CART CLICK = MENU CLOSE
+     ========================================= */
+
+
+  /* =========================================
+     LOGIN CLICK = MENU CLOSE
+     ========================================= */
+
+  
+
+
+  /* =========================================
+     HAMBURGER GLASS BUTTON
+     ========================================= */
+
+  .hamburger{
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255,255,255,.07),
+        rgba(255,255,255,.025)
+      ) !important;
+
+    backdrop-filter:blur(20px) !important;
+    -webkit-backdrop-filter:blur(20px) !important;
+
+    border:1px solid rgba(255,255,255,.1) !important;
+
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.08),
+      0 8px 30px rgba(0,0,0,.25) !important;
+
+    transition:
+      .4s cubic-bezier(.2,.8,.2,1) !important;
+  }
+
+
+  .hamburger:active{
+
+    transform:scale(.9) !important;
+
+    background:
+      rgba(124,92,252,.16) !important;
+
+    box-shadow:
+      0 0 30px rgba(124,92,252,.3) !important;
+  }
+
+
+  /* =========================================
+     MENU OPEN CINEMATIC EFFECT
+     ========================================= */
+
+  .nav-links.open .nav-link{
+
+    animation:
+      nxMenuItemIn .55s cubic-bezier(.2,.8,.2,1) both;
+  }
+
+  .nav-links.open .nav-link:nth-child(1){
+    animation-delay:.04s;
+  }
+
+  .nav-links.open .nav-link:nth-child(2){
+    animation-delay:.08s;
+  }
+
+  .nav-links.open .nav-link:nth-child(3){
+    animation-delay:.12s;
+  }
+
+  .nav-links.open .nav-link:nth-child(4){
+    animation-delay:.16s;
+  }
+
+  .nav-links.open .nav-link:nth-child(5){
+    animation-delay:.20s;
+  }
+
+  .nav-links.open .nav-link:nth-child(6){
+    animation-delay:.24s;
+  }
+
+  .nav-links.open .nav-link:nth-child(7){
+    animation-delay:.28s;
+  }
+
+}
+
+
+@keyframes nxMenuItemIn{
+
+  from{
+
+    opacity:0;
+
+    transform:
+      translateY(18px)
+      scale(.96);
+
+    filter:blur(6px);
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+    filter:blur(0);
+  }
+
+}
+
+/* =========================================
+   NEXICWEB — CART CLICK → FAST MOBILE MENU CLOSE
+   ADD AT THE VERY END OF style.css
+   ========================================= */
+
+@media (max-width: 768px){
+
+  /* Premium glass mobile menu */
+  .nav-links{
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255,255,255,.08),
+        rgba(12,12,25,.94) 45%,
+        rgba(124,92,252,.12)
+      ) !important;
+
+    backdrop-filter: blur(28px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(160%) !important;
+
+    border-left: 1px solid rgba(255,255,255,.12) !important;
+    box-shadow:
+      -20px 0 80px rgba(0,0,0,.35),
+      inset 1px 0 0 rgba(255,255,255,.06) !important;
+  }
+
+  /* Fast premium closing animation */
+  .nav-links.menu-closing{
+    transform: translateX(100%) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition:
+      transform .18s cubic-bezier(.7,0,.84,0),
+      opacity .12s ease,
+      visibility .18s ease !important;
+  }
+
+  /* Cart click visual feedback */
+  .cart-btn.cart-clicked{
+    transform: scale(.92) !important;
+    background: rgba(124,92,252,.22) !important;
+    box-shadow:
+      0 0 0 5px rgba(124,92,252,.08),
+      0 0 25px rgba(124,92,252,.35) !important;
+    transition: .18s ease !important;
+  }
+
+}
+
+
