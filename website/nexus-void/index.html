@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Design-ui pages are single compositions, so the whole body is editable.
+    function markEditable() {
+        document.body.classList.add('artifact-editable');
+    }
+
+    // Credit badge with idle-fade. Hover devices only.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+
+    function init() {
+        markEditable();
+        initChromeUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+document.addEventListener("DOMContentLoaded", () => {
+  const watermark = document.createElement("a");
+
+  watermark.href = "https://www.facebook.com/share/1JqiQ3zTVn/";
+  watermark.target = "_blank";
+  watermark.rel = "noopener noreferrer";
+
+  watermark.innerHTML = `
+    <span>✦</span>
+    <strong>MADE BY NEXIC WEB</strong>
+  `;
+
+  Object.assign(watermark.style, {
+    position: "fixed",
+    bottom: "14px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    zIndex: "999999",
+    color: "rgba(255,255,255,0.35)",
+    textDecoration: "none",
+    fontFamily: "Arial, sans-serif",
+    fontSize: "8px",
+    fontWeight: "600",
+    letterSpacing: "3px",
+    opacity: "0.7",
+    transition: "all 0.4s ease",
+    whiteSpace: "nowrap",
+    pointerEvents: "auto"
+  });
+
+  watermark.onmouseenter = () => {
+    watermark.style.color = "rgba(255,255,255,0.9)";
+    watermark.style.letterSpacing = "4px";
+    watermark.style.opacity = "1";
+  };
+
+  watermark.onmouseleave = () => {
+    watermark.style.color = "rgba(255,255,255,0.35)";
+    watermark.style.letterSpacing = "3px";
+    watermark.style.opacity = "0.7";
+  };
+
+  document.body.appendChild(watermark);
+});
+</script>
+<!-- /skill:chrome -->
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#090a0b"><title>NEXUS//VOID | Playable Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:oklch(8% .012 30);--ink:oklch(93% .018 74);--muted:oklch(64% .018 74);--dim:oklch(38% .014 74);--line:oklch(28% .016 74);--panel:oklch(13% .014 30);--panel2:oklch(17% .016 30);--accent:oklch(75% .12 190);--warm:oklch(72% .13 44);--alert:oklch(66% .15 27);--sans:'Manrope',system-ui,sans-serif;--mono:'DM Mono',monospace;--ease:cubic-bezier(.16,1,.3,1);--g:clamp(18px,2.8vw,42px);--max:1500px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--bg)}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--sans);overflow-x:hidden}body.booting{overflow:hidden}a{color:inherit;text-decoration:none}button,input,textarea,select{font:inherit}button{cursor:pointer}.mono{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em}.eyebrow{font:500 .66rem var(--mono);letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}.accent{color:var(--accent)}.warm{color:var(--warm)}.muted{color:var(--muted)}.wrap{width:min(calc(100% - 2 * var(--g)),var(--max));margin:auto}.section{padding:clamp(110px,15vw,230px) 0;border-top:1px solid var(--line);position:relative}h1,h2,h3,p{margin:0}h1,h2,h3{letter-spacing:-.07em;line-height:.9;text-wrap:balance}h1{font-size:clamp(4.5rem,12vw,13rem);font-weight:800}h2{font-size:clamp(3.4rem,8vw,9rem);font-weight:700}h3{font-size:clamp(1.6rem,3vw,3.3rem)}.lede{max-width:56ch;color:var(--muted);font-size:clamp(1rem,1.5vw,1.25rem);line-height:1.65}.btn{min-height:46px;padding:12px 17px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);font:500 .68rem var(--mono);letter-spacing:.09em;transition:transform .25s var(--ease),background .25s,border-color .25s}.btn:hover,.btn:focus-visible{transform:translateY(-3px);border-color:var(--accent);background:var(--accent);color:var(--bg)}.btn.primary{background:var(--accent);color:var(--bg);border-color:var(--accent)}:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+/* boot */
+.boot{position:fixed;z-index:100;inset:0;display:grid;place-items:center;background:var(--bg);transition:opacity .7s var(--ease),visibility .7s}.boot.done{opacity:0;visibility:hidden;pointer-events:none}.bootbox{width:min(720px,calc(100% - 2 * var(--g)))}.bootlogo{font-size:clamp(2.6rem,8vw,7rem);font-weight:800;letter-spacing:-.1em;margin-bottom:48px}.bootlogo span{color:var(--accent)}.bootlines{display:grid;gap:13px}.bootline{display:flex;gap:16px;color:var(--muted);opacity:0;transform:translateY(8px)}.bootline b{color:var(--accent);font-weight:400}.bootline i{margin-left:auto;color:var(--accent);font-style:normal}.bar{height:2px;background:var(--line);margin-top:34px}.bar i{display:block;height:100%;width:0;background:var(--accent);transform-origin:left}.bootfoot{display:flex;justify-content:space-between;color:var(--dim);margin-top:13px}
+/* nav */
+.nav{position:fixed;z-index:40;top:0;left:0;right:0;padding:20px var(--g);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(oklch(8% .012 30 / .96),oklch(8% .012 30 / 0));pointer-events:none}.nav>*{pointer-events:auto}.brand{font-weight:800;letter-spacing:-.07em}.brand span{color:var(--accent)}.navlinks{display:flex;gap:25px}.navlinks a{font:500 .63rem var(--mono);letter-spacing:.1em;color:var(--muted);transition:color .2s}.navlinks a:hover,.navlinks a.active{color:var(--ink)}.navmeta{display:flex;gap:12px;align-items:center;color:var(--muted)}.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 7px oklch(75% .12 190 / .1);animation:pulse 2s infinite}.menubtn{display:none;background:none;color:var(--ink);border:1px solid var(--line);padding:10px 12px}
+/* scene */
+.scene{position:fixed;z-index:0;inset:0;pointer-events:none;opacity:.9}.scene canvas{width:100%;height:100%;display:block}.scene:after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,transparent 0 24%,oklch(8% .012 30 / .18) 58%,oklch(8% .012 30 / .86) 100%),linear-gradient(180deg,oklch(8% .012 30 / .2),transparent 22%,transparent 73%,oklch(8% .012 30 / .9));pointer-events:none}.crosshair{position:fixed;z-index:5;inset:50% auto auto 50%;width:24px;height:24px;transform:translate(-50%,-50%);opacity:.5;pointer-events:none}.crosshair:before,.crosshair:after{content:'';position:absolute;background:var(--accent)}.crosshair:before{width:100%;height:1px;top:11px}.crosshair:after{height:100%;width:1px;left:11px}
+/* hero */
+.hero{position:relative;z-index:1;min-height:100svh;display:grid;align-items:end;padding-top:150px;padding-bottom:56px}.hero-content{max-width:1100px}.hero h1 span{display:block}.hero h1 span:nth-child(2){margin-left:13vw;color:var(--accent)}.hero h1 span:nth-child(3){margin-left:25vw}.hero-info{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-top:72px}.hero-copy{max-width:390px}.hero-coords{text-align:right;color:var(--muted)}.hero-actions{display:flex;gap:10px;margin-top:24px}.scrollhint{display:flex;gap:12px;align-items:center;color:var(--dim);position:absolute;bottom:24px;left:var(--g)}.scrollhint i{width:40px;height:1px;background:var(--accent)}.hud{position:absolute;top:130px;right:var(--g);color:var(--dim);text-align:right}.hud strong{display:block;color:var(--accent);font:500 2.5rem var(--mono);letter-spacing:-.1em}
+/* world list */
+.section-head{display:flex;justify-content:space-between;gap:40px;align-items:end;margin-bottom:80px}.section-head .lede{max-width:420px}.worlds{border-top:1px solid var(--line)}.world{min-height:220px;display:grid;grid-template-columns:80px 1fr 1.1fr 130px;align-items:center;gap:26px;border-bottom:1px solid var(--line);transition:background .4s var(--ease),padding .4s var(--ease)}.world:hover{background:var(--panel);padding:0 24px}.worldnum{color:var(--accent)}.world h3{font-size:clamp(2rem,5vw,5.5rem)}.worldtag{font-size:.76rem;color:var(--muted)}.worldtag b{color:var(--ink);font-weight:500}.worldaction{text-align:right;color:var(--accent);font:500 .68rem var(--mono)}
+/* motion */
+.motion-wrap{overflow:hidden}.motion-stage{min-height:66vh;border-top:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}.motion-stage:before{content:'TIMELINE 00:00:00:00';position:absolute;top:22px;left:22px;color:var(--dim);font:500 .65rem var(--mono)}.motion-word{font-size:clamp(4rem,13vw,15rem);font-weight:800;line-height:.75;letter-spacing:-.1em;position:relative;z-index:1}.motion-word span{display:block}.motion-word span:nth-child(2){color:var(--accent);margin-left:16vw}.motion-word span:nth-child(3){margin-left:3vw}.orbit{position:absolute;width:clamp(230px,30vw,480px);height:clamp(230px,30vw,480px);border:1px solid var(--accent);border-radius:50%;transform:rotate(24deg);animation:spin 18s linear infinite}.orbit:before,.orbit:after{content:'';position:absolute;border:1px solid var(--warm);border-radius:50%;inset:18% -8%;transform:rotate(66deg)}.orbit:after{inset:-8% 18%;transform:rotate(-38deg);border-color:var(--accent)}
+/* games */
+.game-layout{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(40px,8vw,130px);align-items:center}.game-list{border-top:1px solid var(--line)}.game-btn{width:100%;border:0;border-bottom:1px solid var(--line);background:none;color:var(--muted);display:flex;justify-content:space-between;padding:19px 0;text-align:left;transition:color .2s,padding .3s var(--ease)}.game-btn:hover,.game-btn.active{color:var(--ink);padding-left:14px}.game-btn.active{color:var(--accent)}.game-world{min-height:500px;background:var(--panel);border:1px solid var(--line);position:relative;overflow:hidden;padding:26px}.game-world:before{content:'';position:absolute;inset:20px;border:1px solid var(--line);background:linear-gradient(135deg,transparent 49.8%,var(--accent) 50%,transparent 50.2%),linear-gradient(45deg,transparent 49.8%,var(--line) 50%,transparent 50.2%);opacity:.3}.game-world .terrain{position:absolute;inset:auto 0 0;height:45%;background:linear-gradient(155deg,transparent 0 44%,oklch(24% .02 30) 45% 48%,transparent 49%),linear-gradient(25deg,transparent 0 43%,oklch(20% .02 30) 44% 51%,transparent 52%);transition:filter .4s}.game-world h3,.game-world p,.game-readout{position:relative}.game-readout{position:absolute;right:26px;bottom:26px;color:var(--muted)}
+/* lab */
+.lab-layout{display:grid;grid-template-columns:1fr 1fr;gap:32px}.lab-viewport{border:1px solid var(--line);min-height:540px;background:var(--panel);position:relative;overflow:hidden}.lab-viewport canvas{width:100%;height:100%;display:block}.lab-label{position:absolute;top:20px;left:20px}.lab-readout{position:absolute;right:20px;bottom:20px;color:var(--muted);text-align:right}.controls{display:grid;gap:26px}.control-group{border-top:1px solid var(--line);padding-top:17px}.control-group h4{font:500 .66rem var(--mono);letter-spacing:.15em;margin:0 0 12px;color:var(--muted)}.control-row{display:flex;flex-wrap:wrap;gap:8px}.chip{padding:10px 12px;border:1px solid var(--line);background:none;color:var(--muted);font:500 .66rem var(--mono);transition:all .2s}.chip:hover,.chip.active{color:var(--bg);background:var(--accent);border-color:var(--accent)}
+/* pipeline engine */
+.pipeline{display:grid;grid-template-columns:repeat(9,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);position:relative}.pipeline:before{content:'';height:1px;background:var(--line);position:absolute;left:0;right:0;top:72px}.pipe{min-height:200px;padding:24px 10px;border-right:1px solid var(--line);position:relative}.pipe:last-child{border-right:0}.pipe i{display:block;width:11px;height:11px;border:1px solid var(--accent);border-radius:50%;margin:25px auto 34px;background:var(--bg);position:relative;z-index:1}.pipe.done i{background:var(--accent)}.pipe strong{display:block;text-align:center;font:500 .62rem var(--mono);color:var(--ink)}.pipe small{display:block;text-align:center;margin-top:8px;color:var(--dim);font:400 .61rem var(--mono)}.engine{display:grid;grid-template-columns:1.2fr .8fr;border:1px solid var(--line);background:var(--panel)}.engine-main{padding:34px;border-right:1px solid var(--line)}.engine-screen{height:290px;margin-top:28px;border:1px solid var(--line);position:relative;overflow:hidden;background:linear-gradient(90deg,transparent 49.8%,oklch(75% .12 190 / .18) 50%,transparent 50.2%),linear-gradient(transparent 49.8%,oklch(75% .12 190 / .18) 50%,transparent 50.2%);background-size:72px 72px}.scan{position:absolute;height:1px;left:0;right:0;top:0;background:var(--accent);animation:scan 3s linear infinite}.engine-orb{position:absolute;width:130px;height:130px;border:1px solid var(--accent);border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%) rotateX(55deg);box-shadow:0 0 0 24px oklch(75% .12 190 / .05),0 0 60px oklch(75% .12 190 / .18);animation:orb 7s linear infinite}.engine-side{padding:34px}.readout{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:16px 0;color:var(--muted)}.readout strong{font:500 1.05rem var(--mono);color:var(--accent)}
+/* process philosophy */
+.process{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}.process-steps{border-top:1px solid var(--line)}.step{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:18px 0;color:var(--muted);transition:color .2s,padding .3s var(--ease)}.step:hover{color:var(--accent);padding-left:14px}.philosophy{min-height:100vh;display:grid;align-items:center}.philosophy h2 span{display:block}.philosophy h2 span:nth-child(2){margin-left:13vw;color:var(--accent)}.philosophy h2 span:nth-child(3){margin-left:26vw}.philosophy h2 span:nth-child(4){margin-left:9vw;color:var(--warm)}
+/* about contact footer */
+.about{display:grid;grid-template-columns:1fr 1fr;gap:clamp(44px,10vw,150px)}.journey{border-top:1px solid var(--line)}.journey div{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:18px 0;color:var(--muted)}.journey b{color:var(--ink);font-weight:500}.contact{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(44px,10vw,150px)}.form{display:grid;gap:21px}.field{display:grid;gap:7px}.field label{font:500 .65rem var(--mono);letter-spacing:.12em;color:var(--muted)}.field input,.field textarea,.field select{width:100%;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);padding:11px 0;border-radius:0;outline:0}.field textarea{min-height:125px;resize:vertical}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent)}.formstate{min-height:20px;color:var(--accent);font:500 .68rem var(--mono)}.final{min-height:90vh;display:grid;align-items:center}.final h2 span{display:block}.final h2 span:nth-child(2){margin-left:15vw;color:var(--accent)}.footer{padding:30px 0 56px;border-top:1px solid var(--line)}.footer-top{display:flex;justify-content:space-between;gap:30px}.footer-links{display:flex;flex-wrap:wrap;gap:19px}.footer-links a{font:500 .65rem var(--mono);color:var(--muted)}.footer-bottom{display:flex;justify-content:space-between;margin-top:90px;color:var(--dim)}
+@keyframes pulse{50%{box-shadow:0 0 0 12px oklch(75% .12 190 / 0)}}@keyframes spin{to{transform:rotate(384deg)}}@keyframes scan{to{top:100%}}@keyframes orb{to{transform:translate(-50%,-50%) rotateX(55deg) rotateZ(360deg)}}
+@media(max-width:950px){.navlinks{display:none}.menubtn{display:block}.navmeta{display:none}.hero-info,.section-head{display:block}.hero-coords{text-align:left;margin-top:28px}.game-layout,.lab-layout,.process,.about,.contact{grid-template-columns:1fr}.world{grid-template-columns:54px 1fr 110px}.worldtag{grid-column:2/-1}.worldaction{grid-column:3;grid-row:1}.engine{grid-template-columns:1fr}.engine-main{border-right:0;border-bottom:1px solid var(--line)}.pipeline{overflow:auto;grid-template-columns:repeat(9,120px)}}
+@media(max-width:600px){.section{padding:88px 0}.hero{padding-top:130px}.hero h1 span:nth-child(2){margin-left:7vw}.hero h1 span:nth-child(3){margin-left:14vw}.hero-info{margin-top:48px}.hud{top:102px;right:var(--g)}.hud strong{font-size:1.5rem}.world{grid-template-columns:42px 1fr;padding:24px 0}.world:hover{padding:24px 12px}.worldaction{grid-column:2;grid-row:3;text-align:left}.motion-stage{min-height:58vh}.motion-word{font-size:19vw}.lab-viewport{min-height:380px}.engine-main,.engine-side{padding:22px}.footer-top,.footer-bottom{display:block}.footer-bottom{margin-top:48px}.footer-bottom>*+*{margin-top:10px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.scene{opacity:.48}}
+</style>
+</head>
+<body class="booting">
+<div class="boot"><div class="bootbox"><div class="bootlogo">NEXUS<span>//</span>VOID</div><div class="bootlines"><div class="bootline"><b>[01]</b><span>LOADING ASSETS</span><i>OK</i></div><div class="bootline"><b>[02]</b><span>INITIALIZING WORLD</span><i>OK</i></div><div class="bootline"><b>[03]</b><span>LOADING GEOMETRY</span><i>OK</i></div><div class="bootline"><b>[04]</b><span>COMPILING MOTION</span><i>OK</i></div><div class="bootline"><b>[05]</b><span>CAMERA ONLINE</span><i>OK</i></div></div><div class="bar"><i></i></div><div class="bootfoot mono"><span>WORLD STATUS: ACTIVE</span><span class="pct">00%</span></div></div></div>
+<div class="scene"><canvas id="worldCanvas" aria-label="Interactive abstract 3D world"></canvas></div><div class="crosshair" aria-hidden="true"></div>
+<header class="nav"><a href="#world" class="brand">NEXUS<span>//</span>VOID</a><nav class="navlinks"><a href="#worlds">01 WORLDS</a><a href="#motion">02 MOTION</a><a href="#games">03 GAMES</a><a href="#lab">04 3D LAB</a><a href="#engine">05 ENGINE</a><a href="#contact">06 CONTACT</a></nav><div class="navmeta"><i class="dot"></i><span class="mono">ONLINE / 120 FPS</span></div><button class="menubtn" aria-label="Open navigation">MENU</button></header>
+<main>
+<section class="hero wrap" id="world"><div class="hud mono">WORLD_001<br><strong>120</strong> FPS<br>LOCATION: DIGITAL SPACE</div><div class="hero-content"><div class="eyebrow"><span class="accent">●</span> 3D artist / motion designer / game developer</div><h1><span>I BUILD</span><span>WORLDS</span><span>THAT MOVE.</span></h1><div class="hero-info"><div class="hero-copy"><p class="lede">From polygon to playable world. I make places for imagination to become physical, cinematic, and interactive.</p><div class="hero-actions"><a class="btn primary" href="#worlds">ENTER THE WORK ↗</a><a class="btn" href="#engine">VIEW THE SYSTEM</a></div></div><div class="hero-coords mono">X 04.882 / Y 11.204 / Z 09.772<br><span class="accent">SIGNATURE ARTIFACT: NEXUS CORE</span></div></div></div><div class="scrollhint mono"><i></i> SCROLL TO ENTER THE WORLD</div></section>
+<section class="section" id="worlds"><div class="wrap"><div class="section-head"><div><div class="eyebrow">01 / the worlds</div><h2>ENTER<br><span class="accent">THE WORK.</span></h2></div><p class="lede">Each project is an atmosphere with rules. A world you can look at, move through, and remember.</p></div><div class="worlds"><article class="world"><span class="worldnum mono">001</span><div><h3>OBSIDIAN RITUAL</h3><span class="eyebrow">3D environment / motion film</span></div><div class="worldtag"><b>SOFTWARE</b> Blender / Houdini / AE<br><b>YEAR</b> 2026</div><div class="worldaction">ENTER WORLD ↗</div></article><article class="world"><span class="worldnum mono">002</span><div><h3>ORBITAL MEMORY</h3><span class="eyebrow">abstract sculpture / realtime</span></div><div class="worldtag"><b>SOFTWARE</b> C4D / WebGL / GLSL<br><b>YEAR</b> 2025</div><div class="worldaction">ENTER WORLD ↗</div></article><article class="world"><span class="worldnum mono">003</span><div><h3>LOWLIGHT / 7</h3><span class="eyebrow">game prototype / playable world</span></div><div class="worldtag"><b>ENGINE</b> Unreal / Blueprint / Sequencer<br><b>YEAR</b> 2025</div><div class="worldaction">ENTER WORLD ↗</div></article></div></div></section>
+<section class="section" id="motion"><div class="wrap motion-wrap"><div class="section-head"><div><div class="eyebrow">02 / the motion chamber</div><h2>TIME,<br><span class="accent">VISIBLE.</span></h2></div><p class="lede">Motion is not decoration. It is the emotional logic between one state and the next.</p></div><div class="motion-stage"><div class="orbit" aria-hidden="true"></div><div class="motion-word"><span>MOTION</span><span>IS</span><span>TIME</span></div></div><div class="mono muted" style="padding-top:16px;display:flex;justify-content:space-between"><span>FRAME_0001 / 0024</span><span class="accent">PLAYBACK: REAL-TIME</span></div></div></section>
+<section class="section" id="games"><div class="wrap"><div class="section-head"><div><div class="eyebrow">03 / game worlds</div><h2>MAKE IT<br><span class="accent">PLAYABLE.</span></h2></div><p class="lede">I do not just design worlds. I build the systems that make a world respond.</p></div><div class="game-layout"><div class="game-list"><button class="game-btn active" data-game="lowlight"><span>LOWLIGHT / 7</span><span class="mono">01</span></button><button class="game-btn" data-game="silt"><span>SILT CATHEDRAL</span><span class="mono">02</span></button><button class="game-btn" data-game="afterimage"><span>AFTERIMAGE PROTOCOL</span><span class="mono">03</span></button><div class="mono muted" id="gameCopy" style="padding-top:26px">A quiet survival prototype about light, memory, and the cost of being seen.</div></div><div class="game-world"><div class="eyebrow accent">PLAYABLE WORLD / ACTIVE</div><h3 style="margin-top:22px" id="gameTitle">LOWLIGHT / 7</h3><div class="terrain"></div><div class="game-readout mono">MODE: EXPLORATION<br>LIGHT: 14%<br>BUILD: 0.8.2</div></div></div></div></section>
+<section class="section" id="lab"><div class="wrap"><div class="section-head"><div><div class="eyebrow">04 / the 3D lab</div><h2>MAKE<br><span class="accent">MATERIAL.</span></h2></div><p class="lede">A live study of surface, light, and geometry. Change the artifact's state and watch the world answer.</p></div><div class="lab-layout"><div class="lab-viewport"><canvas id="labCanvas"></canvas><div class="lab-label eyebrow">NEXUS CORE / LAB INSTANCE</div><div class="lab-readout mono">POLYGONS <span id="poly">48,210</span><br>SHADE <span id="shade">METAL</span><br>STATE <span class="accent">LIVE</span></div></div><div class="controls"><div class="control-group"><h4>MATERIAL</h4><div class="control-row"><button class="chip active" data-mat="metal">METAL</button><button class="chip" data-mat="glass">GLASS</button><button class="chip" data-mat="organic">ORGANIC</button><button class="chip" data-mat="emissive">EMISSIVE</button></div></div><div class="control-group"><h4>MODE</h4><div class="control-row"><button class="chip active" data-mode="solid">SOLID</button><button class="chip" data-mode="wire">WIREFRAME</button><button class="chip" data-mode="xray">X-RAY</button></div></div><div class="control-group"><h4>LIGHT</h4><div class="control-row"><button class="chip active" data-light="key">KEY</button><button class="chip" data-light="rim">RIM</button><button class="chip" data-light="ambient">AMBIENT</button></div></div><p class="lede" style="font-size:1rem">The final image is only the visible layer. The craft is in building enough structure beneath it to make the illusion hold.</p></div></div></div></section>
+<section class="section" id="pipeline"><div class="wrap"><div class="section-head"><div><div class="eyebrow">05 / creative pipeline</div><h2>FROM IDEA<br><span class="accent">TO WORLD.</span></h2></div><p class="lede">A visual pipeline built from questions, prototypes, and patient iteration.</p></div><div class="pipeline"><div class="pipe done"><i></i><strong>IDEA</strong><small>COMPLETE</small></div><div class="pipe done"><i></i><strong>CONCEPT</strong><small>COMPLETE</small></div><div class="pipe done"><i></i><strong>MODEL</strong><small>COMPLETE</small></div><div class="pipe done"><i></i><strong>TEXTURE</strong><small>COMPLETE</small></div><div class="pipe"><i></i><strong>LIGHT</strong><small>RUNNING</small></div><div class="pipe"><i></i><strong>ANIMATE</strong><small>PENDING</small></div><div class="pipe"><i></i><strong>RENDER</strong><small>QUEUED</small></div><div class="pipe"><i></i><strong>COMPOSE</strong><small>QUEUED</small></div><div class="pipe"><i></i><strong>PLAY</strong><small>QUEUED</small></div></div></div></section>
+<section class="section" id="engine"><div class="wrap"><div class="section-head"><div><div class="eyebrow">06 / real-time engine</div><h2>ART<br><span class="accent">IN MOTION.</span></h2></div><p class="lede">The practice lives at the seam between art direction, code, motion, and real-time graphics.</p></div><div class="engine"><div class="engine-main"><div class="eyebrow accent">RUNTIME / NEXUS CORE</div><div class="engine-screen"><div class="scan"></div><div class="engine-orb"></div></div></div><div class="engine-side"><div class="readout"><span>FPS</span><strong>120</strong></div><div class="readout"><span>SHADERS</span><strong>08</strong></div><div class="readout"><span>LIGHTING</span><strong>REALTIME</strong></div><div class="readout"><span>PHYSICS</span><strong>ACTIVE</strong></div><div class="readout"><span>INTERACTION</span><strong>LIVE</strong></div><p class="mono muted" style="margin-top:40px">RENDER TARGET<br><span class="accent">60 / 90 / 120 / 144 HZ</span></p></div></div></div></section>
+<section class="section" id="process"><div class="wrap"><div class="process"><div><div class="eyebrow">07 / world-building process</div><h2>EMPTY<br><span class="accent">SPACE.</span></h2><p class="lede" style="margin-top:32px">Start with nothing. Add one honest thing at a time until the scene has a reason to exist.</p></div><div class="process-steps"><div class="step"><b>01 / EMPTY SPACE</b><span>quiet</span></div><div class="step"><b>02 / IDEA</b><span>signal</span></div><div class="step"><b>03 / SHAPE</b><span>form</span></div><div class="step"><b>04 / MOTION</b><span>time</span></div><div class="step"><b>05 / LIGHT</b><span>meaning</span></div><div class="step"><b>06 / WORLD</b><span class="accent">memory</span></div></div></div></div></section>
+<section class="section philosophy"><div class="wrap"><div class="eyebrow">08 / visual philosophy</div><h2><span>FORM</span><span>CREATES</span><span>EMOTION.</span><span>WORLDS CREATE MEMORY.</span></h2></div></section>
+<section class="section" id="about"><div class="wrap"><div class="section-head"><div><div class="eyebrow">09 / the creator</div><h2>BUILD THE<br><span class="accent">IMPOSSIBLE.</span></h2></div><p class="lede">I build the things I wish existed. Objects with atmosphere. Interfaces with rhythm. Games with a point of view.</p></div><div class="about"><div class="journey"><div><b>IMAGINE</b><span>ask what could be</span></div><div><b>DESIGN</b><span>give the idea a shape</span></div><div><b>MODEL</b><span>make it hold together</span></div><div><b>ANIMATE</b><span>give it a pulse</span></div><div><b>BUILD</b><span>make it respond</span></div><div><b>PLAY</b><span>let someone enter</span></div></div><p class="lede">The work is part art direction, part engineering, and part world-building. The medium changes. The intention stays: make something that was not there before, then make it feel inevitable.</p></div></div></section>
+<section class="section" id="contact"><div class="wrap"><div class="section-head"><div><div class="eyebrow">10 / contact</div><h2>WHAT WORLD<br><span class="accent">SHOULD WE BUILD?</span></h2></div><p class="lede">Bring the strange brief. Bring the impossible reference. I will bring a way into it.</p></div><div class="contact"><div><div class="eyebrow">WORLD REQUEST PROTOCOL</div><p class="lede" style="margin-top:24px">Tell me what needs to exist, who it is for, and what you want people to feel when they arrive.</p><p class="mono muted" style="margin-top:48px">RESPONSE TIME<br><span class="accent">24–48 HOURS</span></p></div><form class="form" id="contactForm"><div class="field"><label for="name">01 / NAME</label><input id="name" required autocomplete="name" placeholder="Your name"></div><div class="field"><label for="email">02 / EMAIL</label><input id="email" type="email" required autocomplete="email" placeholder="you@studio.com"></div><div class="field"><label for="project">03 / PROJECT TYPE</label><select id="project"><option>3D art / environment</option><option>Motion design</option><option>Game development</option><option>Creative technology</option></select></div><div class="field"><label for="details">04 / WORLD DETAILS</label><textarea id="details" required placeholder="What should we build?"></textarea></div><button class="btn primary" type="submit">TRANSMIT WORLD REQUEST ↗</button><div class="formstate" id="formState" role="status"></div></form></div></div></section>
+<section class="section final"><div class="wrap"><div class="eyebrow">FINAL WORLD / EXIT</div><h2><span>SEE YOU</span><span>IN THE NEXT</span><span>WORLD.</span></h2></div></section>
+</main><footer class="footer"><div class="wrap"><div class="footer-top"><div><div class="brand">NEXUS<span>//</span>VOID</div><div class="mono muted" style="margin-top:12px">3D ARTIST<br>MOTION DESIGNER<br>GAME DEVELOPER</div></div><div class="footer-links"><a href="#worlds">WORLDS</a><a href="#lab">3D</a><a href="#motion">MOTION</a><a href="#games">GAMES</a><a href="#about">ABOUT</a><a href="#contact">CONTACT</a></div></div><div class="footer-bottom mono"><span>WORLD STATUS: <span class="accent">ONLINE</span></span><span>© 2026 NEXUS//VOID</span><span>END OF WORLD_001</span></div></div></footer>
+<script>
+(()=>{const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;let mouse={x:0,y:0};
+/* lightweight WebGL-style 3D scene, no heavy assets needed */
+function makeScene(canvas,small=false){const ctx=canvas.getContext('2d');let w,h,dpr,pts=[];function resize(){dpr=Math.min(devicePixelRatio||1,small?1.25:1.7);w=canvas.clientWidth;h=canvas.clientHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);pts=Array.from({length:small?70:160},()=>({a:Math.random()*Math.PI*2,r:80+Math.random()*290,z:Math.random()*1}));}function draw(t){ctx.clearRect(0,0,w,h);const cx=w/2+(mouse.x-w/2)*.04,cy=h*.49+(mouse.y-h/2)*.03;ctx.save();ctx.translate(cx,cy);const rot=t*.00012+(mouse.x-w/2)*.0004;ctx.rotate(rot);for(const p of pts){const a=p.a+t*.00035*(.7+p.z),rr=p.r*(.72+.28*Math.sin(t*.0007+p.a));const x=Math.cos(a)*rr,y=Math.sin(a)*rr*.62;ctx.fillStyle=`oklch(${55+p.z*30}% .12 190 / ${.12+p.z*.4})`;ctx.fillRect(x,y,1.5+p.z*2,1.5+p.z*2)}for(let i=0;i<8;i++){ctx.save();ctx.rotate(i*Math.PI/4);ctx.strokeStyle=i%2?'oklch(75% .12 190 / .38)':'oklch(72% .13 44 / .32)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,-60-i*9);ctx.lineTo(0,-170-i*20);ctx.stroke();ctx.restore()}ctx.strokeStyle='oklch(75% .12 190 / .65)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(0,0,78+Math.sin(t*.001)*5,0,Math.PI*2);ctx.stroke();ctx.strokeStyle='oklch(93% .018 74 / .18)';ctx.beginPath();ctx.arc(0,0,128,0,Math.PI*2);ctx.stroke();ctx.fillStyle='oklch(75% .12 190 / .18)';ctx.beginPath();ctx.arc(0,0,34,0,Math.PI*2);ctx.fill();ctx.fillStyle='oklch(93% .018 74)';ctx.beginPath();ctx.arc(0,0,5,0,Math.PI*2);ctx.fill();ctx.restore();requestAnimationFrame(draw)}resize();addEventListener('resize',resize,{passive:true});requestAnimationFrame(draw)}
+function boot(){const lines=$$('.bootline'),bar=$('.bar i'),pct=$('.pct'),b=$('.boot');if(reduce){b.classList.add('done');document.body.classList.remove('booting');makeScene($('#worldCanvas'));makeScene($('#labCanvas'),true);return}lines.forEach((l,i)=>{if(window.gsap)gsap.to(l,{opacity:1,y:0,duration:.4,delay:.25+i*.18,ease:'power3.out'});else setTimeout(()=>{l.style.opacity=1;l.style.transform='none'},300+i*180)});let start=performance.now();function tick(now){let p=Math.min((now-start)/1900,1);bar.style.width=p*100+'%';pct.textContent=String(Math.round(p*100)).padStart(2,'0')+'%';if(p<1)requestAnimationFrame(tick);else setTimeout(()=>{b.classList.add('done');document.body.classList.remove('booting')},350)}requestAnimationFrame(tick);makeScene($('#worldCanvas'));makeScene($('#labCanvas'),true)}
+addEventListener('pointermove',e=>{mouse.x=e.clientX;mouse.y=e.clientY},{passive:true});boot();
+function reveal(){if(!window.gsap||reduce)return;gsap.registerPlugin(window.ScrollTrigger||{});gsap.from('.hero-content>*',{y:35,opacity:0,duration:.9,stagger:.1,ease:'power4.out'});$$('.section-head,.world,.game-layout,.lab-layout,.pipeline,.engine,.process,.about,.contact').forEach(el=>gsap.from(el,{y:32,opacity:0,duration:.75,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 84%',once:true}}))}setTimeout(reveal,2200);
+$$('.game-btn').forEach(btn=>btn.addEventListener('click',()=>{ $$('.game-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const data={lowlight:['LOWLIGHT / 7','A quiet survival prototype about light, memory, and the cost of being seen.'],silt:['SILT CATHEDRAL','An underwater architectural study where movement changes the sound of the world.'],afterimage:['AFTERIMAGE PROTOCOL','A kinetic chase through a city that only exists one frame ahead.']}[btn.dataset.game];$('#gameTitle').textContent=data[0];$('#gameCopy').textContent=data[1]}));
+$$('.chip').forEach(ch=>ch.addEventListener('click',()=>{const group=ch.parentElement;group.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));ch.classList.add('active');if(ch.dataset.mat)$('#shade').textContent=ch.dataset.mat.toUpperCase();if(ch.dataset.mode)$('#poly').textContent=ch.dataset.mode==='wire'?'18,804':ch.dataset.mode==='xray'?'32,016':'48,210'}));
+$('#contactForm').addEventListener('submit',e=>{e.preventDefault();const state=$('#formState'),btn=e.currentTarget.querySelector('button');btn.disabled=true;btn.textContent='INITIALIZING...';state.textContent='TRANSMITTING / WORLD REQUEST OPEN';setTimeout(()=>{btn.textContent='WORLD REQUEST RECEIVED ✓';state.textContent='TRANSMISSION COMPLETE. RESPONSE TIME: 24–48 HOURS'},900)});
+$$('.navlinks a').forEach(a=>a.addEventListener('click',()=>{$$('.navlinks a').forEach(x=>x.classList.remove('active'));a.classList.add('active')}));$('.menubtn').addEventListener('click',()=>{const n=$('.navlinks');n.style.display=n.style.display==='flex'?'none':'flex';n.style.position='absolute';n.style.top='64px';n.style.right='var(--g)';n.style.flexDirection='column';n.style.background='var(--panel)';n.style.padding='18px';n.style.border='1px solid var(--line)'});
+})();
+</script></body></html>

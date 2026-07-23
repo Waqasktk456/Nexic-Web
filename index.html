@@ -791,7 +791,46 @@ document.getElementById("resend-otp").addEventListener("click", async (e) => {
     console.error("Resend OTP error:", error);
   }
 });
+/* =========================================
+   NEXICWEB — UNIQUE PASSWORD REVEAL
+   ========================================= */
 
+document.querySelectorAll('input[type="password"]').forEach(input => {
+
+  const wrapper = input.closest('.input-group');
+  if (!wrapper) return;
+
+  const toggle = document.createElement('span');
+
+  toggle.innerHTML = `
+    <span class="nx-password-toggle">
+      <span class="nx-eye-line"></span>
+      <span class="nx-eye-core"></span>
+    </span>
+  `;
+
+  wrapper.appendChild(toggle);
+
+  const eye = toggle.querySelector('.nx-password-toggle');
+
+  eye.addEventListener('click', () => {
+
+    const isHidden = input.type === 'password';
+
+    input.type = isHidden ? 'text' : 'password';
+
+    eye.classList.toggle('revealed', isHidden);
+
+    /* premium reveal pulse */
+    input.classList.remove('nx-password-pulse');
+
+    void input.offsetWidth;
+
+    input.classList.add('nx-password-pulse');
+
+  });
+
+});
 </script>
 
 
