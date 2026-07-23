@@ -7,7 +7,11 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+// CORS configuration - allow your frontend domain
+app.use(cors({
+  origin: process.env.FRONTEND_URL || '*', // Update FRONTEND_URL in Render environment variables
+  credentials: true
+}));
 app.use(express.json());
 
 // Initialize Supabase Client
