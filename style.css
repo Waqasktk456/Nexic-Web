@@ -263,6 +263,12 @@ html {
 
 /* ================= USER NAME ================= */
 
+#user-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .user-name{
   color: var(--text);
   font-size: 0.92rem;
@@ -273,9 +279,21 @@ html {
   gap: 8px;
 }
 
-.user-name::before{
-  content: "👤";
-  font-size: 1rem;
+.logout-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text2) !important;
+  font-size: 0.875rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: none;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.logout-link svg {
+  flex-shrink: 0;
 }
 
 /* ================= CART ================= */
@@ -880,6 +898,7 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
 .experts-section { 
   background: var(--bg2); 
   padding-top: calc(4rem - 20px);
+  padding-bottom: 2rem;
 }
 .experts-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
 .expert-card {
@@ -915,7 +934,7 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
 /* ===================== CTA ===================== */
 .cta-section {
   background: var(--bg);
-  padding: 4rem 0;
+  padding: 2rem 0 4rem 0;
   position: relative;
   overflow: hidden;
   border-top: 1px solid var(--border);

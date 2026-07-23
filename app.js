@@ -6,13 +6,64 @@
 'use strict';
 
 // ============================================================
-// 👉 ADD NEW WEBSITE HERE — Just add a new object to this array
+// 👉 WEBSITES LOADED FROM DATABASE
 // Each card is AUTO GENERATED from this data — no HTML needed
 // ============================================================
-const WEBSITES = [
-  
+let WEBSITES = []; // Will be populated from database
 
-{
+// ============================================================
+// LOAD WEBSITES FROM DATABASE
+// ============================================================
+async function loadWebsites() {
+  try {
+    const response = await fetch(`${API.BASE_URL}/api/websites`);
+    const data = await response.json();
+    
+    if (data.success && data.data) {
+      console.log('Loaded websites:', data.data); // Debug: see what we got from database
+      
+      // Transform database format to match existing frontend format
+      WEBSITES = data.data.map(w => {
+        console.log('Website image URL:', w.thumbnail_url); // Debug: see each image URL
+        return {
+          id: w.id,
+          title: w.title,
+          image: w.thumbnail_url,
+          description: w.description,
+          link: w.demo_url,
+          category: w.category.toLowerCase(), // Normalize category
+          detailsPage: w.details_page || '#',
+          featured: w.featured
+        };
+      });
+      
+      console.log('Transformed WEBSITES:', WEBSITES); // Debug: see final array
+      renderWebsites();
+    } else {
+      showWebsiteError('No websites available');
+    }
+  } catch (error) {
+    console.error('Load websites error:', error);
+    showWebsiteError('Unable to load websites');
+  }
+}
+
+function showWebsiteError(message) {
+  const grid = document.getElementById("websites-grid");
+  if (grid) {
+    grid.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text3);">
+        ${message}
+      </div>
+    `;
+  }
+}
+
+// ============================================================
+// HARDCODED WEBSITES (BACKUP - Remove after database is populated)
+// ============================================================
+const WEBSITES_BACKUP = [
+  {
     id: "w18",
     title: "AETHER. ",
     image: "image/land4.png",
@@ -579,12 +630,17 @@ function createCard(website, index) {
   card.className = "website-card";
   card.style.animationDelay = `${index * 0.06}s`;
 
+  // Determine if this card is on the first page (priority loading)
+  const isFirstPage = index < PER_PAGE;
+  const loadingStrategy = isFirstPage ? 'eager' : 'lazy';
+
   card.innerHTML = `
     <div class="card-img-wrapper">
-      ${website.image
-        ? `<img class="card-img" src="${website.image}" alt="${website.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+      ${website.image && website.image !== 'https://via.placeholder.com/400x300'
+        ? `<img class="card-img" src="${website.image}" alt="${website.title}" loading="${loadingStrategy}" 
+               onerror="console.error('Failed to load:', this.src); this.style.display='none';this.nextElementSibling.style.display='flex'">`
         : ''}
-      <div class="card-img-placeholder" style="${website.image ? 'display:none' : ''}">🌐</div>
+      <div class="card-img-placeholder" style="${website.image && website.image !== 'https://via.placeholder.com/400x300' ? 'display:none' : ''}">🌐</div>
       <span class="card-category">${website.category}</span>
       <div class="card-overlay">
         <!-- 👉 ADD WEBSITE LINK HERE — controlled by website.link in the data array above -->
@@ -667,13 +723,28 @@ function renderWebsites() {
       </div>`;
   } else {
     pageItems.forEach((w, i) => grid.appendChild(createCard(w, i)));
-
-
-
     
+    // Preload images for next pages in background (after current page loads)
+    if (currentPage === 1) {
+      preloadNextPageImages(filtered);
+    }
   }
 
   renderPagination(totalPages);
+}
+
+// Preload images for other pages in the background
+function preloadNextPageImages(allWebsites) {
+  // Wait a bit to let first page images load first
+  setTimeout(() => {
+    const remainingWebsites = allWebsites.slice(PER_PAGE);
+    remainingWebsites.forEach(website => {
+      if (website.image && website.image !== 'https://via.placeholder.com/400x300') {
+        const img = new Image();
+        img.src = website.image; // Preload in background
+      }
+    });
+  }, 1000); // Start preloading after 1 second
 }
 
 function renderPagination(totalPages) {
@@ -920,10 +991,21 @@ function initAuth() {
       
       if (res.ok) {
         localStorage.setItem("nexicweb_user", JSON.stringify(data.user));
-        showToast("✓ Logged in successfully!");
-        loginForm.reset();
-        closeModal();
-        checkAuthStatus();
+        
+        // Check if user is admin and redirect to admin dashboard
+        if (data.user.role === 'admin') {
+          showToast("🎉 Welcome Admin! Redirecting to dashboard...");
+          loginForm.reset();
+          closeModal();
+          setTimeout(() => {
+            window.location.href = 'admin-dashboard.html';
+          }, 1500);
+        } else {
+          showToast("✓ Logged in successfully!");
+          loginForm.reset();
+          closeModal();
+          checkAuthStatus();
+        }
       } else {
         showToast(data.message || "Login failed", "error");
       }
@@ -938,11 +1020,17 @@ function initAuth() {
 
   signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    e.stopPropagation(); // Prevent event bubbling
     
     const name = signupForm.querySelector('input[type="text"]').value.trim();
     const email = signupForm.querySelector('input[type="email"]').value.trim();
     const password = signupForm.querySelector('input[type="password"]').value;
     const btn = signupForm.querySelector(".auth-submit");
+    
+    // Prevent double submission
+    if (btn.disabled) {
+      return;
+    }
     
     // Email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -985,15 +1073,23 @@ function initAuth() {
         document.getElementById("otp-email").value = data.email;
       } else {
         showToast(data.message || "Signup failed", "error");
+        btn.disabled = false; // Re-enable on error
       }
     } catch (error) {
       showToast("Network error. Please check your connection.", "error");
       console.error("Signup error:", error);
+      btn.disabled = false; // Re-enable on error
     } finally {
-      btn.textContent = "Create Account";
-      btn.disabled = false;
+      if (!otpForm.classList.contains("hidden")) {
+        // Only reset button if we didn't navigate to OTP form
+        setTimeout(() => {
+          btn.textContent = "Create Account";
+        }, 1000);
+      } else {
+        btn.textContent = "Create Account";
+      }
     }
-  });
+  }, { once: false }); // Ensure listener added only once
 }
 
 // ============================================================
@@ -1115,21 +1211,24 @@ function initCartEvents() {
 function checkAuthStatus() {
   const user = JSON.parse(localStorage.getItem("nexicweb_user") || "null");
   const authBtn = document.getElementById("open-auth");
+  const userDisplay = document.getElementById("user-display");
   const userName = document.getElementById("user-name");
+  const logoutLink = document.getElementById("logout-link");
   
   if (user) {
-    // User is logged in - show username and Logout button
-    userName.textContent = user.name;
-    userName.style.display = "flex";
+    // User is logged in - show username and logout link, hide login button
+    userName.textContent = `👤 ${user.name}`;
+    userDisplay.style.display = "flex";
+    authBtn.style.display = "none";
     
-    authBtn.textContent = "Logout";
-    authBtn.onclick = (e) => {
+    logoutLink.onclick = (e) => {
       e.preventDefault();
       logout();
     };
   } else {
-    // User is not logged in - hide username and show Login button
-    userName.style.display = "none";
+    // User is not logged in - hide username/logout, show login button
+    userDisplay.style.display = "none";
+    authBtn.style.display = "block";
     
     authBtn.textContent = "Login";
     authBtn.onclick = (e) => {
@@ -1149,10 +1248,59 @@ function logout() {
 }
 
 // ============================================================
+// TEAM MEMBERS - Load from Database
+// ============================================================
+async function loadTeamMembers() {
+  try {
+    const response = await fetch(`${API.BASE_URL}/api/team`);
+    const data = await response.json();
+    
+    if (data.success && data.data.length > 0) {
+      displayTeamMembers(data.data);
+    } else {
+      // Show fallback message if no team members
+      document.getElementById('experts-grid').innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text3);">
+          No team members available
+        </div>
+      `;
+    }
+  } catch (error) {
+    console.error('Load team members error:', error);
+    // Show fallback message on error
+    document.getElementById('experts-grid').innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text3);">
+        Unable to load team members
+      </div>
+    `;
+  }
+}
+
+function displayTeamMembers(members) {
+  const grid = document.getElementById('experts-grid');
+  
+  grid.innerHTML = members.map(member => `
+    <div class="expert-card">
+      <div class="expert-img">
+        <img src="${member.image_url}" alt="${member.name}" 
+             onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">
+      </div>
+      <h3>${member.name}</h3>
+      <p>${member.role}</p>
+      ${member.portfolio_url ? `
+        <a href="${member.portfolio_url}" target="_blank" class="expert-link">
+          View Portfolio <i class="fas fa-arrow-up-right-from-square"></i>
+        </a>
+      ` : ''}
+    </div>
+  `).join('');
+}
+
+// ============================================================
 // INIT
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
-  renderWebsites();
+  loadWebsites(); // Load websites from database then render
   initSearch();
   initFilters();
   checkAuthStatus();
@@ -1161,6 +1309,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCartEvents();
   animateCounters();
   updateCartBadge();
+  loadTeamMembers(); // Load team members from database
 });
 
 
