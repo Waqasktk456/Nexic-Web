@@ -46,6 +46,8 @@ body {
   font-family: "DM Sans", sans-serif;
   overflow-x: hidden;
   line-height: 1.65;
+  margin: 0;
+  padding: 0;
 }
 img { max-width: 100%; display: block; }
 a { text-decoration: none; color: inherit; }
@@ -494,7 +496,7 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
 
 /* ===================== SECTIONS GENERAL ===================== */
 .container { max-width: 1300px; margin: 0 auto; padding: 0 2rem; }
-section { padding: 7rem 0; }
+section { padding: 4rem 0; }
 
 .section-label {
   color: var(--accent);
@@ -557,7 +559,10 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
 .feature-card p { color: var(--text2); font-size: 0.9rem; line-height: 1.7; }
 
 /* ===================== WEBSITES SECTION ===================== */
-.websites-section { background: var(--bg); }
+.websites-section { 
+  background: var(--bg); 
+  padding-bottom: 2rem;
+}
 
 /* Search + filter */
 .search-filter-bar {
@@ -758,7 +763,8 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
 /* ---- Pagination ---- */
 .pagination {
   display: flex; justify-content: center; align-items: center; gap: 0.5rem;
-  margin-top: 3.5rem; flex-wrap: wrap;
+  margin-top: 2rem; 
+  flex-wrap: wrap;
 }
 .page-btn {
   min-width: 42px; height: 42px;
@@ -802,7 +808,11 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
 .testi-author span { color: var(--text3); font-size: 0.8rem; }
 
 /* ===================== MEMBERSHIP ===================== */
-.membership-section { background: var(--bg); }
+.membership-section { 
+  background: var(--bg); 
+  padding-top: 2rem;
+  margin-top: 15px;
+}
 .plans-grid { display: grid; grid-template-columns:
    repeat(3,1fr); gap: 1.5rem; align-items: start;
    
@@ -867,7 +877,10 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
 .plan-btn.featured-btn:hover { opacity: 0.9; transform: translateY(-2px); }
 
 /* ===================== EXPERTS ===================== */
-.experts-section { background: var(--bg2); }
+.experts-section { 
+  background: var(--bg2); 
+  padding-top: calc(4rem - 20px);
+}
 .experts-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
 .expert-card {
   background: var(--surface);
@@ -902,7 +915,7 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
 /* ===================== CTA ===================== */
 .cta-section {
   background: var(--bg);
-  padding: 7rem 0;
+  padding: 4rem 0;
   position: relative;
   overflow: hidden;
   border-top: 1px solid var(--border);
@@ -926,7 +939,7 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
 .cta-inner p { color: var(--text2); font-size: 1rem; margin-bottom: 2.5rem; }
 
 /* ===================== FOOTER ===================== */
-.footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5rem 0 0; }
+.footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 5rem 0 0; margin: 0; }
 .footer-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
@@ -953,6 +966,7 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
 .footer-bottom {
   border-top: 1px solid var(--border);
   padding: 1.5rem 0;
+  margin: 0;
   text-align: center;
   color: var(--text3);
   font-size: 0.83rem;
@@ -977,6 +991,8 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
   transform: translateX(100%);
   transition: transform 0.4s cubic-bezier(.4,0,.2,1);
   box-shadow: -20px 0 60px rgba(0,0,0,0.5);
+  margin: 0;
+  padding: 0;
 }
 .cart-drawer.open { transform: translateX(0); }
 .cart-header {
@@ -1389,7 +1405,7 @@ html {
 
 .premium-section{
     position:relative;
-    padding:120px 40px;
+    padding:60px 40px 60px 40px;
     overflow:hidden;
     background:
     radial-gradient(circle at 20% 20%, rgba(124,92,252,.12), transparent 35%),
@@ -1761,6 +1777,11 @@ html {
     .headline{
         font-size:2.8rem;
     }
+
+    .premium-section{
+        padding-left: 15px;
+        padding-right: 15px;
+    }
 }
 
 
@@ -1958,10 +1979,17 @@ iframe{
         flex-wrap:nowrap !important;
         overflow-x:auto !important;
         scrollbar-width:none;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
     }
 
     .filter-tabs::-webkit-scrollbar{
         display:none;
+    }
+
+    .filter-tab{
+        flex-shrink: 0;
+        white-space: nowrap;
     }
 
     .btn-primary,
@@ -2201,4 +2229,25 @@ body{
     left: 20px;
     max-width: none;
   }
+}
+
+
+/* ===================== REMOVE EXTRA SPACE AFTER FOOTER ===================== */
+body::after {
+  content: none;
+  display: none;
+}
+
+body, html {
+  overflow-x: hidden;
+}
+
+.footer {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.footer-bottom {
+  padding-bottom: 1.5rem !important;
+  margin-bottom: 0 !important;
 }
