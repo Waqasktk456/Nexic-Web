@@ -24,6 +24,15 @@ app.get('/', (req, res) => {
 // Auth Routes
 app.use('/api/auth', require('./routes/auth'));
 
+// Websites Routes
+app.use('/api/websites', require('./routes/websites'));
+
+// Users Routes
+app.use('/api/users', require('./routes/users'));
+
+// Team Routes
+app.use('/api/team', require('./routes/team'));
+
 // Test Supabase Connection
 app.get('/test-db', async (req, res) => {
   try {
