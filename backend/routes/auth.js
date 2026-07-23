@@ -53,33 +53,46 @@ const sendOTPEmail = async (email, otp, name) => {
 // ===================== SIGNUP =====================
 router.post('/signup', async (req, res) => {
   try {
+    console.log('Signup request received:', { body: req.body });
     const { name, email, password } = req.body;
 
     // Validation
     if (!name || !email || !password) {
+      console.log('Missing fields:', { name: !!name, email: !!email, password: !!password });
       return res.status(400).json({ message: 'All fields are required' });
     }
 
     if (!emailRegex.test(email)) {
+      console.log('Invalid email format:', email);
       return res.status(400).json({ message: 'Invalid email format' });
     }
 
     if (password.length < 6) {
+      console.log('Password too short:', password.length);
       return res.status(400).json({ message: 'Password must be at least 6 characters' });
     }
 
     const emailLower = email.toLowerCase();
+    console.log('Processing signup for:', emailLower);
 
     // Generate OTP
     const otp = generateOTP();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
     // Check if user already exists
+    console.log('Checking for existing user...');
     const { data: existingUser, error: fetchError } = await supabase
       .from('users')
       .select('email, is_verified')
       .eq('email', emailLower)
       .maybeSingle(); // Use maybeSingle instead of single
+
+    if (fetchError) {
+      console.error('Fetch error:', fetchError);
+      return res.status(500).json({ message: 'Database error. Please try again.' });
+    }
+
+    console.log('Existing user check result:', existingUser);
 
     // If user exists and is verified, reject signup
     if (existingUser && existingUser.is_verified) {
