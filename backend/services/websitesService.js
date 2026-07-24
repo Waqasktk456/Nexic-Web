@@ -18,7 +18,8 @@ exports.getAllWebsites = async (filters) => {
         display_order
       )
     `)
-    .order('created_at', { ascending: false });
+    .order('display_order', { ascending: true })  // Order by display_order first
+    .order('created_at', { ascending: false });    // Then by created_at for items with same display_order
 
   // Apply filters
   if (filters.search) {
