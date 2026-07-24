@@ -11,13 +11,19 @@ const supabase = createClient(
 // Email validation regex
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Email transporter
+// Email transporter with better timeout handling
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
-  }
+  },
+  tls: {
+    rejectUnauthorized: false // Allow self-signed certificates
+  },
+  connectionTimeout: 10000, // 10 seconds
+  greetingTimeout: 10000,
+  socketTimeout: 10000
 });
 
 // Generate 6-digit OTP
@@ -155,12 +161,17 @@ router.post('/signup', async (req, res) => {
 
     // Send OTP email
     try {
+      console.log('Attempting to send email to:', emailLower);
       await sendOTPEmail(emailLower, otp, name);
+      console.log('✓ OTP email sent successfully to:', emailLower);
     } catch (emailError) {
-      console.error('Email error:', emailError);
+      console.error('✗ Email send failed:', emailError.message);
       // Delete the user since email failed
       await supabase.from('users').delete().eq('email', emailLower);
-      return res.status(500).json({ message: 'Failed to send verification email. Please try again.' });
+      return res.status(500).json({ 
+        message: 'Unable to send verification email. Please check your email address or try again later.',
+        error: 'EMAIL_TIMEOUT'
+      });
     }
 
     res.status(201).json({
