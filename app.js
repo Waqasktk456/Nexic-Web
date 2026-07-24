@@ -1212,16 +1212,20 @@ function initAuth() {
     btn.disabled = true;
     
     try {
+      console.log("Sending signup request...");
       const res = await fetch(API.AUTH.SIGNUP, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
       });
       
+      console.log("Response status:", res.status);
+      
       // Try to parse JSON response
       let data;
       try {
         data = await res.json();
+        console.log("Response data:", data);
       } catch (parseError) {
         console.error("Failed to parse response:", parseError);
         showToast("Server error. Please try again later.", "error");
@@ -1231,6 +1235,7 @@ function initAuth() {
       }
       
       if (res.ok) {
+        console.log("Signup successful!");
         showToast("✓ " + data.message, "success");
         // Hide tabs and show OTP form
         document.querySelector(".auth-tabs").style.display = "none";
@@ -1240,14 +1245,16 @@ function initAuth() {
         document.getElementById("otp-email").value = data.email;
       } else {
         // Show error message from backend
+        console.log("Signup failed with error:", data);
         const errorMsg = data.message || data.error || "Signup failed. Please try again.";
+        console.log("Calling showToast with:", errorMsg);
         showToast(errorMsg, "error");
         btn.textContent = "Create Account";
         btn.disabled = false;
       }
     } catch (error) {
+      console.error("Network/fetch error:", error);
       showToast("Network error. Please check your connection.", "error");
-      console.error("Signup error:", error);
       btn.textContent = "Create Account";
       btn.disabled = false;
     }
