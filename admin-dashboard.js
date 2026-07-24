@@ -341,6 +341,7 @@ function fillForm(website) {
   document.getElementById('demoUrlInput').value = website.demo_url || '';
   document.getElementById('githubUrlInput').value = website.github_url || '';
   document.getElementById('detailsPageInput').value = website.details_page || '';
+  document.getElementById('displayOrderInput').value = website.display_order || 999;
   document.getElementById('featuredInput').checked = website.featured;
   document.getElementById('statusInput').value = website.status;
   
@@ -529,6 +530,7 @@ async function handleFormSubmit(e) {
     formData.append('demo_url', document.getElementById('demoUrlInput').value);
     formData.append('github_url', document.getElementById('githubUrlInput').value);
     formData.append('details_page', document.getElementById('detailsPageInput').value);
+    formData.append('display_order', document.getElementById('displayOrderInput').value);
     formData.append('featured', document.getElementById('featuredInput').checked);
     formData.append('status', document.getElementById('statusInput').value);
     
