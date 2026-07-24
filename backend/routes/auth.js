@@ -21,9 +21,9 @@ const transporter = nodemailer.createTransport({
   tls: {
     rejectUnauthorized: false // Allow self-signed certificates
   },
-  connectionTimeout: 10000, // 10 seconds
-  greetingTimeout: 10000,
-  socketTimeout: 10000
+  connectionTimeout: 5000, // 5 seconds
+  greetingTimeout: 5000,
+  socketTimeout: 5000
 });
 
 // Generate 6-digit OTP
@@ -59,12 +59,10 @@ const sendOTPEmail = async (email, otp, name) => {
 // ===================== SIGNUP =====================
 router.post('/signup', async (req, res) => {
   try {
-    console.log('Signup request received:', { body: req.body });
     const { name, email, password } = req.body;
 
     // Validation
     if (!name || !email || !password) {
-      console.log('Missing fields:', { name: !!name, email: !!email, password: !!password });
       return res.status(400).json({ message: 'All fields are required' });
     }
 
