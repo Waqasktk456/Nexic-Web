@@ -14,6 +14,8 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Email transporter - use SendGrid on production (Render), Gmail on localhost
 const useSendGrid = process.env.SENDGRID_API_KEY;
 
+console.log('Email service:', useSendGrid ? 'SendGrid ✓' : 'Gmail (local only)');
+
 const transporter = useSendGrid
   ? nodemailer.createTransport({
       host: 'smtp.sendgrid.net',
