@@ -1218,7 +1218,17 @@ function initAuth() {
         body: JSON.stringify({ name, email, password }),
       });
       
-      const data = await res.json();
+      // Try to parse JSON response
+      let data;
+      try {
+        data = await res.json();
+      } catch (parseError) {
+        console.error("Failed to parse response:", parseError);
+        showToast("Server error. Please try again later.", "error");
+        btn.textContent = "Create Account";
+        btn.disabled = false;
+        return;
+      }
       
       if (res.ok) {
         showToast("✓ " + data.message, "success");
@@ -1229,22 +1239,17 @@ function initAuth() {
         otpForm.classList.remove("hidden");
         document.getElementById("otp-email").value = data.email;
       } else {
-        showToast(data.message || "Signup failed", "error");
-        btn.disabled = false; // Re-enable on error
+        // Show error message from backend
+        const errorMsg = data.message || data.error || "Signup failed. Please try again.";
+        showToast(errorMsg, "error");
+        btn.textContent = "Create Account";
+        btn.disabled = false;
       }
     } catch (error) {
       showToast("Network error. Please check your connection.", "error");
       console.error("Signup error:", error);
-      btn.disabled = false; // Re-enable on error
-    } finally {
-      if (!otpForm.classList.contains("hidden")) {
-        // Only reset button if we didn't navigate to OTP form
-        setTimeout(() => {
-          btn.textContent = "Create Account";
-        }, 1000);
-      } else {
-        btn.textContent = "Create Account";
-      }
+      btn.textContent = "Create Account";
+      btn.disabled = false;
     }
   }, { once: false }); // Ensure listener added only once
 
