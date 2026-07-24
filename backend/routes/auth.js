@@ -11,20 +11,29 @@ const supabase = createClient(
 // Email validation regex
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Email transporter with better timeout handling
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  },
-  tls: {
-    rejectUnauthorized: false // Allow self-signed certificates
-  },
-  connectionTimeout: 5000, // 5 seconds
-  greetingTimeout: 5000,
-  socketTimeout: 5000
-});
+// Email transporter - use SendGrid on production (Render), Gmail on localhost
+const useSendGrid = process.env.SENDGRID_API_KEY;
+
+const transporter = useSendGrid
+  ? nodemailer.createTransport({
+      host: 'smtp.sendgrid.net',
+      port: 587,
+      auth: {
+        user: 'apikey',
+        pass: process.env.SENDGRID_API_KEY
+      }
+    })
+  : nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      },
+      tls: { rejectUnauthorized: false },
+      connectionTimeout: 5000,
+      greetingTimeout: 5000,
+      socketTimeout: 5000
+    });
 
 // Generate 6-digit OTP
 const generateOTP = () => {
@@ -33,8 +42,12 @@ const generateOTP = () => {
 
 // Send OTP Email
 const sendOTPEmail = async (email, otp, name) => {
+  const fromEmail = process.env.SENDGRID_API_KEY 
+    ? process.env.SENDGRID_FROM || process.env.EMAIL_USER
+    : process.env.EMAIL_USER;
+    
   const mailOptions = {
-    from: `"NexicWeb" <${process.env.EMAIL_USER}>`,
+    from: `"NexicWeb" <${fromEmail}>`,
     to: email,
     subject: 'Verify Your Email - NexicWeb',
     html: `
