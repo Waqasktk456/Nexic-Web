@@ -1149,6 +1149,28 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
   .hero-stats { gap: 1.5rem; }
   .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
   section { padding: 5rem 0; }
+  .container { padding: 0 1rem !important; }
+  .features-section .container { padding: 0 0.75rem !important; }
+  
+  /* Features section mobile optimizations */
+  .features-section { 
+    padding: 3rem 0 !important; /* Reduced top padding from 5rem */
+  }
+  
+  .features-section .section-label,
+  .features-section .section-title {
+    max-width: 100% !important;
+    padding: 0 0.5rem !important;
+  }
+  
+  .feature-card {
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+  
+  .features-grid {
+    gap: 1rem !important;
+  }
 }
 /* HARD RESET + FORCE CLEAN RENDER */
 * {
@@ -1340,7 +1362,34 @@ html {
   }
 
   .container {
-    padding: 0 1rem;
+    padding: 0 0.5rem !important;
+  }
+  
+  .features-section .container {
+    padding: 0 0.25rem !important;
+  }
+  
+  /* Features section mobile optimizations for small screens */
+  .features-section { 
+    padding: 2.5rem 0 !important; /* Even less top padding */
+  }
+  
+  .features-section .section-label,
+  .features-section .section-title {
+    max-width: 100% !important;
+    padding: 0 0.25rem !important;
+    font-size: 1.8rem !important;
+  }
+  
+  .feature-card {
+    margin: 0 !important;
+    padding: 1.25rem !important;
+    max-width: 100% !important;
+  }
+  
+  .features-grid {
+    gap: 0.75rem !important;
+    padding: 0 !important;
   }
 }
 
