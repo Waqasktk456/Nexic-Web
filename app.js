@@ -1237,12 +1237,16 @@ function initAuth() {
       if (res.ok) {
         console.log("Signup successful!");
         showToast("✓ " + data.message, "success");
-        // Hide tabs and show OTP form
-        document.querySelector(".auth-tabs").style.display = "none";
-        signupForm.classList.add("hidden");
-        loginForm.classList.add("hidden");
-        otpForm.classList.remove("hidden");
-        document.getElementById("otp-email").value = data.email;
+        // Reset form and switch to login
+        signupForm.reset();
+        btn.textContent = "Create Account";
+        btn.disabled = false;
+        
+        // Switch to login tab after 1.5 seconds
+        setTimeout(() => {
+          switchTab('login');
+          showToast("You can now login with your credentials", "success");
+        }, 1500);
       } else {
         // Show error message from backend
         console.log("Signup failed with error:", data);

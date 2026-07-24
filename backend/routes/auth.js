@@ -94,17 +94,13 @@ router.post('/signup', async (req, res) => {
     const emailLower = email.toLowerCase();
     console.log('Processing signup for:', emailLower);
 
-    // Generate OTP
-    const otp = generateOTP();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-
     // Check if user already exists
     console.log('Checking for existing user...');
     const { data: existingUser, error: fetchError } = await supabase
       .from('users')
       .select('email, is_verified')
       .eq('email', emailLower)
-      .maybeSingle(); // Use maybeSingle instead of single
+      .maybeSingle();
 
     if (fetchError) {
       console.error('Fetch error:', fetchError);
@@ -113,53 +109,22 @@ router.post('/signup', async (req, res) => {
 
     console.log('Existing user check result:', existingUser);
 
-    // If user exists and is verified, reject signup
-    if (existingUser && existingUser.is_verified) {
+    // If user exists (verified or not), reject signup
+    if (existingUser) {
       return res.status(400).json({ message: 'Email already registered. Please login.' });
     }
 
-    // If user exists but not verified, update with new OTP
-    if (existingUser && !existingUser.is_verified) {
-      const { error: updateError } = await supabase
-        .from('users')
-        .update({
-          name,
-          password,
-          verification_code: otp,
-          code_expires_at: expiresAt.toISOString()
-        })
-        .eq('email', emailLower);
-
-      if (updateError) {
-        console.error('Update error:', updateError);
-        return res.status(500).json({ message: 'Failed to update account. Please try again.' });
-      }
-
-      // Send OTP email
-      try {
-        await sendOTPEmail(emailLower, otp, name);
-      } catch (emailError) {
-        console.error('Email error:', emailError);
-        return res.status(500).json({ message: 'Failed to send verification email. Please try again.' });
-      }
-
-      return res.status(201).json({
-        message: 'Verification code sent to your email',
-        email: emailLower
-      });
-    }
-
-    // User doesn't exist, create new user
-    const { error: insertError } = await supabase
+    // User doesn't exist, create new user with auto-verification
+    const { data: newUser, error: insertError } = await supabase
       .from('users')
       .insert([{
         name,
         email: emailLower,
         password,
-        verification_code: otp,
-        code_expires_at: expiresAt.toISOString(),
-        is_verified: false
-      }]);
+        is_verified: true // Auto-verify user immediately
+      }])
+      .select()
+      .single();
 
     if (insertError) {
       console.error('Insert error:', insertError);
@@ -172,24 +137,17 @@ router.post('/signup', async (req, res) => {
       return res.status(500).json({ message: 'Failed to create account. Please try again.' });
     }
 
-    // Send OTP email
-    try {
-      console.log('Attempting to send email to:', emailLower);
-      await sendOTPEmail(emailLower, otp, name);
-      console.log('✓ OTP email sent successfully to:', emailLower);
-    } catch (emailError) {
-      console.error('✗ Email send failed:', emailError.message);
-      // Delete the user since email failed
-      await supabase.from('users').delete().eq('email', emailLower);
-      return res.status(500).json({ 
-        message: 'Unable to send verification email. Please check your email address or try again later.',
-        error: 'EMAIL_TIMEOUT'
-      });
-    }
+    console.log('✓ User created successfully:', emailLower);
 
+    // Return success with user data
     res.status(201).json({
-      message: 'Verification code sent to your email',
-      email: emailLower
+      message: 'Account created successfully! You can now login.',
+      user: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role || 'user'
+      }
     });
 
   } catch (error) {
