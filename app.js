@@ -1085,6 +1085,9 @@ function initAuth() {
     document.body.style.overflow = "hidden"; 
     // Remove all active navbar links when modal opens
     document.querySelectorAll(".nav-link").forEach(link => link.classList.remove("active"));
+    
+    // Initialize password toggle buttons when modal opens
+    initPasswordToggle();
   };
   
   const closeModal = () => { 
@@ -1359,25 +1362,41 @@ function initAuth() {
   // ============================================================
   // PASSWORD TOGGLE - Show/Hide Password
   // ============================================================
-  const toggleButtons = document.querySelectorAll('.toggle-password');
-  
-  toggleButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      const targetId = this.getAttribute('data-target');
-      const passwordInput = document.getElementById(targetId);
-      const icon = this.querySelector('i');
-      
-      if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
-      } else {
-        passwordInput.type = 'password';
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
-      }
+  function initPasswordToggle() {
+    const toggleButtons = document.querySelectorAll('.toggle-password');
+    
+    toggleButtons.forEach(button => {
+      // Remove existing listener if any
+      button.replaceWith(button.cloneNode(true));
     });
-  });
+    
+    // Re-select after cloning
+    document.querySelectorAll('.toggle-password').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const targetId = this.getAttribute('data-target');
+        const passwordInput = document.getElementById(targetId);
+        const icon = this.querySelector('i');
+        
+        if (!passwordInput) {
+          console.error('Password input not found:', targetId);
+          return;
+        }
+        
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        } else {
+          passwordInput.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      });
+    });
+  }
 }
 
 // ============================================================
