@@ -1076,6 +1076,7 @@ function initAuth() {
   const tabSignup = document.getElementById("tab-signup");
   const loginForm = document.getElementById("login-form");
   const signupForm = document.getElementById("signup-form");
+  const otpForm = document.getElementById("otp-form");
   const goSignup = document.getElementById("go-signup");
   const goLogin = document.getElementById("go-login");
 
@@ -1246,6 +1247,98 @@ function initAuth() {
       }
     }
   }, { once: false }); // Ensure listener added only once
+
+  // OTP Verification
+  otpForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("otp-email").value;
+    const code = document.getElementById("otp-code").value.trim();
+    const btn = otpForm.querySelector(".auth-submit");
+
+    if (!code || code.length !== 6) {
+      showToast("Please enter a valid 6-digit code", "error");
+      return;
+    }
+
+    btn.textContent = "Verifying...";
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(API.AUTH.VERIFY, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        showToast("✓ Email verified! Logging you in...", "success");
+        
+        // Store user data
+        localStorage.setItem("nexicweb_user", JSON.stringify(data.user));
+        
+        // Update auth button
+        checkAuthStatus();
+        
+        // Close modal after 1 second
+        setTimeout(() => {
+          closeModal();
+          otpForm.reset();
+        }, 1000);
+      } else {
+        showToast(data.message || "Verification failed", "error");
+      }
+    } catch (error) {
+      showToast("Network error. Please try again.", "error");
+      console.error("Verification error:", error);
+    } finally {
+      btn.textContent = "Verify Email";
+      btn.disabled = false;
+    }
+  });
+
+  // Resend OTP
+  const resendBtn = document.getElementById("resend-otp");
+  if (resendBtn) {
+    resendBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById("otp-email").value;
+      
+      if (!email) {
+        showToast("Email is required", "error");
+        return;
+      }
+      
+      const originalText = resendBtn.textContent;
+      resendBtn.textContent = "Sending...";
+      resendBtn.disabled = true;
+      
+      try {
+        const res = await fetch(API.AUTH.RESEND_OTP, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+        
+        const data = await res.json();
+        
+        if (res.ok) {
+          showToast("✓ " + data.message, "success");
+        } else {
+          showToast(data.message || "Failed to resend code", "error");
+        }
+      } catch (error) {
+        showToast("Network error. Please try again.", "error");
+        console.error("Resend OTP error:", error);
+      } finally {
+        resendBtn.textContent = originalText;
+        resendBtn.disabled = false;
+      }
+    });
+  }
 }
 
 // ============================================================
