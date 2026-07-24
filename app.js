@@ -252,6 +252,22 @@ const WEBSITES_BACKUP = [
 
 
 
+  {
+    id: "w40",
+    title: " ATILER NOVA",
+    image: "image/new/ateiler.png",
+    description: "Feative development, Atelier Nova delivers solutions that help businesses stand out, engnfidence in a competitive digital landscape.",
+    link: "https://atelier-nova213.netlify.app",
+    category: "Free",
+    detailsPage: "w40detail.html"
+
+
+
+  },
+
+
+
+
 
   {
     id: "w8",
@@ -337,10 +353,10 @@ const WEBSITES_BACKUP = [
   
   {
     id: "w2",
-    title: "Ride Light",
-    image: "image/cyclex.png",
-    description: "A modern eCommerce template for cycling brands, with a sleek design, seamless shopping experience, and conversion-focused layout. 🚴‍♂️",
-    link: "https://cycle-x-xcycle.netlify.app/",
+    title: "DEMO UNIT",
+    image: "image/",
+    description: " seamless shopping experience, and conversion-focused layout. 🚴‍♂️",
+    link: "",
     category: "ecommerce",
     detailsPage: "w2detail.html"
    
@@ -358,7 +374,7 @@ const WEBSITES_BACKUP = [
     image: "image/designer.png",
     description: "A modern designer portfolio template with a bold visual style, smooth experience, and client-focused presentation.",
     link: "https://designer-nexic.netlify.app/",
-    category: "portfolio",
+    category: "free",
  detailsPage: "w13detail.html"
       
   
@@ -387,7 +403,7 @@ const WEBSITES_BACKUP = [
     title: "FASHION DESIGNER",
     image: "image/fashiondesigner.png",
     description: "A modern fashion designer portfolio template with a sleek design, seamless user experience, and conversion-focused layout. 👗",
-    link: " https://cyber-nexic.netlify.app/",
+    link: " https://fashion-design-nexic.netlify.app/",
     category: "portfolio",
  detailsPage: "w14detail.html"
       
@@ -401,7 +417,7 @@ const WEBSITES_BACKUP = [
     image: "image/portfolio.png",
     description: "A sleek portfolio template built to impress clients and highlight your best work. ✨💼",
     link: "  https://portdolio-nexic.netlify.app  ",
-    category: "portfolio",
+    category: "free",
     detailsPage: "w15detail.html"
   },
 
@@ -507,7 +523,15 @@ const WEBSITES_BACKUP = [
     category: "Free",
     detailsPage: "w24detail.html"
   },
-
+  {
+    id: "w39",
+    title: "FRAME MOTION",
+    image: "IMAGE/NEW/FRAME.MOTION.PNG",
+    description: "Premium service SaaS landing page template designed to showcase solutions and convert visitors into clients. 🚀",
+    link: "https://frame-motion.netlify.app/",
+    category: "PORTFOLIO",
+    detailsPage: "w39detail.html"
+  },
   {
     id: "w25",
     title: "NEXUS 2.0",
@@ -560,8 +584,134 @@ const WEBSITES_BACKUP = [
 
 
   },
+  {
+    id: "w41",
+    title: "OBSIDIAN ORBIT",
+    image: "image/new/obsidian.png",
+    description: "Obsidian Orbit helps modern organizations embrace digital transformation with confidence through enterprise software, AI-powered automation, cloud-native infrastructure, and secure technology solutions. Built for ambitious businesses, our platform empowers teams to innovate faster, optimize performance, and create sustainable growth in an increasingly connected world.",
+    link: "https://obsidian-orbit.netlify.app/",
+    category: "FREE",
+    detailsPage: "w41detail.html"
 
 
+
+  },
+ {
+    id: "w42",
+    title: "VOLTERRA LIVING GRID",
+    image: "image/new/volterra.png",
+    description: "Volterra Living Grid delivers thoughtfully designed spaces that integrate sustainability, technology, and modern architecture. Our mission is to create environments where innovation meets comfort, helping communities grow and thrive for generations.",
+    link: "https://volterra-living-grid.netlify.app",
+    category: "FREE",
+    detailsPage: "w42detail.html"
+
+
+
+  },
+ {
+    id: "w43",
+    title: "SRATUM TEXTILE ENGINEERING PORFOLIO",
+    image: "image/new/stratum.png",
+    description: "Passionate about advancing textile manufacturing through innovative engineering, process improvement, and quality-driven solutions. Dedicated to supporting modern production systems that prioritize efficiency, sustainability, and continuous innovation.",
+    link: "https://stratum-01-textile-engineer-portfolio.netlify.app",
+    category: "FREE",
+    detailsPage: "w43detail.html"
+
+
+
+  },
+
+
+{
+    id: "w44",
+    title: "NULL STATE CODE",
+    image: "image/new/nullcode.png",
+    description: "Creating high-performance web applications, scalable software architectures, and user-focused digital experiences with clean code, modern technologies, and innovative problem-solving. Focused on building reliable solutions that help businesses grow, adapt, and succeed in an ever-evolving digital landscape.",
+    link: "https://null-state-code.netlify.app",
+    category: "FREE",
+    detailsPage: "w44detail.html"
+
+
+
+  },
+
+{
+    id: "w45",
+    title: "NEXUS VOID ",
+    image: "image/new/nexusvoid.png",
+    description: " Delivering enterprise-grade technology solutions that combine modern software architecture, cloud infrastructure, intelligent automation, and cybersecurity to help businesses transform operations, unlock innovation, and achieve measurable results.",
+    link: "https://nexus-void-nex.netlify.app",
+    category: "FREE",
+    detailsPage: "w45detail.html"
+
+
+
+  },
+ {
+    id: "w2",
+    title: "Ride Light",
+    image: "image/cyclex.png",
+    description: "A modern eCommerce template for cycling brands, with a sleek design, seamless shopping experience, and conversion-focused layout. 🚴‍♂️",
+    link: "https://cycle-x-xcycle.netlify.app/",
+    category: "free",
+    detailsPage: "w2detail.html"
+   
+
+
+
+  },
+
+{
+    id: "w46",
+    title: "X-ATELIER NOIR",
+    image: "image/new/ATEILERNOIR.png",
+    description: "From luxury branding and sophisticated web experiences to creative strategy and digital innovation, XAtelier Noir delivers refined solutions designed to elevate businesses and leave a lasting impression across every customer touchpoint.",
+    link: "https://xatelier-noir.netlify.app",
+    category: "FREE",
+    detailsPage: "w46detail.html"
+
+
+
+  },
+
+{
+    id: "w47",
+    title: "AUREVANT LIVING CANVAS",
+    image: "image/new/aurevent.png",
+    description: "Aurevant Living Canvas creates refined living environments that combine elegant design, modern functionality, and sustainable thinking. Every space is thoughtfully crafted to inspire comfort, enrich everyday experiences, and deliver timeless value for modern lifestyles.",
+    link: "https://aurevant-living-canvas.netlify.app/",
+    category: "FREE",
+    detailsPage: "w47detail.html"
+
+
+
+  },
+
+
+{
+    id: "w48",
+    title: "🌿 Verdant Living Garden",
+    image: "image/new/verdent.png",
+    description: "   Creating Green Spaces That Inspire. 🍃 Beautiful landscapes, smart garden solutions, and eco-friendly designs for every outdoor space.        ",
+    link: "https://verdant-living-garden.netlify.app",
+    category: "FREE",
+    detailsPage: "w48detail.html"
+
+
+
+  },
+ {
+    id: "w49",
+    title: "VANTA SAVEPOINT",
+    image: "image/new/vanta.png",
+    description: "Vanta: Last Savepoint is dedicated to crafting immersive gaming experiences that blend creative storytelling, innovative technology, and unforgettable gameplay. Whether developing original titles, interactive entertainment, or digital gaming platforms, we focus on creating worlds that inspire exploration, build communities, and leave players eager for what comes next.",
+    link: "https://vanta-01-last-savepoint.netlify.app",
+    category: "FREE",
+    detailsPage: "w49detail.html"
+
+
+
+  },
 
   // 👉 ADD NEW WEBSITE HERE — Copy this object and fill in the details:
   // {
@@ -614,9 +764,15 @@ function saveCart() {
 // ============================================================
 function getFilteredWebsites() {
   return WEBSITES.filter(w => {
-    const matchesFilter = activeFilter === "all" || w.category === activeFilter;
-    const matchesSearch = w.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          w.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesFilter =
+      activeFilter === "all" ||
+      String(w.category).toLowerCase().trim() ===
+      String(activeFilter).toLowerCase().trim();
+
+    const matchesSearch =
+      w.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      w.description.toLowerCase().includes(searchQuery.toLowerCase());
+
     return matchesFilter && matchesSearch;
   });
 }
@@ -1447,3 +1603,48 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+/* MOBILE MENU CLOSE ON CART CLICK */
+document.getElementById("nav-cart-btn")?.addEventListener("click", () => {
+
+  const menu = document.querySelector(".nav-links");
+  const hamburger = document.querySelector(".hamburger");
+  const cart = document.getElementById("nav-cart-btn");
+
+  if (menu?.classList.contains("open")) {
+
+    menu.classList.add("menu-closing");
+    hamburger?.classList.remove("active");
+    cart?.classList.add("cart-clicked");
+
+    setTimeout(() => {
+      menu.classList.remove("open", "menu-closing");
+      cart?.classList.remove("cart-clicked");
+    }, 190);
+  }
+
+});
+
+/* ===== MOBILE MENU — FINAL OUTSIDE CLICK CLOSE ===== */
+
+(() => {
+  const menu = document.querySelector(".nav-links");
+  const hamburger = document.querySelector(".hamburger");
+
+  if (!menu || !hamburger) return;
+
+  document.addEventListener("click", (e) => {
+
+    if (!menu.classList.contains("open")) return;
+
+    const clickedInsideMenu = menu.contains(e.target);
+    const clickedHamburger = hamburger.contains(e.target);
+
+    // Menu বা hamburger-এর ভিতরে click হলে কিছু করবে না
+    if (clickedInsideMenu || clickedHamburger) return;
+
+    // Fast premium close
+    menu.classList.remove("open");
+    hamburger.classList.remove("active");
+
+  }, true);
+})();
