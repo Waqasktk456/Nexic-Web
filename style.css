@@ -1075,27 +1075,33 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
 }
 
 /* Password input with toggle button */
+.input-group.password-group {
+  position: relative;
+}
+
 .input-group.password-group input {
-  padding-right: 2.8rem; /* Space for toggle button */
+  padding-right: 3rem !important; /* Space for toggle button */
 }
 
 /* Password toggle button */
 .toggle-password {
   position: absolute;
-  right: calc(0.75rem + 20px);
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
+  background: transparent;
   border: none;
   color: var(--text3);
   cursor: pointer;
-  padding: 0.25rem;
-  font-size: 0.85rem;
+  padding: 0.5rem;
+  font-size: 1rem;
   transition: var(--transition);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+  z-index: 100;
+  width: 32px;
+  height: 32px;
 }
 
 .toggle-password:hover {
@@ -2153,7 +2159,7 @@ body{
   position: fixed;
   bottom: 30px;
   right: 30px;
-  z-index: 10000;
+  z-index: 1000001 !important;
   padding: 1rem 1.5rem;
   background: var(--surface2);
   border: 1px solid var(--border2);
@@ -2168,6 +2174,7 @@ body{
   transition: transform 0.4s cubic-bezier(.4,0,.2,1), opacity 0.4s;
   max-width: 400px;
   word-wrap: break-word;
+  pointer-events: auto;
 }
 
 .toast.show {
@@ -2187,25 +2194,26 @@ body{
   color: var(--danger);
 }
 
-/* Mobile: Position below auth form when modal is open */
+/* Mobile: Position at bottom center, always visible */
 @media (max-width: 768px) {
   .toast {
-    position: fixed;
-    bottom: auto;
-    top: 50%;
-    left: 50%;
-    right: auto;
-    transform: translate(-50%, calc(-50% + 280px)) scale(0.9);
-    max-width: calc(100vw - 40px);
+    position: fixed !important;
+    bottom: 20px !important;
+    top: auto !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translate(-50%, 150%) !important;
+    max-width: calc(100vw - 40px) !important;
+    width: auto !important;
     font-size: 0.85rem;
     padding: 0.875rem 1.25rem;
-    width: calc(100% - 40px);
-    margin: 0 auto;
+    margin: 0;
+    z-index: 1000001 !important;
   }
   
   .toast.show {
-    transform: translate(-50%, calc(-50% + 280px)) scale(1);
-    opacity: 1;
+    transform: translate(-50%, 0) !important;
+    opacity: 1 !important;
   }
 }
 /* =========================================================
