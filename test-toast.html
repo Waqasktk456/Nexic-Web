@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Toast Test</title>
+  <style>
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #333;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 5px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 10000;
+    }
+    .toast.show {
+      opacity: 1;
+    }
+    .toast.error {
+      background: #e74c3c;
+    }
+    .toast.success {
+      background: #27ae60;
+    }
+  </style>
+</head>
+<body>
+  <h1>Toast Test Page</h1>
+  <button onclick="testToast()">Test Toast</button>
+  <button onclick="testError()">Test Error Toast</button>
+  
+  <div class="toast" id="toast"></div>
+  
+  <script src="config.js?v=2"></script>
+  <script>
+    function showToast(message, type = "success") {
+      const toast = document.getElementById("toast");
+      console.log("showToast called:", message, type);
+      console.log("Toast element:", toast);
+      
+      if (!toast) {
+        alert("Toast element not found!");
+        return;
+      }
+      
+      toast.textContent = message;
+      toast.className = `toast show ${type}`;
+      setTimeout(() => { toast.className = "toast"; }, 3000);
+    }
+    
+    function testToast() {
+      showToast("This is a success message!", "success");
+    }
+    
+    function testError() {
+      showToast("This is an error message!", "error");
+    }
+    
+    // Test on page load
+    console.log("Page loaded");
+    console.log("API object:", window.API);
+    setTimeout(() => {
+      showToast("Page loaded successfully!", "success");
+    }, 500);
+  </script>
+</body>
+</html>
