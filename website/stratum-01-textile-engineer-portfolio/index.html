@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Design-ui pages are single compositions, so the whole body is editable.
+    function markEditable() {
+        document.body.classList.add('artifact-editable');
+    }
+
+    // Credit badge with idle-fade. Hover devices only.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+
+    function init() {
+        markEditable();
+        initChromeUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+document.addEventListener("DOMContentLoaded", () => {
+  const watermark = document.createElement("a");
+
+  watermark.href = "https://www.facebook.com/share/1JqiQ3zTVn/";
+  watermark.target = "_blank";
+  watermark.rel = "noopener noreferrer";
+
+  watermark.innerHTML = `
+    <span>✦</span>
+    <strong>MADE BY NEXIC WEB</strong>
+  `;
+
+  Object.assign(watermark.style, {
+    position: "fixed",
+    bottom: "14px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    zIndex: "999999",
+    color: "rgba(255,255,255,0.35)",
+    textDecoration: "none",
+    fontFamily: "Arial, sans-serif",
+    fontSize: "8px",
+    fontWeight: "600",
+    letterSpacing: "3px",
+    opacity: "0.7",
+    transition: "all 0.4s ease",
+    whiteSpace: "nowrap",
+    pointerEvents: "auto"
+  });
+
+  watermark.onmouseenter = () => {
+    watermark.style.color = "rgba(255,255,255,0.9)";
+    watermark.style.letterSpacing = "4px";
+    watermark.style.opacity = "1";
+  };
+
+  watermark.onmouseleave = () => {
+    watermark.style.color = "rgba(255,255,255,0.35)";
+    watermark.style.letterSpacing = "3px";
+    watermark.style.opacity = "0.7";
+  };
+
+  document.body.appendChild(watermark);
+});s
+</script>
+<!-- /skill:chrome -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="STRATUM / 01, a textile engineering portfolio exploring the architecture of fabric." />
+  <title>STRATUM / 01 — Textile Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink: oklch(18% .018 105);
+      --ink-2: oklch(24% .02 105);
+      --paper: oklch(92% .018 92);
+      --paper-2: oklch(86% .02 92);
+      --line: oklch(64% .024 94 / .36);
+      --muted: oklch(59% .022 95);
+      --rust: oklch(61% .12 43);
+      --moss: oklch(51% .07 142);
+      --lilac: oklch(70% .07 315);
+      --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-6: 24px; --space-8: 32px; --space-12: 48px; --space-16: 64px; --space-24: 96px; --space-32: 128px;
+      --ease: cubic-bezier(.16,1,.3,1);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;background:var(--ink)}
+    body{background:var(--paper);color:var(--ink);font-family:Manrope,system-ui,sans-serif;overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
+    a{color:inherit;text-decoration:none} button,input,select,textarea{font:inherit} button{cursor:pointer;border:0;background:none;color:inherit}
+    :focus-visible{outline:2px solid var(--rust);outline-offset:4px}
+    .mono{font:12px/1.5 'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase}.serif{font-family:'Playfair Display',serif;font-style:italic}.muted{color:var(--muted)}
+    .site-header{position:fixed;z-index:15;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:18px 28px;background:linear-gradient(to bottom,oklch(92% .018 92 / .94),oklch(92% .018 92 / 0));mix-blend-mode:multiply}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:-.04em}.brand-mark{display:grid;place-items:center;width:26px;height:26px;border:1px solid var(--ink);font:11px 'DM Mono',monospace;border-radius:50%}.header-meta{display:flex;gap:24px;align-items:center}.header-meta .status{display:flex;gap:8px;align-items:center}.status-dot{width:7px;height:7px;background:var(--moss);border-radius:50%;box-shadow:0 0 0 4px oklch(51% .07 142 / .12)}
+    .menu-toggle{display:none;width:44px;height:44px;border:1px solid var(--line);border-radius:50%}.menu-toggle span{display:block;width:16px;height:1px;background:var(--ink);margin:4px auto}
+    .progress{position:fixed;z-index:18;right:0;top:0;width:3px;height:100%;background:var(--line)}.progress i{display:block;width:100%;height:0;background:var(--rust);transform-origin:top}
+    main{position:relative}
+    .hero{min-height:100svh;position:relative;display:grid;grid-template-columns:1.05fr .95fr;align-items:end;padding:144px 7vw 72px;background:var(--paper);overflow:hidden}.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 49.9%,var(--line) 50%,transparent 50.1%),linear-gradient(0deg,transparent 49.9%,var(--line) 50%,transparent 50.1%);background-size:calc(100% / 6) calc(100% / 6);opacity:.25;pointer-events:none}
+    .hero-copy{position:relative;z-index:2;max-width:780px}.eyebrow{display:flex;gap:12px;align-items:center;margin-bottom:24px}.eyebrow::before{content:"";width:40px;height:1px;background:var(--rust)}.hero h1{font-size:clamp(4rem,9.6vw,10.4rem);line-height:.86;letter-spacing:-.095em;text-wrap:balance;max-width:8.5ch}.hero h1 em{color:var(--rust);font-weight:500}.hero-deck{margin-top:36px;max-width:38ch;font-size:clamp(1rem,1.35vw,1.2rem);line-height:1.55}.hero-foot{display:flex;align-items:center;justify-content:space-between;max-width:640px;margin-top:72px}.scroll-cue{display:flex;gap:12px;align-items:center}.scroll-cue i{display:block;width:30px;height:1px;background:var(--rust);animation:scan 1.8s infinite var(--ease)}
+    .hero-visual{position:relative;z-index:1;min-height:530px;display:grid;place-items:center}.loom{position:relative;width:min(39vw,560px);aspect-ratio:1/1;transform:rotate(-8deg)}.loom .ring{position:absolute;inset:11%;border:1px solid var(--ink);border-radius:50%;opacity:.6}.loom .ring:nth-child(2){inset:19%;border-color:var(--rust);transform:rotate(33deg)}.loom .ring:nth-child(3){inset:27%;border-style:dashed;transform:rotate(-18deg)}.loom::before,.loom::after{content:"";position:absolute;inset:4%;background:repeating-linear-gradient(18deg,transparent 0 9px,var(--ink) 10px 11px,transparent 12px 20px);mix-blend-mode:multiply;opacity:.46}.loom::after{background:repeating-linear-gradient(108deg,transparent 0 11px,var(--rust) 12px 13px,transparent 14px 24px);opacity:.32;transform:scale(.92)}.loom-core{position:absolute;inset:39%;background:var(--rust);border-radius:50%;box-shadow:0 0 0 20px var(--paper),0 0 0 21px var(--ink);display:grid;place-items:center;text-align:center}.loom-core span{font:11px 'DM Mono',monospace;letter-spacing:.12em}.coord{position:absolute;font:10px 'DM Mono',monospace;color:var(--muted)}.coord.a{top:14%;right:5%}.coord.b{bottom:16%;left:2%}.coord.c{top:49%;left:-3%;transform:rotate(-90deg)}
+    .manifesto{background:var(--ink);color:var(--paper);padding:var(--space-32) 7vw;position:relative;overflow:hidden}.manifesto::before{content:"FIBER / YARN / WEAVE / SURFACE / SYSTEM";position:absolute;top:30px;right:7vw;color:oklch(92% .018 92 / .38);font:11px 'DM Mono',monospace;letter-spacing:.12em}.manifesto-grid{display:grid;grid-template-columns:1fr 1fr;gap:8vw;align-items:center}.manifesto h2{font-size:clamp(3.4rem,8vw,9.5rem);line-height:.82;letter-spacing:-.09em;max-width:6ch}.manifesto h2 span{color:var(--rust)}.manifesto p{font-size:clamp(1.1rem,2vw,1.65rem);line-height:1.35;max-width:25ch;color:oklch(92% .018 92 / .75)}.manifesto .axis{margin-top:64px;padding-top:16px;border-top:1px solid oklch(92% .018 92 / .25);display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.axis b{display:block;font:13px 'DM Mono',monospace;letter-spacing:.08em}.axis small{display:block;margin-top:8px;color:oklch(92% .018 92 / .5);font-size:11px}
+    section{padding:var(--space-24) 7vw}.section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:32px;margin-bottom:64px}.section-head h2{font-size:clamp(2.6rem,6vw,7rem);line-height:.88;letter-spacing:-.08em;max-width:8ch}.section-head p{max-width:30ch;line-height:1.55;color:var(--muted)}
+    .index{background:var(--paper-2)}.project-list{border-top:1px solid var(--ink)}.project-row{position:relative;display:grid;grid-template-columns:90px 1.3fr .8fr .7fr 38px;align-items:center;gap:24px;padding:24px 0;border-bottom:1px solid var(--line);transition:padding .5s var(--ease),color .3s}.project-row::before{content:"";position:absolute;inset:0 -24px;background:var(--ink);transform:scaleY(0);transform-origin:bottom;transition:transform .5s var(--ease);z-index:0}.project-row>*{position:relative;z-index:1}.project-row:hover{padding-left:24px;padding-right:24px;color:var(--paper)}.project-row:hover::before{transform:scaleY(1)}.project-row .num{font:14px 'DM Mono',monospace;color:var(--rust)}.project-row h3{font-size:clamp(1.25rem,2vw,2.2rem);letter-spacing:-.05em}.project-row .arrow{font-size:24px;text-align:right;transition:transform .4s var(--ease)}.project-row:hover .arrow{transform:translateX(5px)}
+    .worlds{background:var(--ink);color:var(--paper)}.worlds .section-head p{color:oklch(92% .018 92 / .6)}.world-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:24px}.world-panel{min-height:540px;position:relative;padding:32px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}.world-panel.primary{background:var(--rust)}.world-panel.secondary{background:var(--moss)}.world-panel::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 16px,oklch(100% 0 0 / .14) 17px 18px),repeating-linear-gradient(90deg,transparent 0 20px,oklch(100% 0 0 / .12) 21px 22px);mix-blend-mode:screen;opacity:.5}.world-panel>*{position:relative;z-index:1}.world-panel h3{font-size:clamp(2.5rem,6vw,7rem);line-height:.83;letter-spacing:-.09em;max-width:6ch}.world-panel .spec{display:flex;justify-content:space-between;gap:16px;border-top:1px solid oklch(100% 0 0 / .4);padding-top:12px}.world-panel .spec span:last-child{text-align:right}
+    .lab{background:var(--paper)}.lab-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:64px;align-items:start}.material-stage{min-height:560px;position:relative;background:var(--ink);overflow:hidden;display:grid;place-items:center}.material-stage::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 13px,oklch(92% .018 92 / .16) 14px 15px),repeating-linear-gradient(90deg,transparent 0 13px,oklch(92% .018 92 / .16) 14px 15px);transform:rotate(var(--angle,0deg)) scale(1.4);transition:transform .6s var(--ease)}.material-swatch{width:60%;aspect-ratio:1;border-radius:50%;background:repeating-linear-gradient(var(--angle,30deg),var(--rust) 0 calc(var(--density,20px) * .34),oklch(92% .018 92 / .65) calc(var(--density,20px) * .34) var(--density,20px));box-shadow:0 0 0 1px var(--paper),20px 20px 0 -1px var(--moss);transform:rotate(-16deg);transition:background .4s,transform .4s}.material-stage .stage-label{position:absolute;left:24px;top:24px;color:var(--paper)}.lab-controls{display:grid;gap:24px}.control{padding-bottom:22px;border-bottom:1px solid var(--line)}.control label{display:flex;justify-content:space-between;margin-bottom:12px}.control output{font:12px 'DM Mono',monospace;color:var(--rust)}input[type=range]{width:100%;accent-color:var(--rust)}select{width:100%;padding:12px 0;border:0;border-bottom:1px solid var(--ink);background:transparent;color:var(--ink)}.lab-readout{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}.readout{padding:16px 0;border-top:1px solid var(--ink)}.readout strong{display:block;font-size:1.5rem;letter-spacing:-.06em}.readout span{display:block;margin-top:4px;color:var(--muted)}
+    .expertise{background:oklch(80% .04 315)}.expertise-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}.orbit{position:relative;aspect-ratio:1;border:1px solid var(--ink);border-radius:50%;display:grid;place-items:center}.orbit::before{content:"";position:absolute;inset:18%;border:1px dashed var(--ink);border-radius:50%;animation:spin 28s linear infinite}.orbit-core{width:38%;aspect-ratio:1;background:var(--ink);color:var(--paper);border-radius:50%;display:grid;place-items:center;text-align:center;padding:20px;z-index:1}.orbit-items{position:absolute;inset:0;list-style:none}.orbit-items button{position:absolute;transform:translate(-50%,-50%);font:11px 'DM Mono',monospace;letter-spacing:.08em;padding:8px 10px;border:1px solid var(--ink);background:var(--lilac);transition:background .25s,color .25s}.orbit-items button:hover,.orbit-items button.active{background:var(--ink);color:var(--paper)}.orbit-items li:nth-child(1){left:50%;top:3%}.orbit-items li:nth-child(2){left:83%;top:16%}.orbit-items li:nth-child(3){left:98%;top:50%}.orbit-items li:nth-child(4){left:83%;top:84%}.orbit-items li:nth-child(5){left:50%;top:97%}.orbit-items li:nth-child(6){left:17%;top:84%}.orbit-items li:nth-child(7){left:2%;top:50%}.orbit-items li:nth-child(8){left:17%;top:16%}.expertise-copy h3{font-size:clamp(2.4rem,5vw,5.5rem);line-height:.9;letter-spacing:-.08em;max-width:7ch}.expertise-copy p{margin-top:24px;max-width:38ch;line-height:1.55}.expertise-data{margin-top:40px;display:flex;gap:28px;flex-wrap:wrap}.expertise-data div{min-width:110px}.expertise-data strong{display:block;font:24px 'DM Mono',monospace}.expertise-data span{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+    .process{background:var(--paper-2)}.process-rail{display:grid;grid-template-columns:repeat(8,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}.process-step{min-height:220px;padding:20px 14px;border-right:1px solid var(--line);position:relative}.process-step:last-child{border-right:0}.process-step::after{content:"↗";position:absolute;bottom:18px;right:14px;color:var(--rust)}.process-step b{font:12px 'DM Mono',monospace;letter-spacing:.08em}.process-step span{display:block;margin-top:48px;font-size:clamp(1.3rem,2vw,2rem);letter-spacing:-.06em;line-height:.95}.process-step:nth-child(even){background:var(--ink);color:var(--paper)}
+    .before-after{background:var(--ink);color:var(--paper)}.split-stage{position:relative;min-height:500px;overflow:hidden;border:1px solid oklch(92% .018 92 / .4);--split:50%}.before,.after{position:absolute;inset:0;padding:32px;display:flex;flex-direction:column;justify-content:space-between}.before{background:var(--rust);clip-path:inset(0 calc(100% - var(--split)) 0 0)}.after{background:var(--moss);clip-path:inset(0 0 0 var(--split))}.split-stage h3{font-size:clamp(3rem,7vw,8rem);line-height:.82;letter-spacing:-.09em}.split-stage .list{font:12px 'DM Mono',monospace;line-height:2}.splitter{position:absolute;z-index:2;top:0;bottom:0;left:var(--split);width:2px;background:var(--paper);transform:translateX(-50%);pointer-events:none}.splitter::after{content:"↔";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--paper);color:var(--ink);font-weight:700}.split-range{position:absolute;z-index:3;inset:0;width:100%;opacity:0;cursor:ew-resize}
+    .data{background:var(--paper)}.data-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}.data-list{display:grid;gap:0}.data-row{display:grid;grid-template-columns:1.1fr 1fr 90px;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}.data-row b{font-size:1.1rem;letter-spacing:-.04em}.bar{height:4px;background:var(--paper-2);position:relative}.bar i{display:block;height:100%;background:var(--rust);transform-origin:left;transform:scaleX(var(--value))}.data-row strong{text-align:right;font:16px 'DM Mono',monospace}.data-visual{min-height:430px;background:var(--ink);color:var(--paper);position:relative;padding:32px;overflow:hidden}.data-visual::before{content:"";position:absolute;inset:15%;border:1px solid var(--rust);border-radius:50%;box-shadow:0 0 0 34px oklch(61% .12 43 / .12),0 0 0 90px oklch(61% .12 43 / .08)}.data-visual .big{position:absolute;bottom:28px;left:28px;font-size:clamp(4rem,9vw,9rem);letter-spacing:-.1em;line-height:.8;color:var(--rust)}
+    .floor{background:var(--moss);color:var(--paper);overflow:hidden}.floor-track{display:flex;width:max-content;gap:2px}.floor-card{width:min(30vw,420px);min-height:380px;padding:28px;background:oklch(49% .07 142);border:1px solid oklch(92% .018 92 / .3);display:flex;flex-direction:column;justify-content:space-between}.floor-card:nth-child(even){background:var(--ink)}.floor-card h3{font-size:clamp(2rem,4vw,4rem);line-height:.85;letter-spacing:-.08em}.floor-card p{max-width:24ch;line-height:1.45;color:oklch(92% .018 92 / .7)}
+    .philosophy{padding-block:var(--space-32);background:var(--paper)}.philosophy-inner{display:grid;grid-template-columns:1fr 1fr;gap:7vw}.philosophy h2{font-size:clamp(3.5rem,8vw,9rem);line-height:.82;letter-spacing:-.1em}.philosophy h2 span{display:block;color:var(--rust)}.philosophy-side{padding-top:24px}.philosophy-side p{font-size:1.4rem;max-width:25ch;line-height:1.25}.timeline{margin-top:64px;border-top:1px solid var(--ink)}.timeline-row{display:grid;grid-template-columns:140px 1fr 1fr;gap:24px;padding:18px 0;border-bottom:1px solid var(--line)}.timeline-row b{font:12px 'DM Mono',monospace}.timeline-row h3{font-size:1.4rem;letter-spacing:-.05em}.timeline-row p{color:var(--muted);line-height:1.45}
+    .contact{background:var(--ink);color:var(--paper)}.contact-layout{display:grid;grid-template-columns:1fr .85fr;gap:8vw}.contact h2{font-size:clamp(3.5rem,8vw,9rem);line-height:.82;letter-spacing:-.1em;max-width:6ch}.contact h2 em{color:var(--rust)}.contact-note{margin-top:32px;max-width:28ch;line-height:1.5;color:oklch(92% .018 92 / .62)}.contact form{display:grid;gap:18px}.field{display:grid;gap:8px}.field label{font:11px 'DM Mono',monospace;letter-spacing:.1em;color:oklch(92% .018 92 / .58)}.field input,.field select,.field textarea{background:transparent;color:var(--paper);border:0;border-bottom:1px solid oklch(92% .018 92 / .32);padding:10px 0;outline:0;border-radius:0}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--rust)}.field textarea{min-height:90px;resize:vertical}.field select option{background:var(--ink)}.submit{justify-self:start;margin-top:16px;padding:15px 18px;border:1px solid var(--paper);font:12px 'DM Mono',monospace;letter-spacing:.1em;transition:background .25s,color .25s}.submit:hover{background:var(--paper);color:var(--ink)}.form-status{min-height:22px;color:var(--rust);font:12px 'DM Mono',monospace}
+    footer{background:var(--paper-2);padding:48px 7vw 24px}.footer-top{display:flex;justify-content:space-between;gap:24px;align-items:flex-start}.footer-title{font-size:clamp(3rem,8vw,8rem);line-height:.8;letter-spacing:-.1em;max-width:6ch}.footer-links{display:grid;gap:8px;text-align:right}.footer-links a:hover{color:var(--rust)}.footer-bottom{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);margin-top:96px;padding-top:16px;color:var(--muted)}
+    @keyframes scan{0%,100%{transform:scaleX(.4);transform-origin:left}50%{transform:scaleX(1);transform-origin:left}}@keyframes spin{to{transform:rotate(360deg)}}
+    @media (max-width:900px){.site-header{padding:14px 18px}.header-meta{display:none}.menu-toggle{display:block}.hero{grid-template-columns:1fr;padding:128px 6vw 48px;min-height:940px}.hero h1{max-width:7.5ch}.hero-visual{min-height:360px;margin-top:-20px}.loom{width:min(78vw,500px)}.manifesto-grid,.world-grid,.lab-layout,.expertise-layout,.data-grid,.philosophy-inner,.contact-layout{grid-template-columns:1fr;gap:48px}.manifesto{padding:96px 6vw}.manifesto .axis{grid-template-columns:repeat(2,1fr)}section{padding:88px 6vw}.section-head{display:block;margin-bottom:42px}.section-head p{margin-top:24px}.project-row{grid-template-columns:50px 1fr 32px}.project-row .meta{display:none}.world-panel{min-height:420px}.material-stage{min-height:420px}.orbit{max-width:560px;width:100%;margin:auto}.process-rail{grid-template-columns:repeat(4,1fr)}.process-step:nth-child(4){border-right:0}.process-step:nth-child(n+5){border-top:1px solid var(--line)}.floor-card{width:70vw}.footer-top{display:block}.footer-links{text-align:left;margin-top:40px}.footer-bottom{margin-top:64px;display:block}.footer-bottom span{display:block;margin-top:8px}}
+    @media (max-width:560px){.hero{min-height:860px}.hero h1{font-size:clamp(3.5rem,17vw,6rem)}.hero-foot{display:block;margin-top:48px}.hero-foot .mono{margin-top:24px}.manifesto h2{font-size:clamp(3.5rem,17vw,6rem)}.project-row h3{font-size:1.1rem}.project-row{gap:12px;padding:18px 0}.world-panel{min-height:360px;padding:22px}.material-stage{min-height:350px}.material-swatch{width:64%}.orbit-items button{font-size:9px;padding:7px 6px}.process-rail{grid-template-columns:repeat(2,1fr)}.process-step:nth-child(2n){border-right:0}.process-step:nth-child(n+3){border-top:1px solid var(--line)}.process-step{min-height:170px}.process-step span{margin-top:34px}.data-row{grid-template-columns:1.25fr 1fr 60px;gap:10px}.data-row b{font-size:.95rem}.floor-card{width:80vw;min-height:320px}.timeline-row{grid-template-columns:80px 1fr}.timeline-row p{grid-column:2}.contact-layout{gap:64px}.footer-title{font-size:clamp(3.5rem,16vw,6rem)}}
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.loom,.orbit::before{animation:none}.project-row,.project-row::before,.material-swatch,.material-stage::before{transition:none}.hero *{animation:none!important}}
+  </style>
+</head>
+<body>
+  <header class="site-header"><a href="#index" class="brand"><span class="brand-mark">S</span><span>STRATUM / 01</span></a><div class="header-meta mono"><span class="status"><i class="status-dot"></i> AVAILABLE FOR MATERIAL SYSTEMS</span><span>DH / 2026</span></div><button class="menu-toggle" aria-label="Open navigation"><span></span><span></span></button></header>
+  <div class="progress" aria-hidden="true"><i></i></div>
+  <main id="index">
+    <section class="hero" data-section="INDEX"><div class="hero-copy"><div class="eyebrow mono">TEXTILE ENGINEER / MATERIAL SYSTEMS</div><h1>I engineer what <em>material</em> can become.</h1><p class="hero-deck">A research-led practice across fiber, yarn, structure, production, and performance. Fabric is the visible result. The system underneath is the work.</p><div class="hero-foot"><a class="mono" href="#work">01 / ENTER THE INDEX ↘</a><div class="scroll-cue mono"><i></i> SCROLL TO DECONSTRUCT</div></div></div><div class="hero-visual" aria-label="Animated woven material diagram"><div class="loom"><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="loom-core"><span>STRATUM<br>/ 01</span></div><span class="coord a">X 042.18 / Y 011.06</span><span class="coord b">GSM 168 / TENSION 0.72</span><span class="coord c">FIBER → YARN → SYSTEM</span></div></div></section>
+    <section class="manifesto" data-section="MANIFESTO"><div class="manifesto-grid"><h2>Textile is not <span>surface.</span></h2><div><p>It is structure. It is behavior. It is performance. Every finished surface contains a chain of decisions, from raw fiber to the machine that gives it a job.</p><div class="axis"><div><b>01</b><small>FIBER</small></div><div><b>02</b><small>STRUCTURE</small></div><div><b>03</b><small>PROCESS</small></div><div><b>04</b><small>PERFORMANCE</small></div></div></div></div></section>
+    <section class="index" id="work" data-section="WORK"><div class="section-head"><h2>Engineering<br>index</h2><p>Selected systems, built around the problems that usually hide behind the word “fabric”.</p></div><div class="project-list"><a class="project-row" href="#worlds"><span class="num">001</span><h3>Recycled Fiber System</h3><span class="meta mono">FIBER / 2025</span><span class="meta mono">-18% WASTE</span><span class="arrow">↗</span></a><a class="project-row" href="#worlds"><span class="num">002</span><h3>High-Performance Knit Structure</h3><span class="meta mono">KNIT / 2024</span><span class="meta mono">+22% RECOVERY</span><span class="arrow">↗</span></a><a class="project-row" href="#worlds"><span class="num">003</span><h3>Low-Water Dyeing System</h3><span class="meta mono">DYE / 2024</span><span class="meta mono">-41% WATER</span><span class="arrow">↗</span></a><a class="project-row" href="#worlds"><span class="num">004</span><h3>Smart Textile Development</h3><span class="meta mono">SMART / 2023</span><span class="meta mono">06 TEST CYCLES</span><span class="arrow">↗</span></a><a class="project-row" href="#worlds"><span class="num">005</span><h3>Production Efficiency System</h3><span class="meta mono">FLOOR / 2023</span><span class="meta mono">+16% THROUGHPUT</span><span class="arrow">↗</span></a></div></section>
+    <section class="worlds" id="worlds" data-section="MATERIAL WORLDS"><div class="section-head"><h2>Material<br>worlds</h2><p>Different substrates, different rules. One consistent discipline: make the invisible logic legible.</p></div><div class="world-grid"><article class="world-panel primary"><span class="mono">PROJECT 001 / RECYCLED FIBER SYSTEM</span><h3>Waste, re-spun as capacity.</h3><div class="spec mono"><span>POLY / POST-CONSUMER</span><span>GSM 168<br>RECOVERY 0.72</span></div></article><article class="world-panel secondary"><span class="mono">PROJECT 003 / LOW-WATER DYEING</span><h3>Colour with a smaller footprint.</h3><div class="spec mono"><span>DYE BATH / CLOSED LOOP</span><span>-41%<br>WATER INPUT</span></div></article></div></section>
+    <section class="lab" id="materials" data-section="MATERIAL LAB"><div class="section-head"><h2>The material<br>lab</h2><p>Change the parameters. Read the result. This is a front-end model of a textile system, not a static swatch.</p></div><div class="lab-layout"><div class="material-stage" id="materialStage"><span class="stage-label mono">LIVE SPECIMEN / SIMULATION 01</span><div class="material-swatch" id="materialSwatch"></div></div><div class="lab-controls"><div class="control"><label class="mono" for="density">WEAVE DENSITY <output id="densityValue">20</output></label><input id="density" type="range" min="10" max="42" value="20"></div><div class="control"><label class="mono" for="angle">THREAD DIRECTION <output id="angleValue">30°</output></label><input id="angle" type="range" min="0" max="180" value="30"></div><div class="control"><label class="mono" for="fiber">FIBER SYSTEM</label><select id="fiber"><option value="rust">Recycled polyester / matte</option><option value="moss">Bast fiber / dry hand</option><option value="lilac">Conductive blend / responsive</option></select></div><div class="lab-readout"><div class="readout"><strong id="gsm">168</strong><span class="mono">GSM / MASS</span></div><div class="readout"><strong id="recovery">72%</strong><span class="mono">RECOVERY</span></div><div class="readout"><strong id="air">4.8</strong><span class="mono">AIR PERM.</span></div><div class="readout"><strong id="tension">0.72</strong><span class="mono">TENSION INDEX</span></div></div></div></div></section>
+    <section class="expertise" id="expertise" data-section="EXPERTISE"><div class="section-head"><h2>Textile<br>expertise</h2><p>A constellation of disciplines around one central question: what must the material do?</p></div><div class="expertise-layout"><div class="orbit"><div class="orbit-core"><span class="mono" id="orbitCore">TEXTILE<br>ENGINEERING</span></div><ul class="orbit-items"><li><button class="active" data-name="FIBER SCIENCE" data-copy="Select the fiber for the job, not the mood." data-stat="FIBER / 04">FIBER</button></li><li><button data-name="YARN DEVELOPMENT" data-copy="Twist, count, tension. The line becomes a system." data-stat="YARN / 07">YARN</button></li><li><button data-name="WEAVING" data-copy="Structure is where performance starts to show." data-stat="WEAVE / 12">WEAVE</button></li><li><button data-name="KNITTING" data-copy="Recovery, stretch, and movement under load." data-stat="KNIT / 08">KNIT</button></li><li><button data-name="DYEING" data-copy="Colour is a process variable, not decoration." data-stat="DYE / 05">DYE</button></li><li><button data-name="QUALITY CONTROL" data-copy="Consistency is designed before it is inspected." data-stat="QC / 09">QC</button></li><li><button data-name="PRODUCTION" data-copy="A good material must survive the floor." data-stat="FLOOR / 06">FLOOR</button></li><li><button data-name="SUSTAINABILITY" data-copy="Efficiency is a performance metric." data-stat="LCA / 03">LCA</button></li></ul></div><div class="expertise-copy"><div class="mono">CURRENT SYSTEM / <span id="expertiseStat">FIBER / 04</span></div><h3 id="expertiseName">Fiber science</h3><p id="expertiseDescription">Select the fiber for the job, not the mood.</p><div class="expertise-data"><div><strong>11</strong><span class="mono">MATERIALS TESTED</span></div><div><strong>03</strong><span class="mono">SCALE-UPS</span></div><div><strong>98%</strong><span class="mono">TRACEABILITY</span></div></div></div></div></section>
+    <section class="process" id="process" data-section="PROCESS"><div class="section-head"><h2>From problem<br>to perform.</h2><p>The engineering process is a refinement curve. Raw input becomes repeatable output.</p></div><div class="process-rail"><div class="process-step"><b>01</b><span>PROBLEM</span></div><div class="process-step"><b>02</b><span>RESEARCH</span></div><div class="process-step"><b>03</b><span>MATERIAL</span></div><div class="process-step"><b>04</b><span>EXPERIMENT</span></div><div class="process-step"><b>05</b><span>TEST</span></div><div class="process-step"><b>06</b><span>REFINE</span></div><div class="process-step"><b>07</b><span>PRODUCE</span></div><div class="process-step"><b>08</b><span>PERFORM</span></div></div></section>
+    <section class="before-after" data-section="TRANSFORMATION"><div class="section-head"><h2>Engineering<br>the change</h2><p>Drag the divider. The system is the same, the outcome is not.</p></div><div class="split-stage" id="splitStage"><div class="before"><span class="mono">BEFORE / UNRESOLVED</span><h3>Waste<br>is data.</h3><div class="list">INEFFICIENCY<br>INCONSISTENCY<br>WEAK PERFORMANCE</div></div><div class="after"><span class="mono">AFTER / SYSTEMIZED</span><h3>Precision<br>is output.</h3><div class="list">OPTIMIZATION<br>CONSISTENCY<br>PERFORMANCE</div></div><div class="splitter"></div><input class="split-range" id="splitRange" type="range" min="18" max="82" value="50" aria-label="Compare before and after states"></div></section>
+    <section class="data" data-section="TEXTILE AS DATA"><div class="section-head"><h2>Textile<br>as data</h2><p>Performance is not a footnote. It is the language the material uses to prove itself.</p></div><div class="data-grid"><div class="data-list"><div class="data-row"><b>Fiber strength</b><span class="bar"><i style="--value:.86"></i></span><strong>86%</strong></div><div class="data-row"><b>Tensile performance</b><span class="bar"><i style="--value:.74"></i></span><strong>74%</strong></div><div class="data-row"><b>Shrinkage control</b><span class="bar"><i style="--value:.91"></i></span><strong>1.8%</strong></div><div class="data-row"><b>Color fastness</b><span class="bar"><i style="--value:.88"></i></span><strong>4.5/5</strong></div><div class="data-row"><b>Moisture management</b><span class="bar"><i style="--value:.68"></i></span><strong>68%</strong></div><div class="data-row"><b>Waste reduction</b><span class="bar"><i style="--value:.81"></i></span><strong>18%</strong></div></div><div class="data-visual"><span class="mono">PERFORMANCE INDEX / LIVE</span><span class="big">8.6</span></div></div></section>
+    <section class="floor" data-section="PRODUCTION FLOOR"><div class="section-head"><h2>Production<br>floor</h2><p>Move through the line: material in, decisions made, textile out.</p></div><div class="floor-track"><article class="floor-card"><span class="mono">01 / RAW MATERIAL</span><h3>Sort<br>the input.</h3><p>Traceability begins before the first machine starts.</p></article><article class="floor-card"><span class="mono">02 / MACHINERY</span><h3>Tune<br>the line.</h3><p>Tension, speed, and temperature become visible controls.</p></article><article class="floor-card"><span class="mono">03 / PRODUCTION</span><h3>Hold<br>the structure.</h3><p>Repeatability is the difference between a sample and a system.</p></article><article class="floor-card"><span class="mono">04 / INSPECTION</span><h3>Read<br>the deviation.</h3><p>Quality control is feedback, not a final verdict.</p></article><article class="floor-card"><span class="mono">05 / FINAL TEXTILE</span><h3>Release<br>performance.</h3><p>The surface is now the visible proof of the process.</p></article></div></section>
+    <section class="philosophy" id="about" data-section="PHILOSOPHY"><div class="philosophy-inner"><h2>Precision <span>over</span> guesswork.</h2><div class="philosophy-side"><p>Material thinking is a habit: ask what changed, what held, and what the system can teach us next.</p><div class="timeline"><div class="timeline-row"><b>ORIGIN</b><h3>Observe the raw material.</h3><p>Start close. Surface, hand, fiber, behavior.</p></div><div class="timeline-row"><b>EXPERIENCE</b><h3>Make the process legible.</h3><p>Turn hidden constraints into visible decisions.</p></div><div class="timeline-row"><b>INNOVATION</b><h3>Scale what performs.</h3><p>Move from experiment to repeatable system.</p></div></div></div></div></section>
+    <section class="contact" id="contact" data-section="CONTACT"><div class="contact-layout"><div><div class="mono">07 / CONTACT</div><h2>What should we <em>engineer</em> next?</h2><p class="contact-note">For material development, production systems, or a textile problem that is still looking for its language.</p></div><form id="contactForm"><div class="field"><label for="name">NAME</label><input id="name" name="name" required autocomplete="name" placeholder="Your name"></div><div class="field"><label for="email">EMAIL</label><input id="email" name="email" required type="email" autocomplete="email" placeholder="you@company.com"></div><div class="field"><label for="type">PROJECT TYPE</label><select id="type" name="type"><option>Material development</option><option>Process optimization</option><option>Quality system</option><option>Research collaboration</option></select></div><div class="field"><label for="details">MATERIAL CHALLENGE</label><textarea id="details" name="details" required placeholder="Tell me what the material needs to do."></textarea></div><button class="submit" type="submit">START THE CONVERSATION ↗</button><div class="form-status" id="formStatus" role="status"></div></form></div></section>
+  </main>
+  <footer><div class="footer-top"><div><div class="mono">STRATUM / 01</div><h2 class="footer-title">Engineer what material can become.</h2></div><nav class="footer-links mono" aria-label="Footer navigation"><a href="#work">WORK ↗</a><a href="#materials">MATERIAL LAB ↗</a><a href="#expertise">EXPERTISE ↗</a><a href="#contact">CONTACT ↗</a></nav></div><div class="footer-bottom mono"><span>TEXTILE ENGINEER / MATERIAL SYSTEMS</span><span>© 2026 STRATUM / 01</span></div></footer>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script>
+    const $ = (s, c=document) => c.querySelector(s), $$ = (s, c=document) => [...c.querySelectorAll(s)];
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const progress = $('.progress i');
+    addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight; progress.style.transform=`scaleY(${h?scrollY/h:0})`},{passive:true});
+    const swatch=$('#materialSwatch'), stage=$('#materialStage');
+    $('#density').addEventListener('input',e=>{swatch.style.setProperty('--density',e.target.value+'px');$('#densityValue').textContent=e.target.value;$('#gsm').textContent=Math.round(112+e.target.value*2.8);$('#air').textContent=(6.6-e.target.value*.09).toFixed(1)});
+    $('#angle').addEventListener('input',e=>{swatch.style.setProperty('--angle',e.target.value+'deg');stage.style.setProperty('--angle',(e.target.value/8-12)+'deg');$('#angleValue').textContent=e.target.value+'°';$('#tension').textContent=(.48+e.target.value/400).toFixed(2)});
+    $('#fiber').addEventListener('change',e=>{const m={rust:['var(--rust)','72%'],moss:['var(--moss)','81%'],lilac:['var(--lilac)','64%']};swatch.style.setProperty('--fiber-color',m[e.target.value][0]);swatch.style.background=`repeating-linear-gradient(var(--angle,30deg),${m[e.target.value][0]} 0 calc(var(--density,20px) * .34),oklch(92% .018 92 / .65) calc(var(--density,20px) * .34) var(--density,20px))`;$('#recovery').textContent=m[e.target.value][1]});
+    $('#splitRange').addEventListener('input',e=>$('#splitStage').style.setProperty('--split',e.target.value+'%'));
+    $$('.orbit-items button').forEach(btn=>btn.addEventListener('click',()=>{$$('.orbit-items button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');$('#orbitCore').innerHTML=btn.dataset.name.replace(' ','<br>');$('#expertiseName').textContent=btn.dataset.name.toLowerCase();$('#expertiseDescription').textContent=btn.dataset.copy;$('#expertiseStat').textContent=btn.dataset.stat}));
+    $('#contactForm').addEventListener('submit',e=>{e.preventDefault();const status=$('#formStatus');status.textContent='TRANSMITTING SPECIFICATION…';const btn=$('.submit');btn.disabled=true;setTimeout(()=>{status.textContent='RECEIVED. THE MATERIAL SYSTEM IS NOW IN REVIEW.';btn.textContent='TRANSMISSION COMPLETE ✓';},900)});
+    if(window.gsap&&!reduced){gsap.registerPlugin(ScrollTrigger);gsap.from('.hero-copy>*',{y:34,opacity:0,duration:.9,stagger:.09,ease:'expo.out'});gsap.from('.loom',{scale:.82,opacity:0,rotation:4,duration:1.2,ease:'expo.out',delay:.2});gsap.utils.toArray('section').forEach(section=>{gsap.from(section.querySelectorAll('.section-head,.project-row,.world-panel,.lab-layout,.process-step,.data-row,.floor-card,.timeline-row,.contact-layout'),{scrollTrigger:{trigger:section,start:'top 78%'},y:28,opacity:0,duration:.7,stagger:.055,ease:'expo.out'});});gsap.to('.floor-track',{x:()=>-(document.querySelector('.floor-track').scrollWidth-innerWidth+innerWidth*.14),ease:'none',scrollTrigger:{trigger:'.floor',start:'top top',end:()=>'+='+document.querySelector('.floor-track').scrollWidth,scrub:1,pin:true,invalidateOnRefresh:true}})}
+    const menu=$('.menu-toggle');menu.addEventListener('click',()=>{document.body.classList.toggle('menu-open');menu.setAttribute('aria-expanded',document.body.classList.contains('menu-open'))});
+  </script>
+</body>
+</html>

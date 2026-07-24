@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Design-ui pages are single compositions, so the whole body is editable.
+    function markEditable() {
+        document.body.classList.add('artifact-editable');
+    }
+
+    // Credit badge with idle-fade. Hover devices only.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+      
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+
+    function init() {
+        markEditable();
+        initChromeUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+document.addEventListener("DOMContentLoaded", () => {
+  const watermark = document.createElement("a");
+
+  watermark.href = "https://www.facebook.com/share/1JqiQ3zTVn/";
+  watermark.target = "_blank";
+  watermark.rel = "noopener noreferrer";
+
+  watermark.innerHTML = `
+    <span>✦</span>
+    <strong>MADE BY NEXIC WEB</strong>
+  `;
+
+  Object.assign(watermark.style, {
+    position: "fixed",
+    bottom: "14px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    zIndex: "999999",
+    color: "rgba(255,255,255,0.35)",
+    textDecoration: "none",
+    fontFamily: "Arial, sans-serif",
+    fontSize: "8px",
+    fontWeight: "600",
+    letterSpacing: "3px",
+    opacity: "0.7",
+    transition: "all 0.4s ease",
+    whiteSpace: "nowrap",
+    pointerEvents: "auto"
+  });
+
+  watermark.onmouseenter = () => {
+    watermark.style.color = "rgba(255,255,255,0.9)";
+    watermark.style.letterSpacing = "4px";
+    watermark.style.opacity = "1";
+  };
+
+  watermark.onmouseleave = () => {
+    watermark.style.color = "rgba(255,255,255,0.35)";
+    watermark.style.letterSpacing = "3px";
+    watermark.style.opacity = "0.7";
+  };
+
+  document.body.appendChild(watermark);
+});
+</script>
+<!-- /skill:chrome -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Atelier Nova, an independent graphic design and art direction practice." />
+<title>Atelier Nova / Visual systems for ideas with a pulse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:oklch(15% .02 260);--paper:oklch(93% .012 78);--muted:oklch(63% .018 260);--line:oklch(29% .02 260);--acid:oklch(86% .17 88);--coral:oklch(69% .16 32);--violet:oklch(60% .14 300);--space:clamp(22px,3vw,48px);--ease:cubic-bezier(.16,1,.3,1);--mono:'DM Mono',monospace;--sans:'Manrope',sans-serif;--serif:'Playfair Display',serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--ink)}body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);font-weight:500;line-height:1.5;overflow-x:hidden}body:has(.menu.open){overflow:hidden}a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none}h1,h2,h3,p{margin:0}h1,h2,h3{text-wrap:balance}.mono{font:12px var(--mono);letter-spacing:.11em;text-transform:uppercase}.muted{color:var(--muted)}.serif{font-family:var(--serif);font-style:italic}.container{width:min(1380px,calc(100% - 2*var(--space)));margin-inline:auto}.topbar{position:fixed;inset:0 0 auto;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:20px var(--space);mix-blend-mode:difference;transition:transform .45s var(--ease),background .45s var(--ease)}.topbar.scrolled{mix-blend-mode:normal;background:oklch(15% .02 260 / .88);backdrop-filter:blur(12px)}.brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.02em}.mark{width:22px;height:22px;display:grid;place-items:center;background:var(--acid);color:var(--ink);font:12px var(--mono);border-radius:50%}.nav{display:flex;gap:24px;align-items:center}.nav a{font:11px var(--mono);letter-spacing:.1em;text-transform:uppercase;opacity:.72;transition:opacity .2s,transform .2s var(--ease)}.nav a:hover,.nav a:focus-visible{opacity:1;transform:translateY(-2px)}.nav .cta{padding:10px 13px;border:1px solid var(--paper);border-radius:999px;opacity:1}.menu-button{display:none;color:var(--paper);font:11px var(--mono);letter-spacing:.12em;text-transform:uppercase}.hero{min-height:100svh;position:relative;display:flex;align-items:flex-end;padding:180px 0 72px;overflow:hidden}.hero:before{content:'';position:absolute;inset:0;background-image:linear-gradient(oklch(93% .012 78 / .06) 1px,transparent 1px),linear-gradient(90deg,oklch(93% .012 78 / .06) 1px,transparent 1px);background-size:88px 88px;mask-image:linear-gradient(to bottom,transparent,black 25%,black 70%,transparent)}.hero-copy{position:relative;z-index:2;max-width:1000px}.eyebrow{display:flex;justify-content:space-between;gap:20px;margin-bottom:28px;max-width:620px}.hero h1{font-size:clamp(64px,11vw,180px);line-height:.84;letter-spacing:-.085em;font-weight:600;max-width:950px}.hero h1 em{font-family:var(--serif);font-weight:600;letter-spacing:-.06em}.hero-bottom{display:flex;gap:36px;align-items:flex-end;margin-top:46px}.hero-bottom p{max-width:36ch;color:oklch(83% .015 78);font-size:16px}.actions{display:flex;gap:12px;flex-wrap:wrap}.button{display:inline-flex;min-height:46px;align-items:center;gap:12px;padding:0 17px;border:1px solid var(--paper);border-radius:999px;font:12px var(--mono);letter-spacing:.08em;text-transform:uppercase;transition:background .25s var(--ease),color .25s var(--ease),transform .25s var(--ease)}.button:hover,.button:focus-visible{background:var(--paper);color:var(--ink);transform:translateY(-3px)}.button.solid{background:var(--acid);border-color:var(--acid);color:var(--ink)}.button.solid:hover{background:var(--paper);border-color:var(--paper)}.hero-art{position:absolute;right:5vw;top:19vh;width:min(46vw,620px);aspect-ratio:1;transform:rotate(-9deg);pointer-events:none}.hero-art .frame{position:absolute;inset:8%;border:1px solid oklch(93% .012 78 / .38);transform:rotate(17deg)}.hero-art .orb{position:absolute;width:48%;aspect-ratio:1;border-radius:48% 52% 60% 40%;right:10%;top:15%;background:var(--coral);mix-blend-mode:screen;filter:saturate(.9)}.hero-art .slice{position:absolute;left:12%;bottom:9%;width:72%;height:25%;background:var(--acid);transform:rotate(-21deg);mix-blend-mode:screen}.hero-art .label{position:absolute;right:0;bottom:12%;font:11px var(--mono);letter-spacing:.1em;transform:rotate(20deg)}.scroll{position:absolute;right:var(--space);bottom:44px;writing-mode:vertical-rl;color:var(--muted)}.scroll:after{content:'';display:inline-block;width:1px;height:52px;background:var(--muted);margin-top:12px}.section{padding:140px 0}.section-head{display:flex;justify-content:space-between;gap:28px;align-items:flex-start;margin-bottom:62px}.section-head h2{font-size:clamp(42px,6vw,92px);line-height:.92;letter-spacing:-.07em;max-width:720px}.section-head p{max-width:33ch;color:var(--muted);font-size:15px}.work{background:var(--paper);color:var(--ink)}.work .muted{color:oklch(43% .02 260)}.work .section-head{border-top:1px solid oklch(20% .02 260 / .3);padding-top:18px}.project-list{display:grid;gap:12px}.project{display:grid;grid-template-columns:7fr 4fr;min-height:420px;border-top:1px solid oklch(20% .02 260 / .36);padding:18px 0 36px;position:relative;overflow:hidden}.project:last-child{border-bottom:1px solid oklch(20% .02 260 / .36)}.project-meta{display:flex;flex-direction:column;justify-content:space-between;padding-right:28px}.project-num{font:13px var(--mono);color:oklch(48% .02 260)}.project h3{font-size:clamp(48px,7vw,110px);line-height:.84;letter-spacing:-.085em;max-width:680px}.project-info{display:flex;gap:24px;color:oklch(48% .02 260);font:12px var(--mono);text-transform:uppercase;letter-spacing:.08em}.project-visual{position:relative;min-height:360px;overflow:hidden;background:oklch(20% .02 260);display:grid;place-items:center;transition:transform .7s var(--ease)}.project:hover .project-visual{transform:scale(.985)}.project-visual:before,.project-visual:after{content:'';position:absolute;transition:transform .9s var(--ease)}.project:hover .project-visual:before{transform:rotate(16deg) scale(1.08)}.project:hover .project-visual:after{transform:translate(-10px,14px) rotate(-8deg) scale(1.06)}.visual-a{background:var(--violet)}.visual-a:before{width:70%;height:70%;border:1px solid var(--acid);border-radius:50%;transform:rotate(-18deg)}.visual-a:after{width:45%;height:95%;border:14px solid var(--ink);transform:rotate(30deg)}.visual-b{background:var(--acid);color:var(--ink)}.visual-b:before{width:44%;height:130%;background:var(--ink);transform:rotate(30deg)}.visual-b:after{width:50%;height:1px;background:var(--coral);transform:rotate(-30deg)}.visual-c{background:var(--coral)}.visual-c:before{width:65%;height:35%;background:var(--ink);transform:rotate(-12deg)}.visual-c:after{width:55%;height:55%;border:1px solid var(--paper);transform:rotate(20deg)}.visual-text{position:relative;z-index:1;font-size:clamp(38px,6vw,90px);line-height:.8;letter-spacing:-.08em;text-align:center}.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,10vw,160px);align-items:start}.services{background:oklch(19% .02 260)}.services .section-head{margin-bottom:26px}.service-list{border-top:1px solid var(--line)}.service{display:grid;grid-template-columns:60px 1.3fr 1fr 90px;gap:18px;padding:28px 0;border-bottom:1px solid var(--line);align-items:start;transition:padding .35s var(--ease),color .35s}.service:hover{padding-left:14px;color:var(--acid)}.service h3{font-size:clamp(24px,3vw,42px);line-height:1;letter-spacing:-.05em}.service p{color:var(--muted);max-width:30ch;font-size:14px}.service .arrow{font-size:26px;text-align:right}.manifesto{min-height:80vh;display:grid;place-items:center;background:var(--acid);color:var(--ink);text-align:center}.manifesto h2{font-size:clamp(58px,11vw,170px);line-height:.82;letter-spacing:-.09em;max-width:1100px}.manifesto h2 em{font-family:var(--serif)}.process{background:var(--paper);color:var(--ink)}.process .section-head{border-top:1px solid oklch(20% .02 260 / .3);padding-top:18px}.timeline{display:grid;grid-template-columns:1fr 1fr;gap:60px}.steps{border-top:1px solid oklch(20% .02 260 / .3)}.step{display:grid;grid-template-columns:60px 1fr;gap:20px;padding:24px 0;border-bottom:1px solid oklch(20% .02 260 / .3);opacity:.42;transition:opacity .25s,transform .25s var(--ease)}.step.active{opacity:1;transform:translateX(8px)}.step-num{font:13px var(--mono);color:oklch(48% .02 260)}.step h3{font-size:clamp(28px,4vw,52px);line-height:1;letter-spacing:-.06em}.step p{max-width:42ch;margin-top:10px;color:oklch(48% .02 260)}.process-art{min-height:440px;position:relative;overflow:hidden;background:oklch(21% .02 260);color:var(--paper);display:grid;place-items:center}.process-art .ring{width:55%;aspect-ratio:1;border:1px solid var(--acid);border-radius:50%;transition:transform .7s var(--ease)}.process-art .ring:after{content:'';display:block;width:38%;aspect-ratio:1;background:var(--coral);border-radius:45%;margin:18% 0 0 34%;transition:transform .7s var(--ease)}.process-art .art-label{position:absolute;bottom:20px;left:20px}.about{background:var(--ink)}.about-copy{max-width:780px}.about-copy h2{font-size:clamp(42px,7vw,102px);line-height:.88;letter-spacing:-.08em}.about-copy p{max-width:58ch;color:var(--muted);font-size:17px;margin-top:34px}.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:72px;border-top:1px solid var(--line);padding-top:18px}.fact strong{display:block;font-size:34px;letter-spacing:-.06em}.fact span{display:block;color:var(--muted);font:11px var(--mono);text-transform:uppercase;letter-spacing:.1em}.journal{background:oklch(19% .02 260)}.journal-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:18px}.journal-item{border-top:1px solid var(--line);padding-top:17px;display:flex;flex-direction:column;min-height:310px}.journal-item:first-child{grid-row:span 2;min-height:638px}.journal-art{height:150px;margin:24px 0;background:var(--coral);position:relative;overflow:hidden}.journal-item:first-child .journal-art{height:320px;background:var(--violet)}.journal-art:before{content:'NOVA';position:absolute;bottom:-30px;left:12px;font-size:120px;line-height:1;letter-spacing:-.1em;color:var(--acid);transform:rotate(-10deg)}.journal-item:nth-child(2) .journal-art{background:var(--acid)}.journal-item:nth-child(2) .journal-art:before{content:'07 / 26';color:var(--ink)}.journal-item:nth-child(3) .journal-art{background:var(--paper)}.journal-item:nth-child(3) .journal-art:before{content:'TYPE';color:var(--ink)}.journal-item:nth-child(4) .journal-art{background:oklch(60% .12 170)}.journal-item:nth-child(4) .journal-art:before{content:'FIELD';color:var(--ink)}.journal-item h3{font-size:clamp(24px,3vw,42px);line-height:.95;letter-spacing:-.06em}.journal-item p{color:var(--muted);margin-top:auto;font:12px var(--mono);text-transform:uppercase;letter-spacing:.08em}.contact{background:var(--paper);color:var(--ink)}.contact .section-head{border-top:1px solid oklch(20% .02 260 / .3);padding-top:18px}.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(40px,10vw,160px)}.contact h2{font-size:clamp(52px,8vw,120px);line-height:.84;letter-spacing:-.085em}.contact h2 em{font-family:var(--serif)}.contact-copy p{max-width:36ch;margin-top:30px;color:oklch(46% .02 260)}form{display:grid;gap:18px}label{font:11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:oklch(46% .02 260)}input,select,textarea{width:100%;border:0;border-bottom:1px solid oklch(20% .02 260 / .5);background:transparent;padding:11px 0 13px;color:var(--ink);border-radius:0;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--ink);box-shadow:0 2px 0 var(--ink)}textarea{min-height:92px;resize:vertical}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}.form-status{min-height:24px;color:oklch(46% .02 260);font:12px var(--mono)}footer{padding:32px 0 24px;background:var(--ink);color:var(--paper)}.footer-main{display:flex;justify-content:space-between;gap:28px;align-items:flex-end;padding:100px 0 80px}.footer-main h2{font-size:clamp(50px,9vw,140px);line-height:.82;letter-spacing:-.09em;max-width:780px}.footer-main h2 em{font-family:var(--serif)}.footer-links{display:flex;gap:26px;flex-wrap:wrap;font:11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}.footer-bottom{border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;color:var(--muted)}.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}.reveal.in{opacity:1;transform:none}.loader{position:fixed;inset:0;z-index:20;background:var(--ink);display:grid;place-items:center;transition:opacity .7s var(--ease),visibility .7s}.loader.done{opacity:0;visibility:hidden}.loader-inner{width:min(460px,calc(100% - 44px))}.loader-top{display:flex;justify-content:space-between;margin-bottom:14px}.loader-word{font-size:clamp(28px,6vw,70px);letter-spacing:-.08em;line-height:.9}.loader-line{height:1px;background:var(--line);position:relative;overflow:hidden;margin-top:26px}.loader-line:after{content:'';position:absolute;inset:0;background:var(--acid);transform-origin:left;animation:load 1.8s var(--ease) forwards}@keyframes load{to{transform:scaleX(1)}}.loader-note{margin-top:14px;color:var(--muted)}.cursor,.cursor-ring{position:fixed;pointer-events:none;z-index:30;border-radius:50%;display:block;opacity:0}.cursor{width:8px;height:8px;background:var(--acid);transform:translate(-50%,-50%);mix-blend-mode:difference}.cursor-ring{width:38px;height:38px;border:1px solid var(--acid);transform:translate(-50%,-50%);transition:width .2s var(--ease),height .2s var(--ease),background .2s}.cursor-ring.view{width:84px;height:84px;background:var(--acid);border-color:transparent}.cursor-ring.view:after{content:'VIEW';position:absolute;inset:0;display:grid;place-items:center;color:var(--ink);font:10px var(--mono);letter-spacing:.1em}.mobile-menu{display:none}.toast{position:fixed;right:20px;bottom:20px;background:var(--acid);color:var(--ink);padding:14px 16px;font:12px var(--mono);z-index:12;transform:translateY(120px);transition:transform .35s var(--ease)}.toast.show{transform:none}@media(max-width:900px){.nav{display:none}.menu-button{display:block}.hero-art{right:-16vw;top:25vh;width:78vw;opacity:.6}.hero-bottom{display:block}.hero-bottom .actions{margin-top:28px}.project{grid-template-columns:1fr;gap:24px;min-height:auto}.project-visual{min-height:300px}.split,.timeline,.contact-grid{grid-template-columns:1fr}.process-art{min-height:330px}.journal-grid{grid-template-columns:1fr 1fr}.journal-item:first-child{grid-row:auto;min-height:390px}.journal-item:first-child .journal-art{height:220px}.footer-main{display:block}.footer-links{margin-top:42px}.mobile-menu{position:fixed;inset:0;z-index:9;background:var(--ink);display:flex;flex-direction:column;justify-content:center;padding:var(--space);transform:translateY(-100%);transition:transform .65s var(--ease)}.mobile-menu.open{transform:none}.mobile-menu a{font-size:clamp(44px,12vw,92px);line-height:.94;letter-spacing:-.08em;border-bottom:1px solid var(--line);padding:10px 0}.mobile-menu small{color:var(--acid);font:11px var(--mono);letter-spacing:.1em;margin-bottom:24px}}@media(max-width:560px){:root{--space:20px}.section{padding:94px 0}.hero{padding-top:150px}.hero h1{font-size:clamp(58px,18vw,100px)}.eyebrow{display:block}.eyebrow span:last-child{display:block;margin-top:8px}.hero-art{top:30vh;right:-38vw;width:105vw}.section-head{display:block;margin-bottom:42px}.section-head p{margin-top:22px}.project h3{font-size:64px}.project-info{gap:12px;flex-wrap:wrap}.service{grid-template-columns:38px 1fr 26px}.service p{grid-column:2/3}.service .arrow{grid-column:3;grid-row:1}.facts{grid-template-columns:1fr 1fr}.journal-grid{grid-template-columns:1fr}.journal-item:first-child{min-height:0}.journal-item:first-child .journal-art{height:220px}.form-row{grid-template-columns:1fr}.footer-bottom{display:block}.footer-bottom span{display:block;margin-top:10px}.cursor,.cursor-ring{display:none}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="loader" aria-label="Loading Atelier Nova"><div class="loader-inner"><div class="loader-top mono"><span>Atelier Nova</span><span id="loadNum">00%</span></div><div class="loader-word">COMPOSING<br><em class="serif">the next frame.</em></div><div class="loader-line"></div><div class="loader-note mono">A visual practice for ideas with a pulse.</div></div></div>
+<div class="cursor"></div><div class="cursor-ring"></div>
+<header class="topbar"><a class="brand" href="#top" aria-label="Atelier Nova home"><span class="mark">A</span><span>ATELIER NOVA</span></a><nav class="nav" aria-label="Primary"><a href="#work">Work</a><a href="#expertise">Expertise</a><a href="#process">Process</a><a href="#about">About</a><a href="#journal">Journal</a><a class="cta" href="#contact">Start a project</a></nav><button class="menu-button" aria-expanded="false" aria-controls="mobileMenu">Menu +</button></header>
+<div class="mobile-menu" id="mobileMenu"><small>Navigate / 06</small><a href="#work">01 / Work</a><a href="#expertise">02 / Expertise</a><a href="#process">03 / Process</a><a href="#about">04 / About</a><a href="#journal">05 / Journal</a><a href="#contact">06 / Contact</a></div>
+<main id="top">
+<section class="hero"><div class="container hero-copy reveal"><div class="eyebrow mono"><span>Independent design practice</span><span>Based between Kraków / Everywhere</span></div><h1>I design<br>what people <em>remember.</em></h1><div class="hero-bottom"><p>Visual identities, campaigns and digital worlds for brands with something worth saying.</p><div class="actions"><a class="button solid" href="#contact">Start a project <span>↗</span></a><a class="button" href="#work">Explore the work <span>↓</span></a></div></div></div><div class="hero-art" aria-hidden="true"><div class="frame"></div><div class="orb"></div><div class="slice"></div><div class="label">SYSTEM / 01<br>FORM FOLLOWS FEELING</div></div><div class="scroll mono">Scroll to enter</div></section>
+<section class="section work" id="work"><div class="container"><div class="section-head reveal"><h2>Selected<br><em class="serif">work.</em></h2><p>Not a catalogue. A few systems I built to make good ideas impossible to ignore.</p></div><div class="project-list"><article class="project reveal"><div class="project-meta"><span class="project-num">01 / 04</span><div><h3>NOCTURNE<br>RADIO</h3><div class="project-info"><span>Identity</span><span>2025</span><span>Culture</span></div></div></div><div class="project-visual visual-a"><div class="visual-text">N / R</div></div></article><article class="project reveal"><div class="project-meta"><span class="project-num">02 / 04</span><div><h3>FOLD /<br>FORM</h3><div class="project-info"><span>Editorial</span><span>2024</span><span>Print</span></div></div></div><div class="project-visual visual-b"><div class="visual-text">F<br>F</div></div></article><article class="project reveal"><div class="project-meta"><span class="project-num">03 / 04</span><div><h3>SECOND<br>NATURE</h3><div class="project-info"><span>Campaign</span><span>2024</span><span>Direction</span></div></div></div><div class="project-visual visual-c"><div class="visual-text">SN</div></div></article></div></div></section>
+<section class="section services" id="expertise"><div class="container"><div class="section-head reveal"><h2>Design is a<br><em class="serif">system.</em></h2><p>Strategy gives the work a spine. Craft gives it a pulse. Every deliverable belongs to the same world.</p></div><div class="service-list"><div class="service reveal"><span class="mono">01</span><h3>Brand identity</h3><p>Logo systems, visual language, guidelines and the decisions that keep a brand recognisable.</p><span class="arrow">↗</span></div><div class="service reveal"><span class="mono">02</span><h3>Art direction</h3><p>Concept, image, type and atmosphere for launches, campaigns, culture and screens.</p><span class="arrow">↗</span></div><div class="service reveal"><span class="mono">03</span><h3>Editorial worlds</h3><p>Publications, posters and printed matter with an opinion about how information should feel.</p><span class="arrow">↗</span></div><div class="service reveal"><span class="mono">04</span><h3>Digital expression</h3><p>Visual direction for web, social and motion, designed as one connected experience.</p><span class="arrow">↗</span></div></div></div></section>
+<section class="section manifesto"><div class="container reveal"><h2>Less noise.<br><em>More signal.</em><br>Always a point of view.</h2></div></section>
+<section class="section process" id="process"><div class="container"><div class="section-head reveal"><h2>How the work<br><em class="serif">gets made.</em></h2><p>Six moves from vague feeling to a visual system that can carry the weight.</p></div><div class="timeline"><div class="steps"><div class="step active reveal"><span class="step-num">01</span><div><h3>Discover</h3><p>Find the real question hiding behind the brief.</p></div></div><div class="step reveal"><span class="step-num">02</span><div><h3>Define</h3><p>Turn the tension into a clear creative direction.</p></div></div><div class="step reveal"><span class="step-num">03</span><div><h3>Explore</h3><p>Make many strong moves before choosing one.</p></div></div><div class="step reveal"><span class="step-num">04</span><div><h3>Develop</h3><p>Build the visual language and its rules.</p></div></div><div class="step reveal"><span class="step-num">05</span><div><h3>Refine</h3><p>Remove everything that does not earn its place.</p></div></div><div class="step reveal"><span class="step-num">06</span><div><h3>Deliver</h3><p>Leave you with a system, not a single shiny moment.</p></div></div></div><div class="process-art reveal"><div class="ring"></div><span class="art-label mono">Direction / 06 frames</span></div></div></div></section>
+<section class="section about" id="about"><div class="container"><div class="about-copy reveal"><span class="mono">A small studio with a large appetite</span><h2>Good design is felt before it is <em class="serif">explained.</em></h2><p>Atelier Nova is the independent practice of Falaktak, a graphic designer and visual strategist working across identity, editorial and digital culture. The studio stays intentionally small: fewer projects, deeper attention, better questions.</p></div><div class="facts reveal"><div class="fact"><strong>07</strong><span>years shaping ideas</span></div><div class="fact"><strong>03</strong><span>continents in the mix</span></div><div class="fact"><strong>01</strong><span>sharp point of view</span></div></div></div></section>
+<section class="section journal" id="journal"><div class="container"><div class="section-head reveal"><h2>Field notes<br><em class="serif">from the studio.</em></h2><p>Thoughts on type, tension, taste and the work behind the work.</p></div><div class="journal-grid"><article class="journal-item reveal"><div class="journal-art"></div><h3>What a brand owes the people meeting it for the first time.</h3><p>Branding / 6 min read / 18.07.26</p></article><article class="journal-item reveal"><div class="journal-art"></div><h3>Seven ways to make a system feel less systematic.</h3><p>Process / 4 min read / 02.07.26</p></article><article class="journal-item reveal"><div class="journal-art"></div><h3>Type is not decoration.</h3><p>Typography / 3 min read / 24.06.26</p></article><article class="journal-item reveal"><div class="journal-art"></div><h3>When the brief needs a better question.</h3><p>Direction / 5 min read / 11.06.26</p></article></div></div></section>
+<section class="section contact" id="contact"><div class="container"><div class="section-head reveal"><h2>Have an idea<br>worth <em>designing?</em></h2><p>Tell me where you want to go. We will figure out the visual language to get there.</p></div><div class="contact-grid"><div class="contact-copy reveal"><span class="mono">Now booking / Q3 2026</span><p>For collaborations, commissions, identity work and creative direction. No auto-replies, no mysterious black box.</p></div><form id="contactForm" class="reveal"><div class="form-row"><label>Name<input name="name" required placeholder="Your name" /></label><label>Email<input name="email" type="email" required placeholder="you@company.com" /></label></div><div class="form-row"><label>Company<input name="company" placeholder="Optional" /></label><label>Project type<select name="type"><option>Brand identity</option><option>Art direction</option><option>Editorial design</option><option>Digital design</option><option>Something else</option></select></label></div><label>Project details<textarea name="details" required placeholder="A few lines about the idea, the context, and what needs to change."></textarea></label><div class="actions"><button class="button solid" type="submit">Send the brief <span>↗</span></button><span class="form-status" id="formStatus" role="status"></span></div></form></div></div></section>
+</main>
+<footer><div class="container"><div class="footer-main reveal"><h2>Make something<br><em>memorable.</em></h2><a class="button solid" href="#contact">Start a project <span>↗</span></a></div><div class="footer-links"><a href="#work">Work</a><a href="#expertise">Expertise</a><a href="#about">About</a><a href="#journal">Journal</a><a href="mailto:hello@ateliernova.studio">hello@ateliernova.studio</a><a href="#contact">Instagram ↗</a></div><div class="footer-bottom mono"><span>© 2026 Atelier Nova</span><span>Visual systems for ideas with a pulse.</span></div></div></footer><div class="toast" id="toast">Brief received. The next frame starts here.</div>
+<script>
+const loader=document.querySelector('.loader'),loadNum=document.querySelector('#loadNum');let n=0;const count=setInterval(()=>{n+=Math.round(Math.random()*14)+7;if(n>=100){n=100;clearInterval(count);setTimeout(()=>loader.classList.add('done'),260)}loadNum.textContent=String(n).padStart(2,'0')+'%'},110);
+const topbar=document.querySelector('.topbar');addEventListener('scroll',()=>topbar.classList.toggle('scrolled',scrollY>40),{passive:true});
+const menuBtn=document.querySelector('.menu-button'),menu=document.querySelector('.mobile-menu');menuBtn.addEventListener('click',()=>{const open=menu.classList.toggle('open');menuBtn.setAttribute('aria-expanded',open);menuBtn.textContent=open?'Close ×':'Menu +'});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.classList.remove('open');menuBtn.textContent='Menu +';menuBtn.setAttribute('aria-expanded','false')}));
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');observer.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+const steps=[...document.querySelectorAll('.step')],ring=document.querySelector('.ring');const stepObs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){steps.forEach(s=>s.classList.remove('active'));e.target.classList.add('active');const i=steps.indexOf(e.target);ring.style.transform='rotate('+(i*22-15)+'deg) scale('+(1+i*.025)+')';ring.style.borderColor=i%2? 'var(--coral)':'var(--acid)'}}),{threshold:.7});steps.forEach(s=>stepObs.observe(s));
+const cursor=document.querySelector('.cursor'),ringCursor=document.querySelector('.cursor-ring');let mx=0,my=0,rx=0,ry=0;addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;cursor.style.opacity=1;ringCursor.style.opacity=1});function loop(){rx+=(mx-rx)*.18;ry+=(my-ry)*.18;cursor.style.left=mx+'px';cursor.style.top=my+'px';ringCursor.style.left=rx+'px';ringCursor.style.top=ry+'px';requestAnimationFrame(loop)}loop();document.querySelectorAll('a,button,.project').forEach(el=>{el.addEventListener('mouseenter',()=>ringCursor.classList.add('view'));el.addEventListener('mouseleave',()=>ringCursor.classList.remove('view'))});
+const form=document.querySelector('#contactForm'),status=document.querySelector('#formStatus'),toast=document.querySelector('#toast');form.addEventListener('submit',e=>{e.preventDefault();const btn=form.querySelector('button');btn.disabled=true;btn.textContent='Sending...';setTimeout(()=>{btn.disabled=false;btn.innerHTML='Send the brief <span>↗</span>';status.textContent='Thanks. Your brief is in the system.';toast.classList.add('show');form.reset();setTimeout(()=>toast.classList.remove('show'),4200)},700)});
+</script></body></html>
