@@ -1073,6 +1073,39 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
   outline: none;
   transition: var(--transition);
 }
+
+/* Password input with toggle button */
+.input-group.password-group input {
+  padding-right: 2.8rem; /* Space for toggle button */
+}
+
+/* Password toggle button */
+.toggle-password {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 0.85rem;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.toggle-password:hover {
+  color: var(--accent);
+}
+
+.toggle-password:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
 .input-group input:focus { border-color: var(--accent); background: rgba(124,92,252,0.07); }
 .input-group input::placeholder { color: var(--text3); }
 .auth-submit {
@@ -2154,19 +2187,25 @@ body{
   color: var(--danger);
 }
 
+/* Mobile: Position below auth form when modal is open */
 @media (max-width: 768px) {
   .toast {
-    bottom: 20px;
-    right: 20px;
-    left: 20px;
+    position: fixed;
+    bottom: auto;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, calc(-50% + 280px)) scale(0.9);
     max-width: calc(100vw - 40px);
-    transform: translateY(0) translateX(0);
     font-size: 0.85rem;
     padding: 0.875rem 1.25rem;
+    width: calc(100% - 40px);
+    margin: 0 auto;
   }
   
   .toast.show {
-    transform: translateY(0) translateX(0);
+    transform: translate(-50%, calc(-50% + 280px)) scale(1);
+    opacity: 1;
   }
 }
 /* =========================================================
