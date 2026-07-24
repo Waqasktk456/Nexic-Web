@@ -923,8 +923,12 @@ function renderPagination(totalPages) {
 
   pag.appendChild(createBtn('<i class="fas fa-chevron-left"></i>', currentPage - 1, currentPage === 1));
 
+  // Mobile: show max 4 pages, Desktop: show max 7
+  const isMobile = window.innerWidth <= 768;
+  const maxVisible = isMobile ? 4 : 7;
+
   for (let i = 1; i <= totalPages; i++) {
-    if (totalPages > 7 && (i > 2 && i < totalPages - 1 && Math.abs(i - currentPage) > 1)) {
+    if (totalPages > maxVisible && (i > 2 && i < totalPages - 1 && Math.abs(i - currentPage) > 1)) {
       if (i === 3 || i === totalPages - 2) {
         const dots = document.createElement("span");
         dots.textContent = "…";
@@ -1363,7 +1367,7 @@ function initAuth() {
   // PASSWORD TOGGLE - Show/Hide Password
   // ============================================================
   function initPasswordToggle() {
-    const toggleButtons = document.querySelectorAll('.toggle-password');
+    const toggleButtons = document.querySelectorAll('.nx-password-toggle');
     
     toggleButtons.forEach(button => {
       // Remove existing listener if any
@@ -1371,14 +1375,13 @@ function initAuth() {
     });
     
     // Re-select after cloning
-    document.querySelectorAll('.toggle-password').forEach(button => {
+    document.querySelectorAll('.nx-password-toggle').forEach(button => {
       button.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         
         const targetId = this.getAttribute('data-target');
         const passwordInput = document.getElementById(targetId);
-        const icon = this.querySelector('i');
         
         if (!passwordInput) {
           console.error('Password input not found:', targetId);
@@ -1387,12 +1390,12 @@ function initAuth() {
         
         if (passwordInput.type === 'password') {
           passwordInput.type = 'text';
-          icon.classList.remove('fa-eye');
-          icon.classList.add('fa-eye-slash');
+          this.classList.add('revealed');
+          passwordInput.classList.add('nx-password-pulse');
+          setTimeout(() => passwordInput.classList.remove('nx-password-pulse'), 450);
         } else {
           passwordInput.type = 'password';
-          icon.classList.remove('fa-eye-slash');
-          icon.classList.add('fa-eye');
+          this.classList.remove('revealed');
         }
       });
     });
