@@ -1177,7 +1177,7 @@ function initAuth() {
       showToast("Network error. Please check your connection.", "error");
       console.error("Login error:", error);
     } finally {
-      btn.textContent = "Login to WebVault";
+      btn.textContent = "Login to Nexic Web";
       btn.disabled = false;
     }
   });
