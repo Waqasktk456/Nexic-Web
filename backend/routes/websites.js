@@ -12,12 +12,14 @@ router.get('/:id', websitesController.getWebsiteById);
 // Create new website with images
 router.post('/', upload.fields([
   { name: 'thumbnail', maxCount: 1 },
+  { name: 'preview_image', maxCount: 1 },
   { name: 'gallery', maxCount: 10 }
 ]), websitesController.createWebsite);
 
 // Update website
 router.put('/:id', upload.fields([
   { name: 'thumbnail', maxCount: 1 },
+  { name: 'preview_image', maxCount: 1 },
   { name: 'gallery', maxCount: 10 }
 ]), websitesController.updateWebsite);
 

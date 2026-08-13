@@ -4,32 +4,55 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
  <title>NexicWeb — Premium Website Marketplace</title>
-  <link rel="stylesheet" href="style.css?v=11" />
-  <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
- 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="icon" type="image/aura.png" href="aura.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <!-- Critical CSS inline for instant first paint -->
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{background:#0a0b14;color:#e8e8f0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.6;overflow-x:hidden}
+    .navbar{position:fixed;top:0;width:100%;z-index:100;background:rgba(10,11,20,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.05);padding:0 2rem;height:70px}
+    .nav-inner{max-width:1400px;margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:700;color:#fff;text-decoration:none}
+    .logo-icon{font-size:22px}
+    .hero{min-height:100vh;padding:140px 2rem 80px;display:flex;align-items:center;justify-content:center;position:relative}
+    .hero-content{text-align:center;max-width:900px}
+    .hero-title{font-size:clamp(2rem,6vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:1.5rem;color:#fff}
+    .accent-text{background:linear-gradient(135deg,#8b5cf6,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-sub{font-size:1.1rem;color:#a0a0b0;margin-bottom:2rem;max-width:600px;margin-left:auto;margin-right:auto}
+    .btn-primary{display:inline-flex;align-items:center;gap:10px;background:#8b5cf6;color:#fff;padding:14px 32px;border-radius:8px;font-weight:600;text-decoration:none;transition:transform .2s,box-shadow .2s}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(139,92,246,.3)}
+    .websites-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2rem;margin:3rem 0}
+    @media(max-width:768px){.navbar{padding:0 1rem;height:60px}.hero{padding:100px 1rem 60px}.hero-title{font-size:2rem}.websites-grid{grid-template-columns:1fr;gap:1.5rem}}
+  </style>
+  
+  <!-- Defer non-critical CSS -->
+  <link rel="preload" href="style.css?v=13" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
+  <noscript><link rel="stylesheet" href="style.css?v=13"/></noscript>
+  
+  <!-- Load only essential fonts, defer others -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Syne:wght@600;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Syne:wght@600;800&display=swap" rel="stylesheet"/></noscript>
+  
+  <!-- Defer Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'"/>
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/></noscript>
+  
+  <link rel="icon" type="image/png" href="aura.png">
 
-////url icon
-<link rel="icon" href="logo.png" type="image/aura.png">
-<meta name="description" content="Nexic Web is a premium website marketplace offering modern website templates, custom website development, SEO-friendly business websites, and responsive web solutions.">
-
-<meta name="robots" content="index, follow, max-image-preview:large">
-
-<meta name="author" content="Nexic Web">
-
-<meta name="theme-color" content="#0f172a">
-
-<meta property="og:site_name" content="Nexic Web">
-
-<link rel="canonical" href="https://nexicweb.com/">
-
+  <link rel="icon" href="logo.png" type="image/png">
+  <meta name="description" content="Nexic Web is a premium website marketplace offering modern website templates, custom website development, SEO-friendly business websites, and responsive web solutions.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="Nexic Web">
+  <meta name="theme-color" content="#0f172a">
+  <meta property="og:site_name" content="Nexic Web">
+  <meta property="og:title" content="NexicWeb - Premium Website Templates">
+  <meta property="og:description" content="Get professional websites in 2-3 days. Starting from $29">
+  <meta property="og:image" content="https://nexicweb.com/aura.png">
+  <link rel="canonical" href="https://nexicweb.com/">
 </head>
 <body>
 
@@ -587,24 +610,46 @@ NexicWeb
   <!-- Toast Notification -->
   <div class="toast" id="toast"></div>
 
-  <!-- Config (must load first) -->
-  <script src="config.js?v=2"></script>
-  <script src="app.js?v=2"></script>
+  <!-- Defer JavaScript to avoid render blocking -->
+  <script src="config.js?v=3" defer></script>
+  <script src="app.js?v=3" defer></script>
 
 <script>
-// Lazy load images and pause animations when tab is hidden
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('img').forEach(img => {
-    if (!img.loading) img.loading = 'lazy';
-    img.decoding = 'async';
+// Critical performance optimizations
+(function(){
+  // Lazy load images
+  if('loading' in HTMLImageElement.prototype){
+    const images=document.querySelectorAll('img[loading="lazy"]');
+    images.forEach(img=>{img.src=img.dataset.src||img.src});
+  }else{
+    // Fallback for browsers without native lazy loading
+    const script=document.createElement('script');
+    script.src='https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js';
+    document.body.appendChild(script);
+  }
+  
+  // Pause animations when tab is hidden
+  document.addEventListener('visibilitychange',()=>{
+    document.documentElement.classList.toggle('tab-hidden',document.hidden);
   });
-
-  document.addEventListener('visibilitychange', () => {
-    document.documentElement.classList.toggle('tab-hidden', document.hidden);
+  
+  // Prefetch critical resources
+  const prefetch=['https://fonts.gstatic.com'];
+  prefetch.forEach(url=>{
+    const link=document.createElement('link');
+    link.rel='dns-prefetch';
+    link.href=url;
+    document.head.appendChild(link);
   });
-});
-
-// Note: All auth functionality (signup, login, OTP) is handled in app.js
+  
+  // Register service worker for offline caching
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',()=>{
+      navigator.serviceWorker.register('/sw.js')
+        .catch(()=>{/* Silent fail */});
+    });
+  }
+})();
 </script>
 
 </body>

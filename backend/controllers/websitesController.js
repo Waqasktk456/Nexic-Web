@@ -66,8 +66,21 @@ exports.createWebsite = async (req, res) => {
       demo_url: req.body.demo_url || null,
       github_url: req.body.github_url || null,
       details_page: req.body.details_page || null,
+      display_order: parseInt(req.body.display_order) || 999,
       featured: req.body.featured === 'true',
-      status: req.body.status || 'draft'
+      status: req.body.status || 'draft',
+      // Detail page fields
+      live_preview_url: req.body.live_preview_url || null,
+      category_tag: req.body.category_tag || null,
+      subtitle: req.body.subtitle || null,
+      feature_tags: req.body.feature_tags || null,
+      long_description: req.body.long_description || null,
+      rating: req.body.rating ? parseFloat(req.body.rating) : null,
+      license: req.body.license || null,
+      updates: req.body.updates || null,
+      feature_pills: req.body.feature_pills || null,
+      packages: req.body.packages || null,
+      resource_cards: req.body.resource_cards || null
     };
 
     // Validate required fields
@@ -110,8 +123,21 @@ exports.updateWebsite = async (req, res) => {
       demo_url: req.body.demo_url || null,
       github_url: req.body.github_url || null,
       details_page: req.body.details_page || null,
+      display_order: parseInt(req.body.display_order) || 999,
       featured: req.body.featured === 'true',
-      status: req.body.status || 'draft'
+      status: req.body.status || 'draft',
+      // Detail page fields
+      live_preview_url: req.body.live_preview_url || null,
+      category_tag: req.body.category_tag || null,
+      subtitle: req.body.subtitle || null,
+      feature_tags: req.body.feature_tags || null,
+      long_description: req.body.long_description || null,
+      rating: req.body.rating ? parseFloat(req.body.rating) : null,
+      license: req.body.license || null,
+      updates: req.body.updates || null,
+      feature_pills: req.body.feature_pills || null,
+      packages: req.body.packages || null,
+      resource_cards: req.body.resource_cards || null
     };
 
     const files = req.files;

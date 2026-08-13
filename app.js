@@ -12,39 +12,36 @@
 let WEBSITES = []; // Will be populated from database
 
 // ============================================================
-// LOAD WEBSITES FROM DATABASE
+// LOAD WEBSITES FROM DATABASE (with caching)
 // ============================================================
 async function loadWebsites() {
   try {
-    const response = await fetch(`${API.BASE_URL}/api/websites`);
-    const data = await response.json();
+    // Use cached fetch
+    const data = await API.cachedFetch(`${API.BASE_URL}/api/websites`);
     
     if (data.success && data.data) {
-      console.log('Loaded websites:', data.data); // Debug: see what we got from database
+      WEBSITES = data.data.map(w => ({
+        id: w.id,
+        title: w.title,
+        image: w.thumbnail_url,
+        description: w.description,
+        link: w.demo_url,
+        category: w.category.toLowerCase(),
+        detailsPage: w.details_page || '#',
+        featured: w.featured
+      }));
       
-      // Transform database format to match existing frontend format
-      WEBSITES = data.data.map(w => {
-        console.log('Website image URL:', w.thumbnail_url); // Debug: see each image URL
-        return {
-          id: w.id,
-          title: w.title,
-          image: w.thumbnail_url,
-          description: w.description,
-          link: w.demo_url,
-          category: w.category.toLowerCase(), // Normalize category
-          detailsPage: w.details_page || '#',
-          featured: w.featured
-        };
-      });
-      
-      console.log('Transformed WEBSITES:', WEBSITES); // Debug: see final array
       renderWebsites();
     } else {
-      showWebsiteError('No websites available');
+      // Fallback to backup if API fails
+      WEBSITES = WEBSITES_BACKUP;
+      renderWebsites();
     }
   } catch (error) {
-    console.error('Load websites error:', error);
-    showWebsiteError('Unable to load websites');
+    console.error('Load error:', error);
+    // Use backup data
+    WEBSITES = WEBSITES_BACKUP;
+    renderWebsites();
   }
 }
 
@@ -789,17 +786,19 @@ function createCard(website, index) {
   // Determine if this card is on the first page (priority loading)
   const isFirstPage = index < PER_PAGE;
   const loadingStrategy = isFirstPage ? 'eager' : 'lazy';
+  
+  // Use data-src for lazy loading
+  const imgAttr = isFirstPage ? `src="${website.image}"` : `data-src="${website.image}" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23111' width='400' height='300'/%3E%3C/svg%3E"`;
 
   card.innerHTML = `
     <div class="card-img-wrapper">
       ${website.image && website.image !== 'https://via.placeholder.com/400x300'
-        ? `<img class="card-img" src="${website.image}" alt="${website.title}" loading="${loadingStrategy}" 
-               onerror="console.error('Failed to load:', this.src); this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        ? `<img class="card-img lazyload" ${imgAttr} alt="${website.title}" loading="${loadingStrategy}" decoding="async" 
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
         : ''}
       <div class="card-img-placeholder" style="${website.image && website.image !== 'https://via.placeholder.com/400x300' ? 'display:none' : ''}">🌐</div>
       <span class="card-category">${website.category}</span>
       <div class="card-overlay">
-        <!-- 👉 ADD WEBSITE LINK HERE — controlled by website.link in the data array above -->
         <a href="${website.link}" target="_blank" rel="noopener noreferrer" class="overlay-preview-btn">
           <i class="fas fa-eye"></i> Preview
         </a>
@@ -807,44 +806,16 @@ function createCard(website, index) {
     </div>
     <div class="card-body">
       <h3 class="card-title">${website.title}</h3>
-      <p class="card-desc">${website.description}</p>
+      <p class="card-desc">${website.description.substring(0,120)}${website.description.length>120?'...':''}</p>
       <div class="card-actions">
-
-
-<div class="price-slider">
-
-  ${website.prices?.map(price => `
-  
-    <div class="price-item">
-      ${price}
-    </div>
-
-  `).join("") || ""}
-
-</div>
-
-
-     <div class="card-actions">
-
-  <a href="${website.link}"
-     target="_blank"
-     rel="noopener noreferrer"
-     class="card-overview-btn">
-     Live Preview
-     <i class="fas fa-arrow-up-right-from-square"></i>
-  </a>
-
-  <a href="${website.detailsPage || '#'}"
-     class="card-details-btn">
-     See Details
-  </a>
-
-  <button class="card-cart-btn ${isInCart ? 'added' : ''}"
-          data-id="${website.id}">
-      <i class="fas ${isInCart ? 'fa-check' : 'fa-bag-shopping'}"></i>
-  </button>
-
-</div>
+        ${website.prices?.map(price => `<div class="price-item">${price}</div>`).join("") || ""}
+        <a href="${website.link}" target="_blank" rel="noopener noreferrer" class="card-overview-btn">
+          Live Preview <i class="fas fa-arrow-up-right-from-square"></i>
+        </a>
+        <a href="${website.detailsPage || '#'}" class="card-details-btn">See Details</a>
+        <button class="card-cart-btn ${isInCart ? 'added' : ''}" data-id="${website.id}">
+          <i class="fas ${isInCart ? 'fa-check' : 'fa-bag-shopping'}"></i>
+        </button>
       </div>
     </div>
   `;
@@ -889,18 +860,22 @@ function renderWebsites() {
   renderPagination(totalPages);
 }
 
-// Preload images for other pages in the background
+// Preload images for other pages in the background (optimized)
 function preloadNextPageImages(allWebsites) {
-  // Wait a bit to let first page images load first
-  setTimeout(() => {
-    const remainingWebsites = allWebsites.slice(PER_PAGE);
-    remainingWebsites.forEach(website => {
-      if (website.image && website.image !== 'https://via.placeholder.com/400x300') {
-        const img = new Image();
-        img.src = website.image; // Preload in background
-      }
+  if('requestIdleCallback' in window){
+    requestIdleCallback(()=>{
+      const remainingWebsites = allWebsites.slice(PER_PAGE, PER_PAGE * 2); // Only preload next page
+      remainingWebsites.forEach(website => {
+        if (website.image && website.image !== 'https://via.placeholder.com/400x300') {
+          const link = document.createElement('link');
+          link.rel = 'prefetch';
+          link.as = 'image';
+          link.href = website.image;
+          document.head.appendChild(link);
+        }
+      });
     });
-  }, 1000); // Start preloading after 1 second
+  }
 }
 
 function renderPagination(totalPages) {
