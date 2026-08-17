@@ -12,39 +12,35 @@
 let WEBSITES = []; // Will be populated from database
 
 // ============================================================
-// LOAD WEBSITES FROM DATABASE
+// LOAD WEBSITES FROM DATABASE (with instant fallback)
 // ============================================================
 async function loadWebsites() {
+  // Show backup data immediately for instant display
+  WEBSITES = WEBSITES_BACKUP;
+  renderWebsites();
+  
+  // Then fetch from API in background
   try {
-    const response = await fetch(`${API.BASE_URL}/api/websites`);
-    const data = await response.json();
+    const data = await API.cachedFetch(`${API.BASE_URL}/api/websites`);
     
-    if (data.success && data.data) {
-      console.log('Loaded websites:', data.data); // Debug: see what we got from database
+    if (data.success && data.data && data.data.length > 0) {
+      WEBSITES = data.data.map(w => ({
+        id: w.id,
+        title: w.title,
+        image: w.thumbnail_url,
+        description: w.description,
+        link: w.demo_url,
+        category: w.category.toLowerCase(),
+        detailsPage: w.details_page || '#',
+        featured: w.featured
+      }));
       
-      // Transform database format to match existing frontend format
-      WEBSITES = data.data.map(w => {
-        console.log('Website image URL:', w.thumbnail_url); // Debug: see each image URL
-        return {
-          id: w.id,
-          title: w.title,
-          image: w.thumbnail_url,
-          description: w.description,
-          link: w.demo_url,
-          category: w.category.toLowerCase(), // Normalize category
-          detailsPage: w.details_page || '#',
-          featured: w.featured
-        };
-      });
-      
-      console.log('Transformed WEBSITES:', WEBSITES); // Debug: see final array
+      // Re-render with fresh data
       renderWebsites();
-    } else {
-      showWebsiteError('No websites available');
     }
   } catch (error) {
-    console.error('Load websites error:', error);
-    showWebsiteError('Unable to load websites');
+    // Silently fail - backup data already displayed
+    console.error('API error (using backup):', error);
   }
 }
 
@@ -778,76 +774,63 @@ function getFilteredWebsites() {
 }
 
 // ============================================================
-// CARD RENDERER — Auto generates cards from WEBSITES array
+// CARD RENDERER — Optimized for speed
 // ============================================================
 function createCard(website, index) {
   const isInCart = cart.some(c => c.id === website.id);
   const card = document.createElement("div");
   card.className = "website-card";
-  card.style.animationDelay = `${index * 0.06}s`;
-
-  // Determine if this card is on the first page (priority loading)
-  const isFirstPage = index < PER_PAGE;
-  const loadingStrategy = isFirstPage ? 'eager' : 'lazy';
+  card.style.animationDelay = `${index * 0.04}s`; // Faster animation
+  
+  // Optimize image loading
+  const isFirstPage = index < 3; // Only first 3 load immediately
+  const imgSrc = isFirstPage ? website.image : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%23111" width="400" height="300"/%3E%3C/svg%3E';
+  const imgAttr = isFirstPage ? '' : `data-src="${website.image}"`;
+  
+  // Truncate description for faster rendering
+  const desc = website.description.length > 100 ? website.description.substring(0, 100) + '...' : website.description;
 
   card.innerHTML = `
     <div class="card-img-wrapper">
-      ${website.image && website.image !== 'https://via.placeholder.com/400x300'
-        ? `<img class="card-img" src="${website.image}" alt="${website.title}" loading="${loadingStrategy}" 
-               onerror="console.error('Failed to load:', this.src); this.style.display='none';this.nextElementSibling.style.display='flex'">`
-        : ''}
-      <div class="card-img-placeholder" style="${website.image && website.image !== 'https://via.placeholder.com/400x300' ? 'display:none' : ''}">🌐</div>
+      <img class="card-img" src="${imgSrc}" ${imgAttr} alt="${website.title}" loading="${isFirstPage ? 'eager' : 'lazy'}" decoding="async" 
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="card-img-placeholder" style="display:none">🌐</div>
       <span class="card-category">${website.category}</span>
       <div class="card-overlay">
-        <!-- 👉 ADD WEBSITE LINK HERE — controlled by website.link in the data array above -->
-        <a href="${website.link}" target="_blank" rel="noopener noreferrer" class="overlay-preview-btn">
+        <a href="${website.link}" target="_blank" rel="noopener" class="overlay-preview-btn">
           <i class="fas fa-eye"></i> Preview
         </a>
       </div>
     </div>
     <div class="card-body">
       <h3 class="card-title">${website.title}</h3>
-      <p class="card-desc">${website.description}</p>
+      <p class="card-desc">${desc}</p>
       <div class="card-actions">
-
-
-<div class="price-slider">
-
-  ${website.prices?.map(price => `
-  
-    <div class="price-item">
-      ${price}
-    </div>
-
-  `).join("") || ""}
-
-</div>
-
-
-     <div class="card-actions">
-
-  <a href="${website.link}"
-     target="_blank"
-     rel="noopener noreferrer"
-     class="card-overview-btn">
-     Live Preview
-     <i class="fas fa-arrow-up-right-from-square"></i>
-  </a>
-
-  <a href="${website.detailsPage || '#'}"
-     class="card-details-btn">
-     See Details
-  </a>
-
-  <button class="card-cart-btn ${isInCart ? 'added' : ''}"
-          data-id="${website.id}">
-      <i class="fas ${isInCart ? 'fa-check' : 'fa-bag-shopping'}"></i>
-  </button>
-
-</div>
+        <a href="${website.link}" target="_blank" rel="noopener" class="card-overview-btn">
+          Live Preview <i class="fas fa-arrow-up-right-from-square"></i>
+        </a>
+        <a href="${website.detailsPage || '#'}" class="card-details-btn">See Details</a>
+        <button class="card-cart-btn ${isInCart ? 'added' : ''}" data-id="${website.id}">
+          <i class="fas ${isInCart ? 'fa-check' : 'fa-bag-shopping'}"></i>
+        </button>
       </div>
     </div>
   `;
+
+  // Lazy load images after first 3
+  if (!isFirstPage && 'IntersectionObserver' in window) {
+    const img = card.querySelector('img');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && img.dataset.src) {
+          img.src = img.dataset.src;
+          img.removeAttribute('data-src');
+          observer.unobserve(img);
+        }
+      });
+    }, { rootMargin: '50px' });
+    observer.observe(img);
+  }
 
   // Cart button event
   card.querySelector(".card-cart-btn").addEventListener("click", () => addToCart(website.id));
@@ -855,7 +838,7 @@ function createCard(website, index) {
 }
 
 // ============================================================
-// RENDER WEBSITES + PAGINATION
+// RENDER WEBSITES + PAGINATION (Super fast rendering)
 // ============================================================
 function renderWebsites() {
   const grid = document.getElementById("websites-grid");
@@ -868,8 +851,6 @@ function renderWebsites() {
   const start = (currentPage - 1) * PER_PAGE;
   const pageItems = filtered.slice(start, start + PER_PAGE);
 
-  grid.innerHTML = "";
-
   if (pageItems.length === 0) {
     grid.innerHTML = `
       <div class="no-results">
@@ -877,30 +858,46 @@ function renderWebsites() {
         <h3>No websites found</h3>
         <p>Try a different search term or category filter.</p>
       </div>`;
-  } else {
-    pageItems.forEach((w, i) => grid.appendChild(createCard(w, i)));
-    
-    // Preload images for next pages in background (after current page loads)
-    if (currentPage === 1) {
-      preloadNextPageImages(filtered);
-    }
+    renderPagination(totalPages);
+    return;
+  }
+
+  // Clear grid immediately
+  grid.innerHTML = "";
+  
+  // Create all cards at once (faster than batching for small numbers)
+  const fragment = document.createDocumentFragment();
+  pageItems.forEach((w, i) => {
+    fragment.appendChild(createCard(w, i));
+  });
+  
+  // Single DOM update
+  grid.appendChild(fragment);
+  
+  // Preload next page images in idle time
+  if (currentPage === 1 && 'requestIdleCallback' in window) {
+    requestIdleCallback(() => preloadNextPageImages(filtered), { timeout: 2000 });
   }
 
   renderPagination(totalPages);
 }
 
-// Preload images for other pages in the background
+// Preload images for other pages in the background (optimized)
 function preloadNextPageImages(allWebsites) {
-  // Wait a bit to let first page images load first
-  setTimeout(() => {
-    const remainingWebsites = allWebsites.slice(PER_PAGE);
-    remainingWebsites.forEach(website => {
-      if (website.image && website.image !== 'https://via.placeholder.com/400x300') {
-        const img = new Image();
-        img.src = website.image; // Preload in background
-      }
+  if('requestIdleCallback' in window){
+    requestIdleCallback(()=>{
+      const remainingWebsites = allWebsites.slice(PER_PAGE, PER_PAGE * 2); // Only preload next page
+      remainingWebsites.forEach(website => {
+        if (website.image && website.image !== 'https://via.placeholder.com/400x300') {
+          const link = document.createElement('link');
+          link.rel = 'prefetch';
+          link.as = 'image';
+          link.href = website.image;
+          document.head.appendChild(link);
+        }
+      });
     });
-  }, 1000); // Start preloading after 1 second
+  }
 }
 
 function renderPagination(totalPages) {
@@ -923,8 +920,12 @@ function renderPagination(totalPages) {
 
   pag.appendChild(createBtn('<i class="fas fa-chevron-left"></i>', currentPage - 1, currentPage === 1));
 
+  // Mobile: show max 4 pages, Desktop: show max 7
+  const isMobile = window.innerWidth <= 768;
+  const maxVisible = isMobile ? 4 : 7;
+
   for (let i = 1; i <= totalPages; i++) {
-    if (totalPages > 7 && (i > 2 && i < totalPages - 1 && Math.abs(i - currentPage) > 1)) {
+    if (totalPages > maxVisible && (i > 2 && i < totalPages - 1 && Math.abs(i - currentPage) > 1)) {
       if (i === 3 || i === totalPages - 2) {
         const dots = document.createElement("span");
         dots.textContent = "…";
@@ -1173,7 +1174,7 @@ function initAuth() {
       showToast("Network error. Please check your connection.", "error");
       console.error("Login error:", error);
     } finally {
-      btn.textContent = "Login to WebVault";
+      btn.textContent = "Login to Nexic Web";
       btn.disabled = false;
     }
   });
@@ -1363,7 +1364,7 @@ function initAuth() {
   // PASSWORD TOGGLE - Show/Hide Password
   // ============================================================
   function initPasswordToggle() {
-    const toggleButtons = document.querySelectorAll('.toggle-password');
+    const toggleButtons = document.querySelectorAll('.nx-password-toggle');
     
     toggleButtons.forEach(button => {
       // Remove existing listener if any
@@ -1371,14 +1372,13 @@ function initAuth() {
     });
     
     // Re-select after cloning
-    document.querySelectorAll('.toggle-password').forEach(button => {
+    document.querySelectorAll('.nx-password-toggle').forEach(button => {
       button.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         
         const targetId = this.getAttribute('data-target');
         const passwordInput = document.getElementById(targetId);
-        const icon = this.querySelector('i');
         
         if (!passwordInput) {
           console.error('Password input not found:', targetId);
@@ -1387,12 +1387,12 @@ function initAuth() {
         
         if (passwordInput.type === 'password') {
           passwordInput.type = 'text';
-          icon.classList.remove('fa-eye');
-          icon.classList.add('fa-eye-slash');
+          this.classList.add('revealed');
+          passwordInput.classList.add('nx-password-pulse');
+          setTimeout(() => passwordInput.classList.remove('nx-password-pulse'), 450);
         } else {
           passwordInput.type = 'password';
-          icon.classList.remove('fa-eye-slash');
-          icon.classList.add('fa-eye');
+          this.classList.remove('revealed');
         }
       });
     });
@@ -1604,19 +1604,30 @@ function displayTeamMembers(members) {
 }
 
 // ============================================================
-// INIT
+// INIT - Optimized for fast loading
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
-  loadWebsites(); // Load websites from database then render
-  initSearch();
-  initFilters();
-  checkAuthStatus();
-  initAuth();
+  // Initialize UI components immediately
   initNavbar();
   initCartEvents();
-  animateCounters();
   updateCartBadge();
-  loadTeamMembers(); // Load team members from database
+  
+  // Load websites - shows backup data instantly, then fetches from API
+  loadWebsites();
+  
+  // Initialize search and filters after websites load
+  requestAnimationFrame(() => {
+    initSearch();
+    initFilters();
+  });
+  
+  // Defer non-critical operations
+  setTimeout(() => {
+    checkAuthStatus();
+    initAuth();
+    animateCounters();
+    loadTeamMembers();
+  }, 100);
 });
 
 

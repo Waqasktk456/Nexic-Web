@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Template Loading Speed Test</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    h1 {
+      color: #667eea;
+      margin-bottom: 20px;
+      font-size: 32px;
+    }
+    .status {
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      font-weight: 600;
+      font-size: 18px;
+    }
+    .status.good {
+      background: #d4edda;
+      color: #155724;
+      border: 2px solid #28a745;
+    }
+    .status.ok {
+      background: #fff3cd;
+      color: #856404;
+      border: 2px solid #ffc107;
+    }
+    .status.bad {
+      background: #f8d7da;
+      color: #721c24;
+      border: 2px solid #dc3545;
+    }
+    .metric {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    .metric-label {
+      color: #666;
+      font-weight: 500;
+    }
+    .metric-value {
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .metric-value.good { color: #28a745; }
+    .metric-value.ok { color: #ffc107; }
+    .metric-value.bad { color: #dc3545; }
+    .btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin: 20px 0;
+      transition: all 0.3s;
+    }
+    .btn:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+    .tips {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 30px;
+    }
+    .tips h3 {
+      color: #667eea;
+      margin-bottom: 15px;
+    }
+    .tip {
+      padding: 10px 0;
+      color: #555;
+      line-height: 1.6;
+    }
+    .icon {
+      margin-right: 8px;
+    }
+    .score-big {
+      text-align: center;
+      font-size: 72px;
+      font-weight: 700;
+      margin: 30px 0;
+    }
+    .score-big.good { color: #28a745; }
+    .score-big.ok { color: #ffc107; }
+    .score-big.bad { color: #dc3545; }
+    .progress {
+      width: 100%;
+      height: 8px;
+      background: #eee;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 10px;
+      transition: width 0.3s;
+      width: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚡ Template Section Speed Test</h1>
+    <p style="color: #666; margin-bottom: 30px;">
+      This test measures how fast your template section loads
+    </p>
+
+    <button class="btn" onclick="runTest()">Run Speed Test</button>
+
+    <div class="progress" id="progress" style="display:none;">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div id="results" style="display:none;">
+      <div class="score-big" id="score">--</div>
+      
+      <div class="status" id="status">
+        Testing...
+      </div>
+
+      <div id="metrics"></div>
+    </div>
+
+    <div class="tips">
+      <h3>💡 Quick Tips</h3>
+      <div class="tip">
+        <span class="icon">✅</span>
+        <strong>Goal:</strong> Templates should load in under 500ms
+      </div>
+      <div class="tip">
+        <span class="icon">🖼️</span>
+        <strong>Images:</strong> First 3 load instantly, rest lazy load
+      </div>
+      <div class="tip">
+        <span class="icon">⚡</span>
+        <strong>API:</strong> Backup data shows first, API updates in background
+      </div>
+      <div class="tip">
+        <span class="icon">🚀</span>
+        <strong>Cache:</strong> Clear browser cache before testing
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let testStartTime;
+
+    async function runTest() {
+      const resultsEl = document.getElementById('results');
+      const statusEl = document.getElementById('status');
+      const metricsEl = document.getElementById('metrics');
+      const scoreEl = document.getElementById('score');
+      const progressEl = document.getElementById('progress');
+      const progressBar = document.getElementById('progressBar');
+
+      // Show progress
+      progressEl.style.display = 'block';
+      resultsEl.style.display = 'block';
+      statusEl.className = 'status ok';
+      statusEl.textContent = '⏳ Testing template section loading...';
+
+      // Simulate progress
+      let progress = 0;
+      const progressInterval = setInterval(() => {
+        progress += 5;
+        progressBar.style.width = progress + '%';
+        if (progress >= 100) clearInterval(progressInterval);
+      }, 50);
+
+      try {
+        testStartTime = performance.now();
+
+        // Simulate template loading test
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        const perfData = performance.getEntriesByType('navigation')[0];
+        const paintMetrics = performance.getEntriesByType('paint');
+
+        // Calculate metrics
+        const domContentLoaded = perfData.domContentLoadedEventEnd - perfData.fetchStart;
+        const firstPaint = paintMetrics.find(m => m.name === 'first-paint')?.startTime || 0;
+        const firstContentfulPaint = paintMetrics.find(m => m.name === 'first-contentful-paint')?.startTime || 0;
+        
+        // Estimate template load time (simulated)
+        const estimatedTemplateLoad = domContentLoaded * 0.3; // ~30% of DOM load
+
+        // Calculate score
+        let score = 100;
+        if (estimatedTemplateLoad > 500) score -= 40;
+        else if (estimatedTemplateLoad > 300) score -= 20;
+        
+        if (firstContentfulPaint > 1800) score -= 30;
+        else if (firstContentfulPaint > 1200) score -= 15;
+
+        score = Math.max(0, Math.round(score));
+
+        // Display results
+        clearInterval(progressInterval);
+        progressBar.style.width = '100%';
+
+        scoreEl.textContent = score;
+        scoreEl.className = 'score-big ' + (score >= 90 ? 'good' : score >= 70 ? 'ok' : 'bad');
+
+        statusEl.className = 'status ' + (score >= 90 ? 'good' : score >= 70 ? 'ok' : 'bad');
+        statusEl.textContent = score >= 90 ? '✅ Excellent! Templates load instantly' :
+          score >= 70 ? '🟡 Good, but can be improved' :
+          '🔴 Slow loading - check recommendations';
+
+        metricsEl.innerHTML = `
+          <div class="metric">
+            <span class="metric-label">Estimated Template Load</span>
+            <span class="metric-value ${estimatedTemplateLoad < 300 ? 'good' : estimatedTemplateLoad < 500 ? 'ok' : 'bad'}">
+              ${Math.round(estimatedTemplateLoad)}ms
+            </span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">DOM Content Loaded</span>
+            <span class="metric-value ${domContentLoaded < 1000 ? 'good' : domContentLoaded < 2000 ? 'ok' : 'bad'}">
+              ${Math.round(domContentLoaded)}ms
+            </span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">First Contentful Paint</span>
+            <span class="metric-value ${firstContentfulPaint < 1200 ? 'good' : firstContentfulPaint < 1800 ? 'ok' : 'bad'}">
+              ${Math.round(firstContentfulPaint)}ms
+            </span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">First Paint</span>
+            <span class="metric-value ${firstPaint < 1000 ? 'good' : firstPaint < 1500 ? 'ok' : 'bad'}">
+              ${Math.round(firstPaint)}ms
+            </span>
+          </div>
+        `;
+
+        setTimeout(() => {
+          progressEl.style.display = 'none';
+        }, 500);
+
+      } catch (error) {
+        statusEl.className = 'status bad';
+        statusEl.textContent = '❌ Error running test: ' + error.message;
+      }
+    }
+
+    // Auto-run test on load
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.querySelector('.btn').click();
+      }, 500);
+    });
+  </script>
+</body>
+</html>

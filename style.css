@@ -283,6 +283,56 @@ html {
     0 0 20px rgba(124,92,252,.2);
 }
 
+/* ================= USER DISPLAY ================= */
+
+#user-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 10px;
+}
+
+.user-name {
+  padding: 8px 16px;
+  background: rgba(124, 92, 252, 0.1);
+  border: 1px solid rgba(124, 92, 252, 0.3);
+  border-radius: 10px;
+  color: var(--accent2);
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+.logout-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 10px;
+  color: var(--danger);
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: 0.3s ease;
+  white-space: nowrap;
+}
+
+.logout-link:hover {
+  background: rgba(248, 113, 113, 0.2);
+  border-color: rgba(248, 113, 113, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(248, 113, 113, 0.2);
+}
+
+.logout-link svg {
+  width: 16px;
+  height: 16px;
+}
+
 /* ===================== HERO ===================== */
 .hero {
   min-height: 100vh;
@@ -479,13 +529,27 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
 .container { max-width: 1300px; margin: 0 auto; padding: 0 2rem; }
 section { padding: 7rem 0; }
 
+/* Reduce spacing for large screens only */
+@media (min-width: 769px) {
+  .hero { margin-bottom: -3rem; }
+  .websites-section { padding-bottom: 4rem !important; }
+  .membership-section { padding: 4rem 0 !important; }
+  .experts-section { padding: 4rem 0 !important; }
+  .cta-section { padding: 4rem 0 !important; }
+}
+
+/* Mobile spacing adjustments */
+@media (max-width: 768px) {
+  .websites-section { padding-bottom: 3rem !important; }
+}
+
 .section-label {
   color: var(--accent);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursive;
 }
  .section-title{
@@ -743,6 +807,17 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
   display: flex; justify-content: center; align-items: center; gap: 0.5rem;
   margin-top: 3.5rem; flex-wrap: wrap;
 }
+
+@media (max-width: 768px) {
+  .pagination {
+    gap: 0.35rem;
+  }
+  
+  .pagination::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .page-btn {
   min-width: 42px; height: 42px;
   padding: 0 0.8rem;
@@ -755,6 +830,16 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
   display: flex; align-items: center; justify-content: center;
   transition: var(--transition);
 }
+
+@media (max-width: 768px) {
+  .page-btn {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 0.6rem;
+    font-size: 0.85rem;
+  }
+}
+
 .page-btn:hover { border-color: var(--accent); color: var(--text); }
 .page-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 4px 16px rgba(124,92,252,0.4); }
 .page-btn:disabled { opacity: 0.35; pointer-events: none; }
@@ -1074,42 +1159,114 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
   transition: var(--transition);
 }
 
-/* Password input with toggle button */
-.input-group.password-group {
+/* ========================================= NEXICWEB — PREMIUM PASSWORD REVEAL UI ========================================= */
+.input-group {
   position: relative;
 }
 
 .input-group.password-group input {
-  padding-right: 3rem !important; /* Space for toggle button */
+  padding-right: 3rem !important;
 }
 
-/* Password toggle button */
-.toggle-password {
+.nx-password-toggle {
   position: absolute;
-  right: 12px;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%);
-  background: transparent;
-  border: none;
-  color: var(--text3);
+  width: 28px;
+  height: 20px;
   cursor: pointer;
-  padding: 0.5rem;
-  font-size: 1rem;
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
+  z-index: 10;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50% 50% 50% 50%;
+  transition: .4s cubic-bezier(.2,.8,.2,1);
+}
+
+.nx-password-toggle::before {
+  content: "";
+  position: absolute;
+  inset: 3px 0;
+  border: 1.5px solid #777793;
+  border-radius: 50%;
+  transform: rotate(0deg);
+  transition: .4s ease;
+}
+
+.nx-eye-core {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  background: #777793;
+  box-shadow: 0 0 0 rgba(124,92,252,0);
+  transition: .4s ease;
+}
+
+.nx-eye-line {
+  position: absolute;
   width: 32px;
-  height: 32px;
+  height: 1px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%) rotate(35deg);
+  background: #777793;
+  opacity: 1;
+  transition: .4s ease;
 }
 
-.toggle-password:hover {
-  color: var(--accent);
+/* HOVER */
+.nx-password-toggle:hover {
+  transform: translateY(-50%) scale(1.15);
 }
 
-.toggle-password:active {
-  transform: translateY(-50%) scale(0.95);
+.nx-password-toggle:hover .nx-eye-core {
+  background: #a78bfa;
+  box-shadow: 0 0 14px #7c5cfc;
+}
+
+/* REVEALED */
+.nx-password-toggle.revealed {
+  border-color: rgba(124,92,252,.5);
+  box-shadow: 0 0 15px rgba(124,92,252,.25), inset 0 0 12px rgba(124,92,252,.12);
+}
+
+.nx-password-toggle.revealed::before {
+  transform: scaleY(.65);
+  border-color: #a78bfa;
+}
+
+.nx-password-toggle.revealed .nx-eye-line {
+  opacity: 0;
+  transform: translate(-50%,-50%) rotate(0deg) scaleX(0);
+}
+
+.nx-password-toggle.revealed .nx-eye-core {
+  background: #a78bfa;
+  box-shadow: 0 0 8px #7c5cfc, 0 0 18px rgba(124,92,252,.8);
+}
+
+/* PASSWORD TEXT REVEAL ANIMATION */
+.nx-password-pulse {
+  animation: nxPasswordReveal .45s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes nxPasswordReveal {
+  0% {
+    opacity: .35;
+    filter: blur(5px);
+    transform: translateX(8px);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(-2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .input-group input:focus { border-color: var(--accent); background: rgba(124,92,252,0.07); }
@@ -1152,15 +1309,40 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
   .container { padding: 0 1rem !important; }
   .features-section .container { padding: 0 0.75rem !important; }
   
-  /* Features section mobile optimizations */
-  .features-section { 
-    padding: 3rem 0 !important; /* Reduced top padding from 5rem */
+  /* Premium/Features section mobile optimizations */
+  .features-section,
+  .premium-section { 
+    padding: 3rem 0 !important;
+  }
+  
+  .membership-section,
+  .experts-section {
+    padding-top: 3rem !important;
+  }
+  
+  .membership-section {
+    padding-bottom: 3rem !important;
+  }
+  
+  .experts-section {
+    padding-bottom: 3rem !important;
+  }
+  
+  .cta-section {
+    padding: 3rem 0 !important;
+  }
+  
+  .premium-section .container {
+    padding: 0 20px !important;
   }
   
   .features-section .section-label,
-  .features-section .section-title {
+  .features-section .section-title,
+  .premium-section .section-label,
+  .premium-section .section-title {
     max-width: 100% !important;
     padding: 0 0.5rem !important;
+    margin-bottom: 1rem !important;
   }
   
   .feature-card {
@@ -1168,8 +1350,10 @@ font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursi
     max-width: 100% !important;
   }
   
-  .features-grid {
-    gap: 1rem !important;
+  .features-grid,
+  .feature-grid {
+    gap: 0.75rem !important;
+    margin-top: 1.5rem !important;
   }
 }
 /* HARD RESET + FORCE CLEAN RENDER */

@@ -1,10 +1,8 @@
 // =============================================
-// API Configuration
-// Change API_BASE_URL here to update everywhere
+// API Configuration with Caching
 // =============================================
 
-const API_BASE_URL = 'https://nexic-web.onrender.com'; // Render production URL
-
+const API_BASE_URL = 'https://nexic-web.onrender.com';
 
 const API = {
   BASE_URL: API_BASE_URL,
@@ -30,5 +28,30 @@ const API = {
   }
 };
 
-// Export for use in other files
+// Simple cache implementation
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const cache = new Map();
+
+API.cachedFetch = async function(url, options = {}) {
+  const cacheKey = url + JSON.stringify(options);
+  const cached = cache.get(cacheKey);
+  
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    return cached.data;
+  }
+  
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers
+    }
+  });
+  
+  const data = await response.json();
+  cache.set(cacheKey, { data, timestamp: Date.now() });
+  
+  return data;
+};
+
 window.API = API;

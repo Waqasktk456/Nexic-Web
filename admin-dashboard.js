@@ -10,6 +10,7 @@ let websites = [];
 let filteredWebsites = [];
 let currentWebsite = null;
 let thumbnailFile = null;
+let previewImageFile = null;
 let galleryFiles = [];
 let deleteWebsiteId = null;
 let users = [];
@@ -90,6 +91,7 @@ function initializeEventListeners() {
   
   // File uploads
   document.getElementById('thumbnailInput').addEventListener('change', handleThumbnailChange);
+  document.getElementById('previewImageInput').addEventListener('change', handlePreviewImageChange);
   document.getElementById('galleryInput').addEventListener('change', handleGalleryChange);
   
   // Delete modal
@@ -313,6 +315,7 @@ function showWebsiteForm(websiteId = null) {
   navigateTo('websiteForm');
   currentWebsite = websiteId ? websites.find(w => w.id === websiteId) : null;
   thumbnailFile = null;
+  previewImageFile = null;
   galleryFiles = [];
   
   if (currentWebsite) {
@@ -341,8 +344,61 @@ function fillForm(website) {
   document.getElementById('demoUrlInput').value = website.demo_url || '';
   document.getElementById('githubUrlInput').value = website.github_url || '';
   document.getElementById('detailsPageInput').value = website.details_page || '';
+  document.getElementById('displayOrderInput').value = website.display_order || 999;
   document.getElementById('featuredInput').checked = website.featured;
   document.getElementById('statusInput').value = website.status;
+  
+  // Detail page fields
+  document.getElementById('livePreviewUrlInput').value = website.live_preview_url || '';
+  document.getElementById('categoryTagInput').value = website.category_tag || '';
+  document.getElementById('subtitleInput').value = website.subtitle || '';
+  document.getElementById('featureTagsInput').value = website.feature_tags ? website.feature_tags.join(', ') : '';
+  document.getElementById('longDescriptionInput').value = website.long_description || '';
+  document.getElementById('ratingInput').value = website.rating || '';
+  document.getElementById('licenseInput').value = website.license || '';
+  document.getElementById('updatesInput').value = website.updates || '';
+  document.getElementById('featurePillsInput').value = website.feature_pills ? website.feature_pills.join(', ') : '';
+  
+  // Packages
+  if (website.packages) {
+    const pkg = website.packages;
+    
+    // Starter package
+    document.getElementById('starterPriceInput').value = pkg.starter?.price || '';
+    document.getElementById('starterFeaturesInput').value = pkg.starter?.features ? pkg.starter.features.join('\n') : '';
+    
+    // Professional package
+    document.getElementById('professionalPriceInput').value = pkg.professional?.price || '';
+    document.getElementById('professionalFeaturesInput').value = pkg.professional?.features ? pkg.professional.features.join('\n') : '';
+    
+    // Agency package
+    document.getElementById('agencyPriceInput').value = pkg.agency?.price || '';
+    document.getElementById('agencyFeaturesInput').value = pkg.agency?.features ? pkg.agency.features.join('\n') : '';
+  }
+  
+  // Resource cards
+  if (website.resource_cards && website.resource_cards.length > 0) {
+    const cards = website.resource_cards;
+    document.getElementById('resource1TitleInput').value = cards[0]?.title || '';
+    document.getElementById('resource1DescInput').value = cards[0]?.description || '';
+    document.getElementById('resource1LinkInput').value = cards[0]?.link || '';
+    document.getElementById('resource1IconInput').value = cards[0]?.icon || '';
+    
+    document.getElementById('resource2TitleInput').value = cards[1]?.title || '';
+    document.getElementById('resource2DescInput').value = cards[1]?.description || '';
+    document.getElementById('resource2LinkInput').value = cards[1]?.link || '';
+    document.getElementById('resource2IconInput').value = cards[1]?.icon || '';
+    
+    document.getElementById('resource3TitleInput').value = cards[2]?.title || '';
+    document.getElementById('resource3DescInput').value = cards[2]?.description || '';
+    document.getElementById('resource3LinkInput').value = cards[2]?.link || '';
+    document.getElementById('resource3IconInput').value = cards[2]?.icon || '';
+    
+    document.getElementById('resource4TitleInput').value = cards[3]?.title || '';
+    document.getElementById('resource4DescInput').value = cards[3]?.description || '';
+    document.getElementById('resource4LinkInput').value = cards[3]?.link || '';
+    document.getElementById('resource4IconInput').value = cards[3]?.icon || '';
+  }
   
   // Show existing thumbnail
   const thumbnailPreview = document.getElementById('thumbnailPreview');
@@ -352,6 +408,17 @@ function fillForm(website) {
     </div>
   `;
   document.getElementById('thumbnailBtnText').textContent = 'Change Thumbnail';
+  
+  // Show existing preview image
+  if (website.preview_image_url) {
+    const previewImagePreview = document.getElementById('previewImagePreview');
+    previewImagePreview.innerHTML = `
+      <div class="preview-item">
+        <img src="${website.preview_image_url}" alt="Preview Image">
+      </div>
+    `;
+    document.getElementById('previewImageBtnText').textContent = 'Change Preview Image';
+  }
   
   // Show existing gallery
   if (website.website_images && website.website_images.length > 0) {
@@ -374,9 +441,11 @@ function resetForm() {
   document.getElementById('websiteForm').reset();
   document.getElementById('websiteId').value = '';
   document.getElementById('thumbnailPreview').innerHTML = '';
+  document.getElementById('previewImagePreview').innerHTML = '';
   document.getElementById('existingGalleryPreview').innerHTML = '';
   document.getElementById('galleryPreview').innerHTML = '';
   document.getElementById('thumbnailBtnText').textContent = 'Upload Thumbnail';
+  document.getElementById('previewImageBtnText').textContent = 'Upload Preview Image';
 }
 
 function handleThumbnailChange(e) {
@@ -403,6 +472,32 @@ function handleThumbnailChange(e) {
   reader.readAsDataURL(file);
   
   document.getElementById('thumbnailBtnText').textContent = 'Change Thumbnail';
+}
+
+function handlePreviewImageChange(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  if (file.size > 5 * 1024 * 1024) {
+    showToast('Image size should be less than 5MB', 'error');
+    e.target.value = '';
+    return;
+  }
+  
+  previewImageFile = file;
+  
+  const preview = document.getElementById('previewImagePreview');
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    preview.innerHTML = `
+      <div class="preview-item">
+        <img src="${e.target.result}" alt="Preview image">
+      </div>
+    `;
+  };
+  reader.readAsDataURL(file);
+  
+  document.getElementById('previewImageBtnText').textContent = 'Change Preview Image';
 }
 
 function handleGalleryChange(e) {
@@ -522,6 +617,8 @@ async function handleFormSubmit(e) {
   
   try {
     const formData = new FormData();
+    
+    // Basic fields
     formData.append('title', document.getElementById('titleInput').value);
     formData.append('description', document.getElementById('descriptionInput').value);
     formData.append('category', document.getElementById('categoryInput').value);
@@ -529,11 +626,77 @@ async function handleFormSubmit(e) {
     formData.append('demo_url', document.getElementById('demoUrlInput').value);
     formData.append('github_url', document.getElementById('githubUrlInput').value);
     formData.append('details_page', document.getElementById('detailsPageInput').value);
+    formData.append('display_order', document.getElementById('displayOrderInput').value);
     formData.append('featured', document.getElementById('featuredInput').checked);
     formData.append('status', document.getElementById('statusInput').value);
     
+    // Detail page content fields
+    formData.append('live_preview_url', document.getElementById('livePreviewUrlInput').value || '');
+    formData.append('category_tag', document.getElementById('categoryTagInput').value || '');
+    formData.append('subtitle', document.getElementById('subtitleInput').value || '');
+    formData.append('long_description', document.getElementById('longDescriptionInput').value || '');
+    formData.append('rating', document.getElementById('ratingInput').value || '');
+    formData.append('license', document.getElementById('licenseInput').value || '');
+    formData.append('updates', document.getElementById('updatesInput').value || '');
+    
+    // Feature tags (comma-separated string to array)
+    const featureTags = document.getElementById('featureTagsInput').value;
+    if (featureTags) {
+      formData.append('feature_tags', JSON.stringify(featureTags.split(',').map(t => t.trim()).filter(t => t)));
+    }
+    
+    // Feature pills (comma-separated string to array)
+    const featurePills = document.getElementById('featurePillsInput').value;
+    if (featurePills) {
+      formData.append('feature_pills', JSON.stringify(featurePills.split(',').map(t => t.trim()).filter(t => t)));
+    }
+    
+    // Packages
+    const packages = {
+      starter: {
+        price: document.getElementById('starterPriceInput').value || null,
+        features: document.getElementById('starterFeaturesInput').value 
+          ? document.getElementById('starterFeaturesInput').value.split('\n').map(f => f.trim()).filter(f => f)
+          : []
+      },
+      professional: {
+        price: document.getElementById('professionalPriceInput').value || null,
+        features: document.getElementById('professionalFeaturesInput').value 
+          ? document.getElementById('professionalFeaturesInput').value.split('\n').map(f => f.trim()).filter(f => f)
+          : []
+      },
+      agency: {
+        price: document.getElementById('agencyPriceInput').value || null,
+        features: document.getElementById('agencyFeaturesInput').value 
+          ? document.getElementById('agencyFeaturesInput').value.split('\n').map(f => f.trim()).filter(f => f)
+          : []
+      }
+    };
+    formData.append('packages', JSON.stringify(packages));
+    
+    // Resource cards
+    const resourceCards = [];
+    for (let i = 1; i <= 4; i++) {
+      const title = document.getElementById(`resource${i}TitleInput`).value;
+      const description = document.getElementById(`resource${i}DescInput`).value;
+      const link = document.getElementById(`resource${i}LinkInput`).value;
+      const icon = document.getElementById(`resource${i}IconInput`).value;
+      
+      if (title || description || link) {
+        resourceCards.push({ title, description, link, icon: icon || 'fa-link' });
+      }
+    }
+    if (resourceCards.length > 0) {
+      formData.append('resource_cards', JSON.stringify(resourceCards));
+    }
+    
+    // Images
     if (thumbnailFile) {
       formData.append('thumbnail', thumbnailFile);
+    }
+    
+    if (previewImageFile) {
+      formData.append('preview_image', previewImageFile);
     }
     
     galleryFiles.forEach(file => {
