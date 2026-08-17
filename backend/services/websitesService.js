@@ -214,163 +214,94 @@ exports.createWebsite = async (websiteData, files) => {
 
 // Update website
 exports.updateWebsite = async (id, websiteData, files) => {
-  try {
-    // Check if website exists
-    const existingWebsite = await this.getWebsiteById(id);
-    if (!existingWebsite) {
-      throw new Error('Website not found');
-    }
-
-    // Create update object with only provided fields
-    const updateData = {};
-    
-    // Basic fields
-    if (websiteData.title !== undefined) updateData.title = websiteData.title;
-    if (websiteData.description !== undefined) updateData.description = websiteData.description;
-    if (websiteData.category !== undefined) updateData.category = websiteData.category;
-    if (websiteData.price !== undefined) updateData.price = websiteData.price;
-    if (websiteData.demo_url !== undefined) updateData.demo_url = websiteData.demo_url;
-    if (websiteData.github_url !== undefined) updateData.github_url = websiteData.github_url;
-    if (websiteData.details_page !== undefined) updateData.details_page = websiteData.details_page;
-    if (websiteData.display_order !== undefined) updateData.display_order = websiteData.display_order;
-    if (websiteData.featured !== undefined) updateData.featured = websiteData.featured;
-    if (websiteData.status !== undefined) updateData.status = websiteData.status;
-    
-    // Detail page fields
-    if (websiteData.live_preview_url !== undefined) updateData.live_preview_url = websiteData.live_preview_url;
-    if (websiteData.category_tag !== undefined) updateData.category_tag = websiteData.category_tag;
-    if (websiteData.subtitle !== undefined) updateData.subtitle = websiteData.subtitle;
-    if (websiteData.long_description !== undefined) updateData.long_description = websiteData.long_description;
-    if (websiteData.rating !== undefined) updateData.rating = websiteData.rating;
-    if (websiteData.license !== undefined) updateData.license = websiteData.license;
-    if (websiteData.updates !== undefined) updateData.updates = websiteData.updates;
-    
-    // Parse JSON fields if they are strings
-    if (websiteData.feature_tags !== undefined) {
-      if (typeof websiteData.feature_tags === 'string') {
-        try {
-          updateData.feature_tags = JSON.parse(websiteData.feature_tags);
-        } catch (e) {
-          updateData.feature_tags = null;
-        }
-      } else {
-        updateData.feature_tags = websiteData.feature_tags;
-      }
-    }
-    
-    if (websiteData.feature_pills !== undefined) {
-      if (typeof websiteData.feature_pills === 'string') {
-        try {
-          updateData.feature_pills = JSON.parse(websiteData.feature_pills);
-        } catch (e) {
-          updateData.feature_pills = null;
-        }
-      } else {
-        updateData.feature_pills = websiteData.feature_pills;
-      }
-    }
-    
-    if (websiteData.packages !== undefined) {
-      if (typeof websiteData.packages === 'string') {
-        try {
-          updateData.packages = JSON.parse(websiteData.packages);
-        } catch (e) {
-          updateData.packages = null;
-        }
-      } else {
-        updateData.packages = websiteData.packages;
-      }
-    }
-    
-    if (websiteData.resource_cards !== undefined) {
-      if (typeof websiteData.resource_cards === 'string') {
-        try {
-          updateData.resource_cards = JSON.parse(websiteData.resource_cards);
-        } catch (e) {
-          updateData.resource_cards = null;
-        }
-      } else {
-        updateData.resource_cards = websiteData.resource_cards;
-      }
-    }
-
-    // Upload new thumbnail if provided
-    if (files && files.thumbnail && files.thumbnail.length > 0) {
-      const newThumbnailUrl = await uploadImage(files.thumbnail[0], 'websites/thumbnails');
-      
-      // Delete old thumbnail
-      if (existingWebsite.thumbnail_url) {
-        await deleteImage(existingWebsite.thumbnail_url);
-      }
-      
-      updateData.thumbnail_url = newThumbnailUrl;
-    }
-
-    // Upload new preview image if provided
-    if (files && files.preview_image && files.preview_image.length > 0) {
-      const newPreviewImageUrl = await uploadImage(files.preview_image[0], 'websites/previews');
-      
-      // Delete old preview image
-      if (existingWebsite.preview_image_url) {
-        await deleteImage(existingWebsite.preview_image_url);
-      }
-      
-      updateData.preview_image_url = newPreviewImageUrl;
-    }
-
-    // Only update if there are fields to update
-    if (Object.keys(updateData).length === 0) {
-      return existingWebsite;
-    }
-
-    // Update website
-    const { data: updatedWebsite, error: updateError } = await supabase
-      .from('websites')
-      .update(updateData)
-      .eq('id', id)
-      .select()
-      .single();
-
-    if (updateError) {
-      console.error('Supabase update error:', updateError);
-      throw new Error(`Failed to update website: ${updateError.message}`);
-    }
-
-    // Upload new gallery images if provided
-    if (files && files.gallery && files.gallery.length > 0) {
-      // Get current max display_order
-      const { data: existingImages } = await supabase
-        .from('website_images')
-        .select('display_order')
-        .eq('website_id', id)
-        .order('display_order', { ascending: false })
-        .limit(1);
-
-      const startOrder = existingImages && existingImages.length > 0 
-        ? existingImages[0].display_order + 1 
-        : 0;
-
-      const galleryImages = [];
-
-      for (let i = 0; i < files.gallery.length; i++) {
-        const imageUrl = await uploadImage(files.gallery[i], 'websites/gallery');
-        galleryImages.push({
-          website_id: id,
-          image_url: imageUrl,
-          display_order: startOrder + i
-        });
-      }
-
-      await supabase
-        .from('website_images')
-        .insert(galleryImages);
-    }
-
-    return await this.getWebsiteById(id);
-  } catch (error) {
-    console.error('Update website service error:', error);
-    throw error;
+  // Check if website exists
+  const existingWebsite = await this.getWebsiteById(id);
+  if (!existingWebsite) {
+    throw new Error('Website not found');
   }
+
+  // Upload new thumbnail if provided
+  if (files && files.thumbnail && files.thumbnail.length > 0) {
+    const newThumbnailUrl = await uploadImage(files.thumbnail[0], 'websites/thumbnails');
+    
+    // Delete old thumbnail
+    if (existingWebsite.thumbnail_url) {
+      await deleteImage(existingWebsite.thumbnail_url);
+    }
+    
+    websiteData.thumbnail_url = newThumbnailUrl;
+  }
+
+  // Upload new preview image if provided
+  if (files && files.preview_image && files.preview_image.length > 0) {
+    const newPreviewImageUrl = await uploadImage(files.preview_image[0], 'websites/previews');
+    
+    // Delete old preview image
+    if (existingWebsite.preview_image_url) {
+      await deleteImage(existingWebsite.preview_image_url);
+    }
+    
+    websiteData.preview_image_url = newPreviewImageUrl;
+  }
+
+  // Parse JSON fields if they are strings (only if they exist in websiteData)
+  const jsonFields = ['feature_tags', 'feature_pills', 'packages', 'resource_cards'];
+  
+  jsonFields.forEach(field => {
+    if (websiteData.hasOwnProperty(field) && typeof websiteData[field] === 'string' && websiteData[field]) {
+      try {
+        websiteData[field] = JSON.parse(websiteData[field]);
+      } catch (e) {
+        // If parsing fails, keep as null
+        console.error(`Failed to parse ${field}:`, e.message);
+        websiteData[field] = null;
+      }
+    }
+  });
+
+  // Update website
+  const { data: updatedWebsite, error: updateError } = await supabase
+    .from('websites')
+    .update(websiteData)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (updateError) {
+    throw new Error(`Failed to update website: ${updateError.message}`);
+  }
+
+  // Upload new gallery images if provided
+  if (files && files.gallery && files.gallery.length > 0) {
+    // Get current max display_order
+    const { data: existingImages } = await supabase
+      .from('website_images')
+      .select('display_order')
+      .eq('website_id', id)
+      .order('display_order', { ascending: false })
+      .limit(1);
+
+    const startOrder = existingImages && existingImages.length > 0 
+      ? existingImages[0].display_order + 1 
+      : 0;
+
+    const galleryImages = [];
+
+    for (let i = 0; i < files.gallery.length; i++) {
+      const imageUrl = await uploadImage(files.gallery[i], 'websites/gallery');
+      galleryImages.push({
+        website_id: id,
+        image_url: imageUrl,
+        display_order: startOrder + i
+      });
+    }
+
+    await supabase
+      .from('website_images')
+      .insert(galleryImages);
+  }
+
+  return await this.getWebsiteById(id);
 };
 
 // Delete website
