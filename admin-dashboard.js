@@ -461,28 +461,40 @@ function fillForm(website) {
 }
 
 function resetForm() {
-  const websiteForm = document.getElementById('websiteForm');
-  const websiteId = document.getElementById('websiteId');
-  const thumbnailPreview = document.getElementById('thumbnailPreview');
-  const previewImagePreview = document.getElementById('previewImagePreview');
-  const existingGalleryPreview = document.getElementById('existingGalleryPreview');
-  const galleryPreview = document.getElementById('galleryPreview');
-  const thumbnailBtnText = document.getElementById('thumbnailBtnText');
-  const previewImageBtnText = document.getElementById('previewImageBtnText');
+  console.log('resetForm called'); // Debug
   
-  if (websiteForm) websiteForm.reset();
-  if (websiteId) websiteId.value = '';
-  if (thumbnailPreview) thumbnailPreview.innerHTML = '';
-  if (previewImagePreview) previewImagePreview.innerHTML = '';
-  if (existingGalleryPreview) existingGalleryPreview.innerHTML = '';
-  if (galleryPreview) galleryPreview.innerHTML = '';
-  if (thumbnailBtnText) thumbnailBtnText.textContent = 'Upload Thumbnail';
-  if (previewImageBtnText) previewImageBtnText.textContent = 'Upload Preview Image';
-  
-  // Reset file variables
-  thumbnailFile = null;
-  previewImageFile = null;
-  galleryFiles = [];
+  try {
+    const websiteForm = document.getElementById('websiteForm');
+    const websiteId = document.getElementById('websiteId');
+    const thumbnailPreview = document.getElementById('thumbnailPreview');
+    const previewImagePreview = document.getElementById('previewImagePreview');
+    const existingGalleryPreview = document.getElementById('existingGalleryPreview');
+    const galleryPreview = document.getElementById('galleryPreview');
+    const thumbnailBtnText = document.getElementById('thumbnailBtnText');
+    const previewImageBtnText = document.getElementById('previewImageBtnText');
+    
+    console.log('Elements found:', {
+      websiteForm: !!websiteForm,
+      thumbnailBtnText: !!thumbnailBtnText,
+      previewImageBtnText: !!previewImageBtnText
+    }); // Debug
+    
+    if (websiteForm) websiteForm.reset();
+    if (websiteId) websiteId.value = '';
+    if (thumbnailPreview) thumbnailPreview.innerHTML = '';
+    if (previewImagePreview) previewImagePreview.innerHTML = '';
+    if (existingGalleryPreview) existingGalleryPreview.innerHTML = '';
+    if (galleryPreview) galleryPreview.innerHTML = '';
+    if (thumbnailBtnText) thumbnailBtnText.textContent = 'Upload Thumbnail';
+    if (previewImageBtnText) previewImageBtnText.textContent = 'Upload Preview Image';
+    
+    // Reset file variables
+    thumbnailFile = null;
+    previewImageFile = null;
+    galleryFiles = [];
+  } catch (error) {
+    console.error('resetForm error:', error);
+  }
 }
 
 function handleThumbnailChange(e) {
