@@ -82,29 +82,50 @@ function initializeEventListeners() {
   document.getElementById('backTeamBtn').addEventListener('click', () => navigateTo('team'));
   document.getElementById('cancelTeamBtn').addEventListener('click', () => navigateTo('team'));
   document.getElementById('teamForm').addEventListener('submit', handleTeamFormSubmit);
-  document.getElementById('memberPhotoInput').addEventListener('change', handleMemberPhotoChange);
+  // Member photo upload (if exists)
+  const memberPhotoInput = document.getElementById('memberPhotoInput');
+  if (memberPhotoInput) {
+    memberPhotoInput.addEventListener('change', handleMemberPhotoChange);
+  }
   
-  // Form
-  document.getElementById('backBtn').addEventListener('click', () => navigateTo('websites'));
-  document.getElementById('cancelBtn').addEventListener('click', () => navigateTo('websites'));
-  document.getElementById('websiteForm').addEventListener('submit', handleFormSubmit);
+  // Form buttons (if exist)
+  const backBtn = document.getElementById('backBtn');
+  const cancelBtn = document.getElementById('cancelBtn');
+  const websiteForm = document.getElementById('websiteForm');
   
-  // File uploads
-  document.getElementById('thumbnailInput').addEventListener('change', handleThumbnailChange);
-  document.getElementById('previewImageInput').addEventListener('change', handlePreviewImageChange);
-  document.getElementById('galleryInput').addEventListener('change', handleGalleryChange);
+  if (backBtn) backBtn.addEventListener('click', () => navigateTo('websites'));
+  if (cancelBtn) cancelBtn.addEventListener('click', () => navigateTo('websites'));
+  if (websiteForm) websiteForm.addEventListener('submit', handleFormSubmit);
   
-  // Delete modal
-  document.getElementById('cancelDeleteBtn').addEventListener('click', hideDeleteModal);
-  document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDelete);
+  // File uploads (if exist)
+  const thumbnailInput = document.getElementById('thumbnailInput');
+  const previewImageInput = document.getElementById('previewImageInput');
+  const galleryInput = document.getElementById('galleryInput');
   
-  // Role change modal
-  document.getElementById('cancelRoleBtn').addEventListener('click', hideRoleModal);
-  document.getElementById('confirmRoleBtn').addEventListener('click', confirmRoleChange);
+  if (thumbnailInput) thumbnailInput.addEventListener('change', handleThumbnailChange);
+  if (previewImageInput) previewImageInput.addEventListener('change', handlePreviewImageChange);
+  if (galleryInput) galleryInput.addEventListener('change', handleGalleryChange);
   
-  // Delete user modal
-  document.getElementById('cancelDeleteUserBtn').addEventListener('click', hideDeleteUserModal);
-  document.getElementById('confirmDeleteUserBtn').addEventListener('click', confirmDeleteUser);
+  // Delete modal (if exists)
+  const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+  const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+  
+  if (cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', hideDeleteModal);
+  if (confirmDeleteBtn) confirmDeleteBtn.addEventListener('click', confirmDelete);
+  
+  // Role change modal (if exists)
+  const cancelRoleBtn = document.getElementById('cancelRoleBtn');
+  const confirmRoleBtn = document.getElementById('confirmRoleBtn');
+  
+  if (cancelRoleBtn) cancelRoleBtn.addEventListener('click', hideRoleModal);
+  if (confirmRoleBtn) confirmRoleBtn.addEventListener('click', confirmRoleChange);
+  
+  // Delete user modal (if exists)
+  const cancelDeleteUserBtn = document.getElementById('cancelDeleteUserBtn');
+  const confirmDeleteUserBtn = document.getElementById('confirmDeleteUserBtn');
+  
+  if (cancelDeleteUserBtn) cancelDeleteUserBtn.addEventListener('click', hideDeleteUserModal);
+  if (confirmDeleteUserBtn) confirmDeleteUserBtn.addEventListener('click', confirmDeleteUser);
   
   // Delete team member modal
   document.getElementById('cancelDeleteTeamBtn').addEventListener('click', hideDeleteTeamModal);
@@ -438,11 +459,17 @@ function fillForm(website) {
 }
 
 function resetForm() {
-  document.getElementById('websiteForm').reset();
-  document.getElementById('websiteId').value = '';
-  document.getElementById('thumbnailPreview').innerHTML = '';
-  document.getElementById('previewImagePreview').innerHTML = '';
-  document.getElementById('existingGalleryPreview').innerHTML = '';
+  const websiteForm = document.getElementById('websiteForm');
+  const websiteId = document.getElementById('websiteId');
+  const thumbnailPreview = document.getElementById('thumbnailPreview');
+  const previewImagePreview = document.getElementById('previewImagePreview');
+  const existingGalleryPreview = document.getElementById('existingGalleryPreview');
+  
+  if (websiteForm) websiteForm.reset();
+  if (websiteId) websiteId.value = '';
+  if (thumbnailPreview) thumbnailPreview.innerHTML = '';
+  if (previewImagePreview) previewImagePreview.innerHTML = '';
+  if (existingGalleryPreview) existingGalleryPreview.innerHTML = '';
   document.getElementById('galleryPreview').innerHTML = '';
   document.getElementById('thumbnailBtnText').textContent = 'Upload Thumbnail';
   document.getElementById('previewImageBtnText').textContent = 'Upload Preview Image';
@@ -601,7 +628,8 @@ async function deleteGalleryImage(websiteId, imageId) {
 async function handleFormSubmit(e) {
   e.preventDefault();
   
-  const isEdit = !!document.getElementById('websiteId').value;
+  const websiteIdEl = document.getElementById('websiteId');
+  const isEdit = websiteIdEl && !!websiteIdEl.value;
   
   if (!isEdit && !thumbnailFile) {
     showToast('Please upload a thumbnail image', 'error');
@@ -610,6 +638,12 @@ async function handleFormSubmit(e) {
   
   const submitBtn = document.getElementById('submitBtn');
   const submitBtnText = document.getElementById('submitBtnText');
+  
+  if (!submitBtn || !submitBtnText) {
+    console.error('Submit button elements not found');
+    return;
+  }
+  
   const originalText = submitBtnText.textContent;
   
   submitBtn.disabled = true;
@@ -618,15 +652,32 @@ async function handleFormSubmit(e) {
   try {
     const formData = new FormData();
     
-    // Basic fields
-    formData.append('title', document.getElementById('titleInput').value);
-    formData.append('description', document.getElementById('descriptionInput').value);
-    formData.append('category', document.getElementById('categoryInput').value);
-    formData.append('price', document.getElementById('priceInput').value);
-    formData.append('demo_url', document.getElementById('demoUrlInput').value);
-    formData.append('github_url', document.getElementById('githubUrlInput').value);
-    formData.append('details_page', document.getElementById('detailsPageInput').value);
-    formData.append('display_order', document.getElementById('displayOrderInput').value);
+    // Helper function to safely get element value
+    const getValue = (id) => {
+      const el = document.getElementById(id);
+      return el ? el.value : '';
+    };
+    
+    // Basic fields - only add if elements exist
+    const titleInput = document.getElementById('titleInput');
+    const descriptionInput = document.getElementById('descriptionInput');
+    const categoryInput = document.getElementById('categoryInput');
+    
+    if (!titleInput || !descriptionInput || !categoryInput) {
+      showToast('Required form fields are missing', 'error');
+      submitBtn.disabled = false;
+      submitBtnText.textContent = originalText;
+      return;
+    }
+    
+    formData.append('title', titleInput.value);
+    formData.append('description', descriptionInput.value);
+    formData.append('category', categoryInput.value);
+    formData.append('price', getValue('priceInput'));
+    formData.append('demo_url', getValue('demoUrlInput'));
+    formData.append('github_url', getValue('githubUrlInput'));
+    formData.append('details_page', getValue('detailsPageInput'));
+    formData.append('display_order', getValue('displayOrderInput'));
     formData.append('featured', document.getElementById('featuredInput').checked);
     formData.append('status', document.getElementById('statusInput').value);
     
@@ -860,19 +911,35 @@ function handleRoleChange(userId, newRole) {
   changeRoleUserId = userId;
   changeRoleNewRole = newRole;
   
-  document.getElementById('roleModalText').textContent = 
-    `Change ${user.name}'s role from "${user.role}" to "${newRole}"?`;
+  const roleModalText = document.getElementById('roleModalText');
+  const roleModal = document.getElementById('roleModal');
   
-  document.getElementById('roleModal').classList.add('active');
+  if (roleModalText) {
+    roleModalText.textContent = `Change ${user.name}'s role from "${user.role}" to "${newRole}"?`;
+  }
+  
+  if (roleModal) {
+    roleModal.classList.add('active');
+  }
 }
 
 function hideRoleModal() {
   changeRoleUserId = null;
   changeRoleNewRole = null;
-  document.getElementById('roleModal').classList.remove('active');
-  // Reset selectors to original values
-  document.querySelectorAll('.role-selector').forEach(select => {
-    select.value = select.dataset.original;
+  
+  const roleModal = document.getElementById('roleModal');
+  if (roleModal) {
+    roleModal.classList.remove('active');
+  }
+  
+  // Reset selectors to original value
+  const roleSelectors = document.querySelectorAll('.role-selector');
+  roleSelectors.forEach(select => {
+    const userId = select.dataset.userId;
+    const user = users.find(u => u.id === userId);
+    if (user) {
+      select.value = user.role;
+    }
   });
 }
 
