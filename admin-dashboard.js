@@ -428,7 +428,8 @@ function fillForm(website) {
       <img src="${website.thumbnail_url}" alt="Thumbnail">
     </div>
   `;
-  document.getElementById('thumbnailBtnText').textContent = 'Change Thumbnail';
+  const thumbnailBtnText = document.getElementById('thumbnailBtnText');
+  if (thumbnailBtnText) thumbnailBtnText.textContent = 'Change Thumbnail';
   
   // Show existing preview image
   if (website.preview_image_url) {
@@ -438,7 +439,8 @@ function fillForm(website) {
         <img src="${website.preview_image_url}" alt="Preview Image">
       </div>
     `;
-    document.getElementById('previewImageBtnText').textContent = 'Change Preview Image';
+    const previewImageBtnText = document.getElementById('previewImageBtnText');
+    if (previewImageBtnText) previewImageBtnText.textContent = 'Change Preview Image';
   }
   
   // Show existing gallery
@@ -506,7 +508,8 @@ function handleThumbnailChange(e) {
   };
   reader.readAsDataURL(file);
   
-  document.getElementById('thumbnailBtnText').textContent = 'Change Thumbnail';
+  const thumbnailBtnText = document.getElementById('thumbnailBtnText');
+  if (thumbnailBtnText) thumbnailBtnText.textContent = 'Change Thumbnail';
 }
 
 function handlePreviewImageChange(e) {
@@ -532,7 +535,8 @@ function handlePreviewImageChange(e) {
   };
   reader.readAsDataURL(file);
   
-  document.getElementById('previewImageBtnText').textContent = 'Change Preview Image';
+  const previewImageBtnText = document.getElementById('previewImageBtnText');
+  if (previewImageBtnText) previewImageBtnText.textContent = 'Change Preview Image';
 }
 
 function handleGalleryChange(e) {
@@ -555,6 +559,8 @@ function handleGalleryChange(e) {
   galleryFiles = validFiles;
   
   const preview = document.getElementById('galleryPreview');
+  if (!preview) return;
+  
   preview.innerHTML = '';
   
   validFiles.forEach((file, index) => {
@@ -579,10 +585,14 @@ function handleGalleryChange(e) {
 
 function removeGalleryPreview(index) {
   galleryFiles.splice(index, 1);
-  document.getElementById('galleryInput').value = '';
+  
+  const galleryInput = document.getElementById('galleryInput');
+  if (galleryInput) galleryInput.value = '';
   
   // Re-render previews
   const preview = document.getElementById('galleryPreview');
+  if (!preview) return;
+  
   preview.innerHTML = '';
   
   galleryFiles.forEach((file, i) => {
