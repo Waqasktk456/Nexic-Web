@@ -461,8 +461,6 @@ function fillForm(website) {
 }
 
 function resetForm() {
-  console.log('resetForm called'); // Debug
-  
   try {
     const websiteForm = document.getElementById('websiteForm');
     const websiteId = document.getElementById('websiteId');
@@ -473,12 +471,6 @@ function resetForm() {
     const thumbnailBtnText = document.getElementById('thumbnailBtnText');
     const previewImageBtnText = document.getElementById('previewImageBtnText');
     
-    console.log('Elements found:', {
-      websiteForm: !!websiteForm,
-      thumbnailBtnText: !!thumbnailBtnText,
-      previewImageBtnText: !!previewImageBtnText
-    }); // Debug
-    
     if (websiteForm) websiteForm.reset();
     if (websiteId) websiteId.value = '';
     if (thumbnailPreview) thumbnailPreview.innerHTML = '';
@@ -486,7 +478,7 @@ function resetForm() {
     if (existingGalleryPreview) existingGalleryPreview.innerHTML = '';
     if (galleryPreview) galleryPreview.innerHTML = '';
     if (thumbnailBtnText) thumbnailBtnText.textContent = 'Upload Thumbnail';
-    if (previewImageBtnText) previewImageBtnText.textContent = 'Upload Preview Image';
+    // previewImageBtnText element doesn't exist in the HTML, so skip it
     
     // Reset file variables
     thumbnailFile = null;
@@ -768,13 +760,23 @@ async function handleFormSubmit(e) {
       formData.append('packages', JSON.stringify(packages));
     }
     
-    // Resource cards
+    // Resource cards - only process if elements exist
     const resourceCards = [];
     for (let i = 1; i <= 4; i++) {
-      const title = document.getElementById(`resource${i}TitleInput`).value;
-      const description = document.getElementById(`resource${i}DescInput`).value;
-      const link = document.getElementById(`resource${i}LinkInput`).value;
-      const icon = document.getElementById(`resource${i}IconInput`).value;
+      const titleElem = document.getElementById(`resource${i}TitleInput`);
+      const descElem = document.getElementById(`resource${i}DescInput`);
+      const linkElem = document.getElementById(`resource${i}LinkInput`);
+      const iconElem = document.getElementById(`resource${i}IconInput`);
+      
+      // Skip if elements don't exist
+      if (!titleElem && !descElem && !linkElem) {
+        continue;
+      }
+      
+      const title = titleElem ? titleElem.value : '';
+      const description = descElem ? descElem.value : '';
+      const link = linkElem ? linkElem.value : '';
+      const icon = iconElem ? iconElem.value : 'fa-link';
       
       if (title || description || link) {
         resourceCards.push({ title, description, link, icon: icon || 'fa-link' });
