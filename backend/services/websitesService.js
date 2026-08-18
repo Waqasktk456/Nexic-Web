@@ -138,38 +138,19 @@ exports.createWebsite = async (websiteData, files) => {
     websiteData.preview_image_url = previewImageUrl;
   }
 
-  // Parse JSON fields if they are strings
-  if (typeof websiteData.feature_tags === 'string') {
-    try {
-      websiteData.feature_tags = JSON.parse(websiteData.feature_tags);
-    } catch (e) {
-      websiteData.feature_tags = null;
-    }
-  }
+  // Parse JSON fields if they are strings (only if they exist)
+  const jsonFields = ['feature_tags', 'feature_pills', 'packages', 'resource_cards'];
   
-  if (typeof websiteData.feature_pills === 'string') {
-    try {
-      websiteData.feature_pills = JSON.parse(websiteData.feature_pills);
-    } catch (e) {
-      websiteData.feature_pills = null;
+  jsonFields.forEach(field => {
+    if (websiteData.hasOwnProperty(field) && typeof websiteData[field] === 'string' && websiteData[field]) {
+      try {
+        websiteData[field] = JSON.parse(websiteData[field]);
+      } catch (e) {
+        console.error(`Failed to parse ${field}:`, e.message);
+        websiteData[field] = null;
+      }
     }
-  }
-  
-  if (typeof websiteData.packages === 'string') {
-    try {
-      websiteData.packages = JSON.parse(websiteData.packages);
-    } catch (e) {
-      websiteData.packages = null;
-    }
-  }
-  
-  if (typeof websiteData.resource_cards === 'string') {
-    try {
-      websiteData.resource_cards = JSON.parse(websiteData.resource_cards);
-    } catch (e) {
-      websiteData.resource_cards = null;
-    }
-  }
+  });
 
   // Insert website
   const { data: website, error: websiteError } = await supabase
