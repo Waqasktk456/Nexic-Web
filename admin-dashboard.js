@@ -464,15 +464,23 @@ function resetForm() {
   const thumbnailPreview = document.getElementById('thumbnailPreview');
   const previewImagePreview = document.getElementById('previewImagePreview');
   const existingGalleryPreview = document.getElementById('existingGalleryPreview');
+  const galleryPreview = document.getElementById('galleryPreview');
+  const thumbnailBtnText = document.getElementById('thumbnailBtnText');
+  const previewImageBtnText = document.getElementById('previewImageBtnText');
   
   if (websiteForm) websiteForm.reset();
   if (websiteId) websiteId.value = '';
   if (thumbnailPreview) thumbnailPreview.innerHTML = '';
   if (previewImagePreview) previewImagePreview.innerHTML = '';
   if (existingGalleryPreview) existingGalleryPreview.innerHTML = '';
-  document.getElementById('galleryPreview').innerHTML = '';
-  document.getElementById('thumbnailBtnText').textContent = 'Upload Thumbnail';
-  document.getElementById('previewImageBtnText').textContent = 'Upload Preview Image';
+  if (galleryPreview) galleryPreview.innerHTML = '';
+  if (thumbnailBtnText) thumbnailBtnText.textContent = 'Upload Thumbnail';
+  if (previewImageBtnText) previewImageBtnText.textContent = 'Upload Preview Image';
+  
+  // Reset file variables
+  thumbnailFile = null;
+  previewImageFile = null;
+  galleryFiles = [];
 }
 
 function handleThumbnailChange(e) {
@@ -678,52 +686,65 @@ async function handleFormSubmit(e) {
     formData.append('github_url', getValue('githubUrlInput'));
     formData.append('details_page', getValue('detailsPageInput'));
     formData.append('display_order', getValue('displayOrderInput'));
-    formData.append('featured', document.getElementById('featuredInput').checked);
-    formData.append('status', document.getElementById('statusInput').value);
     
-    // Detail page content fields
-    formData.append('live_preview_url', document.getElementById('livePreviewUrlInput').value || '');
-    formData.append('category_tag', document.getElementById('categoryTagInput').value || '');
-    formData.append('subtitle', document.getElementById('subtitleInput').value || '');
-    formData.append('long_description', document.getElementById('longDescriptionInput').value || '');
-    formData.append('rating', document.getElementById('ratingInput').value || '');
-    formData.append('license', document.getElementById('licenseInput').value || '');
-    formData.append('updates', document.getElementById('updatesInput').value || '');
+    const featuredInput = document.getElementById('featuredInput');
+    const statusInput = document.getElementById('statusInput');
+    
+    if (featuredInput) formData.append('featured', featuredInput.checked);
+    if (statusInput) formData.append('status', statusInput.value);
+    
+    // Detail page content fields - all optional
+    formData.append('live_preview_url', getValue('livePreviewUrlInput'));
+    formData.append('category_tag', getValue('categoryTagInput'));
+    formData.append('subtitle', getValue('subtitleInput'));
+    formData.append('long_description', getValue('longDescriptionInput'));
+    formData.append('rating', getValue('ratingInput'));
+    formData.append('license', getValue('licenseInput'));
+    formData.append('updates', getValue('updatesInput'));
     
     // Feature tags (comma-separated string to array)
-    const featureTags = document.getElementById('featureTagsInput').value;
-    if (featureTags) {
-      formData.append('feature_tags', JSON.stringify(featureTags.split(',').map(t => t.trim()).filter(t => t)));
+    const featureTagsInput = document.getElementById('featureTagsInput');
+    if (featureTagsInput && featureTagsInput.value) {
+      formData.append('feature_tags', JSON.stringify(featureTagsInput.value.split(',').map(t => t.trim()).filter(t => t)));
     }
     
     // Feature pills (comma-separated string to array)
-    const featurePills = document.getElementById('featurePillsInput').value;
-    if (featurePills) {
-      formData.append('feature_pills', JSON.stringify(featurePills.split(',').map(t => t.trim()).filter(t => t)));
+    const featurePillsInput = document.getElementById('featurePillsInput');
+    if (featurePillsInput && featurePillsInput.value) {
+      formData.append('feature_pills', JSON.stringify(featurePillsInput.value.split(',').map(t => t.trim()).filter(t => t)));
     }
     
-    // Packages
-    const packages = {
-      starter: {
-        price: document.getElementById('starterPriceInput').value || null,
-        features: document.getElementById('starterFeaturesInput').value 
-          ? document.getElementById('starterFeaturesInput').value.split('\n').map(f => f.trim()).filter(f => f)
-          : []
-      },
-      professional: {
-        price: document.getElementById('professionalPriceInput').value || null,
-        features: document.getElementById('professionalFeaturesInput').value 
-          ? document.getElementById('professionalFeaturesInput').value.split('\n').map(f => f.trim()).filter(f => f)
-          : []
-      },
-      agency: {
-        price: document.getElementById('agencyPriceInput').value || null,
-        features: document.getElementById('agencyFeaturesInput').value 
-          ? document.getElementById('agencyFeaturesInput').value.split('\n').map(f => f.trim()).filter(f => f)
-          : []
-      }
-    };
-    formData.append('packages', JSON.stringify(packages));
+    // Packages - only if elements exist
+    const starterPriceInput = document.getElementById('starterPriceInput');
+    const starterFeaturesInput = document.getElementById('starterFeaturesInput');
+    const professionalPriceInput = document.getElementById('professionalPriceInput');
+    const professionalFeaturesInput = document.getElementById('professionalFeaturesInput');
+    const agencyPriceInput = document.getElementById('agencyPriceInput');
+    const agencyFeaturesInput = document.getElementById('agencyFeaturesInput');
+    
+    if (starterPriceInput || professionalPriceInput || agencyPriceInput) {
+      const packages = {
+        starter: {
+          price: starterPriceInput ? starterPriceInput.value || null : null,
+          features: starterFeaturesInput && starterFeaturesInput.value
+            ? starterFeaturesInput.value.split('\n').map(f => f.trim()).filter(f => f)
+            : []
+        },
+        professional: {
+          price: professionalPriceInput ? professionalPriceInput.value || null : null,
+          features: professionalFeaturesInput && professionalFeaturesInput.value
+            ? professionalFeaturesInput.value.split('\n').map(f => f.trim()).filter(f => f)
+            : []
+        },
+        agency: {
+          price: agencyPriceInput ? agencyPriceInput.value || null : null,
+          features: agencyFeaturesInput && agencyFeaturesInput.value
+            ? agencyFeaturesInput.value.split('\n').map(f => f.trim()).filter(f => f)
+            : []
+        }
+      };
+      formData.append('packages', JSON.stringify(packages));
+    }
     
     // Resource cards
     const resourceCards = [];
