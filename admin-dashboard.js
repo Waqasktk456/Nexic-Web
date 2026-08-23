@@ -370,55 +370,36 @@ function fillForm(website) {
   document.getElementById('statusInput').value = website.status;
   
   // Detail page fields
+  document.getElementById('previewImageInput').value = website.preview_image_url || '';
   document.getElementById('livePreviewUrlInput').value = website.live_preview_url || '';
-  document.getElementById('categoryTagInput').value = website.category_tag || '';
-  document.getElementById('subtitleInput').value = website.subtitle || '';
-  document.getElementById('featureTagsInput').value = website.feature_tags ? website.feature_tags.join(', ') : '';
-  document.getElementById('longDescriptionInput').value = website.long_description || '';
+  document.getElementById('taglineInput').value = website.tagline || '';
+  document.getElementById('overviewTitleInput').value = website.overview_title || '';
+  document.getElementById('overviewDescriptionInput').value = website.overview_description || '';
   document.getElementById('ratingInput').value = website.rating || '';
   document.getElementById('licenseInput').value = website.license || '';
   document.getElementById('updatesInput').value = website.updates || '';
-  document.getElementById('featurePillsInput').value = website.feature_pills ? website.feature_pills.join(', ') : '';
+  document.getElementById('customHtmlInput').value = website.custom_html || '';
   
-  // Packages
-  if (website.packages) {
-    const pkg = website.packages;
-    
-    // Starter package
-    document.getElementById('starterPriceInput').value = pkg.starter?.price || '';
-    document.getElementById('starterFeaturesInput').value = pkg.starter?.features ? pkg.starter.features.join('\n') : '';
-    
-    // Professional package
-    document.getElementById('professionalPriceInput').value = pkg.professional?.price || '';
-    document.getElementById('professionalFeaturesInput').value = pkg.professional?.features ? pkg.professional.features.join('\n') : '';
-    
-    // Agency package
-    document.getElementById('agencyPriceInput').value = pkg.agency?.price || '';
-    document.getElementById('agencyFeaturesInput').value = pkg.agency?.features ? pkg.agency.features.join('\n') : '';
+  // Features
+  document.getElementById('featuresInput').value = website.features ? website.features.join(', ') : '';
+  document.getElementById('highlightsInput').value = website.highlights ? website.highlights.join(', ') : '';
+  
+  // Pricing cards - populate the array
+  if (website.pricing_cards && website.pricing_cards.length > 0) {
+    pricingCards = website.pricing_cards.map(card => ({
+      id: Date.now() + Math.random(),
+      ...card
+    }));
+    renderPricingCards();
   }
   
-  // Resource cards
-  if (website.resource_cards && website.resource_cards.length > 0) {
-    const cards = website.resource_cards;
-    document.getElementById('resource1TitleInput').value = cards[0]?.title || '';
-    document.getElementById('resource1DescInput').value = cards[0]?.description || '';
-    document.getElementById('resource1LinkInput').value = cards[0]?.link || '';
-    document.getElementById('resource1IconInput').value = cards[0]?.icon || '';
-    
-    document.getElementById('resource2TitleInput').value = cards[1]?.title || '';
-    document.getElementById('resource2DescInput').value = cards[1]?.description || '';
-    document.getElementById('resource2LinkInput').value = cards[1]?.link || '';
-    document.getElementById('resource2IconInput').value = cards[1]?.icon || '';
-    
-    document.getElementById('resource3TitleInput').value = cards[2]?.title || '';
-    document.getElementById('resource3DescInput').value = cards[2]?.description || '';
-    document.getElementById('resource3LinkInput').value = cards[2]?.link || '';
-    document.getElementById('resource3IconInput').value = cards[2]?.icon || '';
-    
-    document.getElementById('resource4TitleInput').value = cards[3]?.title || '';
-    document.getElementById('resource4DescInput').value = cards[3]?.description || '';
-    document.getElementById('resource4LinkInput').value = cards[3]?.link || '';
-    document.getElementById('resource4IconInput').value = cards[3]?.icon || '';
+  // Resources - populate the array
+  if (website.resources && website.resources.length > 0) {
+    resourcesCards = website.resources.map(resource => ({
+      id: Date.now() + Math.random(),
+      ...resource
+    }));
+    renderResources();
   }
   
   // Show existing thumbnail
@@ -430,18 +411,6 @@ function fillForm(website) {
   `;
   const thumbnailBtnText = document.getElementById('thumbnailBtnText');
   if (thumbnailBtnText) thumbnailBtnText.textContent = 'Change Thumbnail';
-  
-  // Show existing preview image
-  if (website.preview_image_url) {
-    const previewImagePreview = document.getElementById('previewImagePreview');
-    previewImagePreview.innerHTML = `
-      <div class="preview-item">
-        <img src="${website.preview_image_url}" alt="Preview Image">
-      </div>
-    `;
-    const previewImageBtnText = document.getElementById('previewImageBtnText');
-    if (previewImageBtnText) previewImageBtnText.textContent = 'Change Preview Image';
-  }
   
   // Show existing gallery
   if (website.website_images && website.website_images.length > 0) {
@@ -798,6 +767,21 @@ async function handleFormSubmit(e) {
     galleryFiles.forEach(file => {
       formData.append('gallery', file);
     });
+    
+    // Custom HTML
+    formData.append('custom_html', getValue('customHtmlInput'));
+    
+    // Pricing cards
+    const pricingData = getPricingCardsData();
+    if (pricingData.length > 0) {
+      formData.append('pricing_cards', JSON.stringify(pricingData));
+    }
+    
+    // Resources
+    const resourcesData = getResourcesData();
+    if (resourcesData.length > 0) {
+      formData.append('resources', JSON.stringify(resourcesData));
+    }
     
     const url = isEdit 
       ? `${API_BASE_URL}/websites/${document.getElementById('websiteId').value}`
@@ -1286,6 +1270,212 @@ async function confirmDeleteTeam() {
     showToast('Failed to delete team member', 'error');
   }
 }
+
+// ============================================================
+// PRICING CARDS MANAGEMENT
+// ============================================================
+
+let pricingCards = [];
+
+function initializePricingCards() {
+  const container = document.getElementById('pricingCardsContainer');
+  if (!container) return;
+  
+  document.getElementById('addPricingCardBtn').addEventListener('click', addPricingCard);
+  renderPricingCards();
+}
+
+function addPricingCard() {
+  pricingCards.push({
+    id: Date.now(),
+    name: '',
+    price: '',
+    interval: 'one-time',
+    features: []
+  });
+  renderPricingCards();
+}
+
+function removePricingCard(id) {
+  pricingCards = pricingCards.filter(card => card.id !== id);
+  renderPricingCards();
+}
+
+function renderPricingCards() {
+  const container = document.getElementById('pricingCardsContainer');
+  if (!container) return;
+  
+  container.innerHTML = pricingCards.map((card, index) => `
+    <div class="pricing-card-form" style="border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+      <div class="form-grid" style="margin-bottom: 1rem;">
+        <div class="input-group">
+          <label class="label">Package Name</label>
+          <input type="text" class="input" value="${card.name}" 
+                 onchange="updatePricingCard(${card.id}, 'name', this.value)" 
+                 placeholder="Starter Package">
+        </div>
+        <div class="input-group">
+          <label class="label">Price ($)</label>
+          <input type="number" class="input" value="${card.price}" step="0.01"
+                 onchange="updatePricingCard(${card.id}, 'price', this.value)"
+                 placeholder="49">
+        </div>
+        <div class="input-group">
+          <label class="label">Interval</label>
+          <select class="select" onchange="updatePricingCard(${card.id}, 'interval', this.value)">
+            <option value="one-time" ${card.interval === 'one-time' ? 'selected' : ''}>One-time</option>
+            <option value="monthly" ${card.interval === 'monthly' ? 'selected' : ''}>Monthly</option>
+            <option value="yearly" ${card.interval === 'yearly' ? 'selected' : ''}>Yearly</option>
+            <option value="lifetime" ${card.interval === 'lifetime' ? 'selected' : ''}>Lifetime</option>
+          </select>
+        </div>
+        <div class="input-group" style="display: flex; align-items: flex-end;">
+          <button type="button" class="btn btn-danger" 
+                  onclick="removePricingCard(${card.id})"
+                  style="width: 100%; margin-top: auto;">
+            Remove Card
+          </button>
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 1rem;">
+        <label class="label">Features (one per line)</label>
+        <textarea class="textarea" rows="3" 
+                  onchange="updatePricingCard(${card.id}, 'features', this.value.split('\\n').map(f => f.trim()).filter(f => f))"
+                  placeholder="1 Landing Page&#10;Basic UI Components&#10;Email Support">${card.features.join('\n')}</textarea>
+        <small style="color: var(--text3); font-size: 0.85rem;">Enter each feature on a new line</small>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updatePricingCard(id, field, value) {
+  const card = pricingCards.find(c => c.id === id);
+  if (card) {
+    card[field] = value;
+  }
+}
+
+function getPricingCardsData() {
+  return pricingCards.filter(card => card.name && card.price).map(card => ({
+    name: card.name,
+    price: parseFloat(card.price),
+    interval: card.interval,
+    features: card.features
+  }));
+}
+
+// ============================================================
+// RESOURCES MANAGEMENT
+// ============================================================
+
+let resourcesCards = [];
+
+function initializeResources() {
+  const container = document.getElementById('resourcesContainer');
+  if (!container) return;
+  
+  document.getElementById('addResourceBtn').addEventListener('click', addResource);
+  renderResources();
+}
+
+function addResource() {
+  resourcesCards.push({
+    id: Date.now(),
+    title: '',
+    description: '',
+    link: '',
+    icon: 'fa-link'
+  });
+  renderResources();
+}
+
+function removeResource(id) {
+  resourcesCards = resourcesCards.filter(resource => resource.id !== id);
+  renderResources();
+}
+
+function renderResources() {
+  const container = document.getElementById('resourcesContainer');
+  if (!container) return;
+  
+  container.innerHTML = resourcesCards.map((resource, index) => `
+    <div class="resource-form" style="border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+      <div class="form-grid" style="margin-bottom: 1rem;">
+        <div class="input-group full-width">
+          <label class="label">Resource Title</label>
+          <input type="text" class="input" value="${resource.title}" 
+                 onchange="updateResource(${resource.id}, 'title', this.value)" 
+                 placeholder="Full Source Code">
+        </div>
+
+        <div class="input-group full-width">
+          <label class="label">Description</label>
+          <textarea class="textarea" rows="2"
+                    onchange="updateResource(${resource.id}, 'description', this.value)"
+                    placeholder="Browse the complete repository and project structure.">${resource.description}</textarea>
+        </div>
+
+        <div class="input-group full-width">
+          <label class="label">Link URL</label>
+          <input type="url" class="input" value="${resource.link}" 
+                 onchange="updateResource(${resource.id}, 'link', this.value)" 
+                 placeholder="https://github.com/...">
+        </div>
+
+        <div class="input-group">
+          <label class="label">Icon Class (Font Awesome)</label>
+          <input type="text" class="input" value="${resource.icon}" 
+                 onchange="updateResource(${resource.id}, 'icon', this.value)" 
+                 placeholder="fa-link">
+          <small style="color: var(--text3); font-size: 0.85rem;">e.g., fa-code, fa-github, fa-book, etc.</small>
+        </div>
+
+        <div class="input-group" style="display: flex; align-items: flex-end;">
+          <button type="button" class="btn btn-danger" 
+                  onclick="removeResource(${resource.id})"
+                  style="width: 100%; margin-top: auto;">
+            Remove Resource
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateResource(id, field, value) {
+  const resource = resourcesCards.find(r => r.id === id);
+  if (resource) {
+    resource[field] = value;
+  }
+}
+
+function getResourcesData() {
+  return resourcesCards.filter(resource => resource.title && resource.link).map(resource => ({
+    title: resource.title,
+    description: resource.description,
+    link: resource.link,
+    icon: resource.icon || 'fa-link'
+  }));
+}
+
+// ============================================================
+// Initialize dynamic forms when website form is shown
+// ============================================================
+
+function initializeDynamicForms() {
+  pricingCards = [];
+  resourcesCards = [];
+  initializePricingCards();
+  initializeResources();
+}
+
+// Update the existing showWebsiteForm function to call this
+const originalShowWebsiteForm = showWebsiteForm;
+showWebsiteForm = function(websiteId = null) {
+  originalShowWebsiteForm(websiteId);
+  initializeDynamicForms();
+};
 
 // Toast
 function showToast(message, type = 'success') {

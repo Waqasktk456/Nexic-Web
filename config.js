@@ -2,7 +2,7 @@
 // API Configuration with Caching
 // =============================================
 
-const API_BASE_URL = 'https://nexic-web.onrender.com';
+const API_BASE_URL = 'http://localhost:5000';
 
 const API = {
   BASE_URL: API_BASE_URL,

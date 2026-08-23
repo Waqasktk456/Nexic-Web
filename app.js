@@ -6,6 +6,32 @@
 'use strict';
 
 // ============================================================
+// 🖼️ IMAGE OPTIMIZATION - Lazy Loading & Async Decoding
+// Automatically optimize all images for faster performance
+// ============================================================
+function optimizeAllImages() {
+  document.querySelectorAll('img').forEach(img => {
+    if (!img.hasAttribute('loading')) {
+      img.setAttribute('loading', 'lazy');
+    }
+    if (!img.hasAttribute('decoding')) {
+      img.setAttribute('decoding', 'async');
+    }
+  });
+}
+
+// Run optimization on page load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', optimizeAllImages);
+} else {
+  optimizeAllImages();
+}
+
+// Also optimize dynamically added images
+const observer = new MutationObserver(optimizeAllImages);
+observer.observe(document.body, { childList: true, subtree: true });
+
+// ============================================================
 // 👉 WEBSITES LOADED FROM DATABASE
 // Each card is AUTO GENERATED from this data — no HTML needed
 // ============================================================
@@ -24,16 +50,35 @@ async function loadWebsites() {
     const data = await API.cachedFetch(`${API.BASE_URL}/api/websites`);
     
     if (data.success && data.data && data.data.length > 0) {
-      WEBSITES = data.data.map(w => ({
-        id: w.id,
-        title: w.title,
-        image: w.thumbnail_url,
-        description: w.description,
-        link: w.demo_url,
-        category: w.category.toLowerCase(),
-        detailsPage: w.details_page || '#',
-        featured: w.featured
-      }));
+      WEBSITES = data.data.map((w, index) => {
+        // Array of fallback images if thumbnail_url is missing
+        const fallbackImages = [
+          'image/land4.png',
+          'image/LAND.png',
+          'image/new/TITAN.png',
+          'image/new/nexos-enterprise.png',
+          'image/new/creative-raven..png',
+          'image/gra[hic.png',
+          'image/new/vectral.png',
+          'cello.png'
+        ];
+        
+        // Use thumbnail_url if exists and is not empty, otherwise use a fallback
+        const imageUrl = (w.thumbnail_url && w.thumbnail_url.trim()) 
+          ? w.thumbnail_url 
+          : fallbackImages[Math.floor(Math.random() * fallbackImages.length)];
+        
+        return {
+          id: w.id,
+          title: w.title,
+          image: imageUrl,
+          description: w.description,
+          link: w.demo_url,
+          category: w.category.toLowerCase(),
+          detailsPage: w.details_page || '#',
+          featured: w.featured
+        };
+      });
       
       // Re-render with fresh data
       renderWebsites();
@@ -782,17 +827,15 @@ function createCard(website, index) {
   card.className = "website-card";
   card.style.animationDelay = `${index * 0.04}s`; // Faster animation
   
-  // Optimize image loading
-  const isFirstPage = index < 3; // Only first 3 load immediately
-  const imgSrc = isFirstPage ? website.image : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%23111" width="400" height="300"/%3E%3C/svg%3E';
-  const imgAttr = isFirstPage ? '' : `data-src="${website.image}"`;
+  // Always use the actual image - lazy loading handles performance
+  const imgSrc = website.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%23111" width="400" height="300"/%3E%3C/svg%3E';
   
   // Truncate description for faster rendering
   const desc = website.description.length > 100 ? website.description.substring(0, 100) + '...' : website.description;
 
   card.innerHTML = `
     <div class="card-img-wrapper">
-      <img class="card-img" src="${imgSrc}" ${imgAttr} alt="${website.title}" loading="${isFirstPage ? 'eager' : 'lazy'}" decoding="async" 
+      <img class="card-img" src="${imgSrc}" alt="${website.title}" loading="lazy" decoding="async" 
            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
       <div class="card-img-placeholder" style="display:none">🌐</div>
       <span class="card-category">${website.category}</span>
@@ -816,21 +859,6 @@ function createCard(website, index) {
       </div>
     </div>
   `;
-
-  // Lazy load images after first 3
-  if (!isFirstPage && 'IntersectionObserver' in window) {
-    const img = card.querySelector('img');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && img.dataset.src) {
-          img.src = img.dataset.src;
-          img.removeAttribute('data-src');
-          observer.unobserve(img);
-        }
-      });
-    }, { rootMargin: '50px' });
-    observer.observe(img);
-  }
 
   // Cart button event
   card.querySelector(".card-cart-btn").addEventListener("click", () => addToCart(website.id));

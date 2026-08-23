@@ -276,6 +276,101 @@
           </div>
 
           <div class="card">
+            <h2 class="card-title">Detail Page Information</h2>
+            <div class="form-grid">
+              <div class="input-group full-width">
+                <label class="label">Preview Image URL</label>
+                <input type="url" class="input" id="previewImageInput" placeholder="https://example.com/image.jpg">
+                <small style="color: var(--text3); font-size: 0.85rem;">Image shown on the right side of detail page</small>
+              </div>
+
+              <div class="input-group full-width">
+                <label class="label">Live Preview URL</label>
+                <input type="url" class="input" id="livePreviewUrlInput" placeholder="https://demo.example.com">
+                <small style="color: var(--text3); font-size: 0.85rem;">Link to live preview of the website</small>
+              </div>
+
+              <div class="input-group full-width">
+                <label class="label">Tagline</label>
+                <input type="text" class="input" id="taglineInput" placeholder="Grow Beyond Limits">
+                <small style="color: var(--text3); font-size: 0.85rem;">Short subtitle for the detail page</small>
+              </div>
+
+              <div class="input-group">
+                <label class="label">Rating (0-5)</label>
+                <input type="number" class="input" id="ratingInput" placeholder="4.8" step="0.1" min="0" max="5">
+              </div>
+
+              <div class="input-group">
+                <label class="label">License Type</label>
+                <input type="text" class="input" id="licenseInput" placeholder="Commercial">
+              </div>
+
+              <div class="input-group">
+                <label class="label">Updates</label>
+                <input type="text" class="input" id="updatesInput" placeholder="Lifetime">
+              </div>
+
+              <div class="input-group full-width">
+                <label class="label">Features (comma-separated)</label>
+                <input type="text" class="input" id="featuresInput" placeholder="Responsive Design, SEO Optimized, Clean Code, Fast Performance">
+                <small style="color: var(--text3); font-size: 0.85rem;">Separate features with commas</small>
+              </div>
+
+              <div class="input-group full-width">
+                <label class="label">Overview Title</label>
+                <input type="text" class="input" id="overviewTitleInput" placeholder="Built for Real-World Deployment">
+              </div>
+
+              <div class="input-group full-width">
+                <label class="label">Overview Description</label>
+                <textarea class="textarea" id="overviewDescriptionInput" rows="4" placeholder="This SaaS template includes production-grade frontend..."></textarea>
+              </div>
+
+              <div class="input-group full-width">
+                <label class="label">Highlights (comma-separated)</label>
+                <input type="text" class="input" id="highlightsInput" placeholder="Lightweight CSS, Mobile-First, Vanilla JS, SEO Ready, 95+ Lighthouse">
+                <small style="color: var(--text3); font-size: 0.85rem;">Separate highlights with commas</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title">Pricing Cards</h2>
+            <div id="pricingCardsContainer"></div>
+            <button type="button" class="btn btn-secondary" id="addPricingCardBtn" style="margin-top: 1rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Add Pricing Card
+            </button>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title">Resources Section</h2>
+            <div id="resourcesContainer"></div>
+            <button type="button" class="btn btn-secondary" id="addResourceBtn" style="margin-top: 1rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Add Resource
+            </button>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title">Custom HTML Content</h2>
+            <div class="form-grid">
+              <div class="input-group full-width">
+                <label class="label">Custom HTML Code</label>
+                <textarea class="textarea" id="customHtmlInput" rows="8" placeholder="Paste your custom HTML content here..."></textarea>
+                <small style="color: var(--text3); font-size: 0.85rem;">Any custom HTML/CSS code for the detail page</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
             <h2 class="card-title">Images</h2>
             
             <div class="upload-section">

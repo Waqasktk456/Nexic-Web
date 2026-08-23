@@ -3,55 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
- <title>NexicWeb — Premium Website Marketplace</title>
+  <title>NexicWeb — Premium Website Marketplace</title>
   
-  <!-- Preconnect to external domains -->
+  <link rel="stylesheet" href="style.css?v=15" />
+  
+  <!-- Load fonts DIRECTLY - same as GitHub version (fixes mobile Comic Sans) -->
+  <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-  
-  <!-- Critical CSS inline for instant first paint -->
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    body{background:#0a0b14;color:#e8e8f0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.6;overflow-x:hidden}
-    .navbar{position:fixed;top:0;width:100%;z-index:100;background:rgba(10,11,20,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.05);padding:0 2rem;height:70px}
-    .nav-inner{max-width:1400px;margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between}
-    .nav-logo{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:700;color:#fff;text-decoration:none}
-    .logo-icon{font-size:22px}
-    .hero{min-height:100vh;padding:140px 2rem 80px;display:flex;align-items:center;justify-content:center;position:relative}
-    .hero-content{text-align:center;max-width:900px}
-    .hero-title{font-size:clamp(2rem,6vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:1.5rem;color:#fff}
-    .accent-text{background:linear-gradient(135deg,#8b5cf6,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .hero-sub{font-size:1.1rem;color:#a0a0b0;margin-bottom:2rem;max-width:600px;margin-left:auto;margin-right:auto}
-    .btn-primary{display:inline-flex;align-items:center;gap:10px;background:#8b5cf6;color:#fff;padding:14px 32px;border-radius:8px;font-weight:600;text-decoration:none;transition:transform .2s,box-shadow .2s}
-    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(139,92,246,.3)}
-    .websites-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2rem;margin:3rem 0}
-    .skeleton-card{background:rgba(255,255,255,.03);border-radius:12px;overflow:hidden;animation:pulse 1.5s ease-in-out infinite}
-    .skeleton-img{height:200px;background:linear-gradient(90deg,rgba(255,255,255,.05) 25%,rgba(255,255,255,.1) 50%,rgba(255,255,255,.05) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
-    .skeleton-body{padding:20px}
-    .skeleton-title{height:24px;background:rgba(255,255,255,.05);border-radius:4px;margin-bottom:12px;width:70%}
-    .skeleton-text{height:14px;background:rgba(255,255,255,.05);border-radius:4px;margin-bottom:8px}
-    .skeleton-text.short{width:50%}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-    @media(max-width:768px){.navbar{padding:0 1rem;height:60px}.hero{padding:100px 1rem 60px}.hero-title{font-size:2rem}.websites-grid{grid-template-columns:1fr;gap:1.5rem}}
-  </style>
-  
-  <!-- Defer non-critical CSS -->
-  <link rel="preload" href="style.css?v=14" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
-  <noscript><link rel="stylesheet" href="style.css?v=14"/></noscript>
-  
-  <!-- Load only essential fonts, defer others -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Syne:wght@600;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Syne:wght@600;800&display=swap" rel="stylesheet"/></noscript>
-  
-  <!-- Defer Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'"/>
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/></noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700;800&display=swap" rel="stylesheet">
   
   <link rel="icon" type="image/png" href="aura.png">
-
   <link rel="icon" href="logo.png" type="image/png">
+  
+  <!-- Preload critical images -->
+  <link rel="preload" as="image" href="aura.png">
+  <link rel="preload" as="image" href="logo.png">
   <meta name="description" content="Nexic Web is a premium website marketplace offering modern website templates, custom website development, SEO-friendly business websites, and responsive web solutions.">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="author" content="Nexic Web">
@@ -623,6 +594,27 @@ NexicWeb
 <script>
 // Critical performance optimizations
 (function(){
+  // Optimize images for faster loading
+  function optimizeImages() {
+    document.querySelectorAll('img').forEach(img => {
+      if (!img.hasAttribute('loading')) {
+        img.setAttribute('loading', 'lazy');
+      }
+      img.setAttribute('decoding', 'async');
+    });
+  }
+  
+  // Run on load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', optimizeImages);
+  } else {
+    optimizeImages();
+  }
+  
+  // Also run on dynamic content load
+  const observer = new MutationObserver(optimizeImages);
+  observer.observe(document.body, { childList: true, subtree: true });
+  
   // Lazy load images
   if('loading' in HTMLImageElement.prototype){
     const images=document.querySelectorAll('img[loading="lazy"]');
