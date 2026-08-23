@@ -10,6 +10,7 @@ let websites = [];
 let filteredWebsites = [];
 let currentWebsite = null;
 let thumbnailFile = null;
+let previewImageFile = null;
 let galleryFiles = [];
 let deleteWebsiteId = null;
 let users = [];
@@ -81,28 +82,50 @@ function initializeEventListeners() {
   document.getElementById('backTeamBtn').addEventListener('click', () => navigateTo('team'));
   document.getElementById('cancelTeamBtn').addEventListener('click', () => navigateTo('team'));
   document.getElementById('teamForm').addEventListener('submit', handleTeamFormSubmit);
-  document.getElementById('memberPhotoInput').addEventListener('change', handleMemberPhotoChange);
+  // Member photo upload (if exists)
+  const memberPhotoInput = document.getElementById('memberPhotoInput');
+  if (memberPhotoInput) {
+    memberPhotoInput.addEventListener('change', handleMemberPhotoChange);
+  }
   
-  // Form
-  document.getElementById('backBtn').addEventListener('click', () => navigateTo('websites'));
-  document.getElementById('cancelBtn').addEventListener('click', () => navigateTo('websites'));
-  document.getElementById('websiteForm').addEventListener('submit', handleFormSubmit);
+  // Form buttons (if exist)
+  const backBtn = document.getElementById('backBtn');
+  const cancelBtn = document.getElementById('cancelBtn');
+  const websiteForm = document.getElementById('websiteForm');
   
-  // File uploads
-  document.getElementById('thumbnailInput').addEventListener('change', handleThumbnailChange);
-  document.getElementById('galleryInput').addEventListener('change', handleGalleryChange);
+  if (backBtn) backBtn.addEventListener('click', () => navigateTo('websites'));
+  if (cancelBtn) cancelBtn.addEventListener('click', () => navigateTo('websites'));
+  if (websiteForm) websiteForm.addEventListener('submit', handleFormSubmit);
   
-  // Delete modal
-  document.getElementById('cancelDeleteBtn').addEventListener('click', hideDeleteModal);
-  document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDelete);
+  // File uploads (if exist)
+  const thumbnailInput = document.getElementById('thumbnailInput');
+  const previewImageInput = document.getElementById('previewImageInput');
+  const galleryInput = document.getElementById('galleryInput');
   
-  // Role change modal
-  document.getElementById('cancelRoleBtn').addEventListener('click', hideRoleModal);
-  document.getElementById('confirmRoleBtn').addEventListener('click', confirmRoleChange);
+  if (thumbnailInput) thumbnailInput.addEventListener('change', handleThumbnailChange);
+  if (previewImageInput) previewImageInput.addEventListener('change', handlePreviewImageChange);
+  if (galleryInput) galleryInput.addEventListener('change', handleGalleryChange);
   
-  // Delete user modal
-  document.getElementById('cancelDeleteUserBtn').addEventListener('click', hideDeleteUserModal);
-  document.getElementById('confirmDeleteUserBtn').addEventListener('click', confirmDeleteUser);
+  // Delete modal (if exists)
+  const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+  const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+  
+  if (cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', hideDeleteModal);
+  if (confirmDeleteBtn) confirmDeleteBtn.addEventListener('click', confirmDelete);
+  
+  // Role change modal (if exists)
+  const cancelRoleBtn = document.getElementById('cancelRoleBtn');
+  const confirmRoleBtn = document.getElementById('confirmRoleBtn');
+  
+  if (cancelRoleBtn) cancelRoleBtn.addEventListener('click', hideRoleModal);
+  if (confirmRoleBtn) confirmRoleBtn.addEventListener('click', confirmRoleChange);
+  
+  // Delete user modal (if exists)
+  const cancelDeleteUserBtn = document.getElementById('cancelDeleteUserBtn');
+  const confirmDeleteUserBtn = document.getElementById('confirmDeleteUserBtn');
+  
+  if (cancelDeleteUserBtn) cancelDeleteUserBtn.addEventListener('click', hideDeleteUserModal);
+  if (confirmDeleteUserBtn) confirmDeleteUserBtn.addEventListener('click', confirmDeleteUser);
   
   // Delete team member modal
   document.getElementById('cancelDeleteTeamBtn').addEventListener('click', hideDeleteTeamModal);
@@ -313,6 +336,7 @@ function showWebsiteForm(websiteId = null) {
   navigateTo('websiteForm');
   currentWebsite = websiteId ? websites.find(w => w.id === websiteId) : null;
   thumbnailFile = null;
+  previewImageFile = null;
   galleryFiles = [];
   
   if (currentWebsite) {
@@ -341,8 +365,42 @@ function fillForm(website) {
   document.getElementById('demoUrlInput').value = website.demo_url || '';
   document.getElementById('githubUrlInput').value = website.github_url || '';
   document.getElementById('detailsPageInput').value = website.details_page || '';
+  document.getElementById('displayOrderInput').value = website.display_order || 999;
   document.getElementById('featuredInput').checked = website.featured;
   document.getElementById('statusInput').value = website.status;
+  
+  // Detail page fields
+  document.getElementById('previewImageInput').value = website.preview_image_url || '';
+  document.getElementById('livePreviewUrlInput').value = website.live_preview_url || '';
+  document.getElementById('taglineInput').value = website.tagline || '';
+  document.getElementById('overviewTitleInput').value = website.overview_title || '';
+  document.getElementById('overviewDescriptionInput').value = website.overview_description || '';
+  document.getElementById('ratingInput').value = website.rating || '';
+  document.getElementById('licenseInput').value = website.license || '';
+  document.getElementById('updatesInput').value = website.updates || '';
+  document.getElementById('customHtmlInput').value = website.custom_html || '';
+  
+  // Features
+  document.getElementById('featuresInput').value = website.features ? website.features.join(', ') : '';
+  document.getElementById('highlightsInput').value = website.highlights ? website.highlights.join(', ') : '';
+  
+  // Pricing cards - populate the array
+  if (website.pricing_cards && website.pricing_cards.length > 0) {
+    pricingCards = website.pricing_cards.map(card => ({
+      id: Date.now() + Math.random(),
+      ...card
+    }));
+    renderPricingCards();
+  }
+  
+  // Resources - populate the array
+  if (website.resources && website.resources.length > 0) {
+    resourcesCards = website.resources.map(resource => ({
+      id: Date.now() + Math.random(),
+      ...resource
+    }));
+    renderResources();
+  }
   
   // Show existing thumbnail
   const thumbnailPreview = document.getElementById('thumbnailPreview');
@@ -351,7 +409,8 @@ function fillForm(website) {
       <img src="${website.thumbnail_url}" alt="Thumbnail">
     </div>
   `;
-  document.getElementById('thumbnailBtnText').textContent = 'Change Thumbnail';
+  const thumbnailBtnText = document.getElementById('thumbnailBtnText');
+  if (thumbnailBtnText) thumbnailBtnText.textContent = 'Change Thumbnail';
   
   // Show existing gallery
   if (website.website_images && website.website_images.length > 0) {
@@ -371,12 +430,32 @@ function fillForm(website) {
 }
 
 function resetForm() {
-  document.getElementById('websiteForm').reset();
-  document.getElementById('websiteId').value = '';
-  document.getElementById('thumbnailPreview').innerHTML = '';
-  document.getElementById('existingGalleryPreview').innerHTML = '';
-  document.getElementById('galleryPreview').innerHTML = '';
-  document.getElementById('thumbnailBtnText').textContent = 'Upload Thumbnail';
+  try {
+    const websiteForm = document.getElementById('websiteForm');
+    const websiteId = document.getElementById('websiteId');
+    const thumbnailPreview = document.getElementById('thumbnailPreview');
+    const previewImagePreview = document.getElementById('previewImagePreview');
+    const existingGalleryPreview = document.getElementById('existingGalleryPreview');
+    const galleryPreview = document.getElementById('galleryPreview');
+    const thumbnailBtnText = document.getElementById('thumbnailBtnText');
+    const previewImageBtnText = document.getElementById('previewImageBtnText');
+    
+    if (websiteForm) websiteForm.reset();
+    if (websiteId) websiteId.value = '';
+    if (thumbnailPreview) thumbnailPreview.innerHTML = '';
+    if (previewImagePreview) previewImagePreview.innerHTML = '';
+    if (existingGalleryPreview) existingGalleryPreview.innerHTML = '';
+    if (galleryPreview) galleryPreview.innerHTML = '';
+    if (thumbnailBtnText) thumbnailBtnText.textContent = 'Upload Thumbnail';
+    // previewImageBtnText element doesn't exist in the HTML, so skip it
+    
+    // Reset file variables
+    thumbnailFile = null;
+    previewImageFile = null;
+    galleryFiles = [];
+  } catch (error) {
+    console.error('resetForm error:', error);
+  }
 }
 
 function handleThumbnailChange(e) {
@@ -402,7 +481,35 @@ function handleThumbnailChange(e) {
   };
   reader.readAsDataURL(file);
   
-  document.getElementById('thumbnailBtnText').textContent = 'Change Thumbnail';
+  const thumbnailBtnText = document.getElementById('thumbnailBtnText');
+  if (thumbnailBtnText) thumbnailBtnText.textContent = 'Change Thumbnail';
+}
+
+function handlePreviewImageChange(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  if (file.size > 5 * 1024 * 1024) {
+    showToast('Image size should be less than 5MB', 'error');
+    e.target.value = '';
+    return;
+  }
+  
+  previewImageFile = file;
+  
+  const preview = document.getElementById('previewImagePreview');
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    preview.innerHTML = `
+      <div class="preview-item">
+        <img src="${e.target.result}" alt="Preview image">
+      </div>
+    `;
+  };
+  reader.readAsDataURL(file);
+  
+  const previewImageBtnText = document.getElementById('previewImageBtnText');
+  if (previewImageBtnText) previewImageBtnText.textContent = 'Change Preview Image';
 }
 
 function handleGalleryChange(e) {
@@ -425,6 +532,8 @@ function handleGalleryChange(e) {
   galleryFiles = validFiles;
   
   const preview = document.getElementById('galleryPreview');
+  if (!preview) return;
+  
   preview.innerHTML = '';
   
   validFiles.forEach((file, index) => {
@@ -449,10 +558,14 @@ function handleGalleryChange(e) {
 
 function removeGalleryPreview(index) {
   galleryFiles.splice(index, 1);
-  document.getElementById('galleryInput').value = '';
+  
+  const galleryInput = document.getElementById('galleryInput');
+  if (galleryInput) galleryInput.value = '';
   
   // Re-render previews
   const preview = document.getElementById('galleryPreview');
+  if (!preview) return;
+  
   preview.innerHTML = '';
   
   galleryFiles.forEach((file, i) => {
@@ -506,7 +619,8 @@ async function deleteGalleryImage(websiteId, imageId) {
 async function handleFormSubmit(e) {
   e.preventDefault();
   
-  const isEdit = !!document.getElementById('websiteId').value;
+  const websiteIdEl = document.getElementById('websiteId');
+  const isEdit = websiteIdEl && !!websiteIdEl.value;
   
   if (!isEdit && !thumbnailFile) {
     showToast('Please upload a thumbnail image', 'error');
@@ -515,6 +629,12 @@ async function handleFormSubmit(e) {
   
   const submitBtn = document.getElementById('submitBtn');
   const submitBtnText = document.getElementById('submitBtnText');
+  
+  if (!submitBtn || !submitBtnText) {
+    console.error('Submit button elements not found');
+    return;
+  }
+  
   const originalText = submitBtnText.textContent;
   
   submitBtn.disabled = true;
@@ -522,23 +642,146 @@ async function handleFormSubmit(e) {
   
   try {
     const formData = new FormData();
-    formData.append('title', document.getElementById('titleInput').value);
-    formData.append('description', document.getElementById('descriptionInput').value);
-    formData.append('category', document.getElementById('categoryInput').value);
-    formData.append('price', document.getElementById('priceInput').value);
-    formData.append('demo_url', document.getElementById('demoUrlInput').value);
-    formData.append('github_url', document.getElementById('githubUrlInput').value);
-    formData.append('details_page', document.getElementById('detailsPageInput').value);
-    formData.append('featured', document.getElementById('featuredInput').checked);
-    formData.append('status', document.getElementById('statusInput').value);
     
+    // Helper function to safely get element value
+    const getValue = (id) => {
+      const el = document.getElementById(id);
+      return el ? el.value : '';
+    };
+    
+    // Basic fields - only add if elements exist
+    const titleInput = document.getElementById('titleInput');
+    const descriptionInput = document.getElementById('descriptionInput');
+    const categoryInput = document.getElementById('categoryInput');
+    
+    if (!titleInput || !descriptionInput || !categoryInput) {
+      showToast('Required form fields are missing', 'error');
+      submitBtn.disabled = false;
+      submitBtnText.textContent = originalText;
+      return;
+    }
+    
+    formData.append('title', titleInput.value);
+    formData.append('description', descriptionInput.value);
+    formData.append('category', categoryInput.value);
+    formData.append('price', getValue('priceInput'));
+    formData.append('demo_url', getValue('demoUrlInput'));
+    formData.append('github_url', getValue('githubUrlInput'));
+    formData.append('details_page', getValue('detailsPageInput'));
+    formData.append('display_order', getValue('displayOrderInput'));
+    
+    const featuredInput = document.getElementById('featuredInput');
+    const statusInput = document.getElementById('statusInput');
+    
+    if (featuredInput) formData.append('featured', featuredInput.checked);
+    if (statusInput) formData.append('status', statusInput.value);
+    
+    // Detail page content fields - all optional
+    formData.append('live_preview_url', getValue('livePreviewUrlInput'));
+    formData.append('category_tag', getValue('categoryTagInput'));
+    formData.append('subtitle', getValue('subtitleInput'));
+    formData.append('long_description', getValue('longDescriptionInput'));
+    formData.append('rating', getValue('ratingInput'));
+    formData.append('license', getValue('licenseInput'));
+    formData.append('updates', getValue('updatesInput'));
+    
+    // Feature tags (comma-separated string to array)
+    const featureTagsInput = document.getElementById('featureTagsInput');
+    if (featureTagsInput && featureTagsInput.value) {
+      formData.append('feature_tags', JSON.stringify(featureTagsInput.value.split(',').map(t => t.trim()).filter(t => t)));
+    }
+    
+    // Feature pills (comma-separated string to array)
+    const featurePillsInput = document.getElementById('featurePillsInput');
+    if (featurePillsInput && featurePillsInput.value) {
+      formData.append('feature_pills', JSON.stringify(featurePillsInput.value.split(',').map(t => t.trim()).filter(t => t)));
+    }
+    
+    // Packages - only if elements exist
+    const starterPriceInput = document.getElementById('starterPriceInput');
+    const starterFeaturesInput = document.getElementById('starterFeaturesInput');
+    const professionalPriceInput = document.getElementById('professionalPriceInput');
+    const professionalFeaturesInput = document.getElementById('professionalFeaturesInput');
+    const agencyPriceInput = document.getElementById('agencyPriceInput');
+    const agencyFeaturesInput = document.getElementById('agencyFeaturesInput');
+    
+    if (starterPriceInput || professionalPriceInput || agencyPriceInput) {
+      const packages = {
+        starter: {
+          price: starterPriceInput ? starterPriceInput.value || null : null,
+          features: starterFeaturesInput && starterFeaturesInput.value
+            ? starterFeaturesInput.value.split('\n').map(f => f.trim()).filter(f => f)
+            : []
+        },
+        professional: {
+          price: professionalPriceInput ? professionalPriceInput.value || null : null,
+          features: professionalFeaturesInput && professionalFeaturesInput.value
+            ? professionalFeaturesInput.value.split('\n').map(f => f.trim()).filter(f => f)
+            : []
+        },
+        agency: {
+          price: agencyPriceInput ? agencyPriceInput.value || null : null,
+          features: agencyFeaturesInput && agencyFeaturesInput.value
+            ? agencyFeaturesInput.value.split('\n').map(f => f.trim()).filter(f => f)
+            : []
+        }
+      };
+      formData.append('packages', JSON.stringify(packages));
+    }
+    
+    // Resource cards - only process if elements exist
+    const resourceCards = [];
+    for (let i = 1; i <= 4; i++) {
+      const titleElem = document.getElementById(`resource${i}TitleInput`);
+      const descElem = document.getElementById(`resource${i}DescInput`);
+      const linkElem = document.getElementById(`resource${i}LinkInput`);
+      const iconElem = document.getElementById(`resource${i}IconInput`);
+      
+      // Skip if elements don't exist
+      if (!titleElem && !descElem && !linkElem) {
+        continue;
+      }
+      
+      const title = titleElem ? titleElem.value : '';
+      const description = descElem ? descElem.value : '';
+      const link = linkElem ? linkElem.value : '';
+      const icon = iconElem ? iconElem.value : 'fa-link';
+      
+      if (title || description || link) {
+        resourceCards.push({ title, description, link, icon: icon || 'fa-link' });
+      }
+    }
+    if (resourceCards.length > 0) {
+      formData.append('resource_cards', JSON.stringify(resourceCards));
+    }
+    
+    // Images
     if (thumbnailFile) {
       formData.append('thumbnail', thumbnailFile);
+    }
+    
+    if (previewImageFile) {
+      formData.append('preview_image', previewImageFile);
     }
     
     galleryFiles.forEach(file => {
       formData.append('gallery', file);
     });
+    
+    // Custom HTML
+    formData.append('custom_html', getValue('customHtmlInput'));
+    
+    // Pricing cards
+    const pricingData = getPricingCardsData();
+    if (pricingData.length > 0) {
+      formData.append('pricing_cards', JSON.stringify(pricingData));
+    }
+    
+    // Resources
+    const resourcesData = getResourcesData();
+    if (resourcesData.length > 0) {
+      formData.append('resources', JSON.stringify(resourcesData));
+    }
     
     const url = isEdit 
       ? `${API_BASE_URL}/websites/${document.getElementById('websiteId').value}`
@@ -697,19 +940,35 @@ function handleRoleChange(userId, newRole) {
   changeRoleUserId = userId;
   changeRoleNewRole = newRole;
   
-  document.getElementById('roleModalText').textContent = 
-    `Change ${user.name}'s role from "${user.role}" to "${newRole}"?`;
+  const roleModalText = document.getElementById('roleModalText');
+  const roleModal = document.getElementById('roleModal');
   
-  document.getElementById('roleModal').classList.add('active');
+  if (roleModalText) {
+    roleModalText.textContent = `Change ${user.name}'s role from "${user.role}" to "${newRole}"?`;
+  }
+  
+  if (roleModal) {
+    roleModal.classList.add('active');
+  }
 }
 
 function hideRoleModal() {
   changeRoleUserId = null;
   changeRoleNewRole = null;
-  document.getElementById('roleModal').classList.remove('active');
-  // Reset selectors to original values
-  document.querySelectorAll('.role-selector').forEach(select => {
-    select.value = select.dataset.original;
+  
+  const roleModal = document.getElementById('roleModal');
+  if (roleModal) {
+    roleModal.classList.remove('active');
+  }
+  
+  // Reset selectors to original value
+  const roleSelectors = document.querySelectorAll('.role-selector');
+  roleSelectors.forEach(select => {
+    const userId = select.dataset.userId;
+    const user = users.find(u => u.id === userId);
+    if (user) {
+      select.value = user.role;
+    }
   });
 }
 
@@ -1011,6 +1270,212 @@ async function confirmDeleteTeam() {
     showToast('Failed to delete team member', 'error');
   }
 }
+
+// ============================================================
+// PRICING CARDS MANAGEMENT
+// ============================================================
+
+let pricingCards = [];
+
+function initializePricingCards() {
+  const container = document.getElementById('pricingCardsContainer');
+  if (!container) return;
+  
+  document.getElementById('addPricingCardBtn').addEventListener('click', addPricingCard);
+  renderPricingCards();
+}
+
+function addPricingCard() {
+  pricingCards.push({
+    id: Date.now(),
+    name: '',
+    price: '',
+    interval: 'one-time',
+    features: []
+  });
+  renderPricingCards();
+}
+
+function removePricingCard(id) {
+  pricingCards = pricingCards.filter(card => card.id !== id);
+  renderPricingCards();
+}
+
+function renderPricingCards() {
+  const container = document.getElementById('pricingCardsContainer');
+  if (!container) return;
+  
+  container.innerHTML = pricingCards.map((card, index) => `
+    <div class="pricing-card-form" style="border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+      <div class="form-grid" style="margin-bottom: 1rem;">
+        <div class="input-group">
+          <label class="label">Package Name</label>
+          <input type="text" class="input" value="${card.name}" 
+                 onchange="updatePricingCard(${card.id}, 'name', this.value)" 
+                 placeholder="Starter Package">
+        </div>
+        <div class="input-group">
+          <label class="label">Price ($)</label>
+          <input type="number" class="input" value="${card.price}" step="0.01"
+                 onchange="updatePricingCard(${card.id}, 'price', this.value)"
+                 placeholder="49">
+        </div>
+        <div class="input-group">
+          <label class="label">Interval</label>
+          <select class="select" onchange="updatePricingCard(${card.id}, 'interval', this.value)">
+            <option value="one-time" ${card.interval === 'one-time' ? 'selected' : ''}>One-time</option>
+            <option value="monthly" ${card.interval === 'monthly' ? 'selected' : ''}>Monthly</option>
+            <option value="yearly" ${card.interval === 'yearly' ? 'selected' : ''}>Yearly</option>
+            <option value="lifetime" ${card.interval === 'lifetime' ? 'selected' : ''}>Lifetime</option>
+          </select>
+        </div>
+        <div class="input-group" style="display: flex; align-items: flex-end;">
+          <button type="button" class="btn btn-danger" 
+                  onclick="removePricingCard(${card.id})"
+                  style="width: 100%; margin-top: auto;">
+            Remove Card
+          </button>
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 1rem;">
+        <label class="label">Features (one per line)</label>
+        <textarea class="textarea" rows="3" 
+                  onchange="updatePricingCard(${card.id}, 'features', this.value.split('\\n').map(f => f.trim()).filter(f => f))"
+                  placeholder="1 Landing Page&#10;Basic UI Components&#10;Email Support">${card.features.join('\n')}</textarea>
+        <small style="color: var(--text3); font-size: 0.85rem;">Enter each feature on a new line</small>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updatePricingCard(id, field, value) {
+  const card = pricingCards.find(c => c.id === id);
+  if (card) {
+    card[field] = value;
+  }
+}
+
+function getPricingCardsData() {
+  return pricingCards.filter(card => card.name && card.price).map(card => ({
+    name: card.name,
+    price: parseFloat(card.price),
+    interval: card.interval,
+    features: card.features
+  }));
+}
+
+// ============================================================
+// RESOURCES MANAGEMENT
+// ============================================================
+
+let resourcesCards = [];
+
+function initializeResources() {
+  const container = document.getElementById('resourcesContainer');
+  if (!container) return;
+  
+  document.getElementById('addResourceBtn').addEventListener('click', addResource);
+  renderResources();
+}
+
+function addResource() {
+  resourcesCards.push({
+    id: Date.now(),
+    title: '',
+    description: '',
+    link: '',
+    icon: 'fa-link'
+  });
+  renderResources();
+}
+
+function removeResource(id) {
+  resourcesCards = resourcesCards.filter(resource => resource.id !== id);
+  renderResources();
+}
+
+function renderResources() {
+  const container = document.getElementById('resourcesContainer');
+  if (!container) return;
+  
+  container.innerHTML = resourcesCards.map((resource, index) => `
+    <div class="resource-form" style="border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+      <div class="form-grid" style="margin-bottom: 1rem;">
+        <div class="input-group full-width">
+          <label class="label">Resource Title</label>
+          <input type="text" class="input" value="${resource.title}" 
+                 onchange="updateResource(${resource.id}, 'title', this.value)" 
+                 placeholder="Full Source Code">
+        </div>
+
+        <div class="input-group full-width">
+          <label class="label">Description</label>
+          <textarea class="textarea" rows="2"
+                    onchange="updateResource(${resource.id}, 'description', this.value)"
+                    placeholder="Browse the complete repository and project structure.">${resource.description}</textarea>
+        </div>
+
+        <div class="input-group full-width">
+          <label class="label">Link URL</label>
+          <input type="url" class="input" value="${resource.link}" 
+                 onchange="updateResource(${resource.id}, 'link', this.value)" 
+                 placeholder="https://github.com/...">
+        </div>
+
+        <div class="input-group">
+          <label class="label">Icon Class (Font Awesome)</label>
+          <input type="text" class="input" value="${resource.icon}" 
+                 onchange="updateResource(${resource.id}, 'icon', this.value)" 
+                 placeholder="fa-link">
+          <small style="color: var(--text3); font-size: 0.85rem;">e.g., fa-code, fa-github, fa-book, etc.</small>
+        </div>
+
+        <div class="input-group" style="display: flex; align-items: flex-end;">
+          <button type="button" class="btn btn-danger" 
+                  onclick="removeResource(${resource.id})"
+                  style="width: 100%; margin-top: auto;">
+            Remove Resource
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateResource(id, field, value) {
+  const resource = resourcesCards.find(r => r.id === id);
+  if (resource) {
+    resource[field] = value;
+  }
+}
+
+function getResourcesData() {
+  return resourcesCards.filter(resource => resource.title && resource.link).map(resource => ({
+    title: resource.title,
+    description: resource.description,
+    link: resource.link,
+    icon: resource.icon || 'fa-link'
+  }));
+}
+
+// ============================================================
+// Initialize dynamic forms when website form is shown
+// ============================================================
+
+function initializeDynamicForms() {
+  pricingCards = [];
+  resourcesCards = [];
+  initializePricingCards();
+  initializeResources();
+}
+
+// Update the existing showWebsiteForm function to call this
+const originalShowWebsiteForm = showWebsiteForm;
+showWebsiteForm = function(websiteId = null) {
+  originalShowWebsiteForm(websiteId);
+  initializeDynamicForms();
+};
 
 // Toast
 function showToast(message, type = 'success') {

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexicWeb Performance Test</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 700px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    h1 {
+      color: #667eea;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+    .status {
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    .status.loading {
+      background: #fff3cd;
+      color: #856404;
+    }
+    .status.success {
+      background: #d4edda;
+      color: #155724;
+    }
+    .status.warning {
+      background: #fff3cd;
+      color: #856404;
+    }
+    .status.error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    .metric {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .metric:last-child {
+      border-bottom: none;
+    }
+    .metric-label {
+      color: #666;
+      font-weight: 500;
+    }
+    .metric-value {
+      font-weight: 700;
+    }
+    .metric-value.good { color: #28a745; }
+    .metric-value.ok { color: #ffc107; }
+    .metric-value.bad { color: #dc3545; }
+    .btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .recommendations {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+    }
+    .recommendations h3 {
+      color: #667eea;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    .recommendation {
+      padding: 10px 0;
+      color: #555;
+      line-height: 1.6;
+    }
+    .icon {
+      margin-right: 8px;
+    }
+    .score {
+      text-align: center;
+      margin: 30px 0;
+    }
+    .score-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 10px;
+    }
+    .score-circle.good { background: #28a745; }
+    .score-circle.ok { background: #ffc107; }
+    .score-circle.bad { background: #dc3545; }
+    .external-links {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .external-link {
+      display: block;
+      padding: 12px;
+      background: #667eea;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform 0.2s;
+    }
+    .external-link:hover {
+      transform: translateY(-2px);
+    }
+    @media (max-width: 600px) {
+      .container { padding: 20px; }
+      h1 { font-size: 24px; }
+      .external-links { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 NexicWeb Performance Test</h1>
+    <p class="subtitle">Quick performance check for your website</p>
+    
+    <div id="status" class="status loading">
+      ⏳ Click "Run Test" to analyze performance...
+    </div>
+    
+    <div id="results" style="display: none;">
+      <div class="score">
+        <div id="scoreCircle" class="score-circle">--</div>
+        <div id="scoreLabel">Performance Score</div>
+      </div>
+      
+      <div id="metrics"></div>
+    </div>
+    
+    <button class="btn" onclick="runTest()">Run Performance Test</button>
+    
+    <div class="recommendations" id="recommendations" style="display: none;">
+      <h3>📋 Recommendations</h3>
+      <div id="recommendationsList"></div>
+    </div>
+    
+    <div class="external-links">
+      <a href="https://pagespeed.web.dev/" target="_blank" class="external-link">
+        📊 PageSpeed Insights
+      </a>
+      <a href="https://tinypng.com/" target="_blank" class="external-link">
+        🖼️ Compress Images
+      </a>
+      <a href="https://gtmetrix.com/" target="_blank" class="external-link">
+        ⚡ GTmetrix Test
+      </a>
+      <a href="https://www.webpagetest.org/" target="_blank" class="external-link">
+        🧪 WebPageTest
+      </a>
+    </div>
+  </div>
+
+  <script>
+    async function runTest() {
+      const statusEl = document.getElementById('status');
+      const resultsEl = document.getElementById('results');
+      const metricsEl = document.getElementById('metrics');
+      const recommendationsEl = document.getElementById('recommendations');
+      const recommendationsListEl = document.getElementById('recommendationsList');
+      const scoreCircleEl = document.getElementById('scoreCircle');
+      
+      statusEl.className = 'status loading';
+      statusEl.textContent = '⏳ Running performance test...';
+      resultsEl.style.display = 'none';
+      recommendationsEl.style.display = 'none';
+      
+      try {
+        // Simulate performance test (in real scenario, you'd fetch actual metrics)
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Get performance metrics
+        const perfData = performance.getEntriesByType('navigation')[0];
+        const paintMetrics = performance.getEntriesByType('paint');
+        
+        const metrics = {
+          domContentLoaded: perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart,
+          loadComplete: perfData.loadEventEnd - perfData.loadEventStart,
+          domInteractive: perfData.domInteractive - perfData.fetchStart,
+          firstPaint: paintMetrics.find(m => m.name === 'first-paint')?.startTime || 0,
+          firstContentfulPaint: paintMetrics.find(m => m.name === 'first-contentful-paint')?.startTime || 0,
+          totalLoadTime: perfData.loadEventEnd - perfData.fetchStart
+        };
+        
+        // Calculate score
+        let score = 100;
+        const recommendations = [];
+        
+        // Check metrics and give recommendations
+        if (metrics.totalLoadTime > 3000) {
+          score -= 30;
+          recommendations.push('⚠️ Total load time is slow (>3s). Compress images and enable caching.');
+        }
+        if (metrics.firstContentfulPaint > 1800) {
+          score -= 20;
+          recommendations.push('⚠️ First Contentful Paint is slow. Inline critical CSS.');
+        }
+        if (metrics.domInteractive > 2000) {
+          score -= 15;
+          recommendations.push('⚠️ DOM Interactive time is high. Reduce JavaScript execution.');
+        }
+        
+        // Check for large images
+        const images = document.querySelectorAll('img');
+        if (images.length > 20) {
+          score -= 10;
+          recommendations.push('⚠️ Many images detected. Implement lazy loading.');
+        }
+        
+        if (score >= 90) {
+          recommendations.push('✅ Excellent performance! Your site is optimized.');
+        } else if (score >= 70) {
+          recommendations.push('🟡 Good performance, but room for improvement.');
+        } else {
+          recommendations.push('🔴 Performance needs attention. Follow recommendations below.');
+        }
+        
+        // Add general recommendations
+        recommendations.push('💡 Compress all images with TinyPNG (most important!)');
+        recommendations.push('💡 Use a CDN like Cloudflare for faster delivery');
+        recommendations.push('💡 Enable browser caching on your server');
+        recommendations.push('💡 Test on mobile devices with slow connections');
+        
+        // Display results
+        scoreCircleEl.textContent = Math.max(0, Math.round(score));
+        scoreCircleEl.className = 'score-circle ' + 
+          (score >= 90 ? 'good' : score >= 70 ? 'ok' : 'bad');
+        
+        metricsEl.innerHTML = `
+          <div class="metric">
+            <span class="metric-label">Total Load Time</span>
+            <span class="metric-value ${metrics.totalLoadTime < 3000 ? 'good' : metrics.totalLoadTime < 5000 ? 'ok' : 'bad'}">
+              ${(metrics.totalLoadTime / 1000).toFixed(2)}s
+            </span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">First Contentful Paint</span>
+            <span class="metric-value ${metrics.firstContentfulPaint < 1800 ? 'good' : metrics.firstContentfulPaint < 3000 ? 'ok' : 'bad'}">
+              ${(metrics.firstContentfulPaint / 1000).toFixed(2)}s
+            </span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">DOM Interactive</span>
+            <span class="metric-value ${metrics.domInteractive < 2000 ? 'good' : metrics.domInteractive < 4000 ? 'ok' : 'bad'}">
+              ${(metrics.domInteractive / 1000).toFixed(2)}s
+            </span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">DOM Content Loaded</span>
+            <span class="metric-value ${metrics.domContentLoaded < 1000 ? 'good' : metrics.domContentLoaded < 2000 ? 'ok' : 'bad'}">
+              ${(metrics.domContentLoaded / 1000).toFixed(2)}s
+            </span>
+          </div>
+        `;
+        
+        recommendationsListEl.innerHTML = recommendations
+          .map(r => `<div class="recommendation">${r}</div>`)
+          .join('');
+        
+        statusEl.className = 'status ' + (score >= 90 ? 'success' : score >= 70 ? 'warning' : 'error');
+        statusEl.textContent = score >= 90 ? '✅ Excellent Performance!' : 
+          score >= 70 ? '🟡 Good Performance' : '🔴 Needs Optimization';
+        
+        resultsEl.style.display = 'block';
+        recommendationsEl.style.display = 'block';
+        
+      } catch (error) {
+        statusEl.className = 'status error';
+        statusEl.textContent = '❌ Error running test: ' + error.message;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -18,7 +18,8 @@ exports.getAllWebsites = async (filters) => {
         display_order
       )
     `)
-    .order('created_at', { ascending: false });
+    .order('display_order', { ascending: true })  // Order by display_order first
+    .order('created_at', { ascending: false });    // Then by created_at for items with same display_order
 
   // Apply filters
   if (filters.search) {
@@ -131,6 +132,26 @@ exports.createWebsite = async (websiteData, files) => {
   const thumbnailUrl = await uploadImage(files.thumbnail[0], 'websites/thumbnails');
   websiteData.thumbnail_url = thumbnailUrl;
 
+  // Upload preview image if provided
+  if (files && files.preview_image && files.preview_image.length > 0) {
+    const previewImageUrl = await uploadImage(files.preview_image[0], 'websites/previews');
+    websiteData.preview_image_url = previewImageUrl;
+  }
+
+  // Parse JSON fields if they are strings (only if they exist)
+  const jsonFields = ['feature_tags', 'feature_pills', 'packages', 'resource_cards'];
+  
+  jsonFields.forEach(field => {
+    if (websiteData.hasOwnProperty(field) && typeof websiteData[field] === 'string' && websiteData[field]) {
+      try {
+        websiteData[field] = JSON.parse(websiteData[field]);
+      } catch (e) {
+        console.error(`Failed to parse ${field}:`, e.message);
+        websiteData[field] = null;
+      }
+    }
+  });
+
   // Insert website
   const { data: website, error: websiteError } = await supabase
     .from('websites')
@@ -141,6 +162,9 @@ exports.createWebsite = async (websiteData, files) => {
   if (websiteError) {
     // Clean up uploaded thumbnail if website creation fails
     await deleteImage(thumbnailUrl);
+    if (websiteData.preview_image_url) {
+      await deleteImage(websiteData.preview_image_url);
+    }
     throw new Error(`Failed to create website: ${websiteError.message}`);
   }
 
@@ -188,6 +212,33 @@ exports.updateWebsite = async (id, websiteData, files) => {
     
     websiteData.thumbnail_url = newThumbnailUrl;
   }
+
+  // Upload new preview image if provided
+  if (files && files.preview_image && files.preview_image.length > 0) {
+    const newPreviewImageUrl = await uploadImage(files.preview_image[0], 'websites/previews');
+    
+    // Delete old preview image
+    if (existingWebsite.preview_image_url) {
+      await deleteImage(existingWebsite.preview_image_url);
+    }
+    
+    websiteData.preview_image_url = newPreviewImageUrl;
+  }
+
+  // Parse JSON fields if they are strings (only if they exist in websiteData)
+  const jsonFields = ['feature_tags', 'feature_pills', 'packages', 'resource_cards'];
+  
+  jsonFields.forEach(field => {
+    if (websiteData.hasOwnProperty(field) && typeof websiteData[field] === 'string' && websiteData[field]) {
+      try {
+        websiteData[field] = JSON.parse(websiteData[field]);
+      } catch (e) {
+        // If parsing fails, keep as null
+        console.error(`Failed to parse ${field}:`, e.message);
+        websiteData[field] = null;
+      }
+    }
+  });
 
   // Update website
   const { data: updatedWebsite, error: updateError } = await supabase
