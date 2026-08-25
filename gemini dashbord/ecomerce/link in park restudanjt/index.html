@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXIC | Ultra-Luxury Restaurant Experience | Bogura</title>
+    
+    <!-- Bootstrap Grid Utility Only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-grid.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+
+    <style>
+        /* style.css */
+
+/* USER DATA OVERRIDE: Mandated Typography strict enforcement */
+:root {
+    --font-display: 'Comic Sans MS', 'Comic Sans', cursive !important;
+    --font-body: 'Comic Sans MS', 'Comic Sans', cursive !important;
+    
+    --color-bg: #0a0908;
+    --color-bg-alt: #121110;
+    --color-text: #f4f0ec;
+    --color-text-muted: #a39e99;
+    --color-accent: #d4af37; /* Muted bronze/gold */
+    --color-border: rgba(244, 240, 236, 0.1);
+    
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    --nav-height: 100px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    cursor: none; /* Custom cursor fallback */
+}
+
+/* Typography Engine */
+h1, h2, h3, h4, h5, .hero-title, .statement-text {
+    font-family: var(--font-display);
+    font-weight: 300;
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+}
+
+/* Cinematic Grain */
+.cinematic-grain {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.04;
+    background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+}
+
+/* Custom Cursor */
+.custom-cursor {
+    position: fixed;
+    top: 0; left: 0;
+    width: 10px; height: 10px;
+    background: var(--color-text);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.custom-cursor.active {
+    width: 80px; height: 80px;
+    background: rgba(244, 240, 236, 0.1);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+.cursor-text {
+    font-size: 10px;
+    opacity: 0;
+    letter-spacing: 1px;
+    transition: opacity 0.3s;
+}
+.custom-cursor.active .cursor-text {
+    opacity: 1;
+}
+
+/* Navigation */
+.luxury-nav {
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    height: var(--nav-height);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 4vw;
+    z-index: 1000;
+    transition: background 0.5s, backdrop-filter 0.5s;
+}
+.luxury-nav.scrolled {
+    background: rgba(10, 9, 8, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+}
+.nav-brand {
+    font-size: 24px;
+    letter-spacing: 4px;
+    font-family: var(--font-display);
+}
+.nav-links a {
+    color: var(--color-text);
+    text-decoration: none;
+    margin: 0 2vw;
+    font-size: 13px;
+    letter-spacing: 2px;
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--color-text);
+    color: var(--color-bg);
+    border: none;
+    padding: 14px 28px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: transform 0.4s var(--ease-out-expo);
+}
+.btn-primary:hover {
+    transform: scale(1.05);
+}
+.btn-minimal {
+    background: transparent;
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    padding: 14px 28px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background 0.4s;
+    text-decoration: none;
+    display: inline-block;
+}
+.btn-minimal:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    height: 110vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.hero-layer {
+    position: absolute;
+    top: -5%; left: -5%; width: 110%; height: 110%;
+    background-size: cover;
+    background-position: center;
+}
+.layer-bg { background-image: url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=1920'); filter: brightness(0.3); }
+.layer-food-back { background-image: url('https://images.unsplash.com/photo-1414235077428-338988a2e8c0?auto=format&fit=crop&q=80&w=1920'); filter: brightness(0.6); opacity: 0.8; mix-blend-mode: overlay; }
+.hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    width: 100%;
+    padding: 0 5vw;
+}
+.hero-location {
+    font-size: 12px;
+    letter-spacing: 6px;
+    margin-bottom: 2vh;
+    color: var(--color-text-muted);
+}
+.hero-title {
+    font-size: clamp(60px, 12vw, 180px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 0.85;
+}
+.text-offset {
+    margin-left: 15vw;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--color-text);
+}
+.hero-bottom {
+    margin-top: 8vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3vh;
+}
+.hero-ctas {
+    display: flex;
+    gap: 2vw;
+}
+.cta-link {
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 2px;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 5px;
+}
+
+/* Statement Section */
+.statement-section {
+    padding: 20vh 5vw;
+    background: var(--color-bg);
+    overflow: hidden;
+}
+.statement-text {
+    font-size: clamp(40px, 7vw, 100px);
+    white-space: nowrap;
+}
+.statement-text.offset {
+    margin-left: 20vw;
+    color: var(--color-text-muted);
+}
+.statement-line {
+    width: 0%;
+    height: 1px;
+    background: var(--color-accent);
+    margin-top: 5vh;
+}
+
+/* Signatures */
+.signatures-section {
+    padding: 10vh 5vw;
+}
+.signature-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 4vw;
+}
+.sig-card {
+    grid-column: span 4;
+    display: flex;
+    flex-direction: column;
+}
+.sig-card.large {
+    grid-column: span 8;
+}
+.sig-img-wrap {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    background: #1a1a1a;
+}
+.sig-img-wrap img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: transform 1s var(--ease-out-expo);
+}
+.sig-card:hover .sig-img-wrap img {
+    transform: scale(1.05);
+}
+.premium-badge {
+    position: absolute;
+    top: 20px; right: 20px;
+    border: 1px solid var(--color-accent);
+    padding: 6px 12px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--color-accent);
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+}
+.sig-category {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--color-text-muted);
+}
+.sig-name {
+    font-size: 24px;
+    margin: 10px 0;
+}
+.sig-desc {
+    color: var(--color-text-muted);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+.sig-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+/* Immersive Slider */
+.cinematic-slider-section {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+.slider-container {
+    width: 100%; height: 100%;
+    position: relative;
+}
+.slide {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 1.2s var(--ease-out-expo), opacity 1.2s;
+}
+.slide.active {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    z-index: 2;
+}
+.slide-bg {
+    width: 100%; height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.4);
+    transform: scale(1.05);
+    transition: transform 5s linear;
+}
+.slide.active .slide-bg {
+    transform: scale(1);
+}
+.slide-content {
+    position: absolute;
+    top: 50%; left: 10vw;
+    transform: translateY(-50%);
+    max-width: 600px;
+}
+.slide-num { font-size: 12px; letter-spacing: 4px; display: block; margin-bottom: 20px; color: var(--color-accent); }
+.slide-title { font-size: 70px; margin: 10px 0; }
+.slide-desc { font-size: 18px; color: #ccc; margin-bottom: 40px; }
+.slider-controls {
+    position: absolute;
+    bottom: 5vh; right: 5vw;
+    z-index: 10;
+    display: flex;
+    gap: 20px;
+}
+.slide-btn {
+    background: transparent;
+    color: #fff;
+    border: none;
+    border-bottom: 1px solid #fff;
+    font-family: var(--font-body);
+    letter-spacing: 2px;
+    cursor: pointer;
+    padding-bottom: 5px;
+}
+
+/* Massive Menu Engine */
+.massive-menu-section {
+    padding: 15vh 5vw;
+    background: var(--color-bg-alt);
+}
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 5vh;
+}
+.menu-search input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+    color: #fff;
+    padding: 10px 0;
+    font-family: var(--font-body);
+    font-size: 16px;
+    width: 300px;
+    outline: none;
+}
+.menu-filters {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 8vh;
+    flex-wrap: wrap;
+}
+.filter-btn {
+    background: transparent;
+    color: var(--color-text-muted);
+    border: none;
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+.filter-btn.active, .filter-btn:hover {
+    color: var(--color-text);
+}
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 40px;
+}
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 20px;
+}
+.menu-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+}
+.menu-item-title { font-size: 20px; }
+.menu-item-price { font-size: 16px; color: var(--color-accent); }
+.menu-item-desc { font-size: 14px; color: var(--color-text-muted); }
+
+/* Special Offer Campaign */
+.campaign-section {
+    position: relative;
+    padding: 20vh 5vw;
+    text-align: center;
+    background: url('https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&q=80&w=1920') center/cover fixed;
+}
+.campaign-bg {
+    position: absolute;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(10,9,8,0.7);
+}
+.campaign-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.campaign-title {
+    font-size: 100px;
+    line-height: 0.9;
+    margin: 30px 0;
+}
+.campaign-badge {
+    display: inline-block;
+    border: 1px solid var(--color-accent);
+    padding: 8px 16px;
+    letter-spacing: 3px;
+    font-size: 12px;
+    color: var(--color-accent);
+}
+
+/* Location Map Section */
+.location-section {
+    background: var(--color-bg);
+}
+.location-info {
+    padding: 10vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.location-map-wrap {
+    height: 100%;
+    min-height: 60vh;
+}
+.luxury-map {
+    width: 100%;
+    height: 100%;
+    filter: grayscale(100%) invert(90%) contrast(120%);
+    border: none;
+}
+.detail-block {
+    margin-bottom: 30px;
+}
+.detail-label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--color-text-muted);
+    margin-bottom: 10px;
+}
+
+/* Final CTA */
+.final-cta {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=1920') center/cover fixed;
+}
+.cta-bg {
+    position: absolute;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.6);
+}
+.cta-content { position: relative; z-index: 2; }
+.cta-content h2 { font-size: 8vw; line-height: 0.9; }
+
+/* Footer */
+.luxury-footer {
+    background: #050505;
+    padding: 10vh 5vw 5vh;
+}
+.footer-huge {
+    font-size: 10vw;
+    line-height: 0.8;
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4vw;
+    margin: 10vh 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    padding: 5vh 0;
+}
+.footer-col h4 {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--color-text-muted);
+    margin-bottom: 20px;
+}
+.footer-col a, .footer-col p {
+    display: block;
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.mini-map-col { height: 150px; overflow: hidden; }
+.footer-map { width: 100%; height: 100%; filter: grayscale(100%) invert(90%); border: none; }
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .desktop-only { display: none !important; }
+    .hero-title { font-size: 50px; }
+    .text-offset, .statement-text.offset, .cta-content h2.offset, .footer-huge.offset { margin-left: 0; color: var(--color-text); -webkit-text-stroke: 0; }
+    .statement-text { font-size: 40px; white-space: normal; }
+    .signature-grid { display: flex; flex-direction: column; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .slide-content { left: 5vw; }
+    .slide-title { font-size: 40px; }
+}
+
+/* Mobile Menu Overlay */
+.mobile-only { display: block; }
+@media (min-width: 769px) { .mobile-only { display: none; } }
+.hamburger { background: transparent; border: none; cursor: pointer; z-index: 2000; position: relative; }
+.hamburger .line { width: 30px; height: 2px; background: #fff; margin: 6px 0; transition: 0.3s; }
+.mobile-menu-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--color-bg); z-index: 1500;
+    display: flex; align-items: center; justify-content: center;
+    clip-path: circle(0% at 100% 0);
+    transition: clip-path 0.8s var(--ease-out-expo);
+}
+.mobile-menu-overlay.active { clip-path: circle(150% at 100% 0); }
+.mobile-menu-content { display: flex; flex-direction: column; text-align: center; gap: 3vh; }
+.mobile-link { font-family: var(--font-display); font-size: 30px; text-decoration: none; color: #fff; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    <!-- Cinematic Grain Overlay -->
+    <div class="cinematic-grain"></div>
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor">
+        <span class="cursor-text"></span>
+    </div>
+
+    <!-- Fullscreen Mobile Menu -->
+    <div class="mobile-menu-overlay">
+        <div class="mobile-menu-content">
+            <a href="#hero" class="mobile-link">MENU</a>
+            <a href="#signatures" class="mobile-link">SIGNATURES</a>
+            <a href="#menu-section" class="mobile-link">DISCOVER</a>
+            <a href="#location" class="mobile-link">LOCATION</a>
+            <a href="#" class="mobile-link wp-order-btn">ORDER VIA WHATSAPP</a>
+        </div>
+    </div>
+
+    <!-- Floating Navigation -->
+    <nav class="luxury-nav">
+        <div class="nav-brand">Linkin Park Cefe & Restaurant</div>
+        <div class="nav-links desktop-only">
+            <a href="#signatures">SIGNATURES</a>
+            <a href="#menu-section">MENU</a>
+            <a href="#location">LOCATION</a>
+        </div>
+        <div class="nav-actions">
+            <button class="btn-minimal desktop-only wp-order-btn">ORDER NOW</button>
+            <button class="btn-primary desktop-only wp-order-btn">RESERVE</button>
+            <button class="hamburger mobile-only">
+                <div class="line"></div>
+                <div class="line"></div>
+            </button>
+        </div>
+    </nav>
+
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+            
+            <!-- 06-08 HERO SHOWSTOPPER -->
+            <header id="hero" class="hero-section" data-cursor="EXPLORE">
+                <div class="hero-layer layer-bg"></div>
+                <div class="hero-layer layer-food-back"></div>
+                <div class="hero-layer layer-food-front"></div>
+                
+                <div class="hero-content">
+                    <p class="hero-location slide-up">BOGURA / BANGLADESH</p>
+                    <h1 class="hero-title">
+                        <span class="slide-up">TASTE</span>
+                        <span class="slide-up text-offset">THAT</span>
+                        <span class="slide-up">STAYS.</span>
+                    </h1>
+                    <div class="hero-bottom slide-up delay">
+                        <p class="hero-desc">An immersive culinary journey redefining luxury hospitality.</p>
+                        <div class="hero-ctas">
+                            <a href="#menu-section" class="cta-link">VIEW MENU</a>
+                            <a href="#" class="cta-link wp-order-btn">RESERVE TABLE</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 10 FIRST SCROLL REVEAL -->
+            <section class="statement-section">
+                <div class="statement-container">
+                    <h2 class="statement-text">FOOD IS NOT JUST SERVED.</h2>
+                    <h2 class="statement-text offset">IT IS EXPERIENCED.</h2>
+                </div>
+                <div class="statement-line"></div>
+            </section>
+
+            <!-- 11 SIGNATURE EXPERIENCE -->
+            <section id="signatures" class="signatures-section">
+                <h2 class="section-title text-center mb-5">THE SIGNATURES</h2>
+                <div class="signature-grid">
+                    <div class="sig-card large" data-cursor="VIEW">
+                        <div class="sig-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=1600" alt="Smoked Charcoal Steak">
+                            <div class="badge premium-badge">CHEF'S CHOICE</div>
+                        </div>
+                        <div class="sig-info">
+                            <span class="sig-category">STEAK</span>
+                            <h3 class="sig-name">SMOKED CHARCOAL STEAK</h3>
+                            <p class="sig-desc">Prime cut, aged 45 days, smoked with applewood.</p>
+                            <div class="sig-footer">
+                                <span class="sig-price">৳ 3,490</span>
+                                <button class="btn-minimal wp-order-btn" data-item="Smoked Charcoal Steak">ORDER NOW</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sig-card" data-cursor="VIEW">
+                        <div class="sig-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&q=80&w=800" alt="Truffle Pasta">
+                        </div>
+                        <div class="sig-info">
+                            <span class="sig-category">PASTA</span>
+                            <h3 class="sig-name">WILD TRUFFLE LINGUINE</h3>
+                            <p class="sig-desc">Handmade pasta, shaved black truffle, aged parmesan.</p>
+                            <div class="sig-footer">
+                                <span class="sig-price">৳ 1,850</span>
+                                <button class="btn-minimal wp-order-btn" data-item="Wild Truffle Linguine">ORDER NOW</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sig-card" data-cursor="VIEW">
+                        <div class="sig-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&q=80&w=800" alt="Gold Leaf Dessert">
+                            <div class="badge premium-badge">LIMITED</div>
+                        </div>
+                        <div class="sig-info">
+                            <span class="sig-category">DESSERT</span>
+                            <h3 class="sig-name">24K CHOCOLATE DOME</h3>
+                            <p class="sig-desc">Valrhona dark chocolate, gold leaf, raspberry core.</p>
+                            <div class="sig-footer">
+                                <span class="sig-price">৳ 1,200</span>
+                                <button class="btn-minimal wp-order-btn" data-item="24K Chocolate Dome">ORDER NOW</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                
+
+            </section>
+
+            <!-- 12-14 IMMERSIVE FOOD SLIDER -->
+            <section id="slider" class="cinematic-slider-section">
+                <div class="slider-container">
+                    <div class="slide active">
+                        <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1559314809-0d155014e29e?auto=format&fit=crop&q=80&w=1600')"></div>
+                        <div class="slide-content">
+                            <span class="slide-num">01 / 03</span>
+                            <span class="slide-cat">SEAFOOD</span>
+                            <h2 class="slide-title">KING PRAWN THERMIDOR</h2>
+                            <p class="slide-desc">Oven-baked king prawns in a rich mustard and cognac cream sauce.</p>
+                            <div class="slide-action">
+                                <span class="slide-price">৳ 2,100</span>
+                                <button class="btn-primary wp-order-btn" data-item="King Prawn Thermidor">ORDER NOW</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=1600')"></div>
+                        <div class="slide-content">
+                            <span class="slide-num">02 / 03</span>
+                            <span class="slide-cat">PIZZA</span>
+                            <h2 class="slide-title">RUSTIC BURRATA</h2>
+                            <p class="slide-desc">Wood-fired sourdough, San Marzano tomatoes, fresh burrata, basil.</p>
+                            <div class="slide-action">
+                                <span class="slide-price">৳ 1,450</span>
+                                <button class="btn-primary wp-order-btn" data-item="Rustic Burrata Pizza">ORDER NOW</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-controls">
+                    <button class="slide-btn prev">PREV</button>
+                    <button class="slide-btn next">NEXT</button>
+                </div>
+            </section>
+
+            <!-- 15-18 EXTENSIVE MENU ENGINE -->
+            <section id="menu-section" class="massive-menu-section">
+                <div class="container">
+                    <div class="menu-header">
+                        <h2 class="section-title">THE INVENTORY</h2>
+                        <div class="menu-search">
+                            <input type="text" id="menuSearch" placeholder="Search something delicious...">
+                        </div>
+                    </div>
+                    
+                    <div class="menu-filters">
+                        <button class="filter-btn active" data-filter="all">ALL</button>
+                        <button class="filter-btn" data-filter="starters">STARTERS</button>
+                        <button class="filter-btn" data-filter="signatures">SIGNATURES</button>
+                        <button class="filter-btn" data-filter="steak">STEAK & GRILL</button>
+                        <button class="filter-btn" data-filter="bangladeshi">BANGLADESHI</button>
+                        <button class="filter-btn" data-filter="drinks">DRINKS</button>
+                    </div>
+
+                    <div class="menu-grid" id="menuGrid">
+                        <!-- Populated by JavaScript to ensure scale without HTML bloat -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 19 SPECIAL OFFERS -->
+            <section class="campaign-section">
+                <div class="campaign-bg"></div>
+                <div class="campaign-content">
+                    <div class="campaign-badge">WEEKEND ONLY</div>
+                    <h2 class="campaign-title">THE<br>BOGURA<br>FEAST</h2>
+                    <p class="campaign-offer">20% OFF SELECTED SIGNATURE DISHES</p>
+                    <button class="btn-primary wp-order-btn" data-item="Weekend Feast Promo">CLAIM OFFER</button>
+                </div>
+            </section>
+
+            <!-- 22-23 STORY & CHEF -->
+            <section class="story-section">
+                <div class="story-image-wrap">
+                    <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&q=80&w=1200" alt="Chef plating food" class="story-img">
+                </div>
+                <div class="story-content">
+                    <h2 class="section-title">MORE THAN A MEAL.</h2>
+                    <p class="editorial-text">Every ingredient is sourced with absolute intent. From the rich spices of Bogura to the finest imported cuts, we engineer memories on a plate.</p>
+                    <div class="chef-note">
+                        <span class="chef-label">CHEF'S NOTE</span>
+                        <blockquote class="chef-quote">"Every plate should leave a memory."</blockquote>
+                        <span class="chef-name">— Executive Chef, Nexic</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 24-26 BOGURA LOCATION & MAP -->
+            <section id="location" class="location-section">
+                <div class="container-fluid p-0">
+                    <div class="row g-0">
+                        <div class="col-lg-5 location-info">
+                            <h2 class="section-title">ROOTED IN BOGURA.</h2>
+                            <p class="location-sub">A place where great food meets warm hospitality.</p>
+                            
+                            <div class="contact-details mt-5">
+                                <div class="detail-block">
+                                    <span class="detail-label">ADDRESS</span>
+                                    <p>Nawabbari Road, Bogura 5800, Bangladesh</p>
+                                </div>
+                                <div class="detail-block">
+                                    <span class="detail-label">HOURS</span>
+                                    <p>Mon - Sun: 11:00 AM - 11:30 PM</p>
+                                </div>
+                                <div class="detail-block">
+                                    <span class="detail-label">DIRECT CONTACT</span>
+                                    <!-- Mandated User Data Implementation -->
+                                    <p class="wp-number">+880 1334212149</p>
+                                </div>
+                                <button class="btn-minimal mt-4 wp-order-btn">GET DIRECTIONS / WHATSAPP</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 location-map-wrap">
+                            <iframe 
+                                src="https://www.openstreetmap.org/export/embed.html?bbox=89.35,24.83,89.39,24.86&layer=mapnik&marker=24.8481,89.3730" 
+                                class="luxury-map"
+                                allowfullscreen="" 
+                                loading="lazy">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 33 FINAL CTA -->
+            <section class="final-cta">
+                <div class="cta-bg"></div>
+                <div class="cta-content">
+                    <h2>COME HUNGRY.</h2>
+                    <h2 class="offset">LEAVE WITH A MEMORY.</h2>
+                    <div class="cta-buttons mt-5">
+                        <a href="#menu-section" class="btn-minimal">VIEW MENU</a>
+                        <button class="btn-primary wp-order-btn">RESERVE TABLE</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 34 FOOTER -->
+            <footer class="luxury-footer">
+                <div class="footer-top">
+                    <h2 class="footer-huge">SEE YOU</h2>
+                    <h2 class="footer-huge offset">AT THE TABLE.</h2>
+                </div>
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <h4>NEXIC RESTAURANT</h4>
+                        <p>Bogura, Bangladesh</p>
+                        <p class="mt-4 wp-number">WhatsApp: +880 1334212149</p>
+                    </div>
+                    <div class="footer-col">
+                        <h4>EXPLORE</h4>
+                        <a href="#menu-section">Menu</a>
+                        <a href="#signatures">Signatures</a>
+                        <a href="#" class="wp-order-btn">Reservations</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>SOCIAL</h4>
+                        <a href="#">Instagram</a>
+                        <a href="#">Facebook</a>
+                    </div>
+                    <div class="footer-col mini-map-col">
+                        <iframe 
+                            src="https://www.openstreetmap.org/export/embed.html?bbox=89.36,24.84,89.38,24.85&layer=mapnik&marker=24.8481,89.3730" 
+                            class="footer-map"
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2026 NEXIC Hospitality Group. All rights reserved.</p>
+                    <p>Designed for Bogura.</p>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Custom JS -->
+    <script>     
+/* script.js */
+
+// WAIT FOR DOM
+document.addEventListener("DOMContentLoaded", () => {
+    
+    // Register GSAP ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 1. Initialize Custom Cursor (Desktop Only)
+    initCursor();
+    
+    // 2. Initialize Navigation and Mobile Menu
+    initNavigation();
+    
+    // 3. Initialize Hero Parallax
+    initHeroParallax();
+    
+    // 4. Initialize GSAP Scroll Animations
+    initScrollAnimations();
+    
+    // 5. Initialize Cinematic Slider
+    initSlider();
+    
+    // 6. Initialize Data-Driven Menu Engine
+    initMenuEngine();
+    
+    // 7. Initialize Mandated WhatsApp Ordering Logic
+    initWhatsApp();
+});
+
+function initCursor() {
+    const cursor = document.querySelector('.custom-cursor');
+    const cursorText = document.querySelector('.cursor-text');
+    
+    if (window.innerWidth > 768) {
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.1,
+                ease: "power2.out"
+            });
+        });
+
+        const hoverElements = document.querySelectorAll('[data-cursor]');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('active');
+                cursorText.textContent = el.getAttribute('data-cursor');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('active');
+                cursorText.textContent = '';
+            });
+        });
+    } else {
+        cursor.style.display = 'none';
+    }
+}
+
+function initNavigation() {
+    const nav = document.querySelector('.luxury-nav');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+    });
+
+    const hamburger = document.querySelector('.hamburger');
+    const overlay = document.querySelector('.mobile-menu-overlay');
+    
+    if (hamburger) {
+        hamburger.addEventListener('click', () => {
+            overlay.classList.toggle('active');
+        });
+    }
+    
+    document.querySelectorAll('.mobile-link').forEach(link => {
+        link.addEventListener('click', () => {
+            overlay.classList.remove('active');
+        });
+    });
+}
+
+function initHeroParallax() {
+    // Initial load animation
+    gsap.from(".slide-up", {
+        y: 100,
+        opacity: 0,
+        duration: 1.5,
+        stagger: 0.2,
+        ease: "power4.out",
+        delay: 0.5
+    });
+
+    if (window.innerWidth > 768) {
+        const hero = document.getElementById('hero');
+        const frontLayer = document.querySelector('.layer-food-front');
+        const backLayer = document.querySelector('.layer-food-back');
+
+        hero.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+            gsap.to(frontLayer, { x: x * 2, y: y * 2, duration: 1, ease: "power2.out" });
+            gsap.to(backLayer, { x: -x, y: -y, duration: 1, ease: "power2.out" });
+        });
+    }
+}
+
+function initScrollAnimations() {
+    // Statement Line
+    gsap.to(".statement-line", {
+        scrollTrigger: {
+            trigger: ".statement-section",
+            start: "top 80%",
+            end: "bottom 20%",
+            scrub: 1
+        },
+        width: "100%"
+    });
+
+    // Statement Text Parallax
+    gsap.to(".statement-text.offset", {
+        scrollTrigger: {
+            trigger: ".statement-section",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1
+        },
+        x: -100
+    });
+}
+
+function initSlider() {
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.querySelector('.prev');
+    const nextBtn = document.querySelector('.next');
+    let currentSlide = 0;
+
+    function goToSlide(index) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (index + slides.length) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+
+    if(nextBtn && prevBtn) {
+        nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+        prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+    }
+}
+
+function initMenuEngine() {
+    // Generating realistic scale via data object to keep HTML lightweight
+    const menuData = [
+        // Starters
+        { cat: 'starters', name: 'Truffle Edamame', price: '৳ 650', desc: 'Smoked sea salt, white truffle oil.' },
+        { cat: 'starters', name: 'Wagyu Beef Tartare', price: '৳ 1250', desc: 'Quail egg, capers, sourdough crisp.' },
+        { cat: 'starters', name: 'Crispy Calamari', price: '৳ 850', desc: 'Saffron aioli, burnt lemon.' },
+        { cat: 'starters', name: 'Burrata & Heirloom', price: '৳ 1100', desc: 'Basil pesto, aged balsamic.' },
+        
+        // Signatures
+        { cat: 'signatures', name: 'Smoked Charcoal Steak', price: '৳ 3490', desc: 'Prime cut, aged 45 days, applewood.' },
+        { cat: 'signatures', name: 'Wild Truffle Linguine', price: '৳ 1850', desc: 'Handmade pasta, shaved black truffle.' },
+        { cat: 'signatures', name: 'Miso Glazed Black Cod', price: '৳ 2800', desc: 'Charred bok choy, dashi broth.' },
+        { cat: 'signatures', name: '24K Chocolate Dome', price: '৳ 1200', desc: 'Valrhona dark chocolate, gold leaf.' },
+        
+        // Steak
+        { cat: 'steak', name: 'Tomahawk Ribeye (For 2)', price: '৳ 8500', desc: 'MB5+ Wagyu, bone marrow butter.' },
+        { cat: 'steak', name: 'Filet Mignon 250g', price: '৳ 4200', desc: 'Grass-fed tenderloin, peppercorn jus.' },
+        
+        // Bangladeshi
+        { cat: 'bangladeshi', name: 'Bogura Special Roast', price: '৳ 950', desc: 'Traditional spice blend, ghee rice.' },
+        { cat: 'bangladeshi', name: 'Mutton Kacchi Biryani', price: '৳ 1200', desc: 'Aged basmati, tender mutton, saffron.' },
+        { cat: 'bangladeshi', name: 'Tiger Prawn Malai Curry', price: '৳ 1600', desc: 'Coconut milk, mustard oil, green chili.' },
+        
+        // Drinks
+        { cat: 'drinks', name: 'Smoked Old Fashioned', price: '৳ 850', desc: 'Zero-proof bourbon alternative, hickory smoke.' },
+        { cat: 'drinks', name: 'Passionfruit Mojito', price: '৳ 450', desc: 'Fresh mint, lime, passionfruit puree.' }
+    ];
+
+    const grid = document.getElementById('menuGrid');
+    
+    function renderMenu(filterCat) {
+        grid.innerHTML = '';
+        const filtered = filterCat === 'all' ? menuData : menuData.filter(item => item.cat === filterCat);
+        
+        filtered.forEach(item => {
+            const html = `
+                <div class="menu-item slide-up">
+                    <div class="menu-item-header">
+                        <h4 class="menu-item-title">${item.name}</h4>
+                        <span class="menu-item-price">${item.price}</span>
+                    </div>
+                    <p class="menu-item-desc">${item.desc}</p>
+                    <button class="btn-minimal wp-order-btn mt-3" style="width: max-content; padding: 8px 16px; font-size: 10px;" data-item="${item.name}">ADD TO ORDER</button>
+                </div>
+            `;
+            grid.insertAdjacentHTML('beforeend', html);
+        });
+
+        // Re-bind whatsapp buttons for newly rendered items
+        bindWhatsAppButtons();
+    }
+
+    renderMenu('all');
+
+    // Filters
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            renderMenu(e.target.getAttribute('data-filter'));
+        });
+    });
+}
+
+function initWhatsApp() {
+    bindWhatsAppButtons();
+}
+
+function bindWhatsAppButtons() {
+    // Mandated User Data overriding standard linking
+    const WP_NUMBER = "01334212149";
+    
+    document.querySelectorAll('.wp-order-btn').forEach(btn => {
+        // Prevent double binding
+        if(btn.dataset.wpBound) return;
+        btn.dataset.wpBound = "true";
+
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const itemName = btn.getAttribute('data-item') || "a reservation and the Nexic membership/experience";
+            
+            // Constructing the exact auto-message structure mandated by user history
+            const baseMessage = `Hello Nexic, I would like to inquire about ${itemName}.`;
+            const encodedMessage = encodeURIComponent(baseMessage);
+            
+            const wpLink = `https://wa.me/${WP_NUMBER}?text=${encodedMessage}`;
+            window.open(wpLink, '_blank');
+        });
+    });
+}
+
+
+    </script>
+</body>
+</html>

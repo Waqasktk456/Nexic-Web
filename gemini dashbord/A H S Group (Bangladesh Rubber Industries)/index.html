@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A H S GROUP | Bangladesh Rubber Industries</title>
+    
+    <!-- SEO & Meta -->
+    <meta name="description" content="Engineered for motion. Built to perform. A H S GROUP is a global leader in industrial rubber and tyre manufacturing, operating with precision at scale.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP for High-End Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        black: '#0B0D0E',
+                        charcoal: '#151819',
+                        white: '#F3F1EC',
+                        red: '#A91F24',
+                        grey: '#85888A',
+                        lightgrey: '#D8D9D7',
+                    },
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                        mono: ['Inter', 'monospace'],
+                    },
+                    fontSize: {
+                        'hero': 'clamp(3rem, 10vw, 9rem)',
+                        'section': 'clamp(2.5rem, 6vw, 6rem)',
+                    },
+                    gridTemplateColumns: {
+                        'editorial': '1fr 3fr',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Global & Cursor Styles */
+        body { background-color: #0B0D0E; color: #F3F1EC; overflow-x: hidden; cursor: none; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0B0D0E; }
+        ::-webkit-scrollbar-thumb { background: #151819; border-radius: 4px; }
+        
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: 12px; height: 12px;
+            background: #A91F24; border-radius: 50%;
+            pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background 0.3s, border-radius 0.3s;
+            mix-blend-mode: difference;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 700; color: #0B0D0E; opacity: 0;
+        }
+        
+        .cursor-expand { width: 80px; height: 80px; background: #F3F1EC; mix-blend-mode: normal; }
+        
+        @media (max-width: 1024px) {
+            body { cursor: auto; }
+            .custom-cursor { display: none !important; }
+        }
+
+        /* Utilities */
+        .text-outline { -webkit-text-stroke: 1px rgba(243, 241, 236, 0.2); color: transparent; }
+        .clip-text { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%); transition: clip-path 1s cubic-bezier(0.77, 0, 0.175, 1); }
+        .is-inview .clip-text { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+        
+        .industrial-line-y { width: 1px; background: rgba(243, 241, 236, 0.1); }
+        .industrial-line-x { height: 1px; background: rgba(243, 241, 236, 0.1); }
+        
+        /* Grid Overlay */
+        .bg-grid { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px); }
+        
+        /* Loader */
+        #loader { transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1); }
+        .loader-hide { transform: translateY(-100%); }
+
+        /* Mega Menu */
+        .mega-menu { clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); transition: clip-path 0.6s cubic-bezier(0.77, 0, 0.175, 1); }
+        .mega-menu.active { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+
+        /* Image Hover FX */
+        .img-wrap { overflow: hidden; }
+        .img-wrap img { transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
+        .img-wrap:hover img { transform: scale(1.08); }
+
+        /* Magnetic Button */
+        .magnetic-btn { display: inline-block; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+
+        /* Responsive safety layer — keeps the existing experience intact */
+        html, body { max-width: 100%; overflow-x: hidden; }
+        img { max-width: 100%; }
+
+        @media (max-width: 1023px) {
+            .mega-menu {
+                height: 100dvh;
+                max-height: 100dvh;
+                overflow-y: auto;
+                flex-direction: column;
+                padding: 7rem 1.5rem 2rem;
+            }
+            .mega-menu > div:first-child {
+                width: 100%;
+                padding-right: 0;
+                padding-bottom: 2rem;
+                border-right: 0;
+                border-bottom: 1px solid rgba(255,255,255,.1);
+            }
+            .mega-menu > div:nth-child(2) {
+                width: 100%;
+                padding-left: 0;
+                min-height: 280px;
+            }
+            .mega-menu > button {
+                top: 1.5rem;
+                right: 1.5rem;
+            }
+        }
+
+        @media (max-width: 639px) {
+            .section-padding { padding-left: 1.25rem; padding-right: 1.25rem; }
+            .hide-scrollbar { scrollbar-width: none; }
+            .hide-scrollbar::-webkit-scrollbar { display: none; }
+        }
+    </style>
+</head>
+<body class="antialiased font-sans selection:bg-red selection:text-white">
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="cursor"><span id="cursor-text"></span></div>
+
+    <!-- Page Loader -->
+    <div id="loader" class="fixed inset-0 z-[100] bg-black flex items-center justify-center border-b-2 border-red">
+        <div class="overflow-hidden">
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tighter clip-text loader-text">A H S<span class="text-red">.</span></h1>
+        </div>
+    </div>
+
+    <!-- Quick Command Overlay (CMD+K) -->
+    <div id="search-overlay" class="fixed inset-0 z-[90] bg-black/95 backdrop-blur-md hidden flex-col items-center justify-center p-6 opacity-0 transition-opacity duration-300">
+        <div class="w-full max-w-3xl">
+            <p class="text-grey font-mono text-xs mb-4 uppercase tracking-widest">Global Command / Search</p>
+            <input type="text" placeholder="Search capabilities, products, news..." class="w-full bg-transparent text-4xl md:text-6xl font-light text-white border-b border-white/20 pb-4 focus:outline-none focus:border-red transition-colors placeholder:text-white/20">
+            <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm font-mono text-grey">
+                <button class="text-left hover:text-white transition-colors">→ Tyres</button>
+                <button class="text-left hover:text-white transition-colors">→ Engineering</button>
+                <button class="text-left hover:text-white transition-colors">→ Logistics</button>
+                <button class="text-left hover:text-white transition-colors" onclick="closeSearch()">[ ESC ] Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-500" id="navbar">
+        <div class="flex items-center justify-between px-6 py-5 md:px-12 bg-gradient-to-b from-black/80 to-transparent backdrop-blur-sm">
+            <!-- Logo -->
+            <a href="#" class="text-xl md:text-2xl font-bold tracking-tighter z-50 hover-trigger">
+                A H S <span class="text-red font-normal block text-xs tracking-widest">BANGLADESH RUBBER</span>
+            </a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden lg:flex items-center space-x-8 text-xs font-mono tracking-widest uppercase z-50">
+                <button class="hover:text-red transition-colors" onclick="toggleMegaMenu('capabilities')">Capabilities</button>
+                <button class="hover:text-red transition-colors" onclick="toggleMegaMenu('products')">Products</button>
+                <button class="hover:text-red transition-colors" onclick="toggleMegaMenu('industries')">Industries</button>
+                <a href="#sustainability" class="hover:text-red transition-colors">Sustainability</a>
+            </div>
+
+            <!-- Right Actions -->
+            <div class="flex items-center space-x-6 z-50">
+                <button class="hidden md:flex items-center space-x-2 text-xs font-mono text-grey hover:text-white transition-colors hover-trigger" onclick="openSearch()">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                    <span>CMD K</span>
+                </button>
+                <a href="#rfq" class="hidden md:inline-block border border-white/20 px-6 py-3 text-xs font-mono uppercase tracking-widest hover:bg-white hover:text-black transition-colors magnetic-btn">Request Quote</a>
+                <button class="lg:hidden" id="mobile-menu-btn"><i data-lucide="menu" class="w-6 h-6"></i></button>
+            </div>
+        </div>
+
+        <!-- Mega Menu Panel -->
+        <div id="mega-menu" class="mega-menu absolute top-0 left-0 w-full h-[60vh] bg-charcoal border-b border-white/10 pt-32 px-12 pb-12 flex shadow-2xl">
+            <div class="w-1/4 pr-12 border-r border-white/10">
+                <h3 class="text-sm font-mono text-grey mb-8 uppercase" id="mega-title">Categories</h3>
+                <ul class="space-y-4 text-2xl font-light" id="mega-links">
+                    <!-- Populated via JS -->
+                </ul>
+            </div>
+            <div class="w-3/4 pl-12 relative img-wrap">
+                <img id="mega-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTahyr2n42Z8XQd95hGyw3W3FGJ0InzC1aYf6CCxamNr_bAwhAYeRQkMVvh&s=10" alt="Menu Image" class="w-full h-full object-cover grayscale opacity-50">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div class="absolute bottom-12 left-12">
+                    <p class="text-sm font-mono text-red mb-2">FEATURED</p>
+                    <h2 class="text-4xl font-bold">Industrial Scale<br>Manufacturing</h2>
+                </div>
+            </div>
+            <button class="absolute top-8 right-12 text-white hover:text-red hover-trigger" onclick="closeMegaMenu()"><i data-lucide="x" class="w-8 h-8"></i></button>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <!-- 01 HERO -->
+        <section class="relative h-screen w-full flex flex-col justify-end pb-24 md:pb-32 px-6 md:px-12 bg-black overflow-hidden section-padding">
+            <div class="absolute inset-0 z-0 scale-105" id="hero-bg">
+                <img src="https://elements-resized.envatousercontent.com/elements-video-cover-images/10e11f76-66bc-41ec-b2ae-e7b2da1b921a/video_preview/video_preview_0000.jpg?w=500&cf_fit=cover&q=85&format=auto&s=3395030ac7feb0a85a4d273404d111ecfb865a7c4a07d251990677d97bb0f700" alt="Industrial Manufacturing" class="w-full h-full object-cover opacity-60 mix-blend-luminosity">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+            </div>
+            
+            <div class="relative z-10 w-full max-w-7xl mx-auto">
+                <p class="text-red font-mono text-xs md:text-sm tracking-[0.2em] uppercase mb-6 hero-elem opacity-0 translate-y-4">Bangladesh Rubber Industries</p>
+                <h1 class="text-hero font-bold leading-[0.85] tracking-tighter uppercase mb-8 hero-elem opacity-0 translate-y-8">
+                    Engineered<br>
+                    <span class="text-outline">For The Road</span><br>
+                    Ahead<span class="text-red">.</span>
+                </h1>
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 hero-elem opacity-0 translate-y-8">
+                    <p class="max-w-md text-grey text-sm md:text-base font-light">Building reliable rubber and tyre solutions through disciplined manufacturing, engineering, and unyielding quality.</p>
+                    
+                    <div class="flex items-center space-x-4">
+                        <a href="#capabilities" class="bg-red text-white px-8 py-4 text-xs font-mono uppercase tracking-widest hover:bg-white hover:text-black transition-colors magnetic-btn">Explore Capabilities</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Secondary Data -->
+            <div class="absolute bottom-0 left-0 w-full border-t border-white/10 bg-black/50 backdrop-blur-sm hidden md:flex">
+                <div class="flex w-full divide-x divide-white/10 font-mono text-[10px] tracking-widest uppercase text-grey">
+                    <div class="px-12 py-4 hover:text-white transition-colors cursor-pointer flex-1">Manufacturing</div>
+                    <div class="px-12 py-4 hover:text-white transition-colors cursor-pointer flex-1">Quality Control</div>
+                    <div class="px-12 py-4 hover:text-white transition-colors cursor-pointer flex-1">Engineering</div>
+                    <div class="px-12 py-4 hover:text-white transition-colors cursor-pointer flex-1">Global Distribution</div>
+                </div>
+            </div>
+        </section>
+
+       <!-- 02 INDUSTRIAL INTRO — PREMIUM INDUSTRIAL EDITORIAL -->
+<section id="about" class="relative bg-[#f3f1ec] text-black overflow-hidden py-20 sm:py-24 md:py-28 lg:py-32 px-5 sm:px-8 md:px-12">
+
+    <!-- Technical background -->
+    <div class="absolute inset-0 pointer-events-none opacity-[0.035]"
+         style="background-image:linear-gradient(to right,#000 1px,transparent 1px),linear-gradient(to bottom,#000 1px,transparent 1px);background-size:72px 72px;">
+    </div>
+
+    <!-- Technical frame -->
+    <div class="absolute top-0 right-6 sm:right-8 md:right-12 bottom-0 w-px bg-black/10 hidden md:block"></div>
+    <div class="absolute top-0 left-0 right-0 h-px bg-black/10"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+
+        <!-- TOP META -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-black/10 pb-5 mb-10 md:mb-14">
+            <div class="flex items-center gap-3">
+                <span class="w-2 h-2 rounded-full bg-red shrink-0"></span>
+                <span class="font-mono text-[9px] sm:text-[10px] tracking-[0.28em] uppercase text-black/55">
+                    01 / ABOUT A H S
+                </span>
+            </div>
+
+            <div class="flex items-center gap-6 font-mono text-[9px] tracking-[0.22em] uppercase text-black/35">
+                <span>ENGINEERED FOR SCALE</span>
+                <span class="hidden sm:inline">AHS / 001</span>
+            </div>
+        </div>
+
+
+        <!-- MAIN EDITORIAL BLOCK -->
+        <div class="grid grid-cols-1 lg:grid-cols-[0.78fr_1.22fr] gap-10 md:gap-14 lg:gap-16 items-center">
+
+            <!-- TYPOGRAPHY -->
+            <div class="relative">
+
+                <p class="font-mono text-[9px] tracking-[0.24em] uppercase text-black/35 mb-5">
+                    Industrial Intelligence
+                </p>
+
+                <h2 class="font-bold leading-[0.82] tracking-[-0.065em] uppercase text-[clamp(3.25rem,7vw,7.5rem)]">
+                    Built on
+                    <br>
+                    Industrial
+                    <br>
+                    <span class="text-black/15">Experience.</span>
+                </h2>
+
+                <div class="mt-8 md:mt-10 flex items-center gap-4">
+                    <span class="h-px w-12 bg-red"></span>
+                    <span class="font-mono text-[9px] tracking-[0.18em] uppercase text-black/40">
+                        Precision / Scale / Reliability
+                    </span>
+                </div>
+
+            </div>
+
+
+            <!-- IMAGE COMPOSITION -->
+            <div class="relative">
+
+                <!-- Main image -->
+                <div class="relative overflow-hidden bg-black group img-wrap">
+                    <div class="aspect-[16/10] sm:aspect-[16/9] overflow-hidden">
+                        <img
+                            src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=2000&q=90"
+                            alt="Industrial machinery and engineering"
+                            class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out"
+                            loading="lazy"
+                        >
+                    </div>
+
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent pointer-events-none"></div>
+
+                    <div class="absolute top-4 left-4 sm:top-6 sm:left-6">
+                        <span class="font-mono text-[8px] sm:text-[9px] tracking-[0.2em] uppercase text-white/85 border border-white/25 px-2.5 py-1.5 backdrop-blur-sm">
+                            AHS / 001
+                        </span>
+                    </div>
+
+                    <div class="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex items-end justify-between gap-4">
+                        <div>
+                            <p class="font-mono text-[8px] tracking-[0.2em] text-white/55 uppercase mb-1.5">
+                                Manufacturing Intelligence
+                            </p>
+                            <p class="text-white text-sm sm:text-base font-medium tracking-tight">
+                                Precision in motion.
+                            </p>
+                        </div>
+
+                        <span class="font-mono text-[8px] tracking-[0.15em] text-white/50 shrink-0">
+                            2026
+                        </span>
+                    </div>
+                </div>
+
+
+                <!-- Floating detail image -->
+                <div class="absolute -bottom-8 right-3 sm:-bottom-10 sm:right-6 w-[34%] min-w-[125px] max-w-[220px] border-[6px] sm:border-[8px] border-[#f3f1ec] bg-black shadow-2xl overflow-hidden group">
+                    <div class="aspect-[4/5] overflow-hidden">
+                        <img
+                            src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?auto=format&fit=crop&w=900&q=90"
+                            alt="Industrial production detail"
+                            class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+                            loading="lazy"
+                        >
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 bg-black/70 px-2.5 py-2">
+                        <span class="font-mono text-[7px] tracking-[0.15em] text-white/70 uppercase">
+                            Production / 02
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STORY / CTA -->
+        <div class="grid grid-cols-1 lg:grid-cols-[0.78fr_1.22fr] gap-10 md:gap-14 lg:gap-16 mt-20 md:mt-28">
+
+            <div class="hidden lg:block">
+                <div class="border-l border-black/15 pl-5">
+                    <span class="font-mono text-[9px] tracking-[0.2em] uppercase text-black/35">
+                        ENGINEERING PRINCIPLE
+                    </span>
+                    <p class="mt-4 text-sm leading-relaxed text-black/50 max-w-xs">
+                        Every compound, component and finished product is developed around measurable performance.
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="max-w-3xl">
+
+                <p class="text-[clamp(1.2rem,2.2vw,1.7rem)] font-light leading-[1.45] text-black/75 scroll-reveal">
+                    Precision begins long before the finished product. We engineer
+                    high-performance rubber compounds and commercial tyres that drive
+                    industries forward.
+                    <span class="text-black font-medium">
+                        Scale meets uncompromising standards.
+                    </span>
+                </p>
+
+                <div class="mt-8 md:mt-10 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10">
+
+                    <a
+                        href="#"
+                        class="inline-flex items-center gap-4 border-b border-black pb-3 text-[10px] font-mono font-bold uppercase tracking-[0.2em] hover:text-red hover:border-red transition-all duration-300 group scroll-reveal hover-trigger w-fit"
+                    >
+                        <span>Explore Our Story</span>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300"></i>
+                    </a>
+
+                    <span class="font-mono text-[8px] tracking-[0.18em] uppercase text-black/30">
+                        Bangladesh / Global Operations
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- DATA STRIP -->
+        <div class="mt-20 md:mt-28 border-y border-black/10 grid grid-cols-2 md:grid-cols-4">
+
+            <div class="py-6 md:py-7 md:pr-8 md:border-r border-black/10">
+                <span class="block font-mono text-[8px] tracking-[0.2em] uppercase text-black/40 mb-2">
+                    Experience
+                </span>
+                <span class="text-3xl md:text-4xl font-bold tracking-[-0.04em]">
+                    25+
+                </span>
+            </div>
+
+            <div class="py-6 md:py-7 md:px-8 border-l border-black/10 md:border-l-0">
+                <span class="block font-mono text-[8px] tracking-[0.2em] uppercase text-black/40 mb-2">
+                    Precision
+                </span>
+                <span class="text-3xl md:text-4xl font-bold tracking-[-0.04em]">
+                    99.8%
+                </span>
+            </div>
+
+            <div class="py-6 md:py-7 md:px-8 border-t md:border-t-0 md:border-l border-black/10">
+                <span class="block font-mono text-[8px] tracking-[0.2em] uppercase text-black/40 mb-2">
+                    Production
+                </span>
+                <span class="text-3xl md:text-4xl font-bold tracking-[-0.04em]">
+                    24/7
+                </span>
+            </div>
+
+            <div class="py-6 md:py-7 md:pl-8 border-l border-black/10 border-t md:border-t-0">
+                <span class="block font-mono text-[8px] tracking-[0.2em] uppercase text-black/40 mb-2">
+                    Standard
+                </span>
+                <span class="text-3xl md:text-4xl font-bold tracking-[-0.04em]">
+                    GLOBAL
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Corner coordinate -->
+    <div class="absolute bottom-5 right-6 md:right-12 hidden sm:block">
+        <span class="font-mono text-[8px] tracking-[0.2em] text-black/25 uppercase">
+            AHS / 23°N / 90°E
+        </span>
+    </div>
+
+</section>
+
+        <!-- 03 COMPANY DNA -->
+        <section class="py-1 bg-charcoal">
+            <div class="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10 border-y border-white/10">
+                <!-- Block 1 -->
+                <div class="group relative p-12 h-[500px] flex flex-col justify-between overflow-hidden bg-black hover:bg-charcoal transition-colors hover-trigger">
+                    <img src="https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcR9sI3S5orkYwFgA3aH4fp44Lk9WkeKVidv6CRd4n0jfVSAxfwDQBwmENhQE8Y9g8jwH7PnokcOXYP0kHE" alt="Precision" class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-40 transition-opacity duration-700 grayscale mix-blend-overlay">
+                    <span class="relative z-10 font-mono text-sm text-grey">01</span>
+                    <div class="relative z-10 transform group-hover:-translate-y-4 transition-transform duration-500">
+                        <h3 class="text-3xl font-bold uppercase mb-4 text-white">Precision</h3>
+                        <p class="text-sm font-light text-grey group-hover:text-white transition-colors">Micro-level tolerance in every compound mix.</p>
+                    </div>
+                </div>
+                <!-- Block 2 -->
+                <div class="group relative p-12 h-[500px] flex flex-col justify-between overflow-hidden bg-black hover:bg-charcoal transition-colors hover-trigger">
+                    <img src="https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcSaj_L6MV_y4-iI8ceuRyTgY07S5i5p2Rmo_lWAGJ8DuiCYzUtcavHb1zhBSW1NYOS95bINKoK5oelS0QY" alt="Engineering" class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-40 transition-opacity duration-700 grayscale mix-blend-overlay">
+                    <span class="relative z-10 font-mono text-sm text-grey">02</span>
+                    <div class="relative z-10 transform group-hover:-translate-y-4 transition-transform duration-500">
+                        <h3 class="text-3xl font-bold uppercase mb-4 text-white">Engineering</h3>
+                        <p class="text-sm font-light text-grey group-hover:text-white transition-colors">Automated robotics ensuring structural integrity.</p>
+                    </div>
+                </div>
+                <!-- Block 3 -->
+                <div class="group relative p-12 h-[500px] flex flex-col justify-between overflow-hidden bg-black hover:bg-charcoal transition-colors hover-trigger">
+                    <img src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcRAeQQ769xk7sBwDayPmlgt3kuvHxbn1bXqM-VMujO_Tdeoe9DQVJNozvle2we2ZgLocvCEsFRSHnEhflI" alt="Reliability" class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-40 transition-opacity duration-700 grayscale mix-blend-overlay">
+                    <span class="relative z-10 font-mono text-sm text-grey">03</span>
+                    <div class="relative z-10 transform group-hover:-translate-y-4 transition-transform duration-500">
+                        <h3 class="text-3xl font-bold uppercase mb-4 text-white">Reliability</h3>
+                        <p class="text-sm font-light text-grey group-hover:text-white transition-colors">Commercial endurance for the harshest conditions.</p>
+                    </div>
+                </div>
+                <!-- Block 4 -->
+                <div class="group relative p-12 h-[500px] flex flex-col justify-between overflow-hidden bg-black hover:bg-charcoal transition-colors hover-trigger">
+                    <img src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcRqiA1aNiYrlLYTGCRUZJ7guxGmW5N8eMtJw6H4mnnn46rQsRkqyW54uqHdbS8WDZGL4aCPxmjFnQh5rlc" alt="Scale" class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-40 transition-opacity duration-700 grayscale mix-blend-overlay">
+                    <span class="relative z-10 font-mono text-sm text-grey">04</span>
+                    <div class="relative z-10 transform group-hover:-translate-y-4 transition-transform duration-500">
+                        <h3 class="text-3xl font-bold uppercase mb-4 text-white">Scale</h3>
+                        <p class="text-sm font-light text-grey group-hover:text-white transition-colors">Global logistics supporting heavy industries worldwide.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04 & 05 INDUSTRIAL SCALE & JOURNEY (Horizontal Scroll Simulation) -->
+        <section class="py-32 bg-black overflow-hidden relative border-b border-white/10" id="manufacturing-journey">
+            <div class="px-6 md:px-12 mb-20 max-w-7xl mx-auto">
+                <h2 class="text-section font-bold tracking-tighter uppercase leading-none scroll-reveal clip-text">
+                    From Material<br><span class="text-outline">To Movement.</span>
+                </h2>
+            </div>
+            
+            <!-- Horizontal Scroller Container -->
+            <div class="w-full overflow-x-auto pb-12 hide-scrollbar pl-6 md:pl-12 snap-x snap-mandatory">
+                <div class="flex space-x-8 w-[max-content] pr-12 relative">
+                    <!-- Progress Line -->
+                    <div class="absolute top-1/2 left-0 w-full h-px bg-white/10 -z-10"></div>
+                    
+                    <!-- Journey Panels -->
+                    <div class="w-[400px] h-[500px] shrink-0 bg-charcoal p-8 flex flex-col justify-between snap-center hover-trigger group img-wrap border border-white/5">
+                        <div class="flex justify-between items-start z-10 relative">
+                            <span class="text-4xl font-light text-white">01</span>
+                            <span class="text-[10px] font-mono text-red border border-red px-2 py-1 uppercase">Sourcing</span>
+                        </div>
+                        <img src="https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcRe9xVXNW7UHA66o9I2Gr5Nrqvh5CtrnzTbLYz9oHYm1-e1tMiAgnB5pqTYnuX3woo8Ll1ANjPFvhr1NZU" alt="Raw Material" class="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-60 transition-opacity">
+                        <div class="z-10 relative">
+                            <h4 class="text-xl font-bold uppercase mb-2">Raw Material</h4>
+                            <p class="text-sm font-light text-grey">Premium natural and synthetic rubbers rigorously vetted for tensile strength.</p>
+                        </div>
+                    </div>
+
+                    <div class="w-[400px] h-[500px] shrink-0 bg-charcoal p-8 flex flex-col justify-between snap-center hover-trigger group img-wrap border border-white/5">
+                        <div class="flex justify-between items-start z-10 relative">
+                            <span class="text-4xl font-light text-white">02</span>
+                            <span class="text-[10px] font-mono text-red border border-red px-2 py-1 uppercase">Processing</span>
+                        </div>
+                        <img src="https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcQaxmghgNhVIBsjeXQkn_aIIDZmGzTHvVhwQUk3aLRX71KKAqOXpknbLPzX2MHrPk03V0b3FVPjlJqS1_k" alt="Mixing" class="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-60 transition-opacity">
+                        <div class="z-10 relative">
+                            <h4 class="text-xl font-bold uppercase mb-2">Internal Mixing</h4>
+                            <p class="text-sm font-light text-grey">Precision temperature-controlled Banbury mixers create homogenous compounds.</p>
+                        </div>
+                    </div>
+
+                    <div class="w-[400px] h-[500px] shrink-0 bg-charcoal p-8 flex flex-col justify-between snap-center hover-trigger group img-wrap border border-white/5">
+                        <div class="flex justify-between items-start z-10 relative">
+                            <span class="text-4xl font-light text-white">03</span>
+                            <span class="text-[10px] font-mono text-red border border-red px-2 py-1 uppercase">Forming</span>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full bg-gradient-to-tr from-charcoal to-black opacity-80"></div>
+                        <div class="z-10 relative">
+                            <h4 class="text-xl font-bold uppercase mb-2">Extrusion & Calendering</h4>
+                            <p class="text-sm font-light text-grey">Shaping components with sub-millimeter accuracy for structural layers.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="w-[400px] h-[500px] shrink-0 bg-charcoal p-8 flex flex-col justify-between snap-center hover-trigger group img-wrap border border-white/5">
+                        <div class="flex justify-between items-start z-10 relative">
+                            <span class="text-4xl font-light text-white">04</span>
+                            <span class="text-[10px] font-mono text-red border border-red px-2 py-1 uppercase">Curing</span>
+                        </div>
+                        <img src="https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcSaj_L6MV_y4-iI8ceuRyTgY07S5i5p2Rmo_lWAGJ8DuiCYzUtcavHb1zhBSW1NYOS95bINKoK5oelS0QY" alt="Curing" class="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-60 transition-opacity">
+                        <div class="z-10 relative">
+                            <h4 class="text-xl font-bold uppercase mb-2">Vulcanization</h4>
+                            <p class="text-sm font-light text-grey">Heat and pressure transform molecular structures into durable rubber matrices.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 06 FACTORY IMMERSION -->
+        <section class="relative h-[80vh] w-full flex items-center justify-center overflow-hidden" id="parallax-section">
+            <div class="absolute inset-0 z-0 bg-black">
+                <img src="https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcQaxmghgNhVIBsjeXQkn_aIIDZmGzTHvVhwQUk3aLRX71KKAqOXpknbLPzX2MHrPk03V0b3FVPjlJqS1_k" alt="Factory Interior" class="w-full h-full object-cover opacity-40 mix-blend-luminosity parallax-img scale-110">
+            </div>
+            <div class="relative z-10 text-center">
+                <h2 class="text-section font-bold tracking-tighter uppercase mb-6 drop-shadow-2xl">Inside<br>The Process.</h2>
+                <a href="#" class="inline-flex items-center space-x-3 text-xs font-mono uppercase tracking-widest text-white hover:text-red transition-colors group magnetic-btn hover-trigger">
+                    <span>Explore Facilities</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- 07 CAPABILITIES -->
+        <section id="capabilities" class="py-32 px-6 md:px-12 bg-white text-black relative bg-grid">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-24">
+                    <div>
+                        <span class="font-mono text-xs text-grey tracking-widest block mb-4">02 / CORE CAPABILITIES</span>
+                        <h2 class="text-5xl md:text-7xl font-bold tracking-tighter uppercase">Precision<br>At Scale.</h2>
+                    </div>
+                    <p class="text-grey font-light max-w-sm mt-8 md:mt-0">Integrated industrial solutions spanning from raw material engineering to global logistics operations.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-16 gap-x-12">
+                    <!-- Cap 1 -->
+                    <div class="group cursor-none hover-trigger" onmouseover="setCursor('VIEW')" onmouseout="resetCursor()">
+                        <div class="h-64 mb-6 overflow-hidden bg-charcoal relative">
+                            <img src="https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcSaj_L6MV_y4-iI8ceuRyTgY07S5i5p2Rmo_lWAGJ8DuiCYzUtcavHb1zhBSW1NYOS95bINKoK5oelS0QY" class="w-full h-full object-cover grayscale opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700">
+                        </div>
+                        <h3 class="text-2xl font-bold uppercase mb-2 flex justify-between border-b border-black/10 pb-4">
+                            Manufacturing <span class="text-grey font-mono text-sm">01</span>
+                        </h3>
+                        <p class="text-sm text-charcoal font-light pt-4">High-capacity extrusion lines and automated compounding designed for continuous industrial output without compromising tolerance limits.</p>
+                    </div>
+                    <!-- Cap 2 -->
+                    <div class="group cursor-none hover-trigger" onmouseover="setCursor('VIEW')" onmouseout="resetCursor()">
+                        <div class="h-64 mb-6 overflow-hidden bg-charcoal relative">
+                            <img src="https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcR9sI3S5orkYwFgA3aH4fp44Lk9WkeKVidv6CRd4n0jfVSAxfwDQBwmENhQE8Y9g8jwH7PnokcOXYP0kHE" class="w-full h-full object-cover grayscale opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700">
+                        </div>
+                        <h3 class="text-2xl font-bold uppercase mb-2 flex justify-between border-b border-black/10 pb-4">
+                            Quality Control <span class="text-grey font-mono text-sm">02</span>
+                        </h3>
+                        <p class="text-sm text-charcoal font-light pt-4">In-line laser inspection, dynamic balancing, and x-ray structural analysis guaranteeing every product meets ISO specifications.</p>
+                    </div>
+                    <!-- Cap 3 -->
+                    <div class="group cursor-none hover-trigger" onmouseover="setCursor('VIEW')" onmouseout="resetCursor()">
+                        <div class="h-64 mb-6 overflow-hidden bg-charcoal relative">
+                            <img src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcRqiA1aNiYrlLYTGCRUZJ7guxGmW5N8eMtJw6H4mnnn46rQsRkqyW54uqHdbS8WDZGL4aCPxmjFnQh5rlc" class="w-full h-full object-cover grayscale opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700">
+                        </div>
+                        <h3 class="text-2xl font-bold uppercase mb-2 flex justify-between border-b border-black/10 pb-4">
+                            Logistics <span class="text-grey font-mono text-sm">03</span>
+                        </h3>
+                        <p class="text-sm text-charcoal font-light pt-4">Automated warehousing and integrated supply chain management delivering industrial products globally, on time, securely.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 08 & 09 PRODUCT UNIVERSE & CATALOG (Visual UI) -->
+        <section id="products" class="py-32 bg-black border-t border-white/10">
+            <div class="max-w-[1600px] mx-auto px-6 md:px-12">
+                <div class="text-center mb-24">
+                    <h2 class="text-section font-bold tracking-tighter uppercase mb-4">Product Ecosystem</h2>
+                    <p class="text-grey font-mono text-sm">SELECT A CATEGORY TO EXPLORE</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <!-- Big Category 1 -->
+                    <a href="#catalog" class="block relative h-[600px] bg-charcoal overflow-hidden group hover-trigger cursor-none" onmouseover="setCursor('EXPLORE')" onmouseout="resetCursor()">
+                        <img src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcRAeQQ769xk7sBwDayPmlgt3kuvHxbn1bXqM-VMujO_Tdeoe9DQVJNozvle2we2ZgLocvCEsFRSHnEhflI" alt="Commercial Tyres" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-80 transition-opacity duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                        <div class="absolute bottom-12 left-12 right-12 z-10 flex justify-between items-end">
+                            <div>
+                                <p class="text-red font-mono text-xs mb-2">42 PRODUCTS</p>
+                                <h3 class="text-4xl md:text-5xl font-bold uppercase tracking-tight">Commercial<br>Tyres</h3>
+                            </div>
+                            <i data-lucide="arrow-up-right" class="w-12 h-12 text-white/50 group-hover:text-white transition-colors"></i>
+                        </div>
+                    </a>
+
+                    <div class="grid grid-rows-2 gap-4">
+                        <!-- Small Cat 1 -->
+                        <a href="#catalog" class="block relative bg-charcoal overflow-hidden group hover-trigger">
+                            <img src="https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcRe9xVXNW7UHA66o9I2Gr5Nrqvh5CtrnzTbLYz9oHYm1-e1tMiAgnB5pqTYnuX3woo8Ll1ANjPFvhr1NZU" alt="Industrial Rubber" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-70 transition-opacity duration-700 group-hover:scale-105 grayscale">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors"></div>
+                            <div class="absolute bottom-8 left-8 right-8 z-10">
+                                <h3 class="text-2xl font-bold uppercase">Industrial Rubber Components</h3>
+                                <p class="text-grey font-mono text-xs mt-2">Vibration Isolation / Mounts / Seals</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Small Cat 2 -->
+                        <a href="#catalog" class="block relative bg-charcoal overflow-hidden group hover-trigger">
+                            <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-charcoal to-black opacity-80 group-hover:opacity-100 transition-opacity duration-700"></div>
+                            <div class="absolute inset-0 bg-grid opacity-20"></div>
+                            <div class="absolute bottom-8 left-8 right-8 z-10 flex justify-between items-center">
+                                <div>
+                                    <h3 class="text-2xl font-bold uppercase">Automotive Applications</h3>
+                                    <p class="text-grey font-mono text-xs mt-2">Custom extrusions & molded parts</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
+                                    <i data-lucide="plus" class="w-4 h-4"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10 TESTING LAB -->
+        <section class="py-32 px-6 md:px-12 bg-[#050606] border-t border-white/5 relative overflow-hidden text-center">
+            <div class="absolute inset-0 z-0">
+                <div class="w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-red/10 via-black to-black opacity-50"></div>
+            </div>
+            <div class="relative z-10 max-w-4xl mx-auto">
+                <span class="font-mono text-xs text-red tracking-widest block mb-4 border border-red inline-block px-3 py-1">ISO 9001 VERIFIED</span>
+                <h2 class="text-5xl md:text-7xl font-bold tracking-tighter uppercase mb-8">Quality Without<br>Compromise.</h2>
+                <p class="text-xl text-grey font-light mb-16">In our precision engineering laboratory, every compound batch undergoes stress, endurance, and dimensional analysis before reaching the production floor.</p>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-left">
+                    <div class="border-t border-white/20 pt-4">
+                        <h4 class="text-white font-bold mb-2">Rheometry</h4>
+                        <p class="text-xs text-grey font-mono">Curing characterization</p>
+                    </div>
+                    <div class="border-t border-white/20 pt-4">
+                        <h4 class="text-white font-bold mb-2">Tensile Testing</h4>
+                        <p class="text-xs text-grey font-mono">Elongation & stress</p>
+                    </div>
+                    <div class="border-t border-white/20 pt-4">
+                        <h4 class="text-white font-bold mb-2">Endurance</h4>
+                        <p class="text-xs text-grey font-mono">Dynamic load simulation</p>
+                    </div>
+                    <div class="border-t border-white/20 pt-4">
+                        <h4 class="text-white font-bold mb-2">Dimensional</h4>
+                        <p class="text-xs text-grey font-mono">Laser profile scanning</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11 INFRASTRUCTURE -->
+        <section class="relative h-screen w-full flex items-center bg-black">
+            <img src="https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcTivOCTXvwhXalIWjeIxjslUQC9opVJZLC3tRZ8zZ3Ih6RKYYdPvmnlX3eIGeSkLMPyMbLP2Xy1pMipDrs" alt="Factory Exterior" class="absolute inset-0 w-full h-full object-cover opacity-30">
+            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
+            
+            <div class="relative z-10 px-6 md:px-24 max-w-4xl">
+                <span class="font-mono text-xs text-grey tracking-widest block mb-4">GLOBAL INFRASTRUCTURE</span>
+                <h2 class="text-6xl md:text-8xl font-bold tracking-tighter uppercase mb-8 leading-none">Built For<br>Tomorrow.</h2>
+                <p class="text-xl text-grey font-light max-w-xl mb-12">Over 500,000 sq ft of advanced manufacturing space, equipped with next-generation robotics and sustainable energy recovery systems.</p>
+                
+                <div class="flex space-x-12 font-mono text-sm border-l-2 border-red pl-6">
+                    <div>
+                        <div class="text-4xl text-white font-bold mb-1">3</div>
+                        <div class="text-grey uppercase tracking-widest text-xs">Production<br>Facilities</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl text-white font-bold mb-1">2M+</div>
+                        <div class="text-grey uppercase tracking-widest text-xs">Units Annual<br>Capacity</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 12 RFQ WIZARD (Interactive B2B Form) -->
+        <section id="rfq" class="py-32 px-6 md:px-12 bg-white text-black border-b border-black/10">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-6xl font-bold tracking-tighter uppercase mb-4">Let's Build What's Next.</h2>
+                    <p class="text-charcoal font-light">Direct B2B Procurement & Engineering Consultation</p>
+                </div>
+
+                <div class="bg-ahs-white p-8 md:p-16 border border-black/10 shadow-2xl relative">
+                    <!-- Progress -->
+                    <div class="flex justify-between mb-12 relative">
+                        <div class="absolute top-1/2 left-0 w-full h-px bg-black/10 -z-10"></div>
+                        <div class="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xs font-mono">1</div>
+                        <div class="bg-white text-black border border-black/20 w-8 h-8 rounded-full flex items-center justify-center text-xs font-mono">2</div>
+                        <div class="bg-white text-black border border-black/20 w-8 h-8 rounded-full flex items-center justify-center text-xs font-mono">3</div>
+                        <div class="bg-white text-black border border-black/20 w-8 h-8 rounded-full flex items-center justify-center text-xs font-mono">4</div>
+                    </div>
+
+                    <form class="space-y-8">
+                        <div>
+                            <h3 class="text-xl font-bold uppercase mb-6">01. Company Information</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <label class="text-xs font-mono text-grey uppercase">Full Name</label>
+                                    <input type="text" class="w-full bg-transparent border-b border-black/20 pb-3 focus:outline-none focus:border-red transition-colors text-lg" placeholder="John Doe">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-xs font-mono text-grey uppercase">Company / Organization</label>
+                                    <input type="text" class="w-full bg-transparent border-b border-black/20 pb-3 focus:outline-none focus:border-red transition-colors text-lg" placeholder="Industries LLC">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-xs font-mono text-grey uppercase">Email Address</label>
+                                    <input type="email" class="w-full bg-transparent border-b border-black/20 pb-3 focus:outline-none focus:border-red transition-colors text-lg" placeholder="john@company.com">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-xs font-mono text-grey uppercase">Region / Country</label>
+                                    <input type="text" class="w-full bg-transparent border-b border-black/20 pb-3 focus:outline-none focus:border-red transition-colors text-lg" placeholder="Select Region">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-8 flex justify-end">
+                            <button type="button" class="bg-black text-white px-8 py-4 text-xs font-mono uppercase tracking-widest hover:bg-red transition-colors magnetic-btn">Next Step →</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 13 MASSIVE FOOTER -->
+        <footer class="bg-black pt-32 pb-12 px-6 md:px-12 border-t border-white/10 relative overflow-hidden">
+            <div class="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
+            <div class="max-w-7xl mx-auto relative z-10">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
+                    <div>
+                        <h2 class="text-5xl md:text-7xl font-bold tracking-tighter uppercase mb-8">Ready to<br>Move Forward?</h2>
+                        <a href="#rfq" class="inline-block bg-white text-black px-8 py-4 text-sm font-mono uppercase tracking-widest hover:bg-red hover:text-white transition-colors magnetic-btn">Request A Quote</a>
+                    </div>
+                    <div class="grid grid-cols-2 gap-8 text-sm font-mono tracking-widest uppercase">
+                        <ul class="space-y-4 text-grey">
+                            <li class="text-white font-bold mb-6">Company</li>
+                            <li><a href="#" class="hover:text-red transition-colors">About Us</a></li>
+                            <li><a href="#" class="hover:text-red transition-colors">Capabilities</a></li>
+                            <li><a href="#" class="hover:text-red transition-colors">Infrastructure</a></li>
+                            <li><a href="#" class="hover:text-red transition-colors">Careers</a></li>
+                        </ul>
+                        <ul class="space-y-4 text-grey">
+                            <li class="text-white font-bold mb-6">Solutions</li>
+                            <li><a href="#" class="hover:text-red transition-colors">Commercial Tyres</a></li>
+                            <li><a href="#" class="hover:text-red transition-colors">Industrial Rubber</a></li>
+                            <li><a href="#" class="hover:text-red transition-colors">Quality Lab</a></li>
+                            <li><a href="#" class="hover:text-red transition-colors">Industries</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Giant Wordmark -->
+                <div class="w-full border-t border-b border-white/10 py-12 mb-12 flex justify-center overflow-hidden">
+                    <h1 class="text-[12vw] font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 select-none">
+                        A H S GROUP
+                    </h1>
+                </div>
+
+                <div class="flex flex-col md:flex-row justify-between items-center text-xs font-mono text-grey">
+                    <p>&copy; 2026 Bangladesh Rubber Industries. All Rights Reserved.</p>
+                    <div class="flex space-x-6 mt-4 md:mt-0">
+                        <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                        <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                        <a href="#" class="hover:text-white transition-colors">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Register GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Loader Animation
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            tl.to('.loader-text', { clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', duration: 1, ease: 'power4.inOut' })
+              .to('#loader', { yPercent: -100, duration: 1.2, ease: 'power4.inOut', delay: 0.5 })
+              .to('.hero-elem', { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'power3.out' }, '-=0.5');
+        });
+
+        // Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        const cursorText = document.getElementById('cursor-text');
+        
+        if (window.matchMedia("(pointer: fine)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                // Use requestAnimationFrame for smoother performance
+                requestAnimationFrame(() => {
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
+                    cursor.style.opacity = 1;
+                });
+            });
+
+            document.addEventListener('mouseleave', () => cursor.style.opacity = 0);
+        }
+
+        window.setCursor = (text) => {
+            cursor.classList.add('cursor-expand');
+            cursorText.innerText = text;
+        }
+
+        window.resetCursor = () => {
+            cursor.classList.remove('cursor-expand');
+            cursorText.innerText = '';
+        }
+
+        // Magnetic Buttons
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                gsap.to(btn, { x: x * 0.3, y: y * 0.3, duration: 0.3, ease: 'power2.out' });
+            });
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, 0.3)' });
+            });
+        });
+
+        // Search Overlay Command (CMD+K)
+        const searchOverlay = document.getElementById('search-overlay');
+        const searchInput = searchOverlay.querySelector('input');
+        
+        window.openSearch = () => {
+            searchOverlay.classList.remove('hidden');
+            searchOverlay.classList.add('flex');
+            setTimeout(() => { searchOverlay.style.opacity = 1; searchInput.focus(); }, 10);
+        }
+        
+        window.closeSearch = () => {
+            searchOverlay.style.opacity = 0;
+            setTimeout(() => { searchOverlay.classList.add('hidden'); searchOverlay.classList.remove('flex'); }, 300);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearch();
+            }
+            if (e.key === 'Escape') closeSearch();
+        });
+
+        // Mega Menu Logic
+        const megaMenu = document.getElementById('mega-menu');
+        const megaTitle = document.getElementById('mega-title');
+        const megaLinks = document.getElementById('mega-links');
+        
+        const menuData = {
+            capabilities: ['Manufacturing', 'Engineering', 'Testing Lab', 'Infrastructure', 'Global Logistics'],
+            products: ['Commercial Tyres', 'Industrial Rubber', 'Automotive Applications', 'Specialized Products'],
+            industries: ['Automotive', 'Transportation', 'Agriculture', 'Infrastructure', 'Commercial']
+        };
+
+        window.toggleMegaMenu = (type) => {
+            megaTitle.innerText = type.toUpperCase();
+            megaLinks.innerHTML = menuData[type].map(item => `<li><a href="#" class="hover:text-red hover:pl-4 transition-all duration-300 inline-block">${item}</a></li>`).join('');
+            megaMenu.classList.add('active');
+            
+            // GSAP stagger in links
+            gsap.fromTo(megaLinks.children, 
+                { opacity: 0, x: -20 }, 
+                { opacity: 1, x: 0, stagger: 0.1, duration: 0.5, ease: 'power2.out', delay: 0.3 }
+            );
+        };
+
+        window.closeMegaMenu = () => {
+            megaMenu.classList.remove('active');
+        };
+
+        // Scroll Animations (GSAP)
+        gsap.utils.toArray('.scroll-reveal').forEach(elem => {
+            ScrollTrigger.create({
+                trigger: elem,
+                start: "top 85%",
+                toggleClass: "is-inview",
+                once: true
+            });
+        });
+
+        // Parallax Effect
+        gsap.to('.parallax-img', {
+            yPercent: 20,
+            ease: "none",
+            ScrollTrigger: {
+                trigger: "#parallax-section",
+                start: "top bottom", 
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // Horizontal Scroll Simulation via native CSS snap-x handles it gracefully on mobile/desktop without heavy JS hijacking, keeping it performant as requested.
+        
+        // Sticky Navbar effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-black/95', 'border-b', 'border-white/10');
+            } else {
+                navbar.classList.remove('bg-black/95', 'border-b', 'border-white/10');
+            }
+        });
+    </script>
+</body>
+</html>
