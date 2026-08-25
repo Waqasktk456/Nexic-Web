@@ -1,0 +1,1904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAIRO VANTA® | VISUAL EXPERIMENTALIST</title>
+    
+    <!-- Google Fonts for Extreme Contrast -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- GSAP & Lenis for Elite Animations and Smooth Scrolling -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        /* ==================================================
+           CSS VARIABLES & GLOBAL RESET
+           ================================================== */
+        :root {
+            --bg-color: #050505;
+            --text-main: #F5F2EB;
+            --text-secondary: #8D8B87;
+            --accent-green: #D6FF00;
+            --accent-blue: #4B5CFF;
+            
+            --font-brutal: 'Anton', sans-serif;
+            --font-editorial: 'Playfair Display', serif;
+            --font-tech: 'Space Mono', monospace;
+            --font-display: 'Syncopate', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Custom Cursor enabled */
+        }
+
+        html, body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-tech);
+            overflow-x: hidden;
+            width: 100vw;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: var(--accent-green);
+            color: var(--bg-color);
+        }
+
+        /* Grain Overlay */
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+        }
+
+        /* ==================================================
+           CUSTOM CURSOR
+           ================================================== */
+        .cursor-dot, .cursor-ring, .cursor-text {
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+        }
+        .cursor-dot {
+            width: 5px; height: 5px;
+            background: var(--accent-green);
+            border-radius: 50%;
+        }
+        .cursor-ring {
+            width: 40px; height: 40px;
+            border: 1px solid rgba(245, 242, 235, 0.4);
+            border-radius: 50%;
+            transition: width 0.3s ease, height 0.3s ease, background 0.3s ease, border 0.3s ease;
+        }
+        .cursor-text {
+            font-family: var(--font-tech);
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--bg-color);
+            opacity: 0;
+            text-transform: uppercase;
+            transition: opacity 0.3s;
+            text-align: center;
+        }
+
+        /* Cursor States */
+        body.cursor-hover .cursor-ring {
+            width: 90px; height: 90px;
+            background: var(--accent-green);
+            border-color: transparent;
+            mix-blend-mode: difference;
+        }
+        body.cursor-hover .cursor-text {
+            opacity: 1;
+            color: var(--bg-color);
+        }
+        body.cursor-image .cursor-ring {
+            width: 120px; height: 120px;
+            background: rgba(245, 242, 235, 0.1);
+            backdrop-filter: blur(4px);
+        }
+
+        /* ==================================================
+           PRELOADER
+           ================================================== */
+        .preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: var(--bg-color);
+            z-index: 9000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .preloader-dot {
+            width: 0px; height: 0px;
+            background: var(--text-main);
+            border-radius: 50%;
+        }
+
+        /* ==================================================
+           HERO SECTION
+           ================================================== */
+        .hero {
+            position: relative;
+            width: 100vw; height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero-name {
+            position: absolute;
+            font-family: var(--font-display);
+            font-size: 18vw;
+            line-height: 0.8;
+            color: var(--text-main);
+            text-align: center;
+            z-index: 10;
+            mix-blend-mode: exclusion;
+            white-space: nowrap;
+        }
+        .hero-name span { display: inline-block; }
+        
+        .hero-name-outlined {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--text-main);
+            position: absolute;
+            z-index: 1;
+            font-size: 18vw;
+            font-family: var(--font-display);
+            line-height: 0.8;
+        }
+
+        .hero-portrait {
+            position: absolute;
+            width: 30vw; height: 60vh;
+            background: url('https://images.unsplash.com/photo-1549490349-8643362247b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') center/cover;
+            z-index: 5;
+            clip-path: polygon(50% 0, 50% 0, 50% 100%, 50% 100%);
+            filter: grayscale(100%) contrast(1.2);
+        }
+
+        .hero-statement {
+            position: absolute;
+            font-family: var(--font-editorial);
+            font-style: italic;
+            font-size: 8vw;
+            color: var(--accent-blue);
+            z-index: 15;
+            top: 15%;
+            left: 5%;
+            mix-blend-mode: screen;
+            opacity: 0;
+        }
+        .hero-statement.bottom {
+            top: auto; bottom: 15%; left: auto; right: 5%;
+            color: var(--accent-green);
+        }
+
+        .hero-meta {
+            position: absolute;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
+            z-index: 20;
+        }
+        .meta-1 { top: 5%; left: 3%; }
+        .meta-2 { top: 5%; right: 3%; text-align: right; }
+        .meta-3 { bottom: 5%; left: 3%; }
+        .meta-4 { bottom: 5%; right: 3%; text-align: right; }
+
+        .scroll-symbol {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 60px;
+            background: var(--text-secondary);
+            z-index: 20;
+            overflow: hidden;
+        }
+        .scroll-symbol::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 50%;
+            background: var(--accent-green);
+            animation: scrollDown 2s infinite ease-in-out;
+        }
+        @keyframes scrollDown {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(200%); }
+        }
+
+        /* ==================================================
+           MANIFESTO
+           ================================================== */
+        .manifesto {
+            position: relative;
+            padding: 20vh 5vw;
+            min-height: 120vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .manifesto-bg {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: var(--font-brutal);
+            font-size: 45vw;
+            color: rgba(245, 242, 235, 0.03);
+            z-index: 0;
+            white-space: nowrap;
+        }
+        .manifesto-text {
+            position: relative;
+            z-index: 2;
+            font-family: var(--font-editorial);
+            font-size: 8vw;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+        .manifesto-text .line { overflow: hidden; display: block; }
+        .manifesto-text span { display: inline-block; }
+        .manifesto-text .highlight { font-family: var(--font-display); color: var(--accent-green); font-style: italic; }
+
+        /* ==================================================
+           SELECTED WORK (12 UNIQUE COMPS)
+           ================================================== */
+        .works-header {
+            padding: 10vh 5vw;
+            font-family: var(--font-tech);
+            font-size: 14px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-transform: uppercase;
+        }
+
+        .project { position: relative; width: 100vw; min-height: 100vh; overflow: hidden; }
+        .project-img { background-size: cover; background-position: center; filter: grayscale(80%); transition: filter 0.5s; }
+        .project:hover .project-img { filter: grayscale(0%); }
+        
+        .p-meta { font-family: var(--font-tech); font-size: 12px; color: var(--accent-green); text-transform: uppercase; position: absolute; }
+        .p-title { font-family: var(--font-brutal); position: absolute; text-transform: uppercase; line-height: 0.8; }
+
+        /* P01: Full-screen Image + Huge Back Text */
+        .p-01 { display: flex; align-items: center; justify-content: center; }
+        .p-01 .project-img { width: 100%; height: 100%; position: absolute; top: 0; left: 0; clip-path: inset(10% 10%); }
+        .p-01 .p-title { font-size: 20vw; z-index: -1; color: var(--text-secondary); opacity: 0.2; }
+        .p-01 .p-meta { top: 15%; left: 15%; z-index: 2; color: var(--bg-color); mix-blend-mode: difference;}
+
+        /* P02: Split Screen */
+        .p-02 { display: flex; }
+        .p-02 .left { width: 40%; padding: 5vw; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(255,255,255,0.1); }
+        .p-02 .right { width: 60%; height: 100vh; }
+        .p-02 .project-img { width: 100%; height: 100%; }
+        .p-02 .p-title { position: relative; font-size: 8vw; font-family: var(--font-editorial); font-style: italic; }
+
+        /* P03: Massive Vertical */
+        .p-03 { display: flex; align-items: center; justify-content: center; }
+        .p-03 .project-img { width: 30vw; height: 120vh; transform: rotate(5deg); }
+        .p-03 .p-title { font-size: 10vw; writing-mode: vertical-rl; transform: rotate(180deg); position: absolute; left: 5%; color: var(--text-main); mix-blend-mode: difference;}
+
+        /* P04: Horizontal Scroll Setup */
+        .p-04-container { width: 400vw; height: 100vh; display: flex; }
+        .p-04 { width: 100vw; height: 100vh; display: flex; align-items: center; padding: 0 5vw; }
+        .p-04 .p-title { font-size: 15vw; position: relative; color: transparent; -webkit-text-stroke: 1px var(--accent-blue); }
+        .p-04 .project-img { position: absolute; right: 10vw; width: 40vw; height: 60vh; border-radius: 50%; }
+
+        /* P05: Image Collage */
+        .p-05 { height: 150vh; }
+        .p-05 .p-title { top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12vw; z-index: 10; mix-blend-mode: exclusion; }
+        .p-05 .img-1 { position: absolute; top: 10%; left: 10%; width: 25vw; height: 40vh; }
+        .p-05 .img-2 { position: absolute; top: 20%; right: 15%; width: 20vw; height: 50vh; }
+        .p-05 .img-3 { position: absolute; bottom: 15%; left: 20%; width: 30vw; height: 30vh; }
+
+        /* P06: Typography Driven */
+        .p-06 { display: flex; align-items: center; justify-content: center; background: var(--text-main); }
+        .p-06 .p-title { color: var(--bg-color); font-size: 16vw; text-align: center; }
+        .p-06 .project-img { position: absolute; width: 100%; height: 100%; opacity: 0; mix-blend-mode: screen; transition: opacity 0.5s; }
+        .p-06:hover .project-img { opacity: 1; }
+
+        /* P07: Floating Images */
+        .p-07 { display: flex; align-items: center; justify-content: center; }
+        .p-07 .p-title { font-family: var(--font-display); font-size: 5vw; z-index: 5; text-align: center; }
+        .p-07 .project-img { position: absolute; width: 20vw; height: 30vh; border-radius: 100px; }
+        .p-07 .i1 { transform: translate(-30vw, -20vh); }
+        .p-07 .i2 { transform: translate(30vw, 20vh); }
+
+        /* P08: Cinematic Full-width */
+        .p-08 { display: flex; flex-direction: column; justify-content: center; }
+        .p-08 .project-img { width: 100vw; height: 40vh; }
+        .p-08 .p-title { font-size: 6vw; padding: 2vw 5vw; font-family: var(--font-tech); }
+
+        /* P09: Experimental Grid */
+        .p-09 { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); height: 100vh; padding: 2vw; gap: 1vw; }
+        .p-09 .project-img { grid-column: 2 / 5; grid-row: 1 / 4; }
+        .p-09 .p-title { grid-column: 1 / 3; grid-row: 3 / 5; font-size: 10vw; align-self: end; mix-blend-mode: difference; }
+
+        /* P10: Dark Technical */
+        .p-10 { background: #000; border: 1px solid #222; }
+        .p-10 .project-img { width: 50vw; height: 50vw; border-radius: 50%; margin: 10vh auto; display: block; filter: invert(1); }
+        .p-10 .p-title { font-family: var(--font-tech); font-size: 4vw; text-align: center; color: var(--accent-green); }
+
+        /* P11: Editorial */
+        .p-11 { background: #E5E0D8; color: #111; padding: 10vw 5vw; display: flex; gap: 5vw; }
+        .p-11 .p-title { font-family: var(--font-editorial); font-size: 8vw; width: 40%; }
+        .p-11 .project-img { width: 60%; height: 80vh; }
+        .p-11 .p-meta { color: var(--accent-blue); position: relative; }
+
+        /* P12: Abstract Interactive */
+        .p-12 { display: flex; align-items: center; justify-content: center; perspective: 1000px; }
+        .p-12 .project-img { width: 60vw; height: 60vh; transform: rotateX(20deg) rotateY(-20deg); transition: transform 0.5s; box-shadow: 0 50px 100px rgba(214, 255, 0, 0.1); }
+        .p-12:hover .project-img { transform: rotateX(0) rotateY(0); }
+        .p-12 .p-title { position: absolute; font-size: 12vw; font-family: var(--font-display); mix-blend-mode: overlay; pointer-events: none; }
+
+        /* ==================================================
+           DESIGNER PLAYGROUND
+           ================================================== */
+        .playground {
+            padding: 15vh 5vw;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .play-title { font-family: var(--font-brutal); font-size: 8vw; line-height: 0.9; margin-bottom: 10vh; }
+        .play-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2vw;
+        }
+        .play-item {
+            position: relative;
+            height: 40vh;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #080808;
+        }
+        .play-item:nth-child(3) { grid-column: 1 / 3; height: 50vh; }
+        
+        .play-label { position: absolute; top: 1vw; left: 1vw; font-size: 10px; color: var(--text-secondary); }
+
+        /* Exp 1: Liquid Type */
+        .liquid-type { font-size: 4vw; font-family: var(--font-editorial); font-style: italic; transition: transform 0.1s; }
+        /* Exp 2: Magnetic */
+        .mag-obj { width: 50px; height: 50px; background: var(--accent-blue); border-radius: 50%; position: absolute; }
+        /* Exp 3: Dust */
+        #dustCanvas { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+        /* Exp 4: Broken Grid */
+        .broken-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; width: 80%; height: 80%; }
+        .grid-cell { background: #111; transition: background 0.3s, transform 0.3s; }
+        .play-item:hover .grid-cell:nth-child(even) { transform: scale(0.5); background: var(--accent-green); }
+        /* Exp 5: Signal */
+        .signal-line { width: 100%; height: 1px; background: rgba(255,255,255,0.2); position: absolute; }
+
+        /* ==================================================
+           PROCESS
+           ================================================== */
+        .process {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5vw;
+            background: var(--bg-color);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+        .process-title {
+            font-family: var(--font-tech); font-size: 12px; position: absolute; top: 5vh; left: 5vw;
+        }
+        .process-track {
+            display: flex;
+            gap: 15vw;
+        }
+        .process-step {
+            display: flex;
+            flex-direction: column;
+            width: 30vw;
+        }
+        .step-num { font-family: var(--font-brutal); font-size: 15vw; color: rgba(255,255,255,0.05); line-height: 0.8;}
+        .step-name { font-family: var(--font-display); font-size: 3vw; margin-top: -3vw; z-index: 2;}
+
+        /* ==================================================
+           ABOUT
+           ================================================== */
+        .about {
+            padding: 20vh 5vw;
+            position: relative;
+        }
+        .about-title { font-family: var(--font-editorial); font-size: 10vw; line-height: 0.9; width: 80%; margin-bottom: 10vh; }
+        
+        .about-content { display: flex; gap: 10vw; }
+        .about-portrait-wrap {
+            width: 40vw; height: 60vh;
+            position: relative;
+        }
+        .ap-img {
+            position: absolute; width: 100%; height: 100%;
+            background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80') center/cover;
+            filter: grayscale(100%);
+        }
+        .ap-mask-1 { clip-path: polygon(0 0, 100% 0, 100% 20%, 0 20%); }
+        .ap-mask-2 { clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%); margin-left: 20px;}
+        .ap-mask-3 { clip-path: polygon(0 80%, 100% 80%, 100% 100%, 0 100%); margin-left: -20px;}
+
+        .about-stats {
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .stat { display: flex; flex-direction: column; }
+        .stat-num { font-family: var(--font-brutal); font-size: 8vw; color: var(--accent-green); line-height: 1;}
+        .stat-label { font-family: var(--font-tech); font-size: 12px; }
+
+        /* ==================================================
+           SKILLS
+           ================================================== */
+        .skills {
+            height: 80vh;
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .skill-node {
+            position: absolute;
+            font-family: var(--font-display);
+            font-size: 2vw;
+            color: var(--text-secondary);
+            padding: 1vw 2vw;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 100px;
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .skill-node:hover {
+            color: var(--bg-color);
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+        }
+
+        /* ==================================================
+           CLIENTS (Infinite Marquee)
+           ================================================== */
+        .clients { padding: 15vh 0; overflow: hidden; background: #020202; }
+        .marquee { display: flex; white-space: nowrap; font-family: var(--font-brutal); font-size: 12vw; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.2); }
+        .marquee-inner { display: flex; padding-left: 5vw; }
+        .marquee span { margin-right: 5vw; transition: color 0.3s; }
+        .marquee span:hover { color: var(--accent-blue); -webkit-text-stroke: 0; }
+        
+        .marquee.reverse .marquee-inner { animation-direction: reverse; }
+
+        /* ==================================================
+           AWARDS
+           ================================================== */
+        .awards { padding: 20vh 5vw; }
+        .award-title { font-family: var(--font-editorial); font-size: 8vw; margin-bottom: 10vh; font-style: italic;}
+        .award-list { border-top: 1px solid rgba(255,255,255,0.2); }
+        .award-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 4vh 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .award-item .bg-hover {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--text-main); transform: scaleY(0); transform-origin: bottom;
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1); z-index: 0;
+        }
+        .award-item:hover .bg-hover { transform: scaleY(1); transform-origin: top; }
+        .award-name { font-family: var(--font-display); font-size: 3vw; position: relative; z-index: 1; transition: color 0.3s; }
+        .award-cat, .award-year { font-family: var(--font-tech); font-size: 14px; position: relative; z-index: 1; transition: color 0.3s; }
+        .award-item:hover .award-name, .award-item:hover .award-cat, .award-item:hover .award-year { color: var(--bg-color); }
+
+        /* ==================================================
+           CONTACT
+           ================================================== */
+        .contact {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: var(--accent-blue);
+            color: var(--bg-color);
+            overflow: hidden;
+        }
+        .contact-bg-text {
+            position: absolute;
+            font-family: var(--font-brutal);
+            font-size: 22vw;
+            line-height: 0.8;
+            text-align: center;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+        .contact-btn {
+            position: relative;
+            z-index: 10;
+            width: 25vw; height: 25vw;
+            background: var(--bg-color);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center;
+            font-family: var(--font-display);
+            font-size: 2vw;
+            color: var(--accent-green);
+            transition: transform 0.1s ease-out;
+        }
+        .contact-footer {
+            position: absolute;
+            bottom: 2vw;
+            width: 90%;
+            display: flex; justify-content: space-between;
+            font-family: var(--font-tech); font-size: 12px; font-weight: bold;
+        }
+        .contact-links span { margin-left: 2vw; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Noise Overlay -->
+    <div class="noise"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"><div class="cursor-text"></div></div>
+
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-dot"></div>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-name" data-speed="0.2">
+            <span class="char">K</span><span class="char">A</span><span class="char">I</span><span class="char">R</span><span class="char">O</span>
+            <br>
+            <span class="char">V</span><span class="char">A</span><span class="char">N</span><span class="char">T</span><span class="char">A</span>
+        </div>
+        <div class="hero-name-outlined" data-speed="0.1">
+            <span class="char">K</span><span class="char">A</span><span class="char">I</span><span class="char">R</span><span class="char">O</span>
+            <br>
+            <span class="char">V</span><span class="char">A</span><span class="char">N</span><span class="char">T</span><span class="char">A</span>
+        </div>
+
+        <div class="hero-portrait" data-speed="-0.1"></div>
+
+        <div class="hero-statement top">DESIGNING<br>THE UNSEEN.</div>
+        <div class="hero-statement bottom">DESIGNING<br>THE UNSEEN.</div>
+
+        <div class="hero-meta meta-1">01 / PORTFOLIO</div>
+        <div class="hero-meta meta-2">DIGITAL DESIGNER<br>CREATIVE DIRECTOR</div>
+        <div class="hero-meta meta-3">2026<br>WORLDWIDE</div>
+        <div class="hero-meta meta-4">STATUS:<br>AVAILABLE</div>
+
+        <div class="scroll-symbol"></div>
+    </section>
+
+    <!-- Manifesto -->
+    <section class="manifesto">
+        <div class="manifesto-bg" data-speed="0.5">FEEL</div>
+        <div class="manifesto-text">
+            <span class="line"><span class="m-word">DESIGN</span> <span class="m-word">IS</span> <span class="m-word">NOT</span></span>
+            <span class="line"><span class="m-word">WHAT</span> <span class="m-word">YOU</span> <span class="m-word">SEE.</span></span>
+            <span class="line"><span class="m-word highlight">DESIGN</span> <span class="m-word highlight">IS</span></span>
+            <span class="line"><span class="m-word highlight">WHAT</span> <span class="m-word highlight">YOU</span> <span class="m-word highlight">FEEL.</span></span>
+        </div>
+    </section>
+
+    <!-- Selected Works -->
+    <div class="works-header">SELECTED ARCHIVE (12)</div>
+    
+    <!-- P01: Void -->
+    <section class="project p-01" data-cursor="VIEW">
+        <div class="p-title" data-speed="0.2">VOID®</div>
+        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1532453288672-3a27e9be9efd?auto=format&fit=crop&w=1200&q=80')"></div>
+        <div class="p-meta">01 — Experimental Fashion / 2026</div>
+    </section>
+
+    <!-- P02: Nexus -->
+    <section class="project p-02" data-cursor="EXPLORE">
+        <div class="left">
+            <div class="p-meta">02 — Future Technology / 2026</div>
+            <div class="p-title">NEXUS<br>SYSTEM</div>
+            <div style="font-size: 12px; width: 60%; opacity: 0.5;">Exploring the boundaries between digital existence and physical hardware.</div>
+        </div>
+        <div class="right project-img" style="background-image: url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=1200&q=80')"></div>
+    </section>
+
+    <!-- P03: Monument -->
+    <section class="project p-03" data-cursor="VIEW">
+        <div class="p-title" data-speed="-0.3">MONUMENT</div>
+        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=800&q=80')"></div>
+        <div class="p-meta" style="top: 10%; right: 5%;">03 — Architecture</div>
+    </section>
+
+    <!-- P04: Afterlife (Horizontal Scroll Container) -->
+    <div class="p-04-wrapper" style="overflow: hidden;">
+        <div class="p-04-container">
+            <section class="project p-04" data-cursor="DRAG">
+                <div class="p-title">AFTERLIFE</div>
+                <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80')"></div>
+                <div class="p-meta" style="bottom: 10%; left: 5%;">04 — Music Experience</div>
+            </section>
+            <section class="project p-04">
+                <div class="p-title" style="font-size: 8vw; font-family: var(--font-editorial); color: var(--text-main); -webkit-text-stroke: 0;">An interactive soundscape blurring visual fidelity and sonic waves.</div>
+            </section>
+        </div>
+    </div>
+
+    <!-- P05: Noir House -->
+    <section class="project p-05" data-cursor="VIEW">
+        <div class="p-title">NOIR HOUSE</div>
+        <div class="project-img img-1" style="background-image: url('https://images.unsplash.com/photo-1512413914421-68c4a9fb8fb9?auto=format&fit=crop&w=600&q=80')" data-speed="0.1"></div>
+        <div class="project-img img-2" style="background-image: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=600&q=80')" data-speed="-0.2"></div>
+        <div class="project-img img-3" style="background-image: url('https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=600&q=80')" data-speed="0.3"></div>
+        <div class="p-meta" style="bottom: 5%; right: 5%;">05 — Luxury Fashion</div>
+    </section>
+
+    <!-- P06: Zero Form -->
+    <section class="project p-06" data-cursor="OPEN">
+        <div class="p-title">ZERO FORM</div>
+        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80')"></div>
+        <div class="p-meta" style="top: 5%; left: 5%; color: var(--bg-color);">06 — Experimental Brand</div>
+    </section>
+
+    <!-- P07: Lumina -->
+    <section class="project p-07" data-cursor="VIEW">
+        <div class="p-title">LUMINA<br><span style="font-family: var(--font-tech); font-size: 14px; color: var(--accent-green);">07 — Beauty and Culture</span></div>
+        <div class="project-img i1" style="background-image: url('https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=600&q=80')"></div>
+        <div class="project-img i2" style="background-image: url('https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=600&q=80')"></div>
+    </section>
+
+    <!-- P08: Velocity -->
+    <section class="project p-08" data-cursor="PLAY">
+        <div class="p-meta" style="top: 5%; left: 5%;">08 — Automotive</div>
+        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1600&q=80')"></div>
+        <div class="p-title">VELOCITY</div>
+    </section>
+
+    <!-- P09: Orbit -->
+    <section class="project p-09" data-cursor="VIEW">
+        <div class="p-meta" style="grid-column: 1/3; font-size: 2vw;">09 — Digital Product</div>
+        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&w=1200&q=80')"></div>
+        <div class="p-title">ORBIT<br>STATION</div>
+    </section>
+
+    <!-- P10: Raw Signal -->
+    <section class="project p-10" data-cursor="OPEN">
+        <div class="p-meta" style="top: 2vw; left: 2vw;">10 — Creative Tech</div>
+        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80')"></div>
+        <div class="p-title">RAW_SIGNAL.EXE</div>
+    </section>
+
+    <!-- P11: Dream State -->
+    <section class="project p-11" data-cursor="VIEW">
+        <div class="p-title">DREAM<br>STATE.<br><span class="p-meta">11 — Culture Platform</span></div>
+        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1000&q=80')"></div>
+    </section>
+
+    <!-- P12: Unknown -->
+    <section class="project p-12" data-cursor="EXPLORE">
+        <div class="p-title" data-speed="0.2">UNKNOWN</div>
+        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1550537687-c91072c4792d?auto=format&fit=crop&w=1200&q=80')"></div>
+        <div class="p-meta" style="bottom: 5%; left: 5%;">12 — Experimental Identity</div>
+    </section>
+
+
+    <!-- Playground -->
+    <section class="playground">
+        <div class="play-title">THINGS I MAKE<br>WHEN NOBODY IS WATCHING.</div>
+        <div class="play-grid">
+            
+            <div class="play-item" id="exp1" data-cursor="MOVE">
+                <div class="play-label">EXPERIMENT 01: LIQUID TYPE</div>
+                <div class="liquid-type">DISTORTION</div>
+            </div>
+            
+            <div class="play-item" id="exp2">
+                <div class="play-label">EXPERIMENT 02: MAGNETIC SPACE</div>
+                <div class="mag-obj"></div>
+            </div>
+
+            <div class="play-item" id="exp3">
+                <div class="play-label">EXPERIMENT 03: DIGITAL DUST</div>
+                <canvas id="dustCanvas"></canvas>
+            </div>
+
+            <div class="play-item" id="exp4">
+                <div class="play-label">EXPERIMENT 04: BROKEN GRID</div>
+                <div class="broken-grid">
+                    <!-- Script will generate 25 cells -->
+                </div>
+            </div>
+
+            <div class="play-item" id="exp5">
+                <div class="play-label">EXPERIMENT 05: SIGNAL</div>
+                <!-- Script generates lines -->
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Process -->
+    <section class="process" id="processSection">
+        <div class="process-title">THE METHOD</div>
+        <div class="process-track">
+            <div class="process-step"><div class="step-num">01</div><div class="step-name">OBSERVE</div></div>
+            <div class="process-step"><div class="step-num">02</div><div class="step-name">QUESTION</div></div>
+            <div class="process-step"><div class="step-num">03</div><div class="step-name">BREAK</div></div>
+            <div class="process-step"><div class="step-num">04</div><div class="step-name">CREATE</div></div>
+            <div class="process-step"><div class="step-num">05</div><div class="step-name">REFINE</div></div>
+            <div class="process-step"><div class="step-num">06</div><div class="step-name">SURPRISE</div></div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about">
+        <div class="about-title">I MAKE THINGS<br>PEOPLE REMEMBER.</div>
+        <div class="about-content">
+            <div class="about-portrait-wrap">
+                <div class="ap-img ap-mask-1" data-speed="0.05"></div>
+                <div class="ap-img ap-mask-2" data-speed="0.1"></div>
+                <div class="ap-img ap-mask-3" data-speed="-0.05"></div>
+            </div>
+            <div class="about-stats">
+                <div class="stat"><span class="stat-num counter" data-target="10">0</span><span class="stat-label">YEARS CREATING</span></div>
+                <div class="stat"><span class="stat-num counter" data-target="80">0</span><span class="stat-label">PROJECTS SHIPPED</span></div>
+                <div class="stat"><span class="stat-num counter" data-target="25">0</span><span class="stat-label">GLOBAL RECOGNITIONS</span></div>
+                <div class="stat"><span class="stat-num counter" data-target="40">0</span><span class="stat-label">BRANDS TRANSFORMED</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="skills" id="skillMap">
+        <!-- JS will populate floating nodes -->
+    </section>
+
+    <!-- Clients -->
+    <section class="clients">
+        <div class="marquee">
+            <div class="marquee-inner">
+                <span>NIKE</span><span>ADOBE</span><span>SPOTIFY</span><span>NOTION</span><span>VOGUE</span><span>NIKE</span><span>ADOBE</span>
+            </div>
+        </div>
+        <div class="marquee reverse" style="margin-top: 2vw;">
+            <div class="marquee-inner">
+                <span>SONOS</span><span>NETFLIX</span><span>FIGMA</span><span>LEGO</span><span>SAMSUNG</span><span>SONOS</span><span>NETFLIX</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards -->
+    <section class="awards">
+        <div class="award-title">THE INTERNET<br>NOTICED.</div>
+        <div class="award-list">
+            <div class="award-item" data-cursor="VIEW">
+                <div class="bg-hover"></div>
+                <div class="award-name">AWWWARDS</div><div class="award-cat">SITE OF THE YEAR</div><div class="award-year">2026</div>
+            </div>
+            <div class="award-item" data-cursor="VIEW">
+                <div class="bg-hover"></div>
+                <div class="award-name">FWA</div><div class="award-cat">SITE OF THE DAY</div><div class="award-year">2025</div>
+            </div>
+            <div class="award-item" data-cursor="VIEW">
+                <div class="bg-hover"></div>
+                <div class="award-name">CSS DESIGN AWARDS</div><div class="award-cat">SPECIAL KUDOS</div><div class="award-year">2025</div>
+            </div>
+            <div class="award-item" data-cursor="VIEW">
+                <div class="bg-hover"></div>
+                <div class="award-name">ORPETRON</div><div class="award-cat">DESIGN OF THE YEAR</div><div class="award-year">2024</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact">
+        <div class="contact-bg-text">LET'S MAKE<br>THE INTERNET<br>FEEL SMALL</div>
+        
+        <div class="contact-btn" id="magneticBtn">
+            START<br>SOMETHING
+        </div>
+
+        <div class="contact-footer">
+            <div class="email">HELLO@KAIROVANTA.COM</div>
+            <div class="contact-links">
+                <span>INSTAGRAM</span><span>BEHANCE</span><span>LINKEDIN</span><span>DRIBBBLE</span>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ==================================================
+         JAVASCRIPT
+         ================================================== -->
+    <script>
+        // Register GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Initialize Lenis for Smooth Scrolling
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        });
+
+        function raf(```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAIRO VANTA® | DIGITAL EXPERIMENTS</title>
+    <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+    <link href="[https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&family=Space+Grotesk:wght@300;400;700&family=Syncopate:wght@400;700&display=swap](https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&family=Space+Grotesk:wght@300;400;700&family=Syncopate:wght@400;700&display=swap)" rel="stylesheet">
+    
+    <style>
+        /* ==================================================
+           CORE VARIABLES & RESET
+        ================================================== */
+        :root {
+            --bg: #050505;
+            --text-main: #F5F2EB;
+            --text-sec: #8D8B87;
+            --accent-green: #D6FF00;
+            --accent-blue: #4B5CFF;
+            --font-head: 'Syncopate', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+            --font-edit: 'Playfair Display', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none !important;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            overscroll-behavior: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background: var(--accent-green); color: var(--bg); }
+
+        img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(100%) contrast(1.2); }
+        
+        /* ==================================================
+           CUSTOM CURSOR
+        ================================================== */
+        .cursor-dot {
+            width: 4px; height: 4px; background: var(--text-main); border-radius: 50%;
+            position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%); mix-blend-mode: difference;
+        }
+        .cursor-ring {
+            width: 40px; height: 40px; border: 1px solid var(--text-sec); border-radius: 50%;
+            position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998;
+            transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 8px; font-weight: 700; color: var(--bg); text-align: center;
+            mix-blend-mode: difference;
+        }
+        .cursor-text-inner { opacity: 0; transition: opacity 0.2s; font-family: var(--font-body); text-transform: uppercase; letter-spacing: 1px;}
+        
+        .cursor-ring.hover-view { width: 100px; height: 100px; background: var(--text-main); border-color: var(--text-main); }
+        .cursor-ring.hover-view .cursor-text-inner { opacity: 1; }
+        .cursor-ring.hover-drag { width: 80px; height: 80px; border-style: dashed; border-color: var(--accent-green); animation: spin 4s linear infinite;}
+        
+        @keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        /* ==================================================
+           PRELOADER
+        ================================================== */
+        .preloader {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center;
+        }
+        .preloader-dot { width: 2px; height: 2px; background: #fff; border-radius: 50%; }
+        .preloader-mask {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); clip-path: circle(0% at 50% 50%); z-index: 9999;
+        }
+
+        /* ==================================================
+           HERO SECTION
+        ================================================== */
+        .hero { position: relative; height: 100vh; width: 100vw; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        
+        .hero-name {
+            position: absolute; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center;
+            font-family: var(--font-head); font-size: 15vw; line-height: 0.8;
+            text-transform: uppercase; font-weight: 700; z-index: 2; pointer-events: none;
+        }
+        .name-first { text-align: left; padding-left: 5vw; }
+        .name-last { text-align: right; padding-right: 5vw; -webkit-text-stroke: 2px var(--text-main); color: transparent; }
+        .char { display: inline-block; }
+
+        .hero-portrait {
+            position: absolute; width: 30vw; height: 70vh; top: 15vh; left: 50%; transform: translateX(-50%);
+            overflow: hidden; z-index: 1;
+        }
+        .hero-portrait-inner { width: 100%; height: 120%; position: absolute; top: -10%; left: 0; }
+        
+        .hero-statement {
+            position: absolute; font-family: var(--font-body); font-size: 2vw; z-index: 3;
+            letter-spacing: 5px; text-transform: uppercase; mix-blend-mode: difference;
+        }
+        .stat-1 { top: 10vh; left: 5vw; }
+        .stat-2 { bottom: 15vh; right: 5vw; }
+
+        .meta-data {
+            position: absolute; font-family: var(--font-body); font-size: 10px; color: var(--text-sec);
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        .meta-top-right { top: 30px; right: 30px; text-align: right; }
+        .meta-bot-left { bottom: 30px; left: 30px; }
+
+        .scroll-indicator {
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 1px; height: 100px; background: rgba(255,255,255,0.2); overflow: hidden;
+        }
+        .scroll-indicator::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 50%; background: var(--accent-green);
+            animation: scrollLine 2s infinite ease-in-out;
+        }
+        @keyframes scrollLine { 0% { transform: translateY(-100%); } 100% { transform: translateY(200%); } }
+
+        /* ==================================================
+           MANIFESTO
+        ================================================== */
+        .manifesto {
+            height: 150vh; display: flex; flex-direction: column; justify-content: center;
+            position: relative; overflow: hidden; padding: 10vw 0; border-top: 1px solid #111;
+        }
+        .manifesto-bg {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-family: var(--font-head); font-size: 40vw; color: rgba(255,255,255,0.02);
+            z-index: 0; pointer-events: none;
+        }
+        .manifesto-text {
+            font-family: var(--font-head); font-size: 8vw; line-height: 0.9; z-index: 1;
+            text-transform: uppercase; white-space: nowrap; mix-blend-mode: exclusion;
+        }
+        .man-1 { padding-left: 5vw; color: var(--text-sec); }
+        .man-2 { padding-left: 20vw; color: var(--text-main); }
+        .man-3 { padding-left: 10vw; -webkit-text-stroke: 1px var(--accent-green); color: transparent; }
+
+        /* ==================================================
+           SELECTED WORK (12 UNIQUE LAYOUTS)
+        ================================================== */
+        .work-container { padding: 10vw 5vw; position: relative; }
+        .section-title { font-family: var(--font-body); font-size: 12px; color: var(--accent-green); letter-spacing: 4px; margin-bottom: 10vh; }
+        
+        .project { position: relative; margin-bottom: 25vh; }
+        .proj-meta { font-family: var(--font-body); font-size: 12px; color: var(--text-sec); text-transform: uppercase; display: flex; gap: 2vw; margin-bottom: 20px;}
+        .proj-num { font-family: var(--font-head); font-size: 24px; color: var(--text-main); }
+        
+        /* PROJ 1: Massive Background Text + Hover Image */
+        .proj-1 { height: 90vh; display: flex; align-items: center; justify-content: center; border: 1px solid #111; }
+        .proj-1 .title { font-family: var(--font-head); font-size: 12vw; position: absolute; z-index: 1; pointer-events: none; text-align: center;}
+        .proj-1 .img-wrap { width: 30vw; height: 40vw; z-index: 2; transform: scale(0); opacity: 0; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
+        .proj-1:hover .img-wrap { transform: scale(1); opacity: 1; }
+
+        /* PROJ 2: Split brutalist */
+        .proj-2 { display: flex; height: 80vh; border-bottom: 1px solid #222; }
+        .proj-2 .left { width: 50%; display: flex; flex-direction: column; justify-content: center; padding-right: 5vw; }
+        .proj-2 .title { font-size: 6vw; font-family: var(--font-head); margin-bottom: 20px;}
+        .proj-2 .right { width: 50%; overflow: hidden; position: relative; }
+        .proj-2 .right img { transform: scale(1.2); transition: transform 1s; }
+        .proj-2:hover .right img { transform: scale(1); }
+
+        /* PROJ 3: Massive vertical sliver */
+        .proj-3 { display: grid; grid-template-columns: 1fr 15vw 1fr; height: 100vh; align-items: center; }
+        .proj-3 .sliver { height: 100%; overflow: hidden; position: relative; }
+        .proj-3 .text-left { text-align: right; padding-right: 2vw; font-size: 4vw; font-family: var(--font-head); }
+        .proj-3 .text-right { padding-left: 2vw; font-size: 1vw; max-width: 200px; color: var(--text-sec); }
+
+        /* PROJ 4: Horizontal Scroll (Pinned by GSAP) */
+        .proj-4-wrapper { width: 100vw; height: 100vh; overflow: hidden; position: relative; left: -5vw; }
+        .proj-4-track { display: flex; width: 300vw; height: 100%; }
+        .proj-4-panel { width: 100vw; height: 100%; display: flex; align-items: center; justify-content: center; position: relative;}
+        .proj-4-panel h2 { font-size: 15vw; font-family: var(--font-head); -webkit-text-stroke: 1px #fff; color: transparent; position: absolute; z-index: 2; pointer-events:none;}
+        .proj-4-panel .img-wrap { width: 60vw; height: 60vh; overflow: hidden; }
+
+        /* PROJ 5: Collage */
+        .proj-5 { height: 100vh; position: relative; }
+        .proj-5 .title { font-size: 8vw; position: absolute; top: 10%; left: 5%; z-index: 4; font-family: var(--font-head); mix-blend-mode: difference;}
+        .proj-5 .img-1 { position: absolute; width: 30vw; height: 40vh; top: 20%; right: 10%; z-index: 1; }
+        .proj-5 .img-2 { position: absolute; width: 25vw; height: 35vh; bottom: 10%; left: 20%; z-index: 3; }
+        .proj-5 .img-3 { position: absolute; width: 40vw; height: 25vh; top: 50%; left: 40%; z-index: 2; }
+
+        /* PROJ 6: Typography driven */
+        .proj-6 { padding: 10vw 0; border-top: 1px solid var(--text-sec); border-bottom: 1px solid var(--text-sec); position: relative; }
+        .proj-6 .title { font-family: var(--font-head); font-size: 10vw; letter-spacing: -5px; line-height: 0.8; }
+        .proj-6 .title span { display: block; transition: transform 0.5s; }
+        .proj-6:hover .title span:nth-child(even) { transform: translateX(5vw); color: var(--accent-green); }
+
+        /* PROJ 7: Floating layout */
+        .proj-7 { height: 80vh; position: relative; }
+        .proj-7 .img-float { position: absolute; top: 0; right: 0; width: 40vw; height: 60vh; clip-path: polygon(10% 0, 100% 0, 100% 90%, 0 100%); }
+        .proj-7 .text-float { position: absolute; bottom: 0; left: 0; font-family: var(--font-head); font-size: 7vw; line-height: 1; }
+
+        /* PROJ 8: Cinematic Wide */
+        .proj-8 { width: 100%; aspect-ratio: 21/9; position: relative; overflow: hidden; margin-top: 10vh;}
+        .proj-8 .title { position: absolute; bottom: 20px; left: 20px; font-size: 3vw; font-family: var(--font-head); z-index: 2;}
+
+        /* PROJ 9: Grid Technical */
+        .proj-9 { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 250px; gap: 1px; background: #222; border: 1px solid #222; }
+        .proj-9 > div { background: var(--bg); position: relative; display: flex; align-items: center; justify-content: center; padding: 20px;}
+        .proj-9 .img-cell { grid-column: span 2; grid-row: span 2; padding: 0;}
+        .proj-9 .text-cell { font-family: var(--font-body); font-size: 14px; color: var(--text-sec); }
+        .proj-9 .title-cell { grid-column: span 2; font-family: var(--font-head); font-size: 3vw; justify-content: flex-start;}
+
+        /* PROJ 10: Technical Interface */
+        .proj-10 { border: 1px solid var(--accent-blue); padding: 2vw; background: rgba(75, 92, 255, 0.05); display: flex; gap: 2vw; font-family: monospace;}
+        .proj-10 .ui-left { flex: 1; border-right: 1px dashed var(--accent-blue); padding-right: 2vw; }
+        .proj-10 .ui-right { flex: 2; height: 50vh; overflow: hidden;}
+        .proj-10 h3 { font-size: 4vw; color: var(--accent-blue); margin-bottom: 20px; }
+
+        /* PROJ 11: Editorial */
+        .proj-11 { display: flex; gap: 5vw; background: #e0ddd5; color: #050505; padding: 5vw; }
+        .proj-11 .ed-left { flex: 1; }
+        .proj-11 .ed-left h3 { font-family: var(--font-edit); font-size: 6vw; font-style: italic; line-height: 1; margin-bottom: 30px;}
+        .proj-11 .ed-left p::first-letter { font-family: var(--font-edit); font-size: 4vw; float: left; margin-right: 10px; line-height: 0.8; }
+        .proj-11 .ed-right { flex: 1; height: 60vh; }
+        .proj-11 .ed-right img { filter: grayscale(0) contrast(1.1); }
+
+        /* PROJ 12: Abstract Interactive */
+        .proj-12 { height: 100vh; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .proj-12 img { position: absolute; width: 100%; height: 100%; object-fit: cover; filter: sepia(1) hue-rotate(90deg) contrast(2); opacity: 0.5; }
+        .proj-12 h3 { position: relative; z-index: 2; font-size: 15vw; font-family: var(--font-head); text-transform: uppercase; mix-blend-mode: overlay;}
+
+        /* ==================================================
+           DESIGNER PLAYGROUND
+        ================================================== */
+        .playground { padding: 15vw 5vw; position: relative; border-top: 1px solid #111; }
+        .pg-title { font-family: var(--font-head); font-size: 5vw; line-height: 1; margin-bottom: 10vh; max-width: 80%; }
+        
+        .pg-experiments { display: flex; flex-direction: column; gap: 5vh; }
+        .experiment { 
+            height: 40vh; border: 1px solid #222; position: relative; overflow: hidden; 
+            display: flex; align-items: center; justify-content: center; background: #080808;
+        }
+        .exp-label { position: absolute; top: 20px; left: 20px; font-family: var(--font-body); font-size: 12px; color: var(--accent-green); z-index: 10;}
+        
+        /* Exp 1 Liquid */
+        .exp-1 h4 { font-family: var(--font-head); font-size: 8vw; filter: url(#goo); position: relative; z-index: 2; }
+        /* Exp 2 Magnetic */
+        .mag-box { width: 50px; height: 50px; background: var(--text-sec); position: absolute; border-radius: 5px; }
+        /* Exp 4 Grid */
+        .exp-4 { display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(5, 1fr); transition: gap 0.2s; gap: 1px; }
+        .exp-4 div { background: #111; transition: background 0.3s; }
+        .exp-4 div:hover { background: var(--text-main); }
+        /* Canvas Wrappers */
+        .canvas-wrap { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;}
+
+        /* ==================================================
+           PROCESS
+        ================================================== */
+        .process-section { height: 100vh; overflow: hidden; background: var(--text-main); color: var(--bg); position: relative; }
+        .process-track { display: flex; width: 600vw; height: 100%; }
+        .process-step { width: 100vw; height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 10vw; position: relative; }
+        .step-num { font-family: var(--font-head); font-size: 20vw; line-height: 0.8; opacity: 0.1; position: absolute; top: 5%; right: 5%; }
+        .step-title { font-family: var(--font-head); font-size: 8vw; margin-bottom: 2vw; }
+        .step-desc { font-family: var(--font-body); font-size: 24px; max-width: 500px; font-weight: 300; }
+
+        /* ==================================================
+           ABOUT
+        ================================================== */
+        .about { padding: 15vw 5vw; position: relative; display: flex; gap: 10vw; border-top: 1px solid #111; }
+        .about-left { flex: 1; }
+        .about-right { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 5vw; align-content: center;}
+        
+        .about-title { font-family: var(--font-head); font-size: 7vw; line-height: 0.9; margin-bottom: 5vh; }
+        .about-portrait { width: 100%; height: 70vh; position: relative; overflow: hidden; }
+        .about-portrait .mask { position: absolute; width: 50%; height: 100%; background: var(--bg); top: 0; transition: transform 0.5s;}
+        
+        .stat-item { border-top: 1px solid #333; padding-top: 20px; }
+        .stat-num { font-family: var(--font-head); font-size: 5vw; color: var(--accent-green); }
+        .stat-label { font-family: var(--font-body); font-size: 14px; text-transform: uppercase; color: var(--text-sec); }
+
+        /* ==================================================
+           SKILLS NETWORK
+        ================================================== */
+        .skills { height: 80vh; position: relative; overflow: hidden; border-top: 1px solid #111; display: flex; align-items: center; justify-content: center;}
+        .skill-node { position: absolute; font-family: var(--font-head); font-size: 2vw; padding: 10px 20px; border: 1px solid var(--text-sec); border-radius: 50px; background: rgba(5,5,5,0.8); backdrop-filter: blur(5px); }
+
+        /* ==================================================
+           CLIENTS (MARQUEE)
+        ================================================== */
+        .clients { padding: 10vh 0; overflow: hidden; background: var(--text-main); color: var(--bg); }
+        .marquee { display: flex; white-space: nowrap; font-family: var(--font-head); font-size: 8vw; line-height: 1.2; font-weight: 700;}
+        .marquee-inner { display: flex; animation: marquee 20s linear infinite; }
+        .marquee-inner.reverse { animation-direction: reverse; }
+        .marquee-item { padding: 0 4vw; -webkit-text-stroke: 1px var(--bg); color: transparent; transition: color 0.3s;}
+        .marquee-item:hover { color: var(--bg); }
+        
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* ==================================================
+           AWARDS
+        ================================================== */
+        .awards { padding: 15vw 5vw; border-bottom: 1px solid #111; }
+        .awards-title { font-family: var(--font-head); font-size: 6vw; margin-bottom: 10vh; text-align: center;}
+        .award-row { display: flex; justify-content: space-between; padding: 4vh 0; border-top: 1px solid #222; font-family: var(--font-body); font-size: 2vw; text-transform: uppercase; position: relative; overflow: hidden;}
+        .award-row:last-child { border-bottom: 1px solid #222; }
+        .award-row span { position: relative; z-index: 2; transition: transform 0.4s; }
+        .award-row:hover span { transform: translateX(20px); color: var(--accent-green); }
+        .award-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #111; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); z-index: 1;}
+        .award-row:hover .award-bg { transform: translateY(0); }
+
+        /* ==================================================
+           CONTACT / FOOTER
+        ================================================== */
+        .contact { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+        .contact-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #050505 100%); opacity: 0; transition: opacity 1s; z-index: 0;}
+        .contact:hover .contact-bg { opacity: 1; }
+        
+        .contact-title { font-family: var(--font-head); font-size: 11vw; line-height: 0.8; text-align: center; z-index: 1; margin-bottom: 5vh; pointer-events: none;}
+        
+        .magnetic-btn { 
+            padding: 2vw 4vw; border: 1px solid var(--accent-green); border-radius: 100px;
+            font-family: var(--font-body); font-size: 1.5vw; color: var(--accent-green);
+            background: transparent; position: relative; overflow: hidden; z-index: 2; transition: color 0.3s;
+        }
+        .magnetic-btn::before { content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 100%; background: var(--accent-green); transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); z-index: -1; }
+        .magnetic-btn:hover { color: var(--bg); }
+        .magnetic-btn:hover::before { transform: translateY(-100%); }
+
+        .footer-meta { width: 100%; position: absolute; bottom: 30px; display: flex; justify-content: space-between; padding: 0 5vw; font-family: var(--font-body); font-size: 12px; color: var(--text-sec); text-transform: uppercase; z-index: 2;}
+        .footer-links { display: flex; gap: 20px; }
+
+        /* SVG FILTERS */
+        .svg-filters { position: absolute; width: 0; height: 0; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Filters -->
+    <svg class="svg-filters">
+        <defs>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+                <feBlend in="SourceGraphic" in2="goo" />
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-dot"></div>
+    </div>
+    <div class="preloader-mask"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"><span class="cursor-text-inner">VIEW</span></div>
+
+    <div class="smooth-wrapper" id="smooth-wrapper">
+        <!-- HERO -->
+        <section class="hero">
+            <div class="meta-data meta-top-right">01 / PORTFOLIO<br>2026</div>
+            <div class="meta-data meta-bot-left">WORLDWIDE<br>AVAILABLE</div>
+            
+            <div class="hero-name">
+                <div class="name-first"><span class="char">K</span><span class="char">A</span><span class="char">I</span><span class="char">R</span><span class="char">O</span></div>
+                <div class="name-last"><span class="char">V</span><span class="char">A</span><span class="char">N</span><span class="char">T</span><span class="char">A</span></div>
+            </div>
+            
+            <div class="hero-portrait hover-drag">
+                <div class="hero-portrait-inner">
+                    <img src="[https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80](https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80)" alt="Designer Portrait">
+                </div>
+            </div>
+
+            <div class="hero-statement stat-1">DESIGNING</div>
+            <div class="hero-statement stat-2">THE UNSEEN.</div>
+            
+            <div class="scroll-indicator"></div>
+        </section>
+
+        <!-- MANIFESTO -->
+        <section class="manifesto">
+            <div class="manifesto-bg">FEEL</div>
+            <div class="manifesto-text man-1">DESIGN IS NOT</div>
+            <div class="manifesto-text man-2">WHAT YOU SEE.</div>
+            <div class="manifesto-text man-3">DESIGN IS WHAT YOU FEEL.</div>
+        </section>
+
+        <!-- WORK -->
+        <section class="work-container" id="work">
+            <div class="section-title">SELECTED ARCHIVE (12)</div>
+
+            <!-- PROJ 1 -->
+            <div class="project proj-1 hoverable" data-cursor="VIEW PROJECT">
+                <div class="proj-meta"><span class="proj-num">01</span> VOID® / EXPERIMENTAL FASHION / 2026</div>
+                <div class="title">VOID<br>SYSTEM</div>
+                <div class="img-wrap"><img src="[https://images.unsplash.com/photo-1618331835717-801e976710b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80](https://images.unsplash.com/photo-1618331835717-801e976710b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80)" alt="Void"></div>
+            </div>
+
+            <!-- PROJ 2 -->
+            <div class="project proj-2 hoverable" data-cursor="EXPLORE">
+                <div class="left">
+                    <div class="proj-meta"><span class="proj-num">02</span> NEXUS / FUTURE TECH / 2025</div>
+                    <div class="title">NEXUS<br>CORE</div>
+                    <p style="font-family: var(--font-body); color: var(--text-sec); max-width: 300px;">A digital ecosystem redefining human-computer interaction through spatial interfaces.</p>
+                </div>
+                <div class="right">
+                    <img src="[https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80](https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80)" alt="Nexus">
+                </div>
+            </div>
+
+            <!-- PROJ 3 -->
+            <div class="project proj-3 hoverable" data-cursor="DRAG">
+                <div class="text-left">MONU<br>MENT</div>
+                <div class="sliver">
+                    <img src="[https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80](https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80)" alt="Monument">
+                </div>
+                <div class="text-right">
+                    <div class="proj-meta"><span class="proj-num">03</span> ARCHITECTURE</div>
+                    Abstract structural forms meeting digital Brutalism.
+                </div>
+            </div>
+
+            <!-- PROJ 4 (Horizontal Pinned) -->
+            <div class="project" style="margin-bottom:0;">
+                <div class="proj-meta" style="margin-bottom:50px;"><span class="proj-num">04</span> AFTERLIFE / MUSIC EXP</div>
+            </div>
+            <div class="proj-4-wrapper hoverable" data-cursor="SCROLL">
+                <div class="proj-4-track">
+                    <div class="proj-4-panel">
+                        <h2>AFTER</h2>
+                        <div class="img-wrap"><img src="[https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80](https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80)" alt="Afterlife 1"></div>
+                    </div>
+                    <div class="proj-4-panel">
+                        <h2>LIFE</h2>
+                        <div class="img-wrap"><img src="[https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80](https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80)" alt="Afterlife 2"></div>
+                    </div>
+                </div>
+            </div>
+            <div style="height:20vh;"></div>
+
+            <!-- PROJ 5 -->
+            <div class="project proj-5 hoverable" data-cursor="VIEW">
+                <div class="proj-meta"><span class="proj-num">05</span> NOIR HOUSE / LUXURY</div>
+                <div class="title">NOIR<br>HOUSE</div>
+                <div class="img-1"><img src="[https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80](https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80)" alt="Noir 1"></div>
+                <div class="img-2"><img src="[https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80](https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80)" alt="Noir 2"></div>
+                <div class="img-3"><img src="[https://images.unsplash.com/photo-1539109136881-3be0616acf4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80](https://images.unsplash.com/photo-1539109136881-3be0616acf4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80)" alt="Noir 3"></div>
+            </div>
+
+            <!-- PROJ 6 -->
+            <div class="project proj-6 hoverable" data-cursor="READ">
+                <div class="proj-meta"><span class="proj-num">06</span> ZERO FORM / BRANDING</div>
+                <div class="title">
+                    <span>FORM</span>
+                    <span>FOLLOWS</span>
+                    <span>NOTHING.</span>
+                </div>
+            </div>
+
+            <!-- PROJ 7 -->
+            <div class="project proj-7 hoverable" data-cursor="VIEW">
+                <div class="proj-meta"><span class="proj-num">07</span> LUMINA / BEAUTY</div>
+                <div class="img-float"><img src="[https://images.unsplash.com/photo-1615397323623-2cb22b9b5f38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80](https://images.unsplash.com/photo-1615397323623-2cb22b9b5f38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80)" alt="Lumina"></div>
+                <div class="text-float">LUMINA<br>CULTURE</div>
+            </div>
+
+            <!-- PROJ 8 -->
+            <div class="project">
+                <div class="proj-meta"><span class="proj-num">08</span> VELOCITY / AUTOMOTIVE</div>
+                <div class="proj-8 hoverable" data-cursor="PLAY">
+                    <img src="[https://images.unsplash.com/photo-1547619292-240402b5ae5d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80](https://images.unsplash.com/photo-1547619292-240402b5ae5d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80)" alt="Velocity">
+                    <div class="title">VELOCITY LABS</div>
+                </div>
+            </div>
+
+            <!-- PROJ 9 -->
+            <div class="project">
+                <div class="proj-meta" style="margin-bottom: 20px;"><span class="proj-num">09</span> ORBIT / DIGITAL PRODUCT</div>
+                <div class="proj-9 hoverable" data-cursor="OPEN">
+                    <div class="title-cell">ORBIT OS</div>
+                    <div class="text-cell">VERSION 2.0<br>2025 RELEASE</div>
+                    <div class="text-cell" style="background: var(--text-main); color: var(--bg);">AWARDS<br>FWA SOTD</div>
+                    <div class="img-cell"><img src="[https://images.unsplash.com/photo-1614729939124-03290b0de9e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80](https://images.unsplash.com/photo-1614729939124-03290b0de9e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80)" alt="Orbit"></div>
+                    <div class="text-cell">INTERFACE<br>SYSTEMS</div>
+                    <div class="text-cell">GRID<br>ALIGNMENT</div>
+                </div>
+            </div>
+
+            <!-- PROJ 10 -->
+            <div class="project proj-10 hoverable" data-cursor="SYSTEM">
+                <div class="ui-left">
+                    <div class="proj-meta" style="color:var(--accent-blue);"><span class="proj-num" style="color:var(--accent-blue);">10</span> RAW SIGNAL</div>
+                    <h3>SYS.INIT()</h3>
+                    <p>> LOADING CORE MODULES...<br>> ESTABLISHING CONNECTION...<br>> VISUAL RENDERING: ACTIVE</p>
+                    <br><br>
+                    <p style="font-size:10px; opacity:0.5;">[DATA STREAM COMPILING...]</p>
+                </div>
+                <div class="ui-right">
+                    <img src="[https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80](https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80)" alt="Signal" style="filter: sepia(1) hue-rotate(180deg) saturate(3);">
+                </div>
+            </div>
+
+            <!-- PROJ 11 -->
+            <div class="project proj-11 hoverable" data-cursor="READ">
+                <div class="ed-left">
+                    <div class="proj-meta" style="color:#050505;"><span class="proj-num" style="color:#050505;">11</span> DREAM STATE / CULTURE</div>
+                    <h3>The Subconscious<br>Editorial</h3>
+                    <p>Exploring the boundaries between digital art and traditional print mechanics. Dream State acts as a bridge, utilizing typographic scale to evoke raw emotion while maintaining strict Swiss grid foundations.</p>
+                </div>
+                <div class="ed-right">
+                    <img src="[https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80](https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80)" alt="Dream State">
+                </div>
+            </div>
+
+            <!-- PROJ 12 -->
+            <div class="project proj-12 hoverable" data-cursor="UNKNOWN">
+                <div class="proj-meta" style="position: absolute; top:20px; left:20px; z-index:5;"><span class="proj-num">12</span> UNKNOWN / IDENTITY</div>
+                <img src="[https://images.unsplash.com/photo-1550684848-fac1c5b4e853?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80](https://images.unsplash.com/photo-1550684848-fac1c5b4e853?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80)" alt="Unknown">
+                <h3>X-FILES</h3>
+            </div>
+        </section>
+
+        <!-- PLAYGROUND -->
+        <section class="playground">
+            <div class="pg-title">THINGS I MAKE WHEN NOBODY IS WATCHING.</div>
+            <div class="pg-experiments">
+                
+                <!-- Exp 1 -->
+                <div class="experiment exp-1 hoverable" data-cursor="WAVE">
+                    <span class="exp-label">01 / LIQUID TYPE</span>
+                    <h4>FLOW STATE</h4>
+                </div>
+
+                <!-- Exp 2 -->
+                <div class="experiment exp-2 hoverable" data-cursor="MAGNET">
+                    <span class="exp-label">02 / MAGNETIC SPACE</span>
+                    <div class="mag-box" style="top:20%; left:30%;"></div>
+                    <div class="mag-box" style="top:60%; left:70%;"></div>
+                    <div class="mag-box" style="top:40%; left:50%;"></div>
+                </div>
+
+                <!-- Exp 3 -->
+                <div class="experiment exp-3 hoverable" data-cursor="MOVE">
+                    <span class="exp-label">03 / DIGITAL DUST</span>
+                    <canvas id="canvas-dust" class="canvas-wrap"></canvas>
+                </div>
+
+                <!-- Exp 4 -->
+                <div class="experiment exp-4" id="grid-exp">
+                    <span class="exp-label">04 / BROKEN GRID</span>
+                    <!-- JS will populate divs -->
+                </div>
+
+                <!-- Exp 5 -->
+                <div class="experiment exp-5 hoverable" data-cursor="CONNECT">
+                    <span class="exp-label">05 / SIGNAL</span>
+                    <canvas id="canvas-signal" class="canvas-wrap"></canvas>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PROCESS -->
+        <section class="process-section">
+            <div class="process-track">
+                <div class="process-step">
+                    <div class="step-num">01</div>
+                    <div class="step-title">OBSERVE</div>
+                    <div class="step-desc">Looking at the digital landscape and identifying the voids.</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-num">02</div>
+                    <div class="step-title">QUESTION</div>
+                    <div class="step-desc">Challenging standard templates. Why must a button look like a button?</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-num">03</div>
+                    <div class="step-title">BREAK</div>
+                    <div class="step-desc">Deconstructing established UI patterns to their atomic elements.</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-num">04</div>
+                    <div class="step-title">CREATE</div>
+                    <div class="step-desc">Assembling new visual languages through code and intuition.</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-num">05</div>
+                    <div class="step-title">REFINE</div>
+                    <div class="step-desc">Polishing the chaos until it feels intentional and luxurious.</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-num">06</div>
+                    <div class="step-title">SURPRISE</div>
+                    <div class="step-desc">Deploying the unexpected. The final emotional layer.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section class="about">
+            <div class="about-left">
+                <div class="about-title">I MAKE<br>THINGS<br>PEOPLE<br>REMEMBER.</div>
+                <div class="about-portrait hoverable" data-cursor="DRAG">
+                    <img src="[https://images.unsplash.com/photo-1534308143481-c55f00be8bd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80](https://images.unsplash.com/photo-1534308143481-c55f00be8bd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80)" alt="Designer">
+                    <div class="mask mask-1" style="left:0;"></div>
+                    <div class="mask mask-2" style="left:50%;"></div>
+                </div>
+            </div>
+            <div class="about-right">
+                <div class="stat-item">
+                    <div class="stat-num counter" data-target="10">0</div>
+                    <div class="stat-label">Years Creating</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num counter" data-target="80">0</div>
+                    <div class="stat-label">Projects</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num counter" data-target="25">0</div>
+                    <div class="stat-label">Global Recognitions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num counter" data-target="40">0</div>
+                    <div class="stat-label">Brands Transformed</div>
+                </div>
+                <div class="stat-item" style="grid-column: span 2; border:none; margin-top:20px;">
+                    <p style="font-family: var(--font-edit); font-size: 2vw; line-height: 1.4; color: var(--text-sec);">
+                        Operating at the intersection of extreme brutalism and high luxury. Kairo Vanta is not an agency, but a singular entity engineering emotional digital architecture.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section class="skills hoverable" data-cursor="SYSTEM">
+            <canvas id="canvas-skills" class="canvas-wrap"></canvas>
+            <div class="skill-node">ART DIRECTION</div>
+            <div class="skill-node">UI / UX</div>
+            <div class="skill-node">BRANDING</div>
+            <div class="skill-node">CREATIVE CODE</div>
+            <div class="skill-node">MOTION</div>
+            <div class="skill-node">TYPOGRAPHY</div>
+            <div class="skill-node">DIGITAL STRATEGY</div>
+            <div class="skill-node">INTERACTION</div>
+        </section>
+
+        <!-- CLIENTS -->
+        <section class="clients hoverable" data-cursor="DRAG">
+            <div class="marquee m-1">
+                <div class="marquee-inner">
+                    <div class="marquee-item">NIKE</div><div class="marquee-item">ADOBE</div><div class="marquee-item">SPOTIFY</div><div class="marquee-item">NOTION</div>
+                    <!-- Duplicate for loop -->
+                    <div class="marquee-item">NIKE</div><div class="marquee-item">ADOBE</div><div class="marquee-item">SPOTIFY</div><div class="marquee-item">NOTION</div>
+                </div>
+            </div>
+            <div class="marquee m-2">
+                <div class="marquee-inner reverse">
+                    <div class="marquee-item">VOGUE</div><div class="marquee-item">SONOS</div><div class="marquee-item">NETFLIX</div><div class="marquee-item">FIGMA</div>
+                    <div class="marquee-item">VOGUE</div><div class="marquee-item">SONOS</div><div class="marquee-item">NETFLIX</div><div class="marquee-item">FIGMA</div>
+                </div>
+            </div>
+            <div class="marquee m-3">
+                <div class="marquee-inner">
+                    <div class="marquee-item">LEGO</div><div class="marquee-item">SAMSUNG</div><div class="marquee-item">LVMH</div><div class="marquee-item">APPLE</div>
+                    <div class="marquee-item">LEGO</div><div class="marquee-item">SAMSUNG</div><div class="marquee-item">LVMH</div><div class="marquee-item">APPLE</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AWARDS -->
+        <section class="awards">
+            <div class="awards-title">THE INTERNET NOTICED.</div>
+            
+            <div class="award-row hoverable" data-cursor="VIEW">
+                <div class="award-bg"></div>
+                <span>AWWWARDS</span> <span>SITE OF THE DAY</span> <span>2026</span>
+            </div>
+            <div class="award-row hoverable" data-cursor="VIEW">
+                <div class="award-bg"></div>
+                <span>FWA</span> <span>SITE OF THE DAY</span> <span>2025</span>
+            </div>
+            <div class="award-row hoverable" data-cursor="VIEW">
+                <div class="award-bg"></div>
+                <span>CSS DESIGN AWARDS</span> <span>SPECIAL KUDOS</span> <span>2025</span>
+            </div>
+            <div class="award-row hoverable" data-cursor="VIEW">
+                <div class="award-bg"></div>
+                <span>ORPETRON</span> <span>DESIGN OF THE YEAR</span> <span>2024</span>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="contact">
+            <div class="contact-bg"></div>
+            <div class="contact-title">LET'S MAKE<br>THE INTERNET<br>FEEL SMALL.</div>
+            <button class="magnetic-btn hoverable" data-cursor="CLICK">START SOMETHING</button>
+
+            <div class="footer-meta">
+                <div>HELLO@KAIROVANTA.COM</div>
+                <div class="footer-links">
+                    <span>INSTAGRAM</span> <span>BEHANCE</span> <span>LINKEDIN</span> <span>DRIBBBLE</span>
+                </div>
+                <div>AVAILABLE FOR SELECTED PROJECTS</div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="[https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js](https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js)"></script>
+    <script src="[https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js](https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js)"></script>
+    <script src="[https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js](https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js)"></script>
+    
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- LENIS SMOOTH SCROLL ---
+        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        
+        // Connect Lenis to ScrollTrigger
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time)=>{ lenis.raf(time * 1000) });
+        gsap.ticker.lagSmoothing(0, 0);
+
+        // --- CUSTOM CURSOR ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorRing = document.querySelector('.cursor-ring');
+        const cursorText = document.querySelector('.cursor-text-inner');
+        
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        
+        let cursorX = mouseX, cursorY = mouseY;
+        let ringX = mouseX, ringY = mouseY;
+        
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // Quick setters for performance
+        const setDotX = gsap.quickSetter(cursorDot, "x", "px");
+        const setDotY = gsap.quickSetter(cursorDot, "y", "px");
+        const setRingX = gsap.quickSetter(cursorRing, "x", "px");
+        const setRingY = gsap.quickSetter(cursorRing, "y", "px");
+
+        gsap.ticker.add(() => {
+            // Lerp
+            cursorX += (mouseX - cursorX) * 0.8;
+            cursorY += (mouseY - cursorY) * 0.8;
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            
+            setDotX(cursorX);
+            setDotY(cursorY);
+            setRingX(ringX);
+            setRingY(ringY);
+            
+            // Calculate velocity for stretching
+            const dx = mouseX - ringX;
+            const dy = mouseY - ringY;
+            const vel = Math.sqrt(dx*dx + dy*dy);
+            if(vel > 5 && !cursorRing.classList.contains('hover-view') && !cursorRing.classList.contains('hover-drag')) {
+                const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                gsap.to(cursorRing, {
+                    scaleX: 1 + (vel * 0.005), scaleY: 1 - (vel * 0.002), rotation: angle, duration: 0.1, overwrite: "auto"
+                });
+            } else {
+                gsap.to(cursorRing, {scaleX: 1, scaleY: 1, rotation: 0, duration: 0.3, overwrite: "auto"});
+            }
+        });
+
+        // Hover States
+        document.querySelectorAll('.hoverable').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                const type = el.getAttribute('data-cursor');
+                if(type === 'DRAG') {
+                    cursorRing.classList.add('hover-drag');
+                    cursorText.innerText = '';
+                } else if(type) {
+                    cursorRing.classList.add('hover-view');
+                    cursorText.innerText = type;
+                }
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorRing.className = 'cursor-ring';
+            });
+        });
+
+        // --- PRELOADER & HERO TIMELINE ---
+        const tlLoad = gsap.timeline();
+        
+        tlLoad.to('.preloader-dot', { scale: 500, duration: 1.5, ease: "power4.inOut" })
+              .to('.preloader', { opacity: 0, duration: 0.5, onComplete: ()=> document.querySelector('.preloader').style.display = 'none' })
+              .to('.preloader-mask', { clipPath: 'circle(150% at 50% 50%)', duration: 1.5, ease: "power3.inOut" }, "-=0.5")
+              .from('.name-first .char', { y: 200, stagger: 0.05, duration: 1, ease: "power4.out" }, "-=1")
+              .from('.name-last .char', { y: -200, stagger: 0.05, duration: 1, ease: "power4.out" }, "-=1")
+              .from('.hero-portrait', { height: 0, duration: 1.5, ease: "power4.inOut" }, "-=1.5")
+              .from('.hero-portrait-inner img', { scale: 1.5, duration: 2, ease: "power2.out" }, "-=1.5")
+              .from('.hero-statement', { opacity: 0, x: -50, stagger: 0.2, duration: 1 }, "-=1")
+              .from('.meta-data', { opacity: 0, duration: 1 }, "-=0.5");
+
+        // Hero Parallax on Scroll
+        gsap.to('.hero-name', {
+            y: "30%", ease: "none",
+            scrollTrigger: { trigger: '.hero', start: "top top", end: "bottom top", scrub: true }
+        });
+        gsap.to('.hero-portrait', {
+            y: "15%", ease: "none",
+            scrollTrigger: { trigger: '.hero', start: "top top", end: "bottom top", scrub: true }
+        });
+
+        // --- MANIFESTO ---
+        gsap.to('.man-1', {
+            x: "-20vw", ease: "none",
+            scrollTrigger: { trigger: '.manifesto', start: "top bottom", end: "bottom top", scrub: true }
+        });
+        gsap.to('.man-2', {
+            scale: 1.5, transformOrigin: "left center", ease: "none",
+            scrollTrigger: { trigger: '.manifesto', start: "top bottom", end: "bottom top", scrub: true }
+        });
+        gsap.to('.man-3', {
+            x: "10vw", ease: "none",
+            scrollTrigger: { trigger: '.manifesto', start: "top bottom", end: "bottom top", scrub: true }
+        });
+        gsap.to('.manifesto-bg', {
+            y: "20%", ease: "none",
+            scrollTrigger: { trigger: '.manifesto', start: "top bottom", end: "bottom top", scrub: true }
+        });
+
+        // --- HORIZONTAL SCROLL (PROJ 4) ---
+        gsap.to('.proj-4-track', {
+            x: () => -(document.querySelector('.proj-4-track').scrollWidth - window.innerWidth),
+            ease: "none",
+            scrollTrigger: {
+                trigger: '.proj-4-wrapper',
+                start: "top center",
+                end: () => "+=" + document.querySelector('.proj-4-track').scrollWidth,
+                scrub: 1,
+                pin: true,
+                anticipatePin: 1
+            }
+        });
+
+        // --- PROCESS (HORIZONTAL PINNED) ---
+        gsap.to('.process-track', {
+            x: () => -(document.querySelector('.process-track').scrollWidth - window.innerWidth),
+            ease: "none",
+            scrollTrigger: {
+                trigger: '.process-section',
+                start: "top top",
+                end: () => "+=" + (document.querySelector('.process-track').scrollWidth - window.innerWidth),
+                scrub: 1,
+                pin: true
+            }
+        });
+
+        // --- ABOUT COUNTERS & MASKS ---
+        ScrollTrigger.create({
+            trigger: ".about",
+            start: "top center",
+            onEnter: () => {
+                document.querySelectorAll('.counter').forEach(count => {
+                    const target = +count.getAttribute('data-target');
+                    gsap.to(count, {
+                        innerHTML: target, duration: 2, ease: "power3.out",
+                        snap: { innerHTML: 1 }, onUpdate: function() { count.innerHTML = Math.round(this.targets()[0].innerHTML) + (target > 50 ? "+" : ""); }
+                    });
+                });
+                gsap.to('.about-portrait .mask-1', { y: "-100%", duration: 1.5, ease: "power4.inOut" });
+                gsap.to('.about-portrait .mask-2', { y: "100%", duration: 1.5, ease: "power4.inOut", delay: 0.2 });
+            }
+        });
+
+        // --- PLAYGROUND EXPERIMENTS ---
+        
+        // Exp 4: Broken Grid
+        const gridExp = document.getElementById('grid-exp');
+        for(let i=0; i<50; i++) {
+            const d = document.createElement('div');
+            gridExp.appendChild(d);
+        }
+        gridExp.addEventListener('mousemove', (e) => {
+            const rect = gridExp.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+            gridExp.style.gridTemplateColumns = `repeat(10, ${1 + x * 2}fr)`;
+            gridExp.style.gap = `${y * 20}px`;
+        });
+        gridExp.addEventListener('mouseleave', () => {
+            gridExp.style.gridTemplateColumns = `repeat(10, 1fr)`;
+            gridExp.style.gap = `1px`;
+        });
+
+        // Exp 2: Magnetic Space
+        const magBoxes = document.querySelectorAll('.mag-box');
+        document.querySelector('.exp-2').addEventListener('mousemove', (e) => {
+            const rect = document.querySelector('.exp-2').getBoundingClientRect();
+            const relX = e.clientX - rect.left;
+            const relY = e.clientY - rect.top;
+            
+            magBoxes.forEach((box, i) => {
+                const speed = (i + 1) * 0.05;
+                gsap.to(box, { x: (relX - box.offsetLeft - 25) * speed, y: (relY - box.offsetTop - 25) * speed, duration: 0.5 });
+            });
+        });
+        document.querySelector('.exp-2').addEventListener('mouseleave', () => {
+            gsap.to(magBoxes, { x: 0, y: 0, duration: 1, ease: "elastic.out(1, 0.3)" });
+        });
+
+        // Canvas: Digital Dust (Exp 3)
+        const cDust = document.getElementById('canvas-dust');
+        const ctxDust = cDust.getContext('2d');
+        let dustParts = [];
+        
+        function resizeDust() {
+            cDust.width = cDust.parentElement.offsetWidth;
+            cDust.height = cDust.parentElement.offsetHeight;
+            dustParts = [];
+            for(let i=0; i<150; i++) {
+                dustParts.push({
+                    x: Math.random() * cDust.width, y: Math.random() * cDust.height,
+                    vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5, size: Math.random()*2
+                });
+            }
+        }
+        resizeDust();
+        window.addEventListener('resize', resizeDust);
+
+        let exp3Mouse = {x: 0, y: 0};
+        document.querySelector('.exp-3').addEventListener('mousemove', (e)=>{
+            const rect = cDust.getBoundingClientRect();
+            exp3Mouse.x = e.clientX - rect.left; exp3Mouse.y = e.clientY - rect.top;
+        });
+
+        function animDust() {
+            ctxDust.clearRect(0,0,cDust.width,cDust.height);
+            ctxDust.fillStyle = '#F5F2EB';
+            dustParts.forEach(p => {
+                const dx = exp3Mouse.x - p.x;
+                const dy = exp3Mouse.y - p.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if(dist < 100) {
+                    p.x -= dx * 0.02; p.y -= dy * 0.02;
+                }
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < 0 || p.x > cDust.width) p.vx *= -1;
+                if(p.y < 0 || p.y > cDust.height) p.vy *= -1;
+                
+                ctxDust.beginPath(); ctxDust.arc(p.x, p.y, p.size, 0, Math.PI*2); ctxDust.fill();
+            });
+            requestAnimationFrame(animDust);
+        }
+        animDust();
+
+        // Canvas: Signal (Exp 5)
+        const cSig = document.getElementById('canvas-signal');
+        const ctxSig = cSig.getContext('2d');
+        let sigNodes = [];
+        
+        function resizeSig() {
+            cSig.width = cSig.parentElement.offsetWidth;
+            cSig.height = cSig.parentElement.offsetHeight;
+            sigNodes = [];
+            for(let i=0; i<40; i++) {
+                sigNodes.push({ x: Math.random()*cSig.width, y: Math.random()*cSig.height, vx: (Math.random()-0.5), vy: (Math.random()-0.5) });
+            }
+        }
+        resizeSig();
+        window.addEventListener('resize', resizeSig);
+
+        let exp5Mouse = {x: -1000, y: -1000};
+        document.querySelector('.exp-5').addEventListener('mousemove', (e)=>{
+            const rect = cSig.getBoundingClientRect();
+            exp5Mouse.x = e.clientX - rect.left; exp5Mouse.y = e.clientY - rect.top;
+        });
+        document.querySelector('.exp-5').addEventListener('mouseleave', ()=>{ exp5Mouse = {x: -1000, y: -1000}; });
+
+        function animSig() {
+            ctxSig.clearRect(0,0,cSig.width,cSig.height);
+            sigNodes.forEach(n => {
+                n.x += n.vx; n.y += n.vy;
+                if(n.x<0 || n.x>cSig.width) n.vx*=-1;
+                if(n.y<0 || n.y>cSig.height) n.vy*=-1;
+            });
+            
+            ctxSig.lineWidth = 0.5;
+            for(let i=0; i<sigNodes.length; i++) {
+                for(let j=i+1; j<sigNodes.length; j++) {
+                    const dx = sigNodes[i].x - sigNodes[j].x;
+                    const dy = sigNodes[i].y - sigNodes[j].y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    if(dist < 80) {
+                        ctxSig.strokeStyle = `rgba(214, 255, 0, ${1 - dist/80})`;
+                        ctxSig.beginPath(); ctxSig.moveTo(sigNodes[i].x, sigNodes[i].y); ctxSig.lineTo(sigNodes[j].x, sigNodes[j].y); ctxSig.stroke();
+                    }
+                }
+                // Check mouse
+                const mx = sigNodes[i].x - exp5Mouse.x;
+                const my = sigNodes[i].y - exp5Mouse.y;
+                const md = Math.sqrt(mx*mx + my*my);
+                if(md < 120) {
+                    ctxSig.strokeStyle = `rgba(75, 92, 255, ${1 - md/120})`;
+                    ctxSig.beginPath(); ctxSig.moveTo(sigNodes[i].x, sigNodes[i].y); ctxSig.lineTo(exp5Mouse.x, exp5Mouse.y); ctxSig.stroke();
+                }
+            }
+            requestAnimationFrame(animSig);
+        }
+        animSig();
+
+        // --- SKILLS NETWORK ---
+        const skillsNodes = document.querySelectorAll('.skill-node');
+        const sSec = document.querySelector('.skills');
+        skillsNodes.forEach(node => {
+            gsap.set(node, { x: Math.random() * (window.innerWidth - 200), y: Math.random() * (window.innerHeight*0.8 - 50) });
+            // Random floating
+            gsap.to(node, {
+                x: "+=" + (Math.random() * 100 - 50), y: "+=" + (Math.random() * 100 - 50),
+                duration: Math.random() * 5 + 3, repeat: -1, yoyo: true, ease: "sine.inOut"
+            });
+        });
+
+        // --- MAGNETIC BUTTON (CONTACT) ---
+        const magBtn = document.querySelector('.magnetic-btn');
+        magBtn.addEventListener('mousemove', (e) => {
+            const rect = magBtn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width/2;
+            const y = e.clientY - rect.top - rect.height/2;
+            gsap.to(magBtn, { x: x*0.3, y: y*0.3, duration: 0.3, ease: "power2.out" });
+        });
+        magBtn.addEventListener('mouseleave', () => {
+            gsap.to(magBtn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+        });
+
+        // --- DYNAMIC MARQUEE VELOCITY ---
+        ScrollTrigger.create({
+            trigger: document.body,
+            start: "top top",
+            end: "bottom bottom",
+            onUpdate: (self) => {
+                const v = Math.abs(self.getVelocity() / 100);
+                gsap.to('.marquee-inner', { timeScale: 1 + v, duration: 0.2, overwrite: true });
+            }
+        });
+        
+    </script>
+</body>
+</html>

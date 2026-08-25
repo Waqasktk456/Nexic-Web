@@ -1,0 +1,2338 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCADIA ® — Digital Designer & Creative Director</title>
+    <meta name="description" content="Designing digital experiences that move people. Elite UI/UX, Motion Design, and Creative Direction.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Syne:wght@500;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- CDNs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        /* ==========================================================================
+           1. RESET & VARIABLES
+           ========================================================================== */
+        :root {
+            --bg-primary: #070707;
+            --bg-secondary: #0C0C0D;
+            --bg-tertiary: #111113;
+            --bg-card: #161618;
+            --text-main: #F4F2ED;
+            --text-muted: #8A898D;
+            --accent-lime: #C8FF00;
+            --accent-silver: #C9C7C2;
+            --border-color: rgba(244, 242, 237, 0.08);
+            --border-bright: rgba(200, 255, 0, 0.3);
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'Space Grotesk', monospace;
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+            --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            font-size: 16px;
+            line-height: 1.5;
+            overflow-x: hidden;
+            scroll-behavior: initial;
+        }
+
+        body {
+            overflow-x: hidden;
+            width: 100vw;
+            background-color: var(--bg-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Noise Texture Overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            content: "";
+            opacity: 0.035;
+            pointer-events: none;
+            z-index: 9999;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-lime);
+        }
+
+        /* Selection */
+        ::selection {
+            background: var(--accent-lime);
+            color: var(--bg-primary);
+        }
+
+        /* Common Layout Utility */
+        .container {
+            width: 90%;
+            max-width: 1720px;
+            margin: 0 auto;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; }
+        button { border: none; background: none; cursor: pointer; font-family: inherit; color: inherit; }
+
+        /* Typography */
+        .font-mono { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
+        .font-display { font-family: var(--font-display); }
+
+        /* ==========================================================================
+           2. CUSTOM CURSOR
+           ========================================================================== */
+        #cursor-dot {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-lime);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+        }
+
+        #cursor-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 44px;
+            height: 44px;
+            border: 1px solid rgba(244, 242, 237, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        #cursor-text {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--bg-primary);
+            opacity: 0;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+        }
+
+        body.cursor-hover #cursor-ring {
+            width: 80px;
+            height: 80px;
+            background-color: var(--accent-lime);
+            border-color: var(--accent-lime);
+        }
+
+        body.cursor-hover #cursor-text {
+            opacity: 1;
+        }
+
+        body.cursor-hover #cursor-dot {
+            opacity: 0;
+        }
+
+        @media (pointer: coarse) {
+            #cursor-dot, #cursor-ring { display: none !important; }
+        }
+
+        /* ==========================================================================
+           3. PRELOADER
+           ========================================================================== */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background-color: var(--bg-primary);
+            z-index: 9000;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px;
+            color: var(--text-main);
+        }
+
+        .loader-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .loader-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .loader-symbol {
+            font-family: var(--font-display);
+            font-size: 180px;
+            font-weight: 800;
+            color: var(--accent-lime);
+            line-height: 1;
+            display: block;
+        }
+
+        .loader-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .loader-counter {
+            font-family: var(--font-display);
+            font-size: 120px;
+            font-weight: 700;
+            line-height: 0.9;
+        }
+
+        .loader-bar-bg {
+            width: 100%;
+            height: 2px;
+            background: var(--border-color);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-bar-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: var(--accent-lime);
+        }
+
+        /* ==========================================================================
+           4. NAVIGATION
+           ========================================================================== */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 5%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: padding 0.4s ease, background-color 0.4s ease, backdrop-filter 0.4s ease;
+        }
+
+        .site-header.scrolled {
+            padding: 18px 5%;
+            background-color: rgba(7, 7, 7, 0.75);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand-logo {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .brand-logo span {
+            color: var(--accent-lime);
+        }
+
+        .nav-links-desktop {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-link {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 1px;
+            background-color: var(--accent-lime);
+            transition: width 0.3s var(--ease-out-expo);
+        }
+
+        .nav-link:hover {
+            color: var(--text-main);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 30px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-lime);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-lime);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.4; transform: scale(0.9); }
+        }
+
+        .menu-trigger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        .menu-trigger span {
+            width: 28px;
+            height: 2px;
+            background-color: var(--text-main);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* Fullscreen Overlay Menu */
+        .fullscreen-menu {
+            position: fixed;
+            inset: 0;
+            background-color: var(--bg-secondary);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 120px 8% 60px;
+            clip-path: circle(0% at calc(100% - 60px) 40px);
+            transition: clip-path 0.8s var(--ease-in-out-cubic);
+        }
+
+        .fullscreen-menu.is-active {
+            clip-path: circle(150% at calc(100% - 60px) 40px);
+        }
+
+        .menu-nav-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .menu-nav-item {
+            overflow: hidden;
+        }
+
+        .menu-nav-link {
+            font-family: var(--font-display);
+            font-size: clamp(40px, 7vw, 100px);
+            font-weight: 800;
+            color: var(--text-main);
+            display: inline-block;
+            transition: transform 0.4s var(--ease-out-expo), color 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .menu-nav-link:hover {
+            color: var(--accent-lime);
+            transform: translateX(30px);
+        }
+
+        .menu-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid var(--border-color);
+            padding-top: 40px;
+        }
+
+        /* ==========================================================================
+           5. HERO SECTION
+           ========================================================================== */
+        .hero-section {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 160px 5% 60px;
+            overflow: hidden;
+        }
+
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.85;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .hero-top-label {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--accent-lime);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(55px, 11vw, 210px);
+            font-weight: 800;
+            line-height: 0.88;
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+            color: var(--text-main);
+        }
+
+        .hero-title .line-mask {
+            overflow: hidden;
+            display: block;
+        }
+
+        .hero-bottom-info {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 60px;
+        }
+
+        .scroll-indicator {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .scroll-line {
+            width: 40px;
+            height: 1px;
+            background-color: var(--accent-lime);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: var(--text-main);
+            animation: scrollLineAnim 2s infinite;
+        }
+
+        @keyframes scrollLineAnim {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .hero-coords {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: right;
+            line-height: 1.6;
+        }
+
+        /* ==========================================================================
+           6. HERO MARQUEE & INTRO SECTION
+           ========================================================================== */
+        .marquee-section {
+            padding: 60px 0;
+            background: var(--bg-secondary);
+            border-y: 1px solid var(--border-color);
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 40px;
+            width: max-content;
+        }
+
+        .marquee-text {
+            font-family: var(--font-display);
+            font-size: clamp(60px, 8vw, 140px);
+            font-weight: 800;
+            text-transform: uppercase;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--text-muted);
+            transition: -webkit-text-stroke 0.3s ease;
+        }
+
+        .marquee-text span {
+            color: var(--accent-lime);
+            -webkit-text-stroke: 0px;
+        }
+
+        .intro-section {
+            padding: 180px 5%;
+            position: relative;
+            background-color: var(--bg-primary);
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--accent-lime);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: sticky;
+            top: 120px;
+        }
+
+        .intro-statement {
+            font-family: var(--font-display);
+            font-size: clamp(32px, 4.5vw, 72px);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+        }
+
+        .bg-word-parallax {
+            position: absolute;
+            right: -5%;
+            bottom: -5%;
+            font-family: var(--font-display);
+            font-size: clamp(120px, 22vw, 380px);
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.015);
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+            text-transform: uppercase;
+        }
+
+        /* ==========================================================================
+           7. SELECTED WORK SECTION (12 Dynamic Projects)
+           ========================================================================== */
+        .work-section {
+            padding: 120px 5%;
+            background-color: var(--bg-primary);
+            position: relative;
+            z-index: 2;
+        }
+
+        .work-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 120px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 30px;
+        }
+
+        .work-title {
+            font-family: var(--font-display);
+            font-size: clamp(40px, 6vw, 90px);
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .projects-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 180px;
+        }
+
+        /* Project Card Base */
+        .project-card {
+            position: relative;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .project-img-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 4px;
+            background-color: var(--bg-tertiary);
+        }
+
+        .project-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s var(--ease-out-expo), filter 0.5s ease;
+            filter: grayscale(30%) brightness(0.9);
+        }
+
+        .project-card:hover .project-img-wrapper img {
+            transform: scale(1.05);
+            filter: grayscale(0%) brightness(1);
+        }
+
+        .project-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 24px;
+        }
+
+        .project-number {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--accent-lime);
+        }
+
+        .project-name {
+            font-family: var(--font-display);
+            font-size: clamp(28px, 3.5vw, 52px);
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .project-meta {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Distinct Layout Styles for Projects */
+        /* Layout 1: Full Cinematic */
+        .p-layout-1 .project-img-wrapper { height: 75vh; }
+        
+        /* Layout 2: Split 2-Column */
+        .p-layout-2 { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px; align-items: center; }
+        .p-layout-2 .project-img-wrapper { height: 60vh; }
+
+        /* Layout 3: Asymmetric Offset */
+        .p-layout-3 { width: 75%; margin-left: auto; }
+        .p-layout-3 .project-img-wrapper { height: 65vh; }
+
+        /* Layout 4: Overlapping Framing */
+        .p-layout-4 { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 40px; align-items: flex-end; }
+        .p-layout-4 .project-img-wrapper { height: 70vh; }
+
+        /* Layout 5: Vertical Tall */
+        .p-layout-5 { width: 60%; margin: 0 auto; }
+        .p-layout-5 .project-img-wrapper { height: 80vh; }
+
+        /* ==========================================================================
+           8. HORIZONTAL SCROLL SHOWCASE
+           ========================================================================== */
+        .horizontal-section {
+            position: relative;
+            background-color: var(--bg-secondary);
+            overflow: hidden;
+        }
+
+        .horizontal-wrapper {
+            display: flex;
+            width: 400vw;
+            height: 100vh;
+        }
+
+        .horizontal-slide {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 8%;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .slide-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            max-width: 1500px;
+            width: 100%;
+        }
+
+        .slide-img {
+            width: 100%;
+            height: 60vh;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .slide-title {
+            font-family: var(--font-display);
+            font-size: clamp(40px, 5vw, 80px);
+            font-weight: 800;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        /* ==========================================================================
+           9. EXPERTISE / SERVICES SECTION
+           ========================================================================== */
+        .expertise-section {
+            padding: 160px 5%;
+            background-color: var(--bg-primary);
+        }
+
+        .services-list {
+            display: flex;
+            flex-direction: column;
+            margin-top: 80px;
+        }
+
+        .service-item {
+            border-top: 1px solid var(--border-color);
+            padding: 40px 0;
+            display: grid;
+            grid-template-columns: 0.5fr 2fr 3fr 0.5fr;
+            align-items: center;
+            gap: 30px;
+            transition: background-color 0.4s ease, padding 0.4s ease;
+            cursor: pointer;
+        }
+
+        .service-item:last-child {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .service-item:hover {
+            background-color: var(--bg-secondary);
+            padding: 50px 30px;
+        }
+
+        .service-num {
+            font-family: var(--font-mono);
+            font-size: 16px;
+            color: var(--accent-lime);
+        }
+
+        .service-name {
+            font-family: var(--font-display);
+            font-size: clamp(24px, 3vw, 44px);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .service-desc {
+            font-size: 15px;
+            color: var(--text-muted);
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        .service-icon {
+            font-size: 24px;
+            text-align: right;
+            transition: transform 0.3s ease;
+        }
+
+        .service-item:hover .service-icon {
+            transform: translateX(10px) rotate(-45deg);
+            color: var(--accent-lime);
+        }
+
+        /* ==========================================================================
+           10. PROCESS TIMELINE SECTION
+           ========================================================================== */
+        .process-section {
+            padding: 160px 5%;
+            background-color: var(--bg-tertiary);
+            position: relative;
+        }
+
+        .process-timeline {
+            position: relative;
+            margin-top: 100px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 0;
+            left: 20px;
+            width: 2px;
+            height: 100%;
+            background: var(--border-color);
+        }
+
+        .timeline-progress {
+            position: absolute;
+            top: 0;
+            left: 20px;
+            width: 2px;
+            height: 0%;
+            background: var(--accent-lime);
+        }
+
+        .process-step {
+            position: relative;
+            padding-left: 80px;
+            margin-bottom: 100px;
+        }
+
+        .step-node {
+            position: absolute;
+            left: 12px;
+            top: 0;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            transition: border-color 0.4s ease, background-color 0.4s ease;
+        }
+
+        .process-step.active .step-node {
+            border-color: var(--accent-lime);
+            background-color: var(--accent-lime);
+        }
+
+        .step-title {
+            font-family: var(--font-display);
+            font-size: clamp(24px, 3vw, 40px);
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .step-desc {
+            color: var(--text-muted);
+            font-size: 16px;
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        /* ==========================================================================
+           11. ABOUT & STATS SECTION
+           ========================================================================== */
+        .about-section {
+            padding: 180px 5%;
+            background-color: var(--bg-primary);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: center;
+        }
+
+        .about-portrait-wrap {
+            position: relative;
+            width: 100%;
+            height: 75vh;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .about-portrait-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: filter 0.5s ease;
+        }
+
+        .about-portrait-wrap:hover img {
+            filter: grayscale(0%);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 40px;
+        }
+
+        .stat-item-num {
+            font-family: var(--font-display);
+            font-size: clamp(40px, 5vw, 80px);
+            font-weight: 800;
+            color: var(--accent-lime);
+            line-height: 1;
+        }
+
+        .stat-item-label {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* ==========================================================================
+           12. CLIENT MARQUEE & AWARDS
+           ========================================================================== */
+        .client-marquee-section {
+            padding: 80px 0;
+            background-color: var(--bg-secondary);
+            border-y: 1px solid var(--border-color);
+        }
+
+        .marquee-row {
+            display: flex;
+            gap: 60px;
+            width: max-content;
+            margin-bottom: 30px;
+        }
+
+        .client-brand {
+            font-family: var(--font-display);
+            font-size: clamp(30px, 4vw, 60px);
+            font-weight: 800;
+            color: rgba(244, 242, 237, 0.2);
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .client-brand:hover {
+            color: var(--accent-lime);
+        }
+
+        .awards-section {
+            padding: 160px 5%;
+            background-color: var(--bg-primary);
+        }
+
+        .awards-table {
+            width: 100%;
+            margin-top: 60px;
+            border-collapse: collapse;
+        }
+
+        .awards-row {
+            border-bottom: 1px solid var(--border-color);
+            padding: 24px 0;
+            display: grid;
+            grid-template-columns: 2fr 3fr 1fr;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .awards-row:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .award-org {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .award-project {
+            color: var(--text-muted);
+        }
+
+        .award-year {
+            font-family: var(--font-mono);
+            color: var(--accent-lime);
+            text-align: right;
+        }
+
+        /* ==========================================================================
+           13. TESTIMONIALS SLIDER
+           ========================================================================== */
+        .testimonials-section {
+            padding: 160px 5%;
+            background-color: var(--bg-secondary);
+            position: relative;
+        }
+
+        .testimonial-card {
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .testimonial-quote {
+            font-family: var(--font-display);
+            font-size: clamp(28px, 4vw, 56px);
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 40px;
+        }
+
+        .testimonial-author {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--accent-lime);
+        }
+
+        /* ==========================================================================
+           14. DESIGN PLAYGROUND (Interactive Mini Experiences)
+           ========================================================================== */
+        .playground-section {
+            padding: 160px 5%;
+            background-color: var(--bg-primary);
+        }
+
+        .playground-box {
+            width: 100%;
+            height: 60vh;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 60px;
+        }
+
+        #playground-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .playground-overlay-text {
+            position: relative;
+            z-index: 2;
+            font-family: var(--font-display);
+            font-size: clamp(30px, 5vw, 80px);
+            font-weight: 800;
+            pointer-events: none;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        /* ==========================================================================
+           15. JOURNAL SECTION
+           ========================================================================== */
+        .journal-section {
+            padding: 160px 5%;
+            background-color: var(--bg-primary);
+        }
+
+        .journal-list {
+            display: flex;
+            flex-direction: column;
+            margin-top: 60px;
+        }
+
+        .journal-item {
+            border-top: 1px solid var(--border-color);
+            padding: 32px 0;
+            display: grid;
+            grid-template-columns: 1fr 4fr 1fr;
+            align-items: center;
+            gap: 20px;
+            transition: padding 0.3s ease;
+        }
+
+        .journal-item:hover {
+            padding: 40px 20px;
+            background-color: var(--bg-secondary);
+        }
+
+        .journal-date {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .journal-title {
+            font-family: var(--font-display);
+            font-size: clamp(20px, 2.5vw, 36px);
+            font-weight: 700;
+        }
+
+        /* ==========================================================================
+           16. CONTACT SECTION & FOOTER
+           ========================================================================== */
+        .contact-section {
+            padding: 180px 5% 100px;
+            background-color: var(--bg-secondary);
+            position: relative;
+        }
+
+        .contact-headline {
+            font-family: var(--font-display);
+            font-size: clamp(50px, 9vw, 160px);
+            font-weight: 800;
+            line-height: 0.9;
+            text-transform: uppercase;
+            margin-bottom: 80px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .form-group {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            font-size: 18px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-lime);
+        }
+
+        .form-label {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .btn-magnetic {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 48px;
+            background-color: var(--accent-lime);
+            color: var(--bg-primary);
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 16px;
+            text-transform: uppercase;
+            border-radius: 40px;
+            transition: transform 0.3s var(--ease-out-expo), background-color 0.3s ease;
+            cursor: pointer;
+            width: max-content;
+            margin-top: 20px;
+        }
+
+        .btn-magnetic:hover {
+            transform: scale(1.05);
+            background-color: var(--text-main);
+        }
+
+        .site-footer {
+            padding: 60px 5% 40px;
+            background-color: var(--bg-primary);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .back-to-top {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            color: var(--accent-lime);
+        }
+
+        /* ==========================================================================
+           17. FULL CASE STUDY OVERLAY MODAL
+           ========================================================================== */
+        .case-study-modal {
+            position: fixed;
+            inset: 0;
+            background-color: var(--bg-primary);
+            z-index: 8000;
+            overflow-y: auto;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .case-study-modal.is-open {
+            display: block;
+            opacity: 1;
+        }
+
+        .modal-close-btn {
+            position: fixed;
+            top: 40px;
+            right: 5%;
+            z-index: 8001;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--accent-lime);
+            color: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .modal-hero {
+            height: 70vh;
+            width: 100%;
+            position: relative;
+        }
+
+        .modal-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            padding: 100px 10%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .modal-title {
+            font-family: var(--font-display);
+            font-size: clamp(40px, 6vw, 100px);
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        /* ==========================================================================
+           18. RESPONSIVE BREAKPOINTS
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .nav-links-desktop, .status-badge { display: none; }
+            .menu-trigger { display: flex; }
+            .intro-grid, .about-grid, .contact-grid, .slide-content { grid-template-columns: 1fr; gap: 40px; }
+            .p-layout-2, .p-layout-4 { grid-template-columns: 1fr; }
+            .p-layout-3, .p-layout-5 { width: 100%; }
+            .service-item { grid-template-columns: 0.5fr 2fr; }
+            .service-desc { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 14vw; }
+            .projects-grid { gap: 100px; }
+            .p-layout-1 .project-img-wrapper { height: 45vh; }
+            .awards-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .award-project { display: none; }
+            .journal-item { grid-template-columns: 1fr; }
+            .site-footer { flex-direction: column; gap: 20px; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor elements -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"><span id="cursor-text">VIEW</span></div>
+
+    <!-- Background Noise Overlay -->
+    <div class="noise-overlay"></div>
+
+    <!-- Cinematic Preloader -->
+    <div id="preloader">
+        <div class="loader-top">
+            <span class="font-mono">ARCADIA® DIGITAL DESIGNER</span>
+            <span class="font-mono">PARIS / WORLDWIDE</span>
+        </div>
+        <div class="loader-center">
+            <span class="loader-symbol">A</span>
+        </div>
+        <div>
+            <div class="loader-bar-bg"><div class="loader-bar-fill" id="loader-bar"></div></div>
+            <div class="loader-bottom">
+                <span class="font-mono">LOADING EXPERIENCE</span>
+                <span class="loader-counter" id="loader-counter">000</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="site-header" id="site-header">
+        <a href="#" class="brand-logo">ARCADIA<span>®</span></a>
+        <nav class="nav-links-desktop">
+            <a href="#selected-work" class="nav-link">WORK</a>
+            <a href="#about" class="nav-link">ABOUT</a>
+            <a href="#expertise" class="nav-link">EXPERTISE</a>
+            <a href="#contact" class="nav-link">CONTACT</a>
+        </nav>
+        <div class="status-badge">
+            <div class="status-dot"></div>
+            <span>AVAILABLE Q3/Q4 2026</span>
+        </div>
+        <div class="menu-trigger" id="menu-trigger" data-cursor="OPEN">
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Fullscreen Menu -->
+    <div class="fullscreen-menu" id="fullscreen-menu">
+        <ul class="menu-nav-list">
+            <li class="menu-nav-item"><a href="#selected-work" class="menu-nav-link menu-close-trigger">INDEX</a></li>
+            <li class="menu-nav-item"><a href="#selected-work" class="menu-nav-link menu-close-trigger">SELECTED WORK</a></li>
+            <li class="menu-nav-item"><a href="#about" class="menu-nav-link menu-close-trigger">ABOUT STUDIO</a></li>
+            <li class="menu-nav-item"><a href="#expertise" class="menu-nav-link menu-close-trigger">SERVICES</a></li>
+            <li class="menu-nav-item"><a href="#playground" class="menu-nav-link menu-close-trigger">PLAYGROUND</a></li>
+            <li class="menu-nav-item"><a href="#contact" class="menu-nav-link menu-close-trigger">GET IN TOUCH</a></li>
+        </ul>
+        <div class="menu-footer">
+            <div>
+                <p class="font-mono" style="color: var(--text-muted);">INQUIRIES</p>
+                <p style="font-size: 20px; font-weight: 600;">hello@arcadia.design</p>
+            </div>
+            <div class="font-mono" style="display:flex; gap: 20px; color: var(--text-muted);">
+                <a href="#">TWITTER / X</a>
+                <a href="#">INSTAGRAM</a>
+                <a href="#">LINKEDIN</a>
+                <a href="#">DRIBBBLE</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN SITE CONTENT -->
+    <main id="main-content">
+
+        <!-- HERO SECTION -->
+        <section class="hero-section" id="hero">
+            <canvas id="hero-canvas"></canvas>
+            
+            <div class="hero-content">
+                <div class="hero-top-label font-mono">
+                    <span>01 // CREATIVE DIRECTION &amp; DIGITAL CRAFT</span>
+                </div>
+                <h1 class="hero-title">
+                    <span class="line-mask">DESIGNING</span>
+                    <span class="line-mask">THE UNEXPECTED<span style="color:var(--accent-lime)">.</span></span>
+                </h1>
+            </div>
+
+            <div class="hero-bottom-info">
+                <div class="scroll-indicator">
+                    <div class="scroll-line"></div>
+                    <span>SCROLL TO EXPLORE</span>
+                </div>
+                <div class="hero-coords">
+                    LAT 48.8566° N, LONG 2.3522° E<br>
+                    PARIS / GLOBAL STUDIO
+                </div>
+            </div>
+        </section>
+
+        <!-- INFINITE HERO MARQUEE -->
+        <section class="marquee-section">
+            <div class="marquee-track" id="hero-marquee">
+                <div class="marquee-text">DIGITAL EXPERIENCES <span>WITH A DIFFERENCE</span> —</div>
+                <div class="marquee-text">RARE CREATIVE TASTE <span>BOLD THINKING</span> —</div>
+                <div class="marquee-text">DIGITAL EXPERIENCES <span>WITH A DIFFERENCE</span> —</div>
+            </div>
+        </section>
+
+        <!-- INTRODUCTION SECTION -->
+        <section class="intro-section" id="intro">
+            <div class="bg-word-parallax" id="parallax-vision">VISION</div>
+            <div class="container intro-grid">
+                <div class="section-label">
+                    <span>01 / INTRODUCTION</span>
+                </div>
+                <div>
+                    <p class="intro-statement" id="split-statement">
+                        I create digital identities and bespoke interactive experiences for ambitious brands that refuse to look ordinary.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SELECTED WORK (12 Detailed Projects) -->
+        <section class="work-section" id="selected-work">
+            <div class="work-header">
+                <h2 class="work-title">SELECTED WORK</h2>
+                <span class="font-mono" style="color:var(--accent-lime);">(2024 — 2026)</span>
+            </div>
+
+            <div class="projects-grid">
+
+                <!-- Project 01 -->
+                <article class="project-card p-layout-1" data-cursor="VIEW" onclick="openCaseStudy('Nova Finance', 'Fintech / Digital Product', 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1600&auto=format&fit=crop')">
+                    <div class="project-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1600&auto=format&fit=crop" alt="Nova Finance">
+                    </div>
+                    <div class="project-info">
+                        <div>
+                            <h3 class="project-name">01 — NOVA FINANCE</h3>
+                            <div class="project-meta">
+                                <span>FINTECH / DIGITAL PRODUCT</span>
+                                <span>2026</span>
+                            </div>
+                        </div>
+                        <span class="project-number">CASE STUDY ↗</span>
+                    </div>
+                </article>
+
+                <!-- Project 02 -->
+                <article class="project-card p-layout-2" data-cursor="VIEW" onclick="openCaseStudy('Aether Studio', 'Creative Agency / Brand Identity', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop')">
+                    <div class="project-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop" alt="Aether Studio">
+                    </div>
+                    <div class="project-info" style="flex-direction: column;">
+                        <h3 class="project-name">02 — AETHER STUDIO</h3>
+                        <div class="project-meta" style="margin-top: 10px;">
+                            <span>BRAND IDENTITY &amp; WEB</span>
+                            <span>2026</span>
+                        </div>
+                        <p style="margin-top: 20px; color: var(--text-muted);">A high-concept brand transformation for an architectural visualization boutique in Tokyo.</p>
+                    </div>
+                </article>
+
+                <!-- Project 03 -->
+                <article class="project-card p-layout-3" data-cursor="VIEW" onclick="openCaseStudy('Orbital Tech', 'Technology / Product Design', 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=1600&auto=format&fit=crop')">
+                    <div class="project-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=1600&auto=format&fit=crop" alt="Orbital Tech">
+                    </div>
+                    <div class="project-info">
+                        <div>
+                            <h3 class="project-name">03 — ORBITAL</h3>
+                            <div class="project-meta">
+                                <span>SPATIAL COMPUTING / UI UX</span>
+                                <span>2025</span>
+                            </div>
+                        </div>
+                        <span class="project-number">CASE STUDY ↗</span>
+                    </div>
+                </article>
+
+                <!-- Project 04 -->
+                <article class="project-card p-layout-4" data-cursor="VIEW" onclick="openCaseStudy('Vanta House', 'Luxury Fashion / E-commerce', 'https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1600&auto=format&fit=crop')">
+                    <div class="project-info" style="flex-direction: column;">
+                        <h3 class="project-name">04 — VANTA HOUSE</h3>
+                        <div class="project-meta">
+                            <span>LUXURY FASHION / E-COMMERCE</span>
+                            <span>2025</span>
+                        </div>
+                    </div>
+                    <div class="project-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1600&auto=format&fit=crop" alt="Vanta House">
+                    </div>
+                </article>
+
+                <!-- Project 05 -->
+                <article class="project-card p-layout-1" data-cursor="VIEW" onclick="openCaseStudy('Neon Grid', 'Music / Interactive Experience', 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop')">
+                    <div class="project-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop" alt="Neon Grid">
+                    </div>
+                    <div class="project-info">
+                        <div>
+                            <h3 class="project-name">05 — NEON GRID</h3>
+                            <div class="project-meta">
+                                <span>AUDIO-VISUAL EXPERIMENTAL</span>
+                                <span>2025</span>
+                            </div>
+                        </div>
+                        <span class="project-number">CASE STUDY ↗</span>
+                    </div>
+                </article>
+
+                <!-- Project 06 -->
+                <article class="project-card p-layout-5" data-cursor="VIEW" onclick="openCaseStudy('Monument Arch', 'Architecture / Digital Experience', 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1600&auto=format&fit=crop')">
+                    <div class="project-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1600&auto=format&fit=crop" alt="Monument Arch">
+                    </div>
+                    <div class="project-info">
+                        <div>
+                            <h3 class="project-name">06 — MONUMENT</h3>
+                            <div class="project-meta">
+                                <span>ARCHITECTURE / EDITORIAL</span>
+                                <span>2025</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 07 -->
+                <article class="project-card p-layout-2" data-cursor="VIEW" onclick="openCaseStudy('Lumen Beauty', 'Beauty / Brand Experience', 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1600&auto=format&fit=crop')">
+                    <div class="project-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=1600&auto=format&fit=crop" alt="Lumen Beauty">
+                    </div>
+                    <div class="project-info" style="flex-direction: column;">
+                        <h3 class="project-name">07 — LUMEN</h3>
+                        <div class="project-meta">
+                            <span>BEAUTY / BRAND SYSTEM</span>
+                            <span>2024</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 08 -->
+                <article class="project-card p-layout-3" data-cursor="VIEW" onclick="openCaseStudy('Velocity Motors', 'Automotive / Product Launch', 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1600&auto=format&fit=crop')">
+                    <div class="project-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1600&auto=format&fit=crop" alt="Velocity Motors">
+                    </div>
+                    <div class="project-info">
+                        <div>
+                            <h3 class="project-name">08 — VELOCITY</h3>
+                            <div class="project-meta">
+                                <span>AUTOMOTIVE / 3D SHOWCASE</span>
+                                <span>2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 09 -->
+                <article class="project-card p-layout-1" data-cursor="VIEW" onclick="openCaseStudy('Solaris Energy', 'Energy / Corporate Identity', 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?q=80&w=1600&auto=format&fit=crop')">
+                    <div class="project-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?q=80&w=1600&auto=format&fit=crop" alt="Solaris Energy">
+                    </div>
+                    <div class="project-info">
+                        <div>
+                            <h3 class="project-name">09 — SOLARIS</h3>
+                            <div class="project-meta">
+                                <span>SUSTAINABLE ENERGY / WEB</span>
+                                <span>2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 10 -->
+                <article class="project-card p-layout-4" data-cursor="VIEW" onclick="openCaseStudy('Kinetic Tech', 'Creative Technology', 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1600&auto=format&fit=crop')">
+                    <div class="project-info" style="flex-direction: column;">
+                        <h3 class="project-name">10 — KINETIC</h3>
+                        <div class="project-meta">
+                            <span>CREATIVE TECH / R&amp;D</span>
+                            <span>2024</span>
+                        </div>
+                    </div>
+                    <div class="project-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1600&auto=format&fit=crop" alt="Kinetic Tech">
+                    </div>
+                </article>
+
+                <!-- Project 11 -->
+                <article class="project-card p-layout-2" data-cursor="VIEW" onclick="openCaseStudy('Oasis Resorts', 'Hospitality / Luxury Website', 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1600&auto=format&fit=crop')">
+                    <div class="project-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1600&auto=format&fit=crop" alt="Oasis Resorts">
+                    </div>
+                    <div class="project-info" style="flex-direction: column;">
+                        <h3 class="project-name">11 — OASIS</h3>
+                        <div class="project-meta">
+                            <span>LUXURY HOSPITALITY</span>
+                            <span>2024</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 12 -->
+                <article class="project-card p-layout-1" data-cursor="VIEW" onclick="openCaseStudy('Echo Culture', 'Culture / Editorial Platform', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1600&auto=format&fit=crop')">
+                    <div class="project-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1600&auto=format&fit=crop" alt="Echo Culture">
+                    </div>
+                    <div class="project-info">
+                        <div>
+                            <h3 class="project-name">12 — ECHO</h3>
+                            <div class="project-meta">
+                                <span>EDITORIAL / DIGITAL MAGAZINE</span>
+                                <span>2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- HORIZONTAL SCROLL SHOWCASE (GSAP ScrollTrigger) -->
+        <section class="horizontal-section" id="horizontal-section">
+            <div class="horizontal-wrapper" id="horizontal-wrapper" data-cursor="DRAG">
+                <div class="horizontal-slide">
+                    <div class="slide-content">
+                        <div>
+                            <span class="font-mono" style="color:var(--accent-lime)">FEATURED CONCEPT 01</span>
+                            <h3 class="slide-title">CYBERNETIC ARCHITECTURE</h3>
+                            <p style="color:var(--text-muted)">Exploring fluid physical structures using generative AI algorithms and WebGL rendering engines.</p>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop" class="slide-img" alt="Concept 1">
+                    </div>
+                </div>
+
+                <div class="horizontal-slide">
+                    <div class="slide-content">
+                        <div>
+                            <span class="font-mono" style="color:var(--accent-lime)">FEATURED CONCEPT 02</span>
+                            <h3 class="slide-title">SYNTHETIC MATERIALITY</h3>
+                            <p style="color:var(--text-muted)">High-precision tactile glass surfaces for spatial operating systems of the next decade.</p>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop" class="slide-img" alt="Concept 2">
+                    </div>
+                </div>
+
+                <div class="horizontal-slide">
+                    <div class="slide-content">
+                        <div>
+                            <span class="font-mono" style="color:var(--accent-lime)">FEATURED CONCEPT 03</span>
+                            <h3 class="slide-title">NEURAL TYPOGRAPHY</h3>
+                            <p style="color:var(--text-muted)">Variable letterforms that change weights dynamically based on user emotion and scroll velocity.</p>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop" class="slide-img" alt="Concept 3">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPERTISE / WHAT I DO -->
+        <section class="expertise-section" id="expertise">
+            <div class="container">
+                <div class="section-label">
+                    <span>02 / EXPERTISE</span>
+                </div>
+                <h2 style="font-family: var(--font-display); font-size: clamp(40px, 6vw, 80px); font-weight: 800; margin-top: 20px;">WHAT I DO</h2>
+
+                <div class="services-list">
+                    <div class="service-item">
+                        <span class="service-num">01</span>
+                        <h3 class="service-name">DIGITAL EXPERIENCES</h3>
+                        <p class="service-desc">Immersive websites, web applications, and digital flagship platforms designed to captivate and convert high-value audiences.</p>
+                        <span class="service-icon">→</span>
+                    </div>
+
+                    <div class="service-item">
+                        <span class="service-num">02</span>
+                        <h3 class="service-name">UI / UX DESIGN</h3>
+                        <p class="service-desc">Precision interaction systems, modular design systems, and hyper-polished product user interfaces for web and spatial platforms.</p>
+                        <span class="service-icon">→</span>
+                    </div>
+
+                    <div class="service-item">
+                        <span class="service-num">03</span>
+                        <h3 class="service-name">CREATIVE DIRECTION</h3>
+                        <p class="service-desc">Comprehensive visual positioning, creative strategy, digital campaign direction, and editorial visual systems.</p>
+                        <span class="service-icon">→</span>
+                    </div>
+
+                    <div class="service-item">
+                        <span class="service-num">04</span>
+                        <h3 class="service-name">BRAND SYSTEMS</h3>
+                        <p class="service-desc">Dynamic brand identities engineered specifically for screens, motion-first applications, and digital ecosystems.</p>
+                        <span class="service-icon">→</span>
+                    </div>
+
+                    <div class="service-item">
+                        <span class="service-num">05</span>
+                        <h3 class="service-name">INTERACTION DESIGN</h3>
+                        <p class="service-desc">Custom WebGL shaders, GSAP animations, canvas physics micro-interactions, and fluid micro-moments.</p>
+                        <span class="service-icon">→</span>
+                    </div>
+
+                    <div class="service-item">
+                        <span class="service-num">06</span>
+                        <h3 class="service-name">MOTION &amp; PROTOTYPING</h3>
+                        <p class="service-desc">3D cinematic motion design, interactive code prototypes, and high-fidelity video visualizers.</p>
+                        <span class="service-icon">→</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROCESS TIMELINE SECTION -->
+        <section class="process-section" id="process">
+            <div class="container">
+                <div class="section-label">
+                    <span>03 / METHODOLOGY</span>
+                </div>
+                <h2 style="font-family: var(--font-display); font-size: clamp(40px, 6vw, 80px); font-weight: 800; margin-top: 20px;">CREATIVE PROCESS</h2>
+
+                <div class="process-timeline">
+                    <div class="timeline-line"></div>
+                    <div class="timeline-progress" id="process-progress"></div>
+
+                    <div class="process-step active">
+                        <div class="step-node"></div>
+                        <h3 class="step-title">01 — DISCOVER &amp; STRATEGIZE</h3>
+                        <p class="step-desc">Deep immersion into brand essence, positioning analysis, market differentiation opportunities, and technological feasibility assessment.</p>
+                    </div>
+
+                    <div class="process-step">
+                        <div class="step-node"></div>
+                        <h3 class="step-title">02 — DEFINE DIRECTION</h3>
+                        <p class="step-desc">Translating abstract brand values into distinct visual systems, typography paired choices, motion philosophies, and mood direction.</p>
+                    </div>
+
+                    <div class="process-step">
+                        <div class="step-node"></div>
+                        <h3 class="step-title">03 — DESIGN &amp; CRAFT</h3>
+                        <p class="step-desc">Designing every pixel with extreme obsession. From macro layouts down to custom cursor interactions and typography grid alignment.</p>
+                    </div>
+
+                    <div class="process-step">
+                        <div class="step-node"></div>
+                        <h3 class="step-title">04 — DEVELOP &amp; ANIMATE</h3>
+                        <p class="step-desc">Building smooth 60fps animations with GSAP, WebGL shaders, responsive grid mechanics, and performance optimization.</p>
+                    </div>
+
+                    <div class="process-step">
+                        <div class="step-node"></div>
+                        <h3 class="step-title">05 — DELIVER &amp; REFINE</h3>
+                        <p class="step-desc">Meticulous QA testing across screen sizes, accessibility audits, smooth scroll tuning, and seamless production launch.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT & STATS -->
+        <section class="about-section" id="about">
+            <div class="container about-grid">
+                <div class="about-portrait-wrap">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1200&auto=format&fit=crop" alt="Arcadia Portrait">
+                </div>
+                <div>
+                    <div class="section-label">
+                        <span>04 / ABOUT ARCADIA</span>
+                    </div>
+                    <h2 style="font-family: var(--font-display); font-size: clamp(32px, 4vw, 60px); font-weight: 800; margin-top: 20px; line-height: 1.1;">
+                        CREATIVITY IS A WAY OF SEEING THE WORLD.
+                    </h2>
+                    <p style="margin-top: 30px; color: var(--text-muted); font-size: 18px; line-height: 1.7;">
+                        Arcadia is an independent digital designer and creative director operating globally. Partnering directly with visionary founders, luxury brands, and high-growth technology companies to create unforgettable web presences.
+                    </p>
+
+                    <div class="stats-grid">
+                        <div>
+                            <div class="stat-item-num" data-count="10">10+</div>
+                            <div class="stat-item-label">YEARS OF EXPERIENCE</div>
+                        </div>
+                        <div>
+                            <div class="stat-item-num" data-count="50">50+</div>
+                            <div class="stat-item-label">GLOBAL PROJECTS</div>
+                        </div>
+                        <div>
+                            <div class="stat-item-num" data-count="18">18</div>
+                            <div class="stat-item-label">DESIGN AWARDS</div>
+                        </div>
+                        <div>
+                            <div class="stat-item-num" data-count="24">24</div>
+                            <div class="stat-item-label">COUNTRIES REACHED</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CLIENT MARQUEE -->
+        <section class="client-marquee-section">
+            <div class="marquee-row" id="client-marquee-1">
+                <span class="client-brand">NIKE</span>
+                <span class="client-brand">SPOTIFY</span>
+                <span class="client-brand">ADOBE</span>
+                <span class="client-brand">NOTION</span>
+                <span class="client-brand">SONOS</span>
+                <span class="client-brand">VOGUE</span>
+                <span class="client-brand">AIRBNB</span>
+                <span class="client-brand">SAMSUNG</span>
+            </div>
+        </section>
+
+        <!-- AWARDS SECTION -->
+        <section class="awards-section" id="awards">
+            <div class="container">
+                <div class="section-label">
+                    <span>05 / RECOGNITION</span>
+                </div>
+                <h2 style="font-family: var(--font-display); font-size: clamp(40px, 6vw, 80px); font-weight: 800; margin-top: 20px;">HONORS &amp; AWARDS</h2>
+
+                <div class="awards-table">
+                    <div class="awards-row">
+                        <span class="award-org">AWWWARDS</span>
+                        <span class="award-project">SITE OF THE DAY — NOVA FINANCE</span>
+                        <span class="award-year">2026</span>
+                    </div>
+                    <div class="awards-row">
+                        <span class="award-org">FWA</span>
+                        <span class="award-project">SITE OF THE DAY — ORBITAL TECH</span>
+                        <span class="award-year">2025</span>
+                    </div>
+                    <div class="awards-row">
+                        <span class="award-org">CSS DESIGN AWARDS</span>
+                        <span class="award-project">BEST UI / UX / INNOVATION</span>
+                        <span class="award-year">2025</span>
+                    </div>
+                    <div class="awards-row">
+                        <span class="award-org">ORPETRON</span>
+                        <span class="award-project">DESIGN OF THE YEAR — VANTA HOUSE</span>
+                        <span class="award-year">2024</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <section class="testimonials-section">
+            <div class="container">
+                <div class="testimonial-card">
+                    <p class="testimonial-quote">
+                        “Arcadia transformed our digital presence into an immersive experience that people genuinely remember. Meticulous attention to detail and rare creative taste.”
+                    </p>
+                    <p class="testimonial-author">ELENA ROSTOVA — FOUNDER &amp; CEO, AETHER TOKYO</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- DESIGN PLAYGROUND (Canvas Micro-Experience) -->
+        <section class="playground-section" id="playground">
+            <div class="container">
+                <div class="section-label">
+                    <span>06 / EXPERIMENTAL</span>
+                </div>
+                <h2 style="font-family: var(--font-display); font-size: clamp(40px, 6vw, 80px); font-weight: 800; margin-top: 20px;">INTERACTIVE PLAYGROUND</h2>
+
+                <div class="playground-box">
+                    <canvas id="playground-canvas"></canvas>
+                    <div class="playground-overlay-text">MOVE CURSOR TO DISTORT</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- JOURNAL SECTION -->
+        <section class="journal-section" id="journal">
+            <div class="container">
+                <div class="section-label">
+                    <span>07 / THOUGHTS</span>
+                </div>
+                <h2 style="font-family: var(--font-display); font-size: clamp(40px, 6vw, 80px); font-weight: 800; margin-top: 20px;">SELECTED JOURNAL</h2>
+
+                <div class="journal-list">
+                    <article class="journal-item">
+                        <span class="journal-date">MAY 2026</span>
+                        <h3 class="journal-title">THE VALUE OF DIGITAL DIFFERENCE IN A HOMOGENIZED WEB</h3>
+                        <span class="font-mono" style="color:var(--accent-lime); text-align:right;">READ ↗</span>
+                    </article>
+                    <article class="journal-item">
+                        <span class="journal-date">APR 2026</span>
+                        <h3 class="journal-title">DESIGNING FOR EMOTION AND UNEXPECTED TACTILE FEEDBACK</h3>
+                        <span class="font-mono" style="color:var(--accent-lime); text-align:right;">READ ↗</span>
+                    </article>
+                    <article class="journal-item">
+                        <span class="journal-date">FEB 2026</span>
+                        <h3 class="journal-title">WHY MOST SAAS WEBSITES FEEL BORING AND HOW TO FIX IT</h3>
+                        <span class="font-mono" style="color:var(--accent-lime); text-align:right;">READ ↗</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section class="contact-section" id="contact">
+            <div class="container">
+                <h2 class="contact-headline">
+                    LET’S CREATE<br>
+                    SOMETHING<br>
+                    <span style="color:var(--accent-lime)">UNFORGETTABLE.</span>
+                </h2>
+
+                <div class="contact-grid">
+                    <div>
+                        <p style="font-size: 22px; color: var(--text-muted); margin-bottom: 40px; max-width: 500px;">
+                            Currently accepting select creative direction and design projects for Q3/Q4 2026.
+                        </p>
+                        <div class="font-mono" style="line-height: 2;">
+                            <p style="color:var(--accent-lime)">DIRECT EMAIL</p>
+                            <p style="font-size: 24px; color: var(--text-main); font-weight: bold;">hello@arcadia.design</p>
+                        </div>
+                    </div>
+
+                    <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you! Your message has been sent successfully.');">
+                        <div class="form-group">
+                            <span class="form-label">YOUR NAME</span>
+                            <input type="text" class="form-input" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <span class="form-label">YOUR EMAIL</span>
+                            <input type="email" class="form-input" required placeholder="john@company.com">
+                        </div>
+                        <div class="form-group">
+                            <span class="form-label">PROJECT DETAILS</span>
+                            <input type="text" class="form-input" placeholder="Tell me about your scope, timing, and budget">
+                        </div>
+                        <button type="submit" class="btn-magnetic">SEND INQUIRY ↗</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="site-footer">
+            <div>
+                <span>© 2026 ARCADIA STUDIO®. ALL RIGHTS RESERVED.</span>
+            </div>
+            <div>
+                <span id="live-time">PARIS 00:00:00 UTC</span>
+            </div>
+            <div class="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+                BACK TO TOP ↑
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- FULL CASE STUDY OVERLAY MODAL -->
+    <div class="case-study-modal" id="case-study-modal">
+        <div class="modal-close-btn" onclick="closeCaseStudy()">✕</div>
+        <div class="modal-hero">
+            <img id="modal-img" src="" alt="Case Study Hero">
+        </div>
+        <div class="modal-body">
+            <span class="font-mono" id="modal-category" style="color:var(--accent-lime)">FINTECH / DIGITAL PRODUCT</span>
+            <h2 class="modal-title" id="modal-title">NOVA FINANCE</h2>
+            <div style="display:grid; grid-template-columns: 2fr 1fr; gap:60px;">
+                <div>
+                    <h3 style="font-family:var(--font-display); font-size:28px; margin-bottom:20px;">PROJECT OVERVIEW</h3>
+                    <p style="color:var(--text-muted); font-size:18px; line-height:1.7;">
+                        A full-scale digital transformation designed to position Nova as the leading fintech brand for high-net-worth tech founders. We crafted a custom WebGL design system, spatial data visualizations, and an ultra-fluid mobile dashboard.
+                    </p>
+                </div>
+                <div class="font-mono" style="line-height:2;">
+                    <p style="color:var(--text-muted);">ROLE</p>
+                    <p style="color:var(--text-main);">CREATIVE DIRECTION / UI UX</p>
+                    <p style="color:var(--text-muted); margin-top:20px;">YEAR</p>
+                    <p style="color:var(--text-main);">2026</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* ==========================================================================
+           1. SMOOTH SCROLLING (LENIS)
+           ========================================================================== */
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true,
+            touchMultiplier: 2
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        /* ==========================================================================
+           2. PRELOADER & COUNTER
+           ========================================================================== */
+        const loaderCounter = document.getElementById('loader-counter');
+        const loaderBar = document.getElementById('loader-bar');
+        const preloader = document.getElementById('preloader');
+
+        let count = 0;
+        const interval = setInterval(() => {
+            count += Math.floor(Math.random() * 8) + 1;
+            if (count > 100) count = 100;
+            loaderCounter.innerText = String(count).padStart(3, '0');
+            loaderBar.style.width = count + '%';
+
+            if (count === 100) {
+                clearInterval(interval);
+                gsap.to(preloader, {
+                    yPercent: -100,
+                    duration: 1,
+                    ease: "power4.inOut",
+                    delay: 0.2,
+                    onComplete: () => {
+                        preloader.style.display = 'none';
+                        initHeroAnimations();
+                    }
+                });
+            }
+        }, 30);
+
+        /* ==========================================================================
+           3. CUSTOM CURSOR PHYSICS
+           ========================================================================== */
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorRing = document.getElementById('cursor-ring');
+        const cursorText = document.getElementById('cursor-text');
+
+        let mouseX = -100, mouseY = -100;
+        let ringX = -100, ringY = -100;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+        });
+
+        function renderCursor() {
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            cursorRing.style.left = `${ringX}px`;
+            cursorRing.style.top = `${ringY}px`;
+            requestAnimationFrame(renderCursor);
+        }
+        renderCursor();
+
+        // Cursor State Triggers
+        document.querySelectorAll('[data-cursor]').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                const label = el.getAttribute('data-cursor');
+                cursorText.innerText = label || 'VIEW';
+                document.body.classList.add('cursor-hover');
+            });
+            el.addEventListener('mouseleave', () => {
+                document.body.classList.remove('cursor-hover');
+            });
+        });
+
+        /* ==========================================================================
+           4. NAVIGATION & MENU CONTROLS
+           ========================================================================== */
+        const siteHeader = document.getElementById('site-header');
+        const menuTrigger = document.getElementById('menu-trigger');
+        const fullscreenMenu = document.getElementById('fullscreen-menu');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                siteHeader.classList.add('scrolled');
+            } else {
+                siteHeader.classList.remove('scrolled');
+            }
+        });
+
+        menuTrigger.addEventListener('click', () => {
+            fullscreenMenu.classList.toggle('is-active');
+        });
+
+        document.querySelectorAll('.menu-close-trigger').forEach(link => {
+            link.addEventListener('click', () => {
+                fullscreenMenu.classList.remove('is-active');
+            });
+        });
+
+        /* ==========================================================================
+           5. THREE.JS HERO CANVAS (Interactive Liquid Sculpture)
+           ========================================================================== */
+        function initHeroCanvas() {
+            const canvas = document.getElementById('hero-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 3.5;
+
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // TorusKnot Mesh
+            const geometry = new THREE.TorusKnotGeometry(1, 0.35, 128, 32);
+            const material = new THREE.MeshPhysicalMaterial({
+                color: 0x111111,
+                emissive: 0x000000,
+                roughness: 0.1,
+                metalness: 0.9,
+                clearcoat: 1.0,
+                clearcoatRoughness: 0.1,
+                wireframe: true
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            // Lights
+            const pointLight = new THREE.PointLight(0xc8ff00, 3, 100);
+            pointLight.position.set(5, 5, 5);
+            scene.add(pointLight);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
+
+            // Interaction
+            let targetX = 0, targetY = 0;
+            window.addEventListener('mousemove', (e) => {
+                targetX = (e.clientX / window.innerWidth - 0.5) * 1.5;
+                targetY = (e.clientY / window.innerHeight - 0.5) * 1.5;
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                mesh.rotation.x += 0.003;
+                mesh.rotation.y += 0.005;
+
+                mesh.rotation.y += (targetX - mesh.rotation.y) * 0.05;
+                mesh.rotation.x += (targetY - mesh.rotation.x) * 0.05;
+
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+        initHeroCanvas();
+
+        /* ==========================================================================
+           6. GSAP SCROLLTRIGGER ANIMATIONS
+           ========================================================================== */
+        gsap.registerPlugin(ScrollTrigger);
+
+        function initHeroAnimations() {
+            gsap.from('.hero-title .line-mask', {
+                y: 120,
+                duration: 1.2,
+                stagger: 0.15,
+                ease: "power4.out"
+            });
+        }
+
+        // Marquee Scroll
+        gsap.to('#hero-marquee', {
+            xPercent: -50,
+            ease: "none",
+            scrollTrigger: {
+                trigger: '.marquee-section',
+                scrub: 1
+            }
+        });
+
+        // Intro Parallax Text
+        gsap.to('#parallax-vision', {
+            yPercent: -30,
+            scrollTrigger: {
+                trigger: '.intro-section',
+                scrub: true
+            }
+        });
+
+        // Horizontal Section ScrollTrigger
+        const horizontalWrapper = document.getElementById('horizontal-wrapper');
+        gsap.to(horizontalWrapper, {
+            x: () => -(horizontalWrapper.scrollWidth - window.innerWidth),
+            ease: "none",
+            scrollTrigger: {
+                trigger: '#horizontal-section',
+                pin: true,
+                scrub: 1,
+                end: () => "+=" + horizontalWrapper.scrollWidth
+            }
+        });
+
+        // Process Timeline Fill
+        gsap.to('#process-progress', {
+            height: '100%',
+            ease: "none",
+            scrollTrigger: {
+                trigger: '.process-timeline',
+                start: "top center",
+                end: "bottom center",
+                scrub: true
+            }
+        });
+
+        /* ==========================================================================
+           7. INTERACTIVE PLAYGROUND CANVAS (Particle Grid)
+           ========================================================================== */
+        function initPlaygroundCanvas() {
+            const canvas = document.getElementById('playground-canvas');
+            const ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width = canvas.parentElement.clientWidth;
+                canvas.height = canvas.parentElement.clientHeight;
+            }
+            resize();
+
+            let particles = [];
+            const rows = 20, cols = 30;
+
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    particles.push({
+                        originX: (canvas.width / cols) * i + 20,
+                        originY: (canvas.height / rows) * j + 20,
+                        x: (canvas.width / cols) * i + 20,
+                        y: (canvas.height / rows) * j + 20
+                    });
+                }
+            }
+
+            let pMouseX = -1000, pMouseY = -1000;
+            canvas.parentElement.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                pMouseX = e.clientX - rect.left;
+                pMouseY = e.clientY - rect.top;
+            });
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#C8FF00';
+
+                particles.forEach(p => {
+                    const dx = pMouseX - p.x;
+                    const dy = pMouseY - p.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 120) {
+                        const angle = Math.atan2(dy, dx);
+                        const force = (120 - dist) * 0.2;
+                        p.x -= Math.cos(angle) * force;
+                        p.y -= Math.sin(angle) * force;
+                    } else {
+                        p.x += (p.originX - p.x) * 0.1;
+                        p.y += (p.originY - p.y) * 0.1;
+                    }
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+        initPlaygroundCanvas();
+
+        /* ==========================================================================
+           8. CASE STUDY MODAL SYSTEM
+           ========================================================================== */
+        const caseStudyModal = document.getElementById('case-study-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalCategory = document.getElementById('modal-category');
+        const modalImg = document.getElementById('modal-img');
+
+        function openCaseStudy(title, category, imgSrc) {
+            modalTitle.innerText = title;
+            modalCategory.innerText = category;
+            modalImg.src = imgSrc;
+            caseStudyModal.classList.add('is-open');
+            lenis.stop();
+        }
+
+        function closeCaseStudy() {
+            caseStudyModal.classList.remove('is-open');
+            lenis.start();
+        }
+
+        /* ==========================================================================
+           9. LIVE UTC TIME SCRIPT
+           ========================================================================== */
+        function updateClock() {
+            const now = new Date();
+            const utcString = now.toUTCString().split(' ')[4];
+            document.getElementById('live-time').innerText = `PARIS ${utcString} UTC`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>

@@ -1,0 +1,3134 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE IDEA MACHINE — A Digital Universe Built Around One Human Mind</title>
+    <meta name="description" content="THE IDEA MACHINE is an evolving archive of concepts, experiments, systems, and possibilities — a digital universe built around one human mind.">
+    <meta name="keywords" content="ideas, innovation, portfolio, design, technology, creative, systems, concepts, archive, digital universe">
+    <meta property="og:title" content="THE IDEA MACHINE — A Digital Universe Built Around One Human Mind">
+    <meta property="og:description" content="An evolving archive of concepts, experiments, systems, and possibilities created before they become reality.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://theideamachine.io">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#050505">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <script type="application/ld+json">
+        {"@context":"https://schema.org","@type":"WebSite","name":"THE IDEA MACHINE","description":"A digital universe built around one human mind — an evolving archive of concepts, experiments, systems, and possibilities."}
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --black: #050505;
+            --white: #ffffff;
+            --electric-blue: #4F8CFF;
+            --purple: #7B61FF;
+            --neon-glow: 0 0 30px rgba(79, 140, 255, 0.4), 0 0 60px rgba(123, 97, 255, 0.2);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --font-body: 'Inter', sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --section-padding: clamp(80px, 12vw, 160px);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: auto;
+        }
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            cursor: none;
+        }
+        @media (max-width: 768px) {
+            body {
+                cursor: auto;
+            }
+        }
+        ::selection {
+            background: var(--electric-blue);
+            color: var(--black);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--electric-blue), var(--purple));
+            border-radius: 3px;
+        }
+
+        /* Scroll Progress */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0%;
+            background: linear-gradient(90deg, var(--electric-blue), var(--purple));
+            z-index: 10000;
+            transition: width 0.1s linear;
+        }
+
+        /* Cursor Glow */
+        .cursor-glow {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(79, 140, 255, 0.07) 0%, rgba(123, 97, 255, 0.03) 40%, transparent 70%);
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s ease-out;
+            will-change: transform;
+        }
+        @media (max-width: 768px) {
+            .cursor-glow {
+                display: none;
+            }
+        }
+
+        /* Terminal Loading */
+        #terminal-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--black);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-family: 'Space Grotesk', monospace;
+        }
+        #terminal-overlay .terminal-line {
+            color: #4a4a4a;
+            font-size: clamp(0.8rem, 2vw, 1.2rem);
+            letter-spacing: 0.15em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #terminal-overlay .terminal-line.visible {
+            opacity: 1;
+            color: var(--electric-blue);
+        }
+        #terminal-overlay .terminal-line.done {
+            color: #6a6a6a;
+        }
+        #terminal-overlay .terminal-line.ready {
+            color: var(--white);
+            font-weight: 700;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            text-shadow: var(--neon-glow);
+        }
+        #terminal-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background: var(--electric-blue);
+            margin-left: 4px;
+            animation: blink 0.6s step-end infinite;
+            vertical-align: text-bottom;
+        }
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+        #terminal-overlay.exit {
+            animation: terminalExit 0.8s var(--transition-smooth) forwards;
+        }
+        @keyframes terminalExit {
+            0% {
+                opacity: 1;
+                clip-path: circle(150% at 50% 50%);
+            }
+            30% {
+                opacity: 1;
+                clip-path: circle(60% at 50% 50%);
+                filter: brightness(1.5);
+            }
+            100% {
+                opacity: 0;
+                clip-path: circle(0% at 50% 50%);
+                filter: brightness(3);
+                visibility: hidden;
+            }
+        }
+
+        /* Particle burst overlay */
+        #particle-burst {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            pointer-events: none;
+        }
+        #particle-burst .burst-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--electric-blue);
+            animation: burstFly 1.2s ease-out forwards;
+            box-shadow: 0 0 10px var(--electric-blue);
+        }
+        @keyframes burstFly {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(0);
+            }
+        }
+
+        /* Navigation */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9998;
+            padding: 1.25rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(5, 5, 5, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.4s var(--transition-smooth);
+        }
+        .main-nav.scrolled {
+            padding: 0.75rem 2rem;
+            background: rgba(5, 5, 5, 0.9);
+        }
+        .nav-logo {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .nav-logo .logo-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--electric-blue);
+            box-shadow: 0 0 15px var(--electric-blue);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                box-shadow: 0 0 15px var(--electric-blue);
+            }
+            50% {
+                box-shadow: 0 0 30px var(--electric-blue), 0 0 60px var(--purple);
+            }
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        .nav-links a:hover {
+            color: var(--white);
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--electric-blue);
+            transition: width 0.3s var(--transition-smooth);
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .mobile-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: rgba(5, 5, 5, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 1.5rem 2rem;
+                gap: 1rem;
+                border-bottom: 1px solid var(--glass-border);
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .mobile-nav-toggle {
+                display: block;
+            }
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 8rem 2rem 4rem;
+            overflow: hidden;
+        }
+        #three-canvas {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            border: 1px solid rgba(79, 140, 255, 0.3);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--electric-blue);
+            background: rgba(79, 140, 255, 0.05);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 30%, #4F8CFF 60%, #7B61FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            filter: drop-shadow(0 0 40px rgba(79, 140, 255, 0.3));
+        }
+        .hero-sub {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 650px;
+            margin: 0 auto 2.5rem;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-magnetic {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.25rem;
+            border-radius: 50px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            transition: all 0.4s var(--transition-smooth);
+            cursor: pointer;
+            border: none;
+            will-change: transform;
+        }
+        .btn-primary-glow {
+            background: linear-gradient(135deg, var(--electric-blue), var(--purple));
+            color: var(--white);
+            box-shadow: 0 0 30px rgba(79, 140, 255, 0.5), 0 0 60px rgba(123, 97, 255, 0.3);
+        }
+        .btn-primary-glow:hover {
+            box-shadow: 0 0 50px rgba(79, 140, 255, 0.7), 0 0 90px rgba(123, 97, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        .btn-secondary-glow {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+        }
+        .btn-secondary-glow:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(79, 140, 255, 0.4);
+            box-shadow: 0 0 30px rgba(79, 140, 255, 0.2);
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            animation: float 3s ease-in-out infinite;
+        }
+        .scroll-indicator .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(180deg, var(--electric-blue), transparent);
+        }
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(10px);
+            }
+        }
+
+        /* Section Common */
+        .section {
+            padding: var(--section-padding) 0;
+            position: relative;
+        }
+        .section-label {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--electric-blue);
+            margin-bottom: 1.25rem;
+            display: block;
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+        .section-desc {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 1.1rem;
+            font-weight: 300;
+            max-width: 600px;
+            line-height: 1.7;
+        }
+        .glass-panel {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.4s var(--transition-smooth);
+        }
+        .glass-panel:hover {
+            border-color: rgba(79, 140, 255, 0.25);
+            box-shadow: 0 0 40px rgba(79, 140, 255, 0.08);
+        }
+
+        /* Background Grid */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(79, 140, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(79, 140, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+        }
+        .bg-stars {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Core Section — INSANE BRAIN / IDEA ENGINE */
+        #core-section {
+            background:
+                radial-gradient(ellipse at 50% 45%, rgba(79, 140, 255, 0.09) 0%, transparent 48%),
+                radial-gradient(ellipse at 50% 70%, rgba(123, 97, 255, 0.06) 0%, transparent 55%);
+        }
+
+        #neural-canvas {
+            width: 100%;
+            height: 600px;
+            display: block;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 50% 48%, rgba(79, 140, 255, 0.18) 0%, rgba(79, 140, 255, 0.055) 24%, transparent 58%),
+                radial-gradient(circle at 44% 52%, rgba(123, 97, 255, 0.08) 0%, transparent 32%),
+                linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0) 42%, rgba(123,97,255,0.035) 72%, rgba(255,255,255,0) 100%),
+                #030408;
+            box-shadow:
+                inset 0 0 0 1px rgba(255,255,255,0.015),
+                inset 0 0 80px rgba(79,140,255,0.045),
+                0 30px 90px rgba(0,0,0,0.35);
+            animation: coreBreath 10s ease-in-out infinite;
+        }
+
+        #neural-canvas::selection { background: transparent; }
+
+        @keyframes coreBreath {
+            0%, 100% { filter: brightness(0.96) saturate(1.02); }
+            50% { filter: brightness(1.045) saturate(1.10); }
+        }
+
+        @media (max-width: 768px) {
+            #neural-canvas {
+                height: 400px;
+            }
+        }
+        .node-label {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            padding: 0.4rem 0.8rem;
+            border: 1px solid rgba(79, 140, 255, 0.2);
+            border-radius: 50px;
+            background: rgba(5, 5, 5, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .node-label:hover {
+            border-color: var(--electric-blue);
+            color: var(--electric-blue);
+            box-shadow: 0 0 20px rgba(79, 140, 255, 0.3);
+        }
+        .node-label.active {
+            border-color: var(--purple);
+            color: var(--purple);
+            box-shadow: 0 0 30px rgba(123, 97, 255, 0.4);
+        }
+
+        /* Archive Cards */
+        .archive-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            transition: all 0.4s var(--transition-smooth);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+        .archive-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(79, 140, 255, 0.1), rgba(123, 97, 255, 0.05));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .archive-card:hover::before {
+            opacity: 1;
+        }
+        .archive-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(79, 140, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(79, 140, 255, 0.1);
+        }
+        .archive-card .card-category {
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--electric-blue);
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+        .archive-card .card-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .archive-card .card-desc {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        .archive-card .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            position: relative;
+            z-index: 1;
+        }
+        .archive-card .card-tags span {
+            font-size: 0.65rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .archive-card .card-status {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            font-size: 0.6rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            z-index: 1;
+        }
+        .status-active {
+            background: rgba(79, 140, 255, 0.15);
+            color: var(--electric-blue);
+            border: 1px solid rgba(79, 140, 255, 0.3);
+        }
+        .status-evolving {
+            background: rgba(123, 97, 255, 0.15);
+            color: var(--purple);
+            border: 1px solid rgba(123, 97, 255, 0.3);
+        }
+        .status-dormant {
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Archive Filters */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 2rem;
+        }
+        .filter-btn {
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-body);
+        }
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: var(--electric-blue);
+            color: var(--electric-blue);
+            background: rgba(79, 140, 255, 0.08);
+        }
+
+        /* Memory Vault */
+        .memory-capsule {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.5s var(--transition-smooth);
+            height: 100%;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .memory-capsule:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(79, 140, 255, 0.35);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 50px rgba(79, 140, 255, 0.15);
+        }
+        .memory-capsule .memory-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .memory-capsule .memory-type {
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--electric-blue);
+            margin-bottom: 0.5rem;
+        }
+        .memory-capsule .memory-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .memory-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10002;
+            background: rgba(5, 5, 5, 0.9);
+            backdrop-filter: blur(30px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s var(--transition-smooth);
+        }
+        .memory-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .memory-overlay .memory-overlay-content {
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: scale(0.9);
+            transition: transform 0.5s var(--transition-smooth);
+        }
+        .memory-overlay.open .memory-overlay-content {
+            transform: scale(1);
+        }
+
+        /* Timeline / Thinking Process */
+        .process-stage {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding: 2rem 0;
+            position: relative;
+        }
+        .process-stage::before {
+            content: '';
+            position: absolute;
+            left: 2rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--electric-blue), var(--purple));
+            opacity: 0.4;
+        }
+        .process-stage .stage-dot {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            background: var(--black);
+            border: 2px solid var(--electric-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--electric-blue);
+            flex-shrink: 0;
+            z-index: 1;
+            box-shadow: 0 0 20px rgba(79, 140, 255, 0.2);
+            transition: all 0.4s ease;
+        }
+        .process-stage:hover .stage-dot {
+            box-shadow: 0 0 40px rgba(79, 140, 255, 0.5);
+            border-color: var(--purple);
+            color: var(--purple);
+        }
+        .process-stage .stage-content h4 {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+        .process-stage .stage-content p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Laboratory */
+        .lab-demo {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s var(--transition-smooth);
+            height: 100%;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .lab-demo:hover {
+            border-color: rgba(79, 140, 255, 0.3);
+            box-shadow: 0 0 40px rgba(79, 140, 255, 0.1);
+        }
+        .lab-demo canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+        }
+        .lab-demo .lab-label {
+            position: relative;
+            z-index: 1;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--white);
+            background: rgba(5, 5, 5, 0.6);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Research Universe */
+        .orbit-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+        }
+        @media (max-width: 768px) {
+            .orbit-container {
+                height: 400px;
+            }
+        }
+        .orbit-center {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(79, 140, 255, 0.6), rgba(123, 97, 255, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(79, 140, 255, 0.4);
+            position: absolute;
+            z-index: 2;
+            color: var(--white);
+        }
+        .orbit-ring {
+            position: absolute;
+            border: 1px solid rgba(79, 140, 255, 0.15);
+            border-radius: 50%;
+            animation: orbit-rotate 30s linear infinite;
+            pointer-events: none;
+        }
+        .orbit-ring:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            animation-duration: 20s;
+        }
+        .orbit-ring:nth-child(2) {
+            width: 320px;
+            height: 320px;
+            animation-duration: 28s;
+            animation-direction: reverse;
+        }
+        .orbit-ring:nth-child(3) {
+            width: 440px;
+            height: 440px;
+            animation-duration: 36s;
+        }
+        .orbit-ring:nth-child(4) {
+            width: 560px;
+            height: 560px;
+            animation-duration: 44s;
+            animation-direction: reverse;
+        }
+        @keyframes orbit-rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .orbit-planet {
+            position: absolute;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 1px solid rgba(79, 140, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.55rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.4s var(--transition-smooth);
+            box-shadow: 0 0 20px rgba(79, 140, 255, 0.2);
+            text-align: center;
+            padding: 0.3rem;
+            z-index: 3;
+        }
+        .orbit-planet:hover {
+            box-shadow: 0 0 40px rgba(79, 140, 255, 0.5);
+            border-color: var(--purple);
+            transform: scale(1.2);
+        }
+
+        /* Systems Diagram */
+        .systems-diagram {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .systems-diagram .system-node {
+            fill: rgba(255, 255, 255, 0.05);
+            stroke: rgba(79, 140, 255, 0.4);
+            stroke-width: 1.5;
+            transition: all 0.4s ease;
+        }
+        .systems-diagram .system-node:hover {
+            fill: rgba(79, 140, 255, 0.1);
+            stroke: var(--electric-blue);
+            stroke-width: 2;
+        }
+        .systems-diagram .system-link {
+            stroke: rgba(79, 140, 255, 0.3);
+            stroke-width: 1;
+            fill: none;
+            stroke-dasharray: 6 4;
+            animation: dash-flow 2s linear infinite;
+        }
+        @keyframes dash-flow {
+            to {
+                stroke-dashoffset: -20;
+            }
+        }
+        .systems-diagram .system-text {
+            fill: rgba(255, 255, 255, 0.7);
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+
+        /* Blueprint Wall */
+        .blueprint-card {
+            background: rgba(10, 15, 30, 0.6);
+            border: 1px solid rgba(79, 140, 255, 0.25);
+            border-radius: 8px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+        .blueprint-card:hover {
+            border-color: rgba(79, 140, 255, 0.5);
+            box-shadow: 0 0 30px rgba(79, 140, 255, 0.15);
+        }
+        .blueprint-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(79, 140, 255, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(79, 140, 255, 0.06) 1px, transparent 1px);
+            background-size: 15px 15px;
+            pointer-events: none;
+        }
+        .blueprint-card .bp-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--electric-blue);
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+        .blueprint-card .bp-desc {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Project Cards */
+        .project-card {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            transition: all 0.5s var(--transition-smooth);
+            cursor: pointer;
+            position: relative;
+            height: 100%;
+        }
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(79, 140, 255, 0.3);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 50px rgba(79, 140, 255, 0.12);
+        }
+        .project-card .project-cover {
+            height: 200px;
+            background: linear-gradient(135deg, rgba(79, 140, 255, 0.15), rgba(123, 97, 255, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .project-card .project-cover::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(79, 140, 255, 0.08), transparent);
+        }
+        .project-card .project-body {
+            padding: 1.5rem;
+        }
+        .project-card .project-category {
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--electric-blue);
+            margin-bottom: 0.5rem;
+        }
+        .project-card .project-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .project-card .project-desc {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        .project-card .project-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+        }
+        .project-card .project-stack span {
+            font-size: 0.6rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .project-card .project-progress {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .project-card .project-progress .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--electric-blue), var(--purple));
+            border-radius: 2px;
+            transition: width 1.5s var(--transition-smooth);
+        }
+
+        /* Insights */
+        .insight-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s var(--transition-smooth);
+            cursor: pointer;
+            height: 100%;
+        }
+        .insight-card:hover {
+            border-color: rgba(79, 140, 255, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+        .insight-card .insight-cover {
+            height: 160px;
+            background: linear-gradient(135deg, rgba(79, 140, 255, 0.1), rgba(123, 97, 255, 0.05));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        .insight-card .insight-body {
+            padding: 1.5rem;
+        }
+        .insight-card.featured {
+            grid-column: span 2;
+        }
+        @media (max-width: 768px) {
+            .insight-card.featured {
+                grid-column: span 1;
+            }
+        }
+        .insight-card .insight-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 0.75rem;
+        }
+        .insight-card .insight-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+        .insight-card.featured .insight-title {
+            font-size: 1.6rem;
+        }
+
+        /* Possibility Engine */
+        .possibility-display {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: center;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.6s var(--transition-smooth);
+        }
+        .possibility-display.generating {
+            animation: generating-pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes generating-pulse {
+            0%,
+            100% {
+                box-shadow: 0 0 30px rgba(79, 140, 255, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 60px rgba(79, 140, 255, 0.5), 0 0 90px rgba(123, 97, 255, 0.3);
+            }
+        }
+        .possibility-display .idea-output {
+            font-family: var(--font-display);
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 600;
+            color: var(--white);
+            max-width: 600px;
+            line-height: 1.4;
+        }
+
+        /* Quotes */
+        .quote-float {
+            font-family: var(--font-display);
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-weight: 300;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            padding: 3rem 2rem;
+            transition: transform 0.6s var(--transition-smooth);
+            will-change: transform;
+            position: relative;
+        }
+        .quote-float::before {
+            content: '"';
+            font-size: 4rem;
+            color: rgba(79, 140, 255, 0.3);
+            position: absolute;
+            top: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: Georgia, serif;
+        }
+
+        /* Contact */
+        .contact-form input,
+        .contact-form textarea {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--white);
+            padding: 1rem 1.25rem;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--electric-blue);
+            box-shadow: 0 0 20px rgba(79, 140, 255, 0.2);
+            background: rgba(79, 140, 255, 0.03);
+        }
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        .contact-form label {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--glass-border);
+            padding: 4rem 2rem 2rem;
+            background: rgba(5, 5, 5, 0.9);
+            backdrop-filter: blur(20px);
+        }
+        .footer .glow-text {
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            background: linear-gradient(135deg, var(--electric-blue), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(79, 140, 255, 0.4));
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Timeline Milestones */
+        .milestone-item {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+        .milestone-item:hover {
+            padding-left: 1rem;
+            background: rgba(79, 140, 255, 0.03);
+        }
+        .milestone-item .milestone-year {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--electric-blue);
+            min-width: 120px;
+            text-shadow: 0 0 30px rgba(79, 140, 255, 0.4);
+        }
+        .milestone-item .milestone-detail h4 {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+        .milestone-item .milestone-detail p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section {
+                padding: 60px 0;
+            }
+            .hero-section {
+                padding: 6rem 1rem 3rem;
+            }
+            .process-stage {
+                gap: 1rem;
+            }
+            .process-stage .stage-dot {
+                width: 3rem;
+                height: 3rem;
+                font-size: 0.65rem;
+            }
+            .orbit-container {
+                height: 300px;
+            }
+            .orbit-ring:nth-child(1) {
+                width: 120px;
+                height: 120px;
+            }
+            .orbit-ring:nth-child(2) {
+                width: 200px;
+                height: 200px;
+            }
+            .orbit-ring:nth-child(3) {
+                width: 280px;
+                height: 280px;
+            }
+            .orbit-ring:nth-child(4) {
+                width: 360px;
+                height: 360px;
+            }
+            .orbit-planet {
+                width: 40px;
+                height: 40px;
+                font-size: 0.45rem;
+            }
+            .orbit-center {
+                width: 50px;
+                height: 50px;
+                font-size: 0.5rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+            .btn-magnetic {
+                width: 100%;
+            }
+            .filter-bar {
+                gap: 0.4rem;
+            }
+            .filter-btn {
+                padding: 0.4rem 0.9rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Skeleton Loading */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.07) 50%, rgba(255, 255, 255, 0.03) 75%);
+            background-size: 200% 100%;
+            animation: skeleton-shimmer 1.5s ease-in-out infinite;
+            border-radius: 8px;
+        }
+        @keyframes skeleton-shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* Bottom Mobile Nav */
+        .mobile-bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 9997;
+            background: rgba(5, 5, 5, 0.9);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            padding: 0.5rem 1rem;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .mobile-bottom-nav a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 0.6rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+            transition: color 0.3s ease;
+        }
+        .mobile-bottom-nav a.active {
+            color: var(--electric-blue);
+        }
+        .mobile-bottom-nav a .nav-icon {
+            font-size: 1.2rem;
+        }
+        @media (max-width: 992px) {
+            .mobile-bottom-nav {
+                display: flex;
+            }
+            body {
+                padding-bottom: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Scroll Progress -->
+    <div id="scroll-progress"></div>
+
+    <!-- Cursor Glow -->
+    <div class="cursor-glow" id="cursor-glow"></div>
+
+    <!-- Background Layers -->
+    <div class="bg-stars" id="bg-stars"></div>
+    <div class="bg-grid"></div>
+
+    <!-- Terminal Loading Overlay -->
+    <div id="terminal-overlay" aria-label="Loading">
+        <div class="terminal-line" data-line="CONNECTING TO CORE...">CONNECTING TO CORE... <span class="terminal-cursor"></span></div>
+        <div class="terminal-line" data-line="INDEXING MEMORY...">INDEXING MEMORY...</div>
+        <div class="terminal-line" data-line="SEARCHING THOUGHT...">SEARCHING THOUGHT...</div>
+        <div class="terminal-line" data-line="LOADING CONCEPTS...">LOADING CONCEPTS...</div>
+        <div class="terminal-line" data-line="MAPPING POSSIBILITY...">MAPPING POSSIBILITY...</div>
+        <div class="terminal-line ready" data-line="ready" style="margin-top: 1.5rem;">THE MIND IS ONLINE</div>
+    </div>
+
+    <!-- Particle Burst Container -->
+    <div id="particle-burst"></div>
+
+    <!-- Navigation -->
+    <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+        <a href="#" class="nav-logo"><span class="logo-dot"></span> IDEA MACHINE</a>
+        <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation">☰</button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#core">The Core</a></li>
+            <li><a href="#archive">Archive</a></li>
+            <li><a href="#memory">Memory</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#laboratory">Lab</a></li>
+            <li><a href="#research">Research</a></li>
+            <li><a href="#systems">Systems</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#insights">Insights</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- 01 — HERO -->
+    <section class="hero-section" id="hero" aria-label="Hero">
+        <canvas id="three-canvas"></canvas>
+        <div class="hero-content">
+            <span class="hero-badge">⚡ A Digital Universe Built Around One Human Mind</span>
+            <h1 class="hero-title">IDEAS ARE THE BEGINNING OF EVERYTHING.</h1>
+            <p class="hero-sub">An evolving archive of concepts, experiments, systems, and possibilities created before they become reality.</p>
+            <div class="hero-buttons">
+                <a href="#core" class="btn-magnetic btn-primary-glow">ENTER THE IDEA MACHINE</a>
+                <a href="#archive" class="btn-magnetic btn-secondary-glow">EXPLORE THE ARCHIVE</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- 02 — THE CORE -->
+    <section class="section" id="core" aria-label="The Core">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="section-label">02 — The Core</span>
+                <h2 class="section-title">THE CORE</h2>
+                <p class="section-desc mx-auto">A living neural network of thought, memory, and imagination. Each node represents a fundamental aspect of the creative mind.</p>
+            </div>
+            <canvas id="neural-canvas" class="glass-panel"></canvas>
+            <div class="d-flex flex-wrap justify-content-center gap-2 mt-4" id="node-labels">
+                <span class="node-label" data-node="0">Thought</span>
+                <span class="node-label" data-node="1">Memory</span>
+                <span class="node-label" data-node="2">Curiosity</span>
+                <span class="node-label" data-node="3">Observation</span>
+                <span class="node-label" data-node="4">Experiment</span>
+                <span class="node-label" data-node="5">Imagination</span>
+                <span class="node-label" data-node="6">System</span>
+                <span class="node-label" data-node="7">Vision</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 03 — THE ARCHIVE -->
+    <section class="section" id="archive" aria-label="The Archive">
+        <div class="container">
+            <span class="section-label">03 — The Archive</span>
+            <h2 class="section-title">THE ARCHIVE</h2>
+            <p class="section-desc mb-4">A massive database of ideas, concepts, and possibilities. Filter, sort, and explore the evolving archive.</p>
+            <div class="d-flex flex-wrap gap-2 align-items-center mb-4">
+                <input type="text" id="archive-search" class="form-control bg-transparent text-white border-secondary rounded-pill px-4 py-2" style="max-width:250px;" placeholder="Search ideas...">
+                <select id="archive-sort" class="form-select bg-transparent text-white border-secondary rounded-pill px-4 py-2" style="max-width:180px;">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="title">A-Z</option>
+                </select>
+            </div>
+            <div class="filter-bar" id="archive-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="AI">AI</button>
+                <button class="filter-btn" data-filter="Design">Design</button>
+                <button class="filter-btn" data-filter="Business">Business</button>
+                <button class="filter-btn" data-filter="Technology">Technology</button>
+                <button class="filter-btn" data-filter="Psychology">Psychology</button>
+                <button class="filter-btn" data-filter="Research">Research</button>
+                <button class="filter-btn" data-filter="Future Concepts">Future Concepts</button>
+                <button class="filter-btn" data-filter="Systems">Systems</button>
+            </div>
+            <div class="row g-4" id="archive-grid">
+                <!-- Cards injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 04 — MEMORY VAULT -->
+    <section class="section" id="memory" aria-label="Memory Vault">
+        <div class="container">
+            <span class="section-label">04 — Memory Vault</span>
+            <h2 class="section-title">MEMORY VAULT</h2>
+            <p class="section-desc mb-4">A digital memory wall of sketches, quotes, observations, and inspirations.</p>
+            <div class="row g-4" id="memory-grid">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Memory Overlay -->
+    <div class="memory-overlay" id="memory-overlay">
+        <div class="memory-overlay-content">
+            <span class="section-label" style="display:block;text-align:center;">Memory Capsule</span>
+            <h3 style="font-family:var(--font-display);font-weight:700;font-size:1.5rem;margin:1rem 0;" id="memory-overlay-title"></h3>
+            <p style="color:rgba(255,255,255,0.6);font-size:1rem;line-height:1.6;" id="memory-overlay-desc"></p>
+            <button class="btn-magnetic btn-secondary-glow mt-4" onclick="closeMemoryOverlay()">Close</button>
+        </div>
+    </div>
+
+    <!-- 05 — THE THINKING PROCESS -->
+    <section class="section" id="process" aria-label="The Thinking Process">
+        <div class="container">
+            <span class="section-label">05 — The Thinking Process</span>
+            <h2 class="section-title">THE THINKING PROCESS</h2>
+            <p class="section-desc mb-5">How ideas evolve from observation to reality.</p>
+            <div id="process-timeline">
+                <div class="process-stage">
+                    <div class="stage-dot">01</div>
+                    <div class="stage-content"><h4>Observation</h4><p>Noticing patterns, anomalies, and gaps in the world around us.</p></div>
+                </div>
+                <div class="process-stage">
+                    <div class="stage-dot">02</div>
+                    <div class="stage-content"><h4>Question</h4><p>Challenging assumptions and asking what could be different.</p></div>
+                </div>
+                <div class="process-stage">
+                    <div class="stage-dot">03</div>
+                    <div class="stage-content"><h4>Research</h4><p>Deep exploration into existing knowledge and unexplored territories.</p></div>
+                </div>
+                <div class="process-stage">
+                    <div class="stage-dot">04</div>
+                    <div class="stage-content"><h4>Experiment</h4><p>Testing hypotheses and pushing beyond comfortable boundaries.</p></div>
+                </div>
+                <div class="process-stage">
+                    <div class="stage-dot">05</div>
+                    <div class="stage-content"><h4>Prototype</h4><p>Giving form to abstract concepts through rapid iteration.</p></div>
+                </div>
+                <div class="process-stage">
+                    <div class="stage-dot">06</div>
+                    <div class="stage-content"><h4>Iteration</h4><p>Refining, reimagining, and evolving through feedback loops.</p></div>
+                </div>
+                <div class="process-stage">
+                    <div class="stage-dot">07</div>
+                    <div class="stage-content"><h4>System</h4><p>Connecting components into coherent, scalable structures.</p></div>
+                </div>
+                <div class="process-stage">
+                    <div class="stage-dot">08</div>
+                    <div class="stage-content"><h4>Reality</h4><p>Bringing the idea into the physical world and sharing it.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 06 — LABORATORY -->
+    <section class="section" id="laboratory" aria-label="Laboratory">
+        <div class="container">
+            <span class="section-label">06 — Laboratory</span>
+            <h2 class="section-title">LABORATORY</h2>
+            <p class="section-desc mb-4">Interactive experiments that bring ideas to life.</p>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="lab-demo" id="lab-particles"><span class="lab-label">Particle Simulation</span></div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="lab-demo" id="lab-noise"><span class="lab-label">Noise Animation</span></div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="lab-demo" id="lab-trail"><span class="lab-label">Mouse Trail</span></div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="lab-demo" id="lab-geometry"><span class="lab-label">Geometry Generator</span></div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="lab-demo" id="lab-grid"><span class="lab-label">Grid Morphing</span></div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="lab-demo" id="lab-network"><span class="lab-label">Neural Visualization</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 — RESEARCH UNIVERSE -->
+    <section class="section" id="research" aria-label="Research Universe">
+        <div class="container">
+            <span class="section-label">07 — Research Universe</span>
+            <h2 class="section-title">RESEARCH UNIVERSE</h2>
+            <p class="section-desc mb-4">A knowledge galaxy where research topics become orbiting planets. Click a planet to explore.</p>
+            <div class="orbit-container" id="orbit-container">
+                <div class="orbit-ring"></div>
+                <div class="orbit-ring"></div>
+                <div class="orbit-ring"></div>
+                <div class="orbit-ring"></div>
+                <div class="orbit-center">KNOWLEDGE<br>GALAXY</div>
+                <!-- Planets injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 08 — SYSTEMS -->
+    <section class="section" id="systems" aria-label="Systems">
+        <div class="container">
+            <span class="section-label">08 — Systems</span>
+            <h2 class="section-title">SYSTEMS</h2>
+            <p class="section-desc mb-4">How different components connect to form a coherent whole.</p>
+            <div class="systems-diagram">
+                <svg viewBox="0 0 800 400" width="100%" height="400" role="img" aria-label="Systems architecture diagram">
+                    <defs>
+                        <linearGradient id="sys-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#4F8CFF"/>
+                            <stop offset="100%" stop-color="#7B61FF"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Links -->
+                    <path class="system-link" d="M200 200 L300 100"/>
+                    <path class="system-link" d="M200 200 L300 300"/>
+                    <path class="system-link" d="M400 100 L500 200"/>
+                    <path class="system-link" d="M400 300 L500 200"/>
+                    <path class="system-link" d="M500 200 L600 100"/>
+                    <path class="system-link" d="M500 200 L600 300"/>
+                    <path class="system-link" d="M300 100 L400 100"/>
+                    <path class="system-link" d="M300 300 L400 300"/>
+                    <!-- Nodes -->
+                    <rect class="system-node" x="100" y="160" width="100" height="80" rx="12"/>
+                    <text class="system-text" x="150" y="205" text-anchor="middle">INPUT</text>
+                    <rect class="system-node" x="250" y="60" width="100" height="80" rx="12"/>
+                    <text class="system-text" x="300" y="105" text-anchor="middle">PROCESSING</text>
+                    <rect class="system-node" x="250" y="260" width="100" height="80" rx="12"/>
+                    <text class="system-text" x="300" y="305" text-anchor="middle">INTELLIGENCE</text>
+                    <rect class="system-node" x="450" y="160" width="100" height="80" rx="12"/>
+                    <text class="system-text" x="500" y="205" text-anchor="middle">FEEDBACK</text>
+                    <rect class="system-node" x="600" y="60" width="100" height="80" rx="12"/>
+                    <text class="system-text" x="650" y="105" text-anchor="middle">EVOLUTION</text>
+                    <rect class="system-node" x="600" y="260" width="100" height="80" rx="12"/>
+                    <text class="system-text" x="650" y="305" text-anchor="middle">OUTPUT</text>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- 09 — THE BLUEPRINT WALL -->
+    <section class="section" id="blueprint" aria-label="The Blueprint Wall">
+        <div class="container">
+            <span class="section-label">09 — Blueprint Wall</span>
+            <h2 class="section-title">THE BLUEPRINT WALL</h2>
+            <p class="section-desc mb-4">Futuristic engineering documents — wireframes, diagrams, and architecture sketches.</p>
+            <div class="row g-3" id="blueprint-grid">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 10 — PROJECTS -->
+    <section class="section" id="projects" aria-label="Projects">
+        <div class="container">
+            <span class="section-label">10 — Projects</span>
+            <h2 class="section-title">PROJECTS</h2>
+            <p class="section-desc mb-4">Premium projects with real-world impact.</p>
+            <div class="row g-4" id="projects-grid">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 11 — INSIGHTS -->
+    <section class="section" id="insights" aria-label="Insights">
+        <div class="container">
+            <span class="section-label">11 — Insights</span>
+            <h2 class="section-title">INSIGHTS</h2>
+            <p class="section-desc mb-4">Articles, observations, and deep dives into the creative process.</p>
+            <div class="row g-4" id="insights-grid">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 12 — POSSIBILITY ENGINE -->
+    <section class="section" id="possibility" aria-label="Possibility Engine">
+        <div class="container text-center">
+            <span class="section-label">12 — Possibility Engine</span>
+            <h2 class="section-title">POSSIBILITY ENGINE</h2>
+            <p class="section-desc mx-auto mb-4">Generate a random idea concept. Tap into the infinite possibilities of the mind.</p>
+            <div class="possibility-display" id="possibility-display">
+                <div class="idea-output" id="idea-output">Click generate to discover a new possibility...</div>
+            </div>
+            <button class="btn-magnetic btn-primary-glow mt-4" id="generate-idea-btn">⚡ GENERATE IDEA</button>
+        </div>
+    </section>
+
+    <!-- 13 — THE TIMELINE -->
+    <section class="section" id="timeline" aria-label="The Timeline">
+        <div class="container">
+            <span class="section-label">13 — The Timeline</span>
+            <h2 class="section-title">THE TIMELINE</h2>
+            <p class="section-desc mb-4">A cinematic journey through the milestones of the mind.</p>
+            <div id="milestones">
+                <div class="milestone-item">
+                    <span class="milestone-year">2018</span>
+                    <div class="milestone-detail"><h4>First Concept</h4><p>The first spark of an idea that started it all.</p></div>
+                </div>
+                <div class="milestone-item">
+                    <span class="milestone-year">2020</span>
+                    <div class="milestone-detail"><h4>First Prototype</h4><p>Giving tangible form to abstract thinking.</p></div>
+                </div>
+                <div class="milestone-item">
+                    <span class="milestone-year">2022</span>
+                    <div class="milestone-detail"><h4>First System</h4><p>Connecting components into a coherent framework.</p></div>
+                </div>
+                <div class="milestone-item">
+                    <span class="milestone-year">2024</span>
+                    <div class="milestone-detail"><h4>Future Vision</h4><p>Looking ahead to what the next decade holds.</p></div>
+                </div>
+                <div class="milestone-item">
+                    <span class="milestone-year">2026</span>
+                    <div class="milestone-detail"><h4>The Idea Machine</h4><p>Launching the digital universe built around one mind.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 14 — QUOTES IN SPACE -->
+    <section class="section" id="quotes" aria-label="Quotes in Space">
+        <div class="container">
+            <span class="section-label">14 — Quotes in Space</span>
+            <h2 class="section-title text-center mb-4">FLOATING TYPOGRAPHY</h2>
+            <div id="quotes-container">
+                <p class="quote-float" data-speed="0.8">"The best way to predict the future is to invent it." — Alan Kay</p>
+                <p class="quote-float" data-speed="1.2">"Imagination is more important than knowledge." — Albert Einstein</p>
+                <p class="quote-float" data-speed="0.9">"The only way to do great work is to love what you do." — Steve Jobs</p>
+                <p class="quote-float" data-speed="1.1">"Every act of creation is first an act of destruction." — Pablo Picasso</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 15 — CONTACT -->
+    <section class="section" id="contact" aria-label="Contact">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="section-label">15 — Contact</span>
+                <h2 class="section-title">SEND A SIGNAL</h2>
+                <p class="section-desc mx-auto">Have an idea, a question, or a collaboration in mind? Reach out.</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <form class="contact-form glass-panel p-4 p-md-5" id="contact-form" onsubmit="handleContactSubmit(event)">
+                        <div class="mb-4">
+                            <label for="contact-name">Name</label>
+                            <input type="text" id="contact-name" placeholder="Your name" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="contact-email">Email</label>
+                            <input type="email" id="contact-email" placeholder="your@email.com" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="contact-subject">Subject</label>
+                            <input type="text" id="contact-subject" placeholder="What's this about?" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="contact-message">Message</label>
+                            <textarea id="contact-message" rows="5" placeholder="Your message..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-magnetic btn-primary-glow w-100">SEND SIGNAL 🚀</button>
+                    </form>
+                    <div class="text-center mt-4 d-flex flex-wrap justify-content-center gap-4">
+                        <span class="text-white-50">📧 hello@ideamachine.io</span>
+                        <span class="text-white-50">🐦 @ideamachine</span>
+                        <span class="text-white-50">📍 Planet Earth</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 16 — FOOTER -->
+    <footer class="footer" aria-label="Footer">
+        <div class="container">
+            <div class="glow-text">EVERY REALITY BEGINS AS AN IDEA.</div>
+            <div class="row g-4 py-4">
+                <div class="col-md-4">
+                    <h5 class="text-white mb-3" style="font-family:var(--font-display);">IDEA MACHINE</h5>
+                    <p class="text-white-50 small">A digital universe built around one human mind. An evolving archive of concepts, experiments, and possibilities.</p>
+                </div>
+                <div class="col-md-2 col-6">
+                    <h6 class="text-white-50 mb-3 small">NAVIGATION</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="#core" class="text-white-50 text-decoration-none">Core</a></li>
+                        <li><a href="#archive" class="text-white-50 text-decoration-none">Archive</a></li>
+                        <li><a href="#memory" class="text-white-50 text-decoration-none">Memory</a></li>
+                        <li><a href="#projects" class="text-white-50 text-decoration-none">Projects</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 col-6">
+                    <h6 class="text-white-50 mb-3 small">CONNECT</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="#" class="text-white-50 text-decoration-none">Twitter</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">GitHub</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">LinkedIn</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Email</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="text-white-50 mb-3 small">NEWSLETTER</h6>
+                    <div class="d-flex gap-2">
+                        <input type="email" class="form-control bg-transparent text-white border-secondary rounded-pill px-3 py-2 small" placeholder="your@email.com">
+                        <button class="btn btn-outline-primary rounded-pill px-4 small">SUBSCRIBE</button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center pt-4 border-top border-secondary-subtle">
+                <p class="text-white-50 small mb-0">© 2026 THE IDEA MACHINE. All rights reserved. Built with 🧠 + ⚡.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav" id="mobile-bottom-nav">
+        <a href="#core"><span class="nav-icon">🧠</span> Core</a>
+        <a href="#archive"><span class="nav-icon">📚</span> Archive</a>
+        <a href="#memory"><span class="nav-icon">💭</span> Memory</a>
+        <a href="#projects"><span class="nav-icon">🚀</span> Projects</a>
+        <a href="#contact"><span class="nav-icon">📡</span> Contact</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer>
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer>
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer>
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer>
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" defer>
+    </script>
+    <script>
+        // This script runs after all libraries are loaded.
+        // We use DOMContentLoaded + a check for libraries.
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for all libraries
+            const checkLibs = setInterval(() => {
+                if (typeof gsap !== 'undefined' && typeof THREE !== 'undefined' && typeof Lenis !== 'undefined') {
+                    clearInterval(checkLibs);
+                    initIdeaMachine();
+                }
+            }, 50);
+            // Fallback if libraries fail to load
+            setTimeout(() => clearInterval(checkLibs), 5000);
+        });
+
+        function initIdeaMachine() {
+            // ===== TERMINAL LOADING =====
+            const terminalOverlay = document.getElementById('terminal-overlay');
+            const terminalLines = terminalOverlay.querySelectorAll('.terminal-line');
+            let currentLine = 0;
+
+            function showNextLine() {
+                if (currentLine < terminalLines.length) {
+                    const line = terminalLines[currentLine];
+                    line.classList.add('visible');
+                    if (currentLine > 0) terminalLines[currentLine - 1].classList.add('done');
+                    if (line.dataset.line === 'ready') {
+                        line.classList.add('ready');
+                        setTimeout(() => {
+                            triggerParticleBurst();
+                            terminalOverlay.classList.add('exit');
+                            setTimeout(() => {
+                                terminalOverlay.style.display = 'none';
+                                initThreeScene();
+                            }, 800);
+                        }, 600);
+                        return;
+                    }
+                    currentLine++;
+                    setTimeout(showNextLine, 450);
+                }
+            }
+            setTimeout(showNextLine, 300);
+
+            // ===== PARTICLE BURST =====
+            function triggerParticleBurst() {
+                const container = document.getElementById('particle-burst');
+                const particles = 60;
+                for (let i = 0; i < particles; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'burst-particle';
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 150 + Math.random() * 350;
+                    p.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                    p.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                    p.style.left = '50%';
+                    p.style.top = '50%';
+                    p.style.background = Math.random() > 0.5 ? '#4F8CFF' : '#7B61FF';
+                    container.appendChild(p);
+                    setTimeout(() => p.remove(), 1300);
+                }
+            }
+
+            // ===== LENIS SMOOTH SCROLL =====
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                smoothWheel: true,
+                wheelMultiplier: 1,
+                touchMultiplier: 1.5,
+            });
+
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => {
+                lenis.raf(time * 1000);
+            });
+            gsap.ticker.lagSmoothing(0);
+
+            // Scroll Progress
+            lenis.on('scroll', (e) => {
+                const progress = (e.scroll / (e.limit || document.body.scrollHeight - window.innerHeight)) * 100;
+                document.getElementById('scroll-progress').style.width = progress + '%';
+                const nav = document.getElementById('main-nav');
+                if (e.scroll > 50) nav.classList.add('scrolled');
+                else nav.classList.remove('scrolled');
+            });
+
+            // ===== GSAP SCROLLTRIGGER SETUP =====
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Section reveals
+            gsap.utils.toArray('.section').forEach(section => {
+                gsap.fromTo(section, {
+                    opacity: 0,
+                    y: 60
+                }, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top 80%',
+                        end: 'top 30%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+
+            // Hero title animation
+            gsap.fromTo('.hero-title', {
+                opacity: 0,
+                y: 80,
+                filter: 'blur(10px)'
+            }, {
+                opacity: 1,
+                y: 0,
+                filter: 'blur(0px)',
+                duration: 1.5,
+                ease: 'power4.out',
+                delay: 1.2
+            });
+            gsap.fromTo('.hero-sub', {
+                opacity: 0,
+                y: 30
+            }, {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'power3.out',
+                delay: 1.6
+            });
+            gsap.fromTo('.hero-buttons', {
+                opacity: 0,
+                y: 20
+            }, {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power3.out',
+                delay: 1.9
+            });
+            gsap.fromTo('.hero-badge', {
+                opacity: 0,
+                scale: 0.8
+            }, {
+                opacity: 1,
+                scale: 1,
+                duration: 0.6,
+                ease: 'back.out(2)',
+                delay: 1.0
+            });
+
+            // ===== THREE.JS IDEA CORE =====
+            let threeScene, threeCamera, threeRenderer, coreGroup, coreParticles, wireSphere, orbitingSymbols = [];
+
+            function initThreeScene() {
+                const canvas = document.getElementById('three-canvas');
+                if (!canvas || typeof THREE === 'undefined') return;
+
+                const heroSection = document.getElementById('hero');
+                const w = heroSection.clientWidth;
+                const h = heroSection.clientHeight;
+
+                threeScene = new THREE.Scene();
+                threeCamera = new THREE.PerspectiveCamera(60, w / h, 0.1, 100);
+                threeCamera.position.z = 5;
+                threeRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+                threeRenderer.setSize(w, h);
+                threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                threeRenderer.setClearColor(0x000000, 0);
+
+                // Core group
+                coreGroup = new THREE.Group();
+
+                // Main wire sphere
+                const sphereGeo = new THREE.SphereGeometry(1.6, 32, 32);
+                const sphereMat = new THREE.MeshBasicMaterial({
+                    color: 0x4F8CFF,
+                    wireframe: true,
+                    transparent: true,
+                    opacity: 0.25,
+                });
+                wireSphere = new THREE.Mesh(sphereGeo, sphereMat);
+                coreGroup.add(wireSphere);
+
+                // Inner glowing sphere
+                const innerGeo = new THREE.SphereGeometry(1.2, 24, 24);
+                const innerMat = new THREE.MeshBasicMaterial({
+                    color: 0x7B61FF,
+                    transparent: true,
+                    opacity: 0.15,
+                });
+                const innerSphere = new THREE.Mesh(innerGeo, innerMat);
+                coreGroup.add(innerSphere);
+
+                // Particle field
+                const particleCount = 500;
+                const particlePositions = new Float32Array(particleCount * 3);
+                for (let i = 0; i < particleCount; i++) {
+                    const theta = Math.random() * Math.PI * 2;
+                    const phi = Math.acos(2 * Math.random() - 1);
+                    const r = 2 + Math.random() * 1.5;
+                    particlePositions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+                    particlePositions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+                    particlePositions[i * 3 + 2] = r * Math.cos(phi);
+                }
+                const particleGeo = new THREE.BufferGeometry();
+                particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+                const particleMat = new THREE.PointsMaterial({
+                    color: 0x4F8CFF,
+                    size: 0.02,
+                    transparent: true,
+                    opacity: 0.7,
+                    blending: THREE.AdditiveBlending,
+                });
+                coreParticles = new THREE.Points(particleGeo, particleMat);
+                coreGroup.add(coreParticles);
+
+                // Orbiting symbols (small geometric shapes)
+                const symbolGeos = [
+                    new THREE.TorusGeometry(0.15, 0.05, 8, 16),
+                    new THREE.OctahedronGeometry(0.2),
+                    new THREE.TetrahedronGeometry(0.2),
+                    new THREE.IcosahedronGeometry(0.15),
+                ];
+                for (let i = 0; i < 8; i++) {
+                    const geo = symbolGeos[i % symbolGeos.length];
+                    const mat = new THREE.MeshBasicMaterial({
+                        color: i % 2 === 0 ? 0x4F8CFF : 0x7B61FF,
+                        wireframe: true,
+                        transparent: true,
+                        opacity: 0.6,
+                    });
+                    const mesh = new THREE.Mesh(geo, mat);
+                    const orbitRadius = 2.2 + Math.random() * 0.8;
+                    const orbitSpeed = 0.3 + Math.random() * 0.7;
+                    const orbitAngle = Math.random() * Math.PI * 2;
+                    const orbitIncline = Math.random() * Math.PI * 2;
+                    mesh.userData = { orbitRadius, orbitSpeed, orbitAngle, orbitIncline };
+                    coreGroup.add(mesh);
+                    orbitingSymbols.push(mesh);
+                }
+
+                threeScene.add(coreGroup);
+
+                // Background stars
+                const starCount = 200;
+                const starPositions = new Float32Array(starCount * 3);
+                for (let i = 0; i < starCount; i++) {
+                    starPositions[i * 3] = (Math.random() - 0.5) * 15;
+                    starPositions[i * 3 + 1] = (Math.random() - 0.5) * 15;
+                    starPositions[i * 3 + 2] = (Math.random() - 0.5) * 10 - 3;
+                }
+                const starGeo = new THREE.BufferGeometry();
+                starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+                const starMat = new THREE.PointsMaterial({
+                    color: 0xffffff,
+                    size: 0.015,
+                    transparent: true,
+                    opacity: 0.5,
+                    blending: THREE.AdditiveBlending,
+                });
+                const stars = new THREE.Points(starGeo, starMat);
+                threeScene.add(stars);
+
+                // Mouse interaction
+                let mouseX = 0,
+                    mouseY = 0,
+                    targetMouseX = 0,
+                    targetMouseY = 0;
+                document.addEventListener('mousemove', (e) => {
+                    targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+                    targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+                });
+                document.addEventListener('touchmove', (e) => {
+                    const touch = e.touches[0];
+                    targetMouseX = (touch.clientX / window.innerWidth - 0.5) * 2;
+                    targetMouseY = (touch.clientY / window.innerHeight - 0.5) * 2;
+                });
+
+                // Animation loop
+                function animateThree() {
+                    requestAnimationFrame(animateThree);
+                    if (!threeRenderer) return;
+                    mouseX += (targetMouseX - mouseX) * 0.05;
+                    mouseY += (targetMouseY - mouseY) * 0.05;
+                    coreGroup.rotation.x += (mouseY * 0.5 - coreGroup.rotation.x) * 0.03;
+                    coreGroup.rotation.y += (mouseX * 0.5 - coreGroup.rotation.y) * 0.03;
+                    coreGroup.rotation.z += 0.002;
+                    coreParticles.rotation.y += 0.003;
+                    coreParticles.rotation.x += 0.002;
+                    wireSphere.rotation.y += 0.001;
+                    wireSphere.rotation.z += 0.001;
+                    const time = Date.now() * 0.001;
+                    orbitingSymbols.forEach((sym, i) => {
+                        const ud = sym.userData;
+                        ud.orbitAngle += ud.orbitSpeed * 0.01;
+                        const x = Math.cos(ud.orbitAngle) * ud.orbitRadius;
+                        const z = Math.sin(ud.orbitAngle) * ud.orbitRadius;
+                        const y = Math.sin(time * ud.orbitSpeed + i) * 0.8;
+                        sym.position.set(x, y, z);
+                        sym.rotation.x += 0.01;
+                        sym.rotation.y += 0.02;
+                    });
+                    coreGroup.scale.setScalar(1 + Math.sin(time * 0.5) * 0.05);
+                    threeRenderer.render(threeScene, threeCamera);
+                }
+                animateThree();
+
+                // Resize handler
+                window.addEventListener('resize', () => {
+                    if (!threeRenderer) return;
+                    const w2 = heroSection.clientWidth;
+                    const h2 = heroSection.clientHeight;
+                    threeCamera.aspect = w2 / h2;
+                    threeCamera.updateProjectionMatrix();
+                    threeRenderer.setSize(w2, h2);
+                });
+
+                // Scroll-based evolution
+                gsap.to(coreGroup.scale, {
+                    x: 1.4,
+                    y: 1.4,
+                    z: 1.4,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: '#hero',
+                        start: 'top top',
+                        end: 'bottom top',
+                        scrub: true,
+                    }
+                });
+                gsap.to(coreGroup.position, {
+                    y: -1,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: '#hero',
+                        start: 'top top',
+                        end: 'bottom top',
+                        scrub: true,
+                    }
+                });
+            }
+
+            // ===== CURSOR GLOW =====
+            const cursorGlow = document.getElementById('cursor-glow');
+            let cursorX = -200,
+                cursorY = -200,
+                smoothCursorX = -200,
+                smoothCursorY = -200;
+            document.addEventListener('mousemove', (e) => {
+                cursorX = e.clientX;
+                cursorY = e.clientY;
+            });
+            document.addEventListener('touchmove', (e) => {
+                if (e.touches[0]) {
+                    cursorX = e.touches[0].clientX;
+                    cursorY = e.touches[0].clientY;
+                }
+            });
+            function animateCursor() {
+                smoothCursorX += (cursorX - smoothCursorX) * 0.12;
+                smoothCursorY += (cursorY - smoothCursorY) * 0.12;
+                if (cursorGlow && window.innerWidth > 768) {
+                    cursorGlow.style.transform = `translate(${smoothCursorX - 250}px, ${smoothCursorY - 250}px)`;
+                }
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+
+            // ===== MAGNETIC BUTTONS =====
+            document.querySelectorAll('.btn-magnetic').forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    gsap.to(btn, {
+                        x: x * 0.3,
+                        y: y * 0.5,
+                        duration: 0.4,
+                        ease: 'power3.out'
+                    });
+                });
+                btn.addEventListener('mouseleave', () => {
+                    gsap.to(btn, {
+                        x: 0,
+                        y: 0,
+                        duration: 0.6,
+                        ease: 'elastic.out(1,0.5)'
+                    });
+                });
+                // Touch support
+                btn.addEventListener('touchstart', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.touches[0].clientX - rect.left - rect.width / 2;
+                    const y = e.touches[0].clientY - rect.top - rect.height / 2;
+                    gsap.to(btn, {
+                        x: x * 0.2,
+                        y: y * 0.3,
+                        duration: 0.3,
+                        ease: 'power3.out'
+                    });
+                });
+                btn.addEventListener('touchend', () => {
+                    gsap.to(btn, {
+                        x: 0,
+                        y: 0,
+                        duration: 0.5,
+                        ease: 'elastic.out(1,0.5)'
+                    });
+                });
+            });
+
+            // ===== MOBILE NAV TOGGLE =====
+            document.getElementById('mobile-nav-toggle').addEventListener('click', () => {
+                document.getElementById('nav-links').classList.toggle('open');
+            });
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    document.getElementById('nav-links').classList.remove('open');
+                });
+            });
+
+            // ===== NEURAL NETWORK CANVAS (THE CORE) — BRAIN / IDEA ENGINE =====
+            const neuralCanvas = document.getElementById('neural-canvas');
+            if (neuralCanvas) {
+                const nctx = neuralCanvas.getContext('2d', { alpha: true });
+                let nw = 0, nh = 0, dpr = 1;
+                let neuralTime = 0;
+                let pointerX = 0.5, pointerY = 0.5;
+                let targetPointerX = 0.5, targetPointerY = 0.5;
+
+                const nodes = [
+                    { label: 'Thought',      x: 0.50, y: 0.19, color: '#4F8CFF', glow: '#4F8CFF' },
+                    { label: 'Memory',       x: 0.34, y: 0.32, color: '#7B61FF', glow: '#7B61FF' },
+                    { label: 'Curiosity',    x: 0.66, y: 0.32, color: '#4F8CFF', glow: '#4F8CFF' },
+                    { label: 'Observation',  x: 0.26, y: 0.51, color: '#7B61FF', glow: '#7B61FF' },
+                    { label: 'Experiment',   x: 0.74, y: 0.51, color: '#4F8CFF', glow: '#4F8CFF' },
+                    { label: 'Imagination',  x: 0.36, y: 0.70, color: '#7B61FF', glow: '#7B61FF' },
+                    { label: 'System',       x: 0.64, y: 0.70, color: '#4F8CFF', glow: '#4F8CFF' },
+                    { label: 'Vision',       x: 0.50, y: 0.83, color: '#7B61FF', glow: '#7B61FF' },
+                ];
+
+                const particles = Array.from({ length: 90 }, (_, i) => ({
+                    x: Math.random(),
+                    y: Math.random(),
+                    s: 0.4 + Math.random() * 1.5,
+                    a: 0.12 + Math.random() * 0.42,
+                    p: Math.random() * Math.PI * 2,
+                    speed: 0.2 + Math.random() * 0.8
+                }));
+
+                function resizeNeural() {
+                    const rect = neuralCanvas.getBoundingClientRect();
+                    dpr = Math.min(window.devicePixelRatio || 1, 2);
+                    nw = Math.max(1, rect.width);
+                    nh = Math.max(1, rect.height);
+                    neuralCanvas.width = Math.round(nw * dpr);
+                    neuralCanvas.height = Math.round(nh * dpr);
+                    nctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                }
+                resizeNeural();
+                window.addEventListener('resize', resizeNeural, { passive: true });
+
+                neuralCanvas.addEventListener('pointermove', (e) => {
+                    const r = neuralCanvas.getBoundingClientRect();
+                    targetPointerX = (e.clientX - r.left) / r.width;
+                    targetPointerY = (e.clientY - r.top) / r.height;
+                }, { passive: true });
+                neuralCanvas.addEventListener('pointerleave', () => {
+                    targetPointerX = 0.5;
+                    targetPointerY = 0.5;
+                }, { passive: true });
+
+                function drawBrainSilhouette(cx, cy, w, h, t) {
+                    const pulse = 1 + Math.sin(t * 1.25) * 0.012;
+                    const bw = w * pulse;
+                    const bh = h * pulse;
+                    const left = cx - bw * 0.5, right = cx + bw * 0.5;
+                    const top = cy - bh * 0.5, bottom = cy + bh * 0.5;
+
+                    const path = new Path2D();
+                    path.moveTo(cx, bottom * 0.985);
+                    path.bezierCurveTo(left + bw*0.06, bottom - bh*0.05, left - bw*0.05, cy + bh*0.10, left + bw*0.02, cy - bh*0.07);
+                    path.bezierCurveTo(left - bw*0.10, cy - bh*0.23, left + bw*0.06, top + bh*0.10, left + bw*0.18, top + bh*0.03);
+                    path.bezierCurveTo(left + bw*0.12, top - bh*0.08, left + bw*0.30, top - bh*0.06, left + bw*0.37, top + bh*0.03);
+                    path.bezierCurveTo(left + bw*0.48, top - bh*0.08, cx - bw*0.04, top - bh*0.01, cx, top + bh*0.08);
+                    path.bezierCurveTo(cx + bw*0.04, top - bh*0.01, right - bw*0.48, top - bh*0.08, right - bw*0.37, top + bh*0.03);
+                    path.bezierCurveTo(right - bw*0.30, top - bh*0.06, right - bw*0.12, top - bh*0.08, right - bw*0.18, top + bh*0.03);
+                    path.bezierCurveTo(right - bw*0.06, top + bh*0.10, right + bw*0.10, cy - bh*0.23, right - bw*0.02, cy - bh*0.07);
+                    path.bezierCurveTo(right + bw*0.05, cy + bh*0.10, right - bw*0.06, bottom - bh*0.05, cx, bottom * 0.985);
+                    path.closePath();
+
+                    const fill = nctx.createRadialGradient(cx, cy - bh*0.08, 0, cx, cy, bw*0.65);
+                    fill.addColorStop(0, 'rgba(79,140,255,0.13)');
+                    fill.addColorStop(0.38, 'rgba(123,97,255,0.07)');
+                    fill.addColorStop(1, 'rgba(0,0,0,0)');
+                    nctx.fillStyle = fill;
+                    nctx.fill(path);
+
+                    nctx.save();
+                    nctx.strokeStyle = 'rgba(125,155,255,0.24)';
+                    nctx.lineWidth = 1.1;
+                    nctx.shadowColor = 'rgba(79,140,255,0.22)';
+                    nctx.shadowBlur = 18;
+                    nctx.stroke(path);
+                    nctx.restore();
+
+                    // Hemisphere split / neural seam
+                    nctx.save();
+                    nctx.beginPath();
+                    nctx.moveTo(cx, top + bh*0.10);
+                    nctx.bezierCurveTo(cx - 6, cy - bh*0.05, cx + 6, cy + bh*0.10, cx, bottom - bh*0.07);
+                    nctx.strokeStyle = 'rgba(150,165,255,0.18)';
+                    nctx.lineWidth = 1;
+                    nctx.stroke();
+                    nctx.restore();
+
+                    // Cortex folds
+                    const foldColor = 'rgba(111,140,255,0.18)';
+                    for (let side of [-1, 1]) {
+                        for (let i = 0; i < 7; i++) {
+                            const yy = top + bh*(0.17 + i*0.095);
+                            const x0 = cx + side * bw*0.05;
+                            nctx.beginPath();
+                            nctx.moveTo(x0, yy);
+                            nctx.bezierCurveTo(
+                                cx + side * bw*0.13, yy - 14,
+                                cx + side * bw*0.27, yy + 12,
+                                cx + side * bw*0.40, yy - 4
+                            );
+                            nctx.strokeStyle = foldColor;
+                            nctx.lineWidth = 0.8;
+                            nctx.stroke();
+                        }
+                    }
+                }
+
+                function brainMaskPoint(x, y) {
+                    const dx = (x - 0.5) / 0.31;
+                    const dy = (y - 0.51) / 0.36;
+                    const lobe = Math.pow(Math.abs(dx), 3.1) + Math.pow(dy, 3.1);
+                    return lobe <= 0.92;
+                }
+
+                function drawNeural() {
+                    neuralTime += 0.012;
+                    pointerX += (targetPointerX - pointerX) * 0.045;
+                    pointerY += (targetPointerY - pointerY) * 0.045;
+
+                    nctx.clearRect(0, 0, nw, nh);
+
+                    const cx = nw * 0.5 + (pointerX - 0.5) * 12;
+                    const cy = nh * 0.50 + (pointerY - 0.5) * 8;
+                    const brainW = Math.min(nw * 0.58, 620);
+                    const brainH = Math.min(nh * 0.68, 390);
+
+                    // Atmospheric depth
+                    const aura = nctx.createRadialGradient(cx, cy, 0, cx, cy, brainW * 0.78);
+                    aura.addColorStop(0, 'rgba(79,140,255,0.10)');
+                    aura.addColorStop(0.36, 'rgba(123,97,255,0.055)');
+                    aura.addColorStop(1, 'rgba(0,0,0,0)');
+                    nctx.fillStyle = aura;
+                    nctx.fillRect(0, 0, nw, nh);
+
+                    // Peripheral particles
+                    for (const p of particles) {
+                        p.x += Math.cos(p.p + neuralTime * 0.3) * 0.00018 * p.speed;
+                        p.y -= 0.00012 * p.speed;
+                        if (p.y < -0.02) p.y = 1.02;
+                        if (p.x < -0.02) p.x = 1.02;
+                        if (p.x > 1.02) p.x = -0.02;
+                        const px = p.x * nw;
+                        const py = p.y * nh;
+                        const twinkle = p.a * (0.65 + 0.35 * Math.sin(neuralTime * p.speed * 2 + p.p));
+                        nctx.fillStyle = `rgba(125,155,255,${twinkle})`;
+                        nctx.beginPath();
+                        nctx.arc(px, py, p.s, 0, Math.PI * 2);
+                        nctx.fill();
+                    }
+
+                    drawBrainSilhouette(cx, cy, brainW, brainH, neuralTime);
+
+                    const nodePositions = nodes.map((n, i) => {
+                        const parallax = (i % 2 ? -1 : 1) * 2.5;
+                        return {
+                            ...n,
+                            x: cx + (n.x - 0.5) * brainW + Math.sin(neuralTime * 0.75 + i) * 5 + (pointerX - 0.5) * parallax,
+                            y: cy + (n.y - 0.51) * brainH + Math.cos(neuralTime * 0.62 + i) * 5 + (pointerY - 0.5) * parallax
+                        };
+                    });
+
+                    // Neural mesh connections
+                    for (let i = 0; i < nodePositions.length; i++) {
+                        for (let j = i + 1; j < nodePositions.length; j++) {
+                            const a = nodePositions[i], b = nodePositions[j];
+                            const dist = Math.hypot(a.x - b.x, a.y - b.y);
+                            if (dist < brainW * 0.46) {
+                                const strength = Math.max(0, 1 - dist / (brainW * 0.46));
+                                const pulse = 0.55 + 0.45 * Math.sin(neuralTime * 2 + i + j);
+                                nctx.save();
+                                nctx.strokeStyle = `rgba(103,145,255,${0.10 + strength * 0.26 * pulse})`;
+                                nctx.lineWidth = 0.7 + strength * 0.5;
+                                nctx.setLineDash([2, 8]);
+                                nctx.lineDashOffset = -neuralTime * 24;
+                                nctx.beginPath();
+                                nctx.moveTo(a.x, a.y);
+                                nctx.lineTo(b.x, b.y);
+                                nctx.stroke();
+                                nctx.restore();
+                            }
+                        }
+                    }
+
+                    // Traveling signal particles on select synapses
+                    for (let i = 0; i < nodePositions.length - 1; i += 2) {
+                        const a = nodePositions[i], b = nodePositions[(i + 2) % nodePositions.length];
+                        const phase = (neuralTime * 0.28 + i * 0.17) % 1;
+                        const sx = a.x + (b.x - a.x) * phase;
+                        const sy = a.y + (b.y - a.y) * phase;
+                        nctx.save();
+                        nctx.shadowColor = '#4F8CFF';
+                        nctx.shadowBlur = 14;
+                        nctx.fillStyle = 'rgba(190,220,255,0.9)';
+                        nctx.beginPath();
+                        nctx.arc(sx, sy, 1.6, 0, Math.PI * 2);
+                        nctx.fill();
+                        nctx.restore();
+                    }
+
+                    // Nodes
+                    nodePositions.forEach((n, i) => {
+                        const pulse = 1 + Math.sin(neuralTime * 2.4 + i) * 0.12;
+                        const radius = (18 + Math.sin(neuralTime * 1.8 + i) * 2.5) * pulse;
+
+                        const glow = nctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, radius * 2.3);
+                        glow.addColorStop(0, n.color + '66');
+                        glow.addColorStop(0.35, n.color + '20');
+                        glow.addColorStop(1, n.color + '00');
+                        nctx.fillStyle = glow;
+                        nctx.beginPath();
+                        nctx.arc(n.x, n.y, radius * 2.3, 0, Math.PI * 2);
+                        nctx.fill();
+
+                        nctx.save();
+                        nctx.shadowColor = n.color;
+                        nctx.shadowBlur = 20;
+                        nctx.fillStyle = n.color;
+                        nctx.beginPath();
+                        nctx.arc(n.x, n.y, 3.4 + Math.sin(neuralTime * 3 + i) * 0.8, 0, Math.PI * 2);
+                        nctx.fill();
+                        nctx.restore();
+
+                        nctx.strokeStyle = 'rgba(225,235,255,0.20)';
+                        nctx.lineWidth = 0.8;
+                        nctx.beginPath();
+                        nctx.arc(n.x, n.y, 9 + Math.sin(neuralTime * 2 + i), 0, Math.PI * 2);
+                        nctx.stroke();
+                    });
+
+                    // Central intelligence pulse
+                    const pulse = 30 + Math.sin(neuralTime * 1.6) * 6;
+                    const core = nctx.createRadialGradient(cx, cy, 0, cx, cy, pulse * 3);
+                    core.addColorStop(0, 'rgba(255,255,255,0.24)');
+                    core.addColorStop(0.08, 'rgba(79,140,255,0.32)');
+                    core.addColorStop(0.34, 'rgba(123,97,255,0.15)');
+                    core.addColorStop(1, 'rgba(0,0,0,0)');
+                    nctx.fillStyle = core;
+                    nctx.beginPath();
+                    nctx.arc(cx, cy, pulse * 3, 0, Math.PI * 2);
+                    nctx.fill();
+
+                    requestAnimationFrame(drawNeural);
+                }
+                drawNeural();
+            }
+
+            // ===== ARCHIVE DATA & RENDERING =====
+            const archiveData = [
+                { title: 'Autonomous Idea Synthesizer', category: 'AI', desc: 'An AI system that generates novel concepts by combining disparate domains through neural synthesis.',
+                    status: 'active', tags: ['AI', 'Synthesis', 'Neural'], date: '2026-03-15' },
+                { title: 'Fluid Interface Paradigm', category: 'Design', desc: 'A design language where UI elements behave like liquid, adapting to user intention in real-time.',
+                    status: 'evolving', tags: ['UI', 'Fluid', 'Adaptive'], date: '2026-02-28' },
+                { title: 'Decentralized Knowledge Graph', category: 'Technology', desc: 'A peer-to-peer knowledge system that maps connections between concepts globally.',
+                    status: 'active', tags: ['P2P', 'Graph', 'Knowledge'], date: '2026-03-01' },
+                { title: 'Cognitive Load Optimizer', category: 'Psychology', desc: 'A framework for measuring and minimizing cognitive load in digital experiences.',
+                    status: 'dormant', tags: ['Cognitive', 'UX', 'Framework'], date: '2025-12-10' },
+                { title: 'Quantum-Inspired Algorithms', category: 'Research', desc: 'Classical algorithms inspired by quantum computing principles for optimization problems.',
+                    status: 'evolving', tags: ['Quantum', 'Algorithm', 'Research'], date: '2026-01-22' },
+                { title: 'Symbiotic Cities Concept', category: 'Future Concepts', desc: 'A vision of cities that function as living organisms, adapting to inhabitant needs.',
+                    status: 'active', tags: ['Urban', 'Symbiotic', 'Vision'], date: '2026-03-10' },
+                { title: 'Feedback Loop Architecture', category: 'Systems', desc: 'A system design pattern where every output becomes a learning input for continuous evolution.',
+                    status: 'evolving', tags: ['Feedback', 'System', 'Pattern'], date: '2026-02-14' },
+                { title: 'Empathy Engine', category: 'Psychology', desc: 'An interface layer that translates emotional context between humans and machines.',
+                    status: 'active', tags: ['Empathy', 'HCI', 'Emotion'], date: '2026-03-05' },
+                { title: 'Infinite Canvas Workspace', category: 'Design', desc: 'A spatial computing workspace with no boundaries, only expanding possibility.',
+                    status: 'dormant', tags: ['Spatial', 'Canvas', 'Workspace'], date: '2025-11-20' },
+                { title: 'Predictive Business Models', category: 'Business', desc: 'Data-driven models that predict market shifts before they happen.',
+                    status: 'evolving', tags: ['Business', 'Prediction', 'Data'], date: '2026-01-15' },
+                { title: 'Neural Interface Protocol', category: 'Technology', desc: 'A standardized protocol for brain-computer interface communication.',
+                    status: 'active', tags: ['BCI', 'Protocol', 'Neural'], date: '2026-02-01' },
+                { title: 'Generative Reality Engine', category: 'Future Concepts', desc: 'A system that generates immersive realities from simple textual descriptions.',
+                    status: 'evolving', tags: ['Generative', 'Reality', 'Engine'], date: '2026-03-08' },
+            ];
+
+            function renderArchive(filter = 'all', sort = 'newest', search = '') {
+                const grid = document.getElementById('archive-grid');
+                let data = [...archiveData];
+                if (filter !== 'all') data = data.filter(d => d.category === filter);
+                if (search.trim()) {
+                    const s = search.toLowerCase();
+                    data = data.filter(d => d.title.toLowerCase().includes(s) || d.desc.toLowerCase().includes(s) || d.tags
+                        .some(t => t.toLowerCase().includes(s)));
+                }
+                if (sort === 'newest') data.sort((a, b) => new Date(b.date) - new Date(a.date));
+                else if (sort === 'oldest') data.sort((a, b) => new Date(a.date) - new Date(b.date));
+                else if (sort === 'title') data.sort((a, b) => a.title.localeCompare(b.title));
+                grid.innerHTML = data.map(d => `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="archive-card">
+                            <span class="card-status status-${d.status}">${d.status}</span>
+                            <div class="card-category">${d.category}</div>
+                            <h3 class="card-title">${d.title}</h3>
+                            <p class="card-desc">${d.desc}</p>
+                            <div class="card-tags">${d.tags.map(t => `<span>${t}</span>`).join('')}</div>
+                            <div class="mt-3 small text-white-50" style="position:relative;z-index:1;">📅 ${d.date}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('archive-search').addEventListener('input', (e) => {
+                const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+                const sort = document.getElementById('archive-sort').value;
+                renderArchive(activeFilter, sort, e.target.value);
+            });
+            document.getElementById('archive-sort').addEventListener('change', (e) => {
+                const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+                const search = document.getElementById('archive-search').value;
+                renderArchive(activeFilter, e.target.value, search);
+            });
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const sort = document.getElementById('archive-sort').value;
+                    const search = document.getElementById('archive-search').value;
+                    renderArchive(btn.dataset.filter, sort, search);
+                });
+            });
+            renderArchive();
+
+            // ===== MEMORY VAULT =====
+            const memories = [
+                { type: 'Sketch', icon: '✏️', title: 'Spiral of Thought', desc: 'A rough sketch of an idea spiraling outward from a central point, representing divergent thinking.' },
+                { type: 'Quote', icon: '💬', title: 'On Beginnings', desc: '"Every end is a new beginning disguised as a goodbye." — Captured during a late-night reflection.' },
+                { type: 'Observation', icon: '👁️', title: 'City Patterns', desc: 'Noticed how city layouts mirror neural networks — both are optimized for flow.' },
+                { type: 'Screenshot', icon: '📸', title: 'Interface Moment', desc: 'A screenshot of an interface that perfectly balances information density with breathing room.' },
+                { type: 'Voice Note', icon: '🎙️', title: '3AM Idea', desc: 'What if machines could dream in visual metaphors instead of data points?' },
+                { type: 'Inspiration', icon: '✨', title: 'Ocean of Stars', desc: 'Looking at the night sky and realizing every star is an idea waiting to be discovered.' },
+            ];
+
+            function renderMemories() {
+                const grid = document.getElementById('memory-grid');
+                grid.innerHTML = memories.map((m, i) => `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="memory-capsule" onclick="openMemoryOverlay(${i})">
+                            <div class="memory-icon">${m.icon}</div>
+                            <div class="memory-type">${m.type}</div>
+                            <h4 class="memory-title">${m.title}</h4>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            renderMemories();
+
+            // ===== MEMORY OVERLAY =====
+            window.openMemoryOverlay = function(index) {
+                const m = memories[index];
+                document.getElementById('memory-overlay-title').textContent = m.title;
+                document.getElementById('memory-overlay-desc').textContent = m.desc;
+                document.getElementById('memory-overlay').classList.add('open');
+            };
+            window.closeMemoryOverlay = function() {
+                document.getElementById('memory-overlay').classList.remove('open');
+            };
+            document.getElementById('memory-overlay').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) closeMemoryOverlay();
+            });
+
+            // ===== LABORATORY DEMOS =====
+            function initLabDemo(containerId, drawFn) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                const canvas = document.createElement('canvas');
+                canvas.style.position = 'absolute';
+                canvas.style.inset = '0';
+                canvas.style.width = '100%';
+                canvas.style.height = '100%';
+                canvas.style.borderRadius = '16px';
+                canvas.style.pointerEvents = 'none';
+                container.appendChild(canvas);
+                const ctx = canvas.getContext('2d');
+                let running = true;
+
+                function resize() {
+                    canvas.width = container.clientWidth;
+                    canvas.height = container.clientHeight;
+                }
+                resize();
+                const observer = new ResizeObserver(resize);
+                observer.observe(container);
+
+                function animate() {
+                    if (!running) return;
+                    drawFn(ctx, canvas.width, canvas.height, Date.now() * 0.001);
+                    requestAnimationFrame(animate);
+                }
+                animate();
+
+                container.addEventListener('mouseenter', () => running = true);
+                container.addEventListener('mouseleave', () => running = false);
+            }
+
+            // Particle simulation
+            initLabDemo('lab-particles', (ctx, w, h, t) => {
+                ctx.fillStyle = 'rgba(5,5,5,0.15)';
+                ctx.fillRect(0, 0, w, h);
+                for (let i = 0; i < 20; i++) {
+                    const x = w / 2 + Math.cos(t * 0.5 + i * 1.7) * w * 0.3;
+                    const y = h / 2 + Math.sin(t * 0.7 + i * 2.1) * h * 0.3;
+                    ctx.fillStyle = i % 2 === 0 ? '#4F8CFF' : '#7B61FF';
+                    ctx.shadowColor = i % 2 === 0 ? '#4F8CFF' : '#7B61FF';
+                    ctx.shadowBlur = 10;
+                    ctx.beginPath();
+                    ctx.arc(x, y, 3 + Math.sin(t + i) * 1.5, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            });
+
+            // Noise animation
+            initLabDemo('lab-noise', (ctx, w, h, t) => {
+                ctx.fillStyle = 'rgba(5,5,5,0.05)';
+                ctx.fillRect(0, 0, w, h);
+                for (let i = 0; i < 50; i++) {
+                    const x = Math.random() * w;
+                    const y = Math.random() * h;
+                    const alpha = Math.random() * 0.5;
+                    ctx.fillStyle = `rgba(79,140,255,${alpha})`;
+                    ctx.fillRect(x, y, Math.random() * 3 + 1, Math.random() * 3 + 1);
+                }
+            });
+
+            // Mouse trail
+            let trailPoints = [];
+            initLabDemo('lab-trail', (ctx, w, h, t) => {
+                ctx.fillStyle = 'rgba(5,5,5,0.1)';
+                ctx.fillRect(0, 0, w, h);
+                trailPoints.push({ x: w / 2 + Math.cos(t) * w * 0.2, y: h / 2 + Math.sin(t * 1.3) * h * 0.2, life: 1 });
+                trailPoints = trailPoints.filter(p => p.life > 0);
+                trailPoints.forEach(p => p.life -= 0.02);
+                trailPoints.forEach(p => {
+                    ctx.fillStyle = `rgba(123,97,255,${p.life * 0.6})`;
+                    ctx.shadowColor = '#7B61FF';
+                    ctx.shadowBlur = 15;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 8 * p.life, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                });
+            });
+
+            // Geometry generator
+            initLabDemo('lab-geometry', (ctx, w, h, t) => {
+                ctx.fillStyle = 'rgba(5,5,5,0.05)';
+                ctx.fillRect(0, 0, w, h);
+                const cx = w / 2,
+                    cy = h / 2;
+                const sides = Math.floor(3 + Math.sin(t * 0.5) * 3 + 3);
+                const radius = Math.min(w, h) * 0.3;
+                ctx.strokeStyle = '#4F8CFF';
+                ctx.lineWidth = 1.5;
+                ctx.shadowColor = '#4F8CFF';
+                ctx.shadowBlur = 12;
+                ctx.beginPath();
+                for (let i = 0; i <= sides; i++) {
+                    const angle = (i / sides) * Math.PI * 2 + t * 0.3;
+                    const x = cx + Math.cos(angle) * radius;
+                    const y = cy + Math.sin(angle) * radius;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+            });
+
+            // Grid morphing
+            initLabDemo('lab-grid', (ctx, w, h, t) => {
+                ctx.fillStyle = 'rgba(5,5,5,0.08)';
+                ctx.fillRect(0, 0, w, h);
+                const spacing = 25;
+                ctx.strokeStyle = 'rgba(79,140,255,0.3)';
+                ctx.lineWidth = 0.5;
+                for (let x = 0; x < w; x += spacing) {
+                    for (let y = 0; y < h; y += spacing) {
+                        const offset = Math.sin(t + x * 0.03) * Math.cos(t + y * 0.02) * 5;
+                        ctx.beginPath();
+                        ctx.arc(x + offset, y - offset, 1.5, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(79,140,255,${0.3 + Math.sin(t + x + y) * 0.2})`;
+                        ctx.fill();
+                    }
+                }
+            });
+
+            // Neural visualization
+            initLabDemo('lab-network', (ctx, w, h, t) => {
+                ctx.fillStyle = 'rgba(5,5,5,0.05)';
+                ctx.fillRect(0, 0, w, h);
+                const cx = w / 2,
+                    cy = h / 2;
+                for (let i = 0; i < 6; i++) {
+                    const angle = t * 0.5 + i * Math.PI / 3;
+                    const x = cx + Math.cos(angle) * w * 0.2;
+                    const y = cy + Math.sin(angle) * h * 0.2;
+                    ctx.fillStyle = i % 2 === 0 ? '#4F8CFF' : '#7B61FF';
+                    ctx.shadowColor = i % 2 === 0 ? '#4F8CFF' : '#7B61FF';
+                    ctx.shadowBlur = 20;
+                    ctx.beginPath();
+                    ctx.arc(x, y, 10 + Math.sin(t + i) * 3, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                    // Connect to center
+                    ctx.strokeStyle = 'rgba(79,140,255,0.3)';
+                    ctx.lineWidth = 0.5;
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
+                    // Connect to siblings
+                    for (let j = i + 1; j < 6; j++) {
+                        const angle2 = t * 0.5 + j * Math.PI / 3;
+                        const x2 = cx + Math.cos(angle2) * w * 0.2;
+                        const y2 = cy + Math.sin(angle2) * h * 0.2;
+                        ctx.strokeStyle = 'rgba(123,97,255,0.15)';
+                        ctx.beginPath();
+                        ctx.moveTo(x, y);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
+                    }
+                }
+            });
+
+            // ===== RESEARCH UNIVERSE =====
+            const researchTopics = ['AI Ethics', 'Quantum', 'Neuroscience', 'Design Systems', 'Cognition', 'Future Tech',
+                'Sustainability', 'Creativity'
+            ];
+            const orbitContainer = document.getElementById('orbit-container');
+            researchTopics.forEach((topic, i) => {
+                const planet = document.createElement('div');
+                planet.className = 'orbit-planet';
+                planet.textContent = topic;
+                planet.dataset.topic = topic;
+                planet.style.position = 'absolute';
+                const angle = (i / researchTopics.length) * Math.PI * 2;
+                const ringIndex = i % 4;
+                const ring = orbitContainer.querySelectorAll('.orbit-ring')[ringIndex];
+                const ringRadius = ring ? ring.offsetWidth / 2 : 150;
+                planet.style.left = `calc(50% + ${Math.cos(angle) * ringRadius}px - 28px)`;
+                planet.style.top = `calc(50% + ${Math.sin(angle) * ringRadius}px - 28px)`;
+                planet.addEventListener('click', () => {
+                    alert(
+                        `🌍 ${topic}\n\nSummary: This is a research topic exploring the frontiers of ${topic.toLowerCase()}.\n\nConnected concepts: Innovation, Discovery, Understanding.\n\nRelated ideas: Cross-disciplinary exploration, Pattern recognition, Systems thinking.`
+                        );
+                });
+                orbitContainer.appendChild(planet);
+            });
+
+            // ===== BLUEPRINT WALL =====
+            const blueprintItems = [
+                { title: 'UI Wireframes', desc: 'Low-fidelity interface layouts for mobile and desktop' },
+                { title: 'System Diagrams', desc: 'Architecture diagrams showing component relationships' },
+                { title: 'Flowcharts', desc: 'Decision trees and process flows' },
+                { title: 'Architecture Sketches', desc: 'High-level system architecture drawings' },
+                { title: 'Grid Layouts', desc: 'Responsive grid system definitions' },
+                { title: 'Design Tokens', desc: 'Color, typography, and spacing definitions' },
+                { title: 'Component Specs', desc: 'Detailed component specifications and states' },
+                { title: 'Interaction Models', desc: 'User interaction flow models' },
+            ];
+            document.getElementById('blueprint-grid').innerHTML = blueprintItems.map(bp => `
+                <div class="col-md-6 col-lg-3">
+                    <div class="blueprint-card">
+                        <div class="bp-title">📐 ${bp.title}</div>
+                        <div class="bp-desc">${bp.desc}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            // ===== PROJECTS =====
+            const projects = [
+                { title: 'Neural Canvas', category: 'AI / Design', desc: 'An AI-powered infinite canvas that understands visual intent.',
+                    stack: ['Python', 'TensorFlow', 'React', 'WebGL'], progress: 85, icon: '🧠', cover: 'NC' },
+                { title: 'Quantum Notes', category: 'Productivity', desc: 'A note-taking app with quantum-inspired organization.',
+                    stack: ['Swift', 'CoreML', 'CloudKit'], progress: 60, icon: '📝', cover: 'QN' },
+                { title: 'Flux UI', category: 'Design System', desc: 'A fluid design system for next-generation interfaces.',
+                    stack: ['Figma', 'CSS', 'Storybook'], progress: 92, icon: '🎨', cover: 'FX' },
+                { title: 'Mind Graph', category: 'Knowledge', desc: 'A visual knowledge graph connecting ideas and concepts.',
+                    stack: ['GraphQL', 'Neo4j', 'D3'], progress: 70, icon: '🕸️', cover: 'MG' },
+                { title: 'Pulse Analytics', category: 'Data', desc: 'Real-time analytics with predictive forecasting.',
+                    stack: ['Go', 'Postgres', 'Vue'], progress: 45, icon: '📊', cover: 'PA' },
+                { title: 'Dream Protocol', category: 'Blockchain', desc: 'A protocol for decentralized idea ownership.',
+                    stack: ['Solidity', 'IPFS', 'Ethers.js'], progress: 30, icon: '⛓️', cover: 'DP' },
+            ];
+            document.getElementById('projects-grid').innerHTML = projects.map((p, i) => `
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card">
+                        <div class="project-cover">${p.icon}<span style="position:absolute;bottom:10px;left:15px;font-family:var(--font-display);font-weight:700;font-size:1.2rem;color:rgba(255,255,255,0.4);">${p.cover}</span></div>
+                        <div class="project-body">
+                            <div class="project-category">${p.category}</div>
+                            <h3 class="project-title">${p.title}</h3>
+                            <p class="project-desc">${p.desc}</p>
+                            <div class="project-stack">${p.stack.map(s => `<span>${s}</span>`).join('')}</div>
+                            <div class="project-progress">
+                                <div class="progress-fill" style="width:0%;" data-width="${p.progress}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            // Animate progress on scroll
+            gsap.utils.toArray('.progress-fill').forEach(el => {
+                gsap.to(el, {
+                    width: el.dataset.width,
+                    duration: 1.5,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 85%',
+                    }
+                });
+            });
+
+            // ===== INSIGHTS =====
+            const insights = [
+                { title: 'The Architecture of Thought: How Ideas Structure Themselves', category: 'Psychology',
+                    readTime: '8 min', date: 'Mar 12, 2026', icon: '🧠', featured: true },
+                { title: 'Designing for the Space Between Thoughts', category: 'Design', readTime: '5 min',
+                    date: 'Mar 08, 2026', icon: '🎨', featured: false },
+                { title: 'Systems Thinking in the Age of AI', category: 'Technology', readTime: '6 min',
+                    date: 'Mar 01, 2026', icon: '⚙️', featured: false },
+                { title: 'The Future of Human Creativity', category: 'Future Concepts', readTime: '10 min',
+                    date: 'Feb 22, 2026', icon: '✨', featured: false },
+                { title: 'Mapping the Unknown: A Guide to Deep Research', category: 'Research', readTime: '7 min',
+                    date: 'Feb 15, 2026', icon: '🔬', featured: false },
+            ];
+            document.getElementById('insights-grid').innerHTML = insights.map(ins => `
+                <div class="col-md-6 ${ins.featured ? 'col-12' : 'col-lg-6'}">
+                    <div class="insight-card ${ins.featured ? 'featured' : ''}">
+                        <div class="insight-cover">${ins.icon}</div>
+                        <div class="insight-body">
+                            <div class="insight-meta">
+                                <span>📅 ${ins.date}</span>
+                                <span>⏱️ ${ins.readTime}</span>
+                                <span>🏷️ ${ins.category}</span>
+                            </div>
+                            <h3 class="insight-title">${ins.title}</h3>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // ===== POSSIBILITY ENGINE =====
+            const ideaPrefixes = ['Autonomous', 'Quantum', 'Generative', 'Symbiotic', 'Fluid', 'Neural', 'Decentralized',
+                'Cognitive', 'Adaptive', 'Infinite', 'Emergent', 'Radiant', 'Silent', 'Electric', 'Organic', 'Dimensional'
+            ];
+            const ideaNouns = ['System', 'Interface', 'Protocol', 'Architecture', 'Canvas', 'Network', 'Engine', 'Paradigm',
+                'Framework', 'Universe', 'Matrix', 'Landscape', 'Orchestra', 'Synthesis', 'Frontier', 'Echo'
+            ];
+            const ideaVerbs = ['that thinks', 'that dreams', 'that evolves', 'that connects', 'that remembers', 'that predicts',
+                'that creates', 'that transforms', 'that whispers', 'that illuminates'
+            ];
+            document.getElementById('generate-idea-btn').addEventListener('click', () => {
+                const display = document.getElementById('possibility-display');
+                display.classList.add('generating');
+                const output = document.getElementById('idea-output');
+                output.textContent = 'Generating...';
+                setTimeout(() => {
+                    const p = ideaPrefixes[Math.floor(Math.random() * ideaPrefixes.length)];
+                    const n = ideaNouns[Math.floor(Math.random() * ideaNouns.length)];
+                    const v = ideaVerbs[Math.floor(Math.random() * ideaVerbs.length)];
+                    output.textContent = `${p} ${n} ${v}`;
+                    display.classList.remove('generating');
+                    gsap.fromTo(output, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.8,
+                        ease: 'back.out(2)' });
+                }, 1200);
+            });
+
+            // ===== QUOTES FLOATING =====
+            document.querySelectorAll('.quote-float').forEach(q => {
+                const speed = parseFloat(q.dataset.speed) || 1;
+                gsap.to(q, {
+                    y: () => (Math.random() - 0.5) * 60,
+                    x: () => (Math.random() - 0.5) * 40,
+                    duration: 3 + speed * 2,
+                    ease: 'sine.inOut',
+                    yoyo: true,
+                    repeat: -1,
+                });
+                q.addEventListener('mousemove', (e) => {
+                    const rect = q.getBoundingClientRect();
+                    const x = (e.clientX - rect.left - rect.width / 2) * 0.05;
+                    const y = (e.clientY - rect.top - rect.height / 2) * 0.05;
+                    gsap.to(q, { x, y, duration: 0.5, ease: 'power3.out' });
+                });
+                q.addEventListener('mouseleave', () => {
+                    gsap.to(q, { x: 0, y: 0, duration: 1, ease: 'elastic.out(1,0.5)' });
+                });
+            });
+
+            // ===== CONTACT FORM =====
+            window.handleContactSubmit = function(e) {
+                e.preventDefault();
+                const btn = e.target.querySelector('button[type="submit"]');
+                const originalText = btn.textContent;
+                btn.textContent = 'SENDING...';
+                btn.disabled = true;
+                setTimeout(() => {
+                    btn.textContent = '✓ SIGNAL SENT!';
+                    gsap.to(btn, { scale: 1.05, duration: 0.3, yoyo: true, repeat: 1 });
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.disabled = false;
+                        e.target.reset();
+                    }, 2000);
+                }, 1500);
+            };
+
+            // ===== STARS BACKGROUND =====
+            const starsContainer = document.getElementById('bg-stars');
+            if (starsContainer && typeof THREE !== 'undefined') {
+                const starScene = new THREE.Scene();
+                const starCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 50);
+                starCamera.position.z = 5;
+                const starRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                starRenderer.setSize(window.innerWidth, window.innerHeight);
+                starRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                starRenderer.setClearColor(0x000000, 0);
+                starsContainer.appendChild(starRenderer.domElement);
+                const sGeo = new THREE.BufferGeometry();
+                const sPositions = new Float32Array(400 * 3);
+                for (let i = 0; i < 400; i++) {
+                    sPositions[i * 3] = (Math.random() - 0.5) * 20;
+                    sPositions[i * 3 + 1] = (Math.random() - 0.5) * 20;
+                    sPositions[i * 3 + 2] = (Math.random() - 0.5) * 15;
+                }
+                sGeo.setAttribute('position', new THREE.BufferAttribute(sPositions, 3));
+                const sMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.02, transparent: true,
+                    opacity: 0.4, blending: THREE.AdditiveBlending });
+                const sPoints = new THREE.Points(sGeo, sMat);
+                starScene.add(sPoints);
+
+                function animateStars() {
+                    requestAnimationFrame(animateStars);
+                    sPoints.rotation.y += 0.0003;
+                    sPoints.rotation.x += 0.0001;
+                    starRenderer.render(starScene, starCamera);
+                }
+                animateStars();
+                window.addEventListener('resize', () => {
+                    starCamera.aspect = window.innerWidth / window.innerHeight;
+                    starCamera.updateProjectionMatrix();
+                    starRenderer.setSize(window.innerWidth, window.innerHeight);
+                });
+            }
+
+            // ===== MOBILE BOTTOM NAV ACTIVE STATE =====
+            const mobileNavLinks = document.querySelectorAll('#mobile-bottom-nav a');
+            const sectionsToTrack = ['core', 'archive', 'memory', 'projects', 'contact'];
+            if (typeof IntersectionObserver !== 'undefined') {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const id = entry.target.id;
+                            mobileNavLinks.forEach(link => {
+                                if (link.getAttribute('href') === '#' + id) {
+                                    link.classList.add('active');
+                                } else {
+                                    link.classList.remove('active');
+                                }
+                            });
+                        }
+                    });
+                }, { threshold: 0.3 });
+                sectionsToTrack.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) observer.observe(el);
+                });
+            }
+
+            // ===== SKELETON LOADING (visual demonstration) =====
+            // Cards are rendered instantly, but we'll show a quick skeleton effect on archive
+            const archiveGrid = document.getElementById('archive-grid');
+            if (archiveGrid) {
+                archiveGrid.innerHTML = '<div class="col-12"><div class="skeleton" style="height:200px;"></div></div>';
+                setTimeout(() => renderArchive(), 600);
+            }
+
+            // ===== ACCESSIBILITY =====
+            document.querySelectorAll('.filter-btn, .node-label, .memory-capsule, .orbit-planet').forEach(el => {
+                if (!el.getAttribute('tabindex')) el.setAttribute('tabindex', '0');
+                if (el.tagName !== 'BUTTON' && el.tagName !== 'A') {
+                    el.setAttribute('role', 'button');
+                    el.setAttribute('aria-label', el.textContent.trim());
+                }
+            });
+
+            // ===== NAV SMOOTH SCROLL =====
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        e.preventDefault();
+                        lenis.scrollTo(target, { duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math
+                                .pow(2, -10 * t)) });
+                    }
+                });
+            });
+
+            console.log('⚡ THE IDEA MACHINE is now online.');
+        }
+    </script>
+</body>
+</html>
